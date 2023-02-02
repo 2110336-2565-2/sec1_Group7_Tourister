@@ -39,6 +39,9 @@ const UserSchema = new mongoose.Schema({
     bankAccount: {
         type: String
     },
+    remainingAmount: {
+        type: Number
+    },
     licenseId: {
         type: String,
         unique: true
