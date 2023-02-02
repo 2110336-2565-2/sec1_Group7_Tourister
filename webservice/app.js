@@ -2,6 +2,9 @@ const express = require('express')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
 const logger = require('morgan')
+const mongoose = require('mongoose')
+
+const apiRoute = require('./routes/api')
 
 const app = express()
 
@@ -20,6 +23,9 @@ mongoose.connection.on('error', err =>
 
 // logger middleware
 app.use(logger('dev'))
+
+// use express router
+app.use('/api', apiRoute)
 
 app.get('/', async (req, res, next) => {
     console.log("Hello SE2 Project !!")
