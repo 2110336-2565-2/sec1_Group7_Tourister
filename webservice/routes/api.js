@@ -1,10 +1,7 @@
 const express = require('express')
 const router = express.Router()
+const userRouter = require('./user')
 
-router.get('/hello', async (req, res) => {
-    return res.json({
-        message: "helooooooo"
-    })
-})
+router.use(userRouter)
 
 module.exports =  router

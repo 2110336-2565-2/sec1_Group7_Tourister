@@ -3,31 +3,25 @@ const cookieParser = require('cookie-parser')
 const cors = require('cors')
 const logger = require('morgan')
 const mongoose = require('mongoose')
+const dbConfig = require('./configs/database')
 
 const apiRoute = require('./routes/api')
 
 const app = express()
 
-//connect mongodb atlas
-const mongo_uri = "mongodb+srv://root:tourist7@tourister.zr7ni4z.mongodb.net/test";
-mongoose.Promise = global.Promise;
-mongoose.connect(mongo_uri, { useNewUrlParser : true});
 
-//mongodb error handler
-mongoose.connection.on('error', err => 
-    {
-        console.error('MongoDB error', err);
-    }
-)
 
 
 // logger middleware
 app.use(logger('dev'))
 
+//cors
+app.use(cors())
+
 // use express router
 app.use('/api', apiRoute)
 
-app.get('/', async (req, res, next) => {
+app.get('/helloworld', async (req, res, next) => {
     console.log("Hello SE2 Project !!")
     return res.json({ message : "Hello World"})
 })
@@ -55,5 +49,21 @@ const PORT = process.env.PORT || 2000;
 app.listen(PORT, () => 
     {
         console.log(`Server is running on PORT ${PORT}`);
+    }
+)
+
+//connect mongodb atlas
+const mongo_uri = dbConfig.MONGO_URI;
+mongoose.Promise = global.Promise;
+mongoose.connect(mongo_uri, { useNewUrlParser : true}, () => {
+     console.log("database connection established!")
+    }, (e) => {
+        console.log("database connection error: ", e)
+    });
+
+//mongodb error handler
+mongoose.connection.on('error', err => 
+    {
+        console.error('MongoDB error', err);
     }
 )

@@ -1,4 +1,6 @@
-const mongoose = require('mongoose')
 
+const dbConfig = {
+    MONGO_URI: "mongodb+srv://root:tourist7@tourister.zr7ni4z.mongodb.net/test",
+}
 
-export default mongoose
+module.exports = dbConfig
