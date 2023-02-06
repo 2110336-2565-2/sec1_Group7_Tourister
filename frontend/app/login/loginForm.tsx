@@ -1,29 +1,57 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup"
+import * as yup from "yup";
 
-type AccountType = 'tourist' | 'guide';
+type FormData = {
+  accountType: accountType;
+  email: string;
+  password: string;
+}
+
+type accountType = 'tourist' | 'guide';
+
+const validationSchema = yup.object().shape({
+  accountType: yup
+    .string()
+    .required("Please choose your account type"),
+  email: yup
+    .string()
+    .required("Please enter email"),
+  password: yup
+    .string()
+    .required("Please enter password")
+});
+
 
 const LoginForm = () => {
-  const [accountType, setAccountType] = useState('tourist');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [password, setPassword] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log('Email:', email);
-    console.log('Password:', password);
-  };
+  const {
+    register,
+    watch,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<FormData>({
+    resolver: yupResolver(validationSchema),
+  });
+  const watchAccountType = watch("accountType");
+
+  const onSubmit = (data : FormData) => {
+    console.log(data);
+  }
 
   return (
-    <form style={{display:'flex', alignItems: 'center',flexDirection:'column'}} onSubmit={handleSubmit}>
+    <form style={{display:'flex', alignItems: 'center',flexDirection:'column'}} onSubmit={handleSubmit(onSubmit)}>
       <div>
          <label>
           <input
             type="radio"
             value="tourist"
-            checked={accountType === 'tourist'}
+            {...register('accountType')}
           />
           Tourist
         </label>
@@ -31,24 +59,24 @@ const LoginForm = () => {
           <input
             type="radio"
             value="guide"
-            checked={accountType === 'guide'}
+            {...register('accountType')}
           />
           Guide
         </label>
       </div>
-      
       <label>Email</label>
       <input
         type="email"
         placeholder="Email"
-        value={email}
+        {...register("email")}
       />
+      {errors.email && <p className="errorMsg">{errors.email.message}</p>}
       <label>Password</label>
       <div>
         <input
           type={showPassword ? 'text' : 'password'}
           placeholder="Password"
-          value={password}
+          {...register("password")}
         />
         <button
           type="button"
@@ -57,7 +85,7 @@ const LoginForm = () => {
           {showPassword ? 'Hide' : 'Show'} Password
         </button>
       </div>
-      
+      {errors.password && <p className="errorMsg">{errors.password.message}</p>}
       <button type="submit">Login</button>
     </form>
   );
