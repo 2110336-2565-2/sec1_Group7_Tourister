@@ -4,7 +4,7 @@ import { useState } from "react";
 
 type AccountType = 'tourist' | 'guide';
 
-const loginForm = () => {
+const LoginForm = () => {
   const [accountType, setAccountType] = useState('tourist');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -24,7 +24,6 @@ const loginForm = () => {
             type="radio"
             value="tourist"
             checked={accountType === 'tourist'}
-            onChange={(e) => setAccountType(e.target.value as AccountType)}
           />
           Tourist
         </label>
@@ -33,7 +32,6 @@ const loginForm = () => {
             type="radio"
             value="guide"
             checked={accountType === 'guide'}
-            onChange={(e) => setAccountType(e.target.value as AccountType)}
           />
           Guide
         </label>
@@ -44,7 +42,6 @@ const loginForm = () => {
         type="email"
         placeholder="Email"
         value={email}
-        onChange={(e) => setEmail(e.target.value)}
       />
       <label>Password</label>
       <div>
@@ -52,7 +49,6 @@ const loginForm = () => {
           type={showPassword ? 'text' : 'password'}
           placeholder="Password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
         />
         <button
           type="button"
@@ -67,4 +63,4 @@ const loginForm = () => {
   );
 };
 
-export default loginForm;
+export default LoginForm;

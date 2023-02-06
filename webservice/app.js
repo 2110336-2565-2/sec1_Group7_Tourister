@@ -9,13 +9,9 @@ const apiRoute = require('./routes/api')
 
 const app = express()
 
-
-
-
-// logger middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 app.use(logger('dev'))
-
-//cors
 app.use(cors())
 
 // use express router
