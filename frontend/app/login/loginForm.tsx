@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup";
+import {Typography} from '@mui/material';
 
 type FormData = {
   accountType: accountType;
@@ -27,7 +28,6 @@ const validationSchema = yup.object().shape({
 
 
 const LoginForm = () => {
-  const [password, setPassword] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
   const {
@@ -48,7 +48,7 @@ const LoginForm = () => {
     <form style={{display:'flex', alignItems: 'center',flexDirection:'column'}} onSubmit={handleSubmit(onSubmit)}>
       <div>
          <label>
-          <input
+          <input 
             type="radio"
             value="tourist"
             {...register('accountType')}
