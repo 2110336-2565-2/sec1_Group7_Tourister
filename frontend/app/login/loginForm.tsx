@@ -4,7 +4,7 @@ import { useState } from "react";
 
 type AccountType = 'tourist' | 'guide';
 
-const loginForm = () => {
+const LoginForm = () => {
   const [accountType, setAccountType] = useState('tourist');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -67,4 +67,4 @@ const loginForm = () => {
   );
 };
 
-export default loginForm;
+export default LoginForm;
