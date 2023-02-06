@@ -1,3 +1,5 @@
+const ApiErrorResponse = require("../exception/ApiErrorResponse");
+
 /**
  * @param {() => Promise<{code: number, message?: string, data?: unknown }>} callback 
  * @param {((error: unknown) => unknown) | undefined} catchCallback 
@@ -19,6 +21,13 @@ const tryCatchMongooseService = async (callback, catchCallback = undefined, fina
         return {
             code: 400,
             message: "invalid inputs",
+            errors: e.stack
+        }
+      }
+      else if(e instanceof ApiErrorResponse){
+        return {
+            code: e.code,
+            message: e.message,
             errors: e.stack
         }
       }
