@@ -24,7 +24,6 @@ const LoginForm = () => {
             type="radio"
             value="tourist"
             checked={accountType === 'tourist'}
-            onChange={(e) => setAccountType(e.target.value as AccountType)}
           />
           Tourist
         </label>
@@ -33,7 +32,6 @@ const LoginForm = () => {
             type="radio"
             value="guide"
             checked={accountType === 'guide'}
-            onChange={(e) => setAccountType(e.target.value as AccountType)}
           />
           Guide
         </label>
@@ -44,7 +42,6 @@ const LoginForm = () => {
         type="email"
         placeholder="Email"
         value={email}
-        onChange={(e) => setEmail(e.target.value)}
       />
       <label>Password</label>
       <div>
@@ -52,7 +49,6 @@ const LoginForm = () => {
           type={showPassword ? 'text' : 'password'}
           placeholder="Password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
         />
         <button
           type="button"
