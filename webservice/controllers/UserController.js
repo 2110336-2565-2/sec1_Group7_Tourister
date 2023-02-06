@@ -1,4 +1,5 @@
 const express = require('express')
+const ApiErrorResponse = require('../exception/ApiErrorResponse')
 const User = require("../models/User")
 const { tryCatchMongooseService } = require('../utils/utils')
 
@@ -51,6 +52,9 @@ const UserController = {
     async createUser(req, res, next) {
         const result = await tryCatchMongooseService(async () => {
             const payload = req.body
+            if(!payload.email) throw new ApiErrorResponse("please specify email", 400)
+            const checkDupeUser = await User.findOne({ email: payload.email })
+            if(user) throw new ApiErrorResponse("email already in use", 406)
             const user = new User(payload);
             await user.save()
             return {
