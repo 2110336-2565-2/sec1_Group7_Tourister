@@ -5,7 +5,7 @@ import Card from "./card";
 import data from "./data";
 import Navbar from "./navbar";
 
-export default function Cards() {
+export default function requestPage() {
   const cards = data.map((item) => {
     return <Card key={item.id} item={item} />;
   });
