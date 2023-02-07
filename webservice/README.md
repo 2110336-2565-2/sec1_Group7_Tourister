@@ -12,7 +12,7 @@ yarn install
 ```
 
 2. create your own environment by creating .env file with content like in .env.template
-   - (which .env.template as of now is empty, so nothing to worry)
+![Alt text](./readme/envCap.png?raw=true "")
 
 3. start the server in development mode by running the following command
 ```
