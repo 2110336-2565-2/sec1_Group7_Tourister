@@ -14,6 +14,17 @@ export type FormData = {
 
 type accountType = "tourist" | "guide"
 
+export const defaultValues = {
+  accountType: "tourist" as accountType,
+  name: "",
+  surname: "",
+  citizenId: "",
+  phoneNumber: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+}
+
 export const validationSchema = yup.object().shape({
   accountType: yup
     .string()
