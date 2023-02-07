@@ -41,7 +41,7 @@ const errorHandler = (err, req, res, next) => {
 app.use(errorHandler)
 
 
-const PORT = process.env.PORT || 2000;
+const PORT = process.env.PORT || 255;
 app.listen(PORT, () => 
     {
         console.log(`Server is running on PORT ${PORT}`);
@@ -49,10 +49,10 @@ app.listen(PORT, () =>
 )
 
 //connect mongodb atlas
-const mongo_uri = dbConfig.MONGO_URI;
+const mongo_uri = dbConfig.MONGODB_URI;
 mongoose.Promise = global.Promise;
 mongoose.connect(mongo_uri, { useNewUrlParser : true}, () => {
-     console.log("database connection established!")
+     console.log("database connection established!\nuri: ", mongo_uri)
     }, (e) => {
         console.log("database connection error: ", e)
     });

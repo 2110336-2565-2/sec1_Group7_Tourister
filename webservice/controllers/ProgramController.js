@@ -1,24 +1,24 @@
 const express = require('express')
 const ApiErrorResponse = require('../exception/ApiErrorResponse')
-const User = require("../models/User")
+const Program = require("../models/Program")
 const { tryCatchMongooseService } = require('../utils/utils')
 const bcrypt = require('bcrypt')
 
-const UserController = {
+const ProgramController = {
     /**
-     * getUserById
+     * getProgramById
      * @param {import('express').Request} req
      * @param {import('express').Response} res
      * @param {import('express').NextFunction} next
      */
-    async getUserById(req, res, next) {
+    async getProgramById(req, res, next) {
         const result = await tryCatchMongooseService( async () => {
-            const userId = req.params.id
-            const user = await User.findById(userId)
+            const programId = req.params.id
+            const program = await Program.findById(programId)
 
             return {
                 code: 200,
-                data: user,
+                data: program,
                 message: "",
             }
         })
@@ -26,18 +26,18 @@ const UserController = {
     },
 
     /**
-     * getAllUsers
+     * getAllPrograms
      * @param {import('express').Request} req
      * @param {import('express').Response} res
      * @param {import('express').NextFunction} next
      */
-    async getAllUsers(req, res, next) {
+    async getAllPrograms(req, res, next) {
         const result = await tryCatchMongooseService(async () => {
-            const users = await User.find({})
+            const programs = await Program.find({})
 
             return {
                 code: 200,
-                data: users,
+                data: programs,
                 message: "",
             }
         })
@@ -45,69 +45,65 @@ const UserController = {
     },
 
     /**
-     * createUser
+     * createProgram
      * @param {import('express').Request} req
      * @param {import('express').Response} res
      * @param {import('express').NextFunction} next
      */
-    async createUser(req, res, next) {
+    async createProgram(req, res, next) {
         const result = await tryCatchMongooseService(async () => {
             const payload = req.body
-            if(!payload.email || !payload.password) throw new ApiErrorResponse("please specify email and password", 400)
-            const checkDupeUser = await User.findOne({ email: payload.email })
-            if(checkDupeUser) throw new ApiErrorResponse("email already in use", 406)
-            payload.password = bcrypt.hashSync(payload.password, 10)
-            const user = new User(payload);
-            await user.save()
+            const program = new Program(payload);
+            await program.save()
             return {
                 code: 201,
-                data: user, 
-                message: "user created"
+                data: program, 
+                message: "program created"
             }
         })
         res.json(result)
     },
 
     /**
-     * updateUserById
+     * updateProgramById
      * @param {import('express').Request} req
      * @param {import('express').Response} res
      * @param {import('express').NextFunction} next
      */
-    async updateUserById(req, res, next) {
+    async updateProgramById(req, res, next) {
         const result = await tryCatchMongooseService(async () => {
-            const userId = req.params.id
+            const programId = req.params.id
             const payload = req.body
-            await User.findByIdAndUpdate(userId, { $set: payload })
-            const updatedUser = await User.findById(userId)
+            await Program.findByIdAndUpdate(programId, { $set: payload })
+            const updatedProgram = await Program.findById(programId)
             return {
                 code: 204,
-                data: updatedUser,
-                message: "user updated"
+                data: updatedProgram,
+                message: "program updated"
             }
         }) 
         res.json(result)
     },
 
     /**
-     * deleteUserById
+     * deleteProgramById
      * @param {import('express').Request} req
      * @param {import('express').Response} res
      * @param {import('express').NextFunction} next
      */
-    async deleteUserById(req, res, next) {
+    async deleteProgramById(req, res, next) {
         const result = await tryCatchMongooseService (async () => {
-            const userId = req.params.id
-            const user = await User.findByIdAndDelete(userId)
+            const programId = req.params.id
+            const program = await Program.findByIdAndDelete(programId)
 
             return {
                 code: 200,
-                data: user,
-                message: "user deleted",
+                data: program,
+                message: "program deleted",
             }
         })
         res.json(result)
     },
 }
 
-module.exports = UserController
+module.exports = ProgramController

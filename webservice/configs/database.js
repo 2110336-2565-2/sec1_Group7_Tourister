@@ -1,6 +1,8 @@
+const dotenv = require('dotenv')
+dotenv.config()
 
 const dbConfig = {
-    MONGO_URI: "mongodb+srv://root:tourist7@tourister.zr7ni4z.mongodb.net/test",
+    MONGODB_URI: process.env.MONGODB_URI
 }
 
 module.exports = dbConfig

@@ -2,129 +2,158 @@
 
 import { useState, MouseEvent } from "react";
 import Link from 'next/link';
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup"
+import * as yup from "yup";
+import Attraction from "./attraction";
+var ReactDOM = require('react-dom');
 
-type AccountType = 'tourist' | 'guide';
+type FormData = {
+  // accountType: accountType;
+  // name: string;
+  // start: Date;
+  // startTime: string;
+  // end: Date;
+  // endTime: string;
+  price: string;
+  // groupSize: string;
+  // language: string;
+  attractionsList: any[];
+  // nameOfStartLocation: string;
+  // informationOfStartLocation: string;
+  // nameOfEndLocation: string;
+  // informationOfEndLocation: string;
+  // information: string;
+}
+// type accountType = 'tourist' | 'guide';
+const validationSchema = yup.object().shape({
+  // name: yup.string().required("Please enter your trip name"),
+  // start: yup.date().required('Please enter your start date'),
+  // startTime: yup.string().required('Please enter your start time'),
+  // end: yup.date().required('Please enter your end date'),
+  // endTime: yup.string().required('Please enter your end time'),
+  price: yup.string().required('Please enter your price')
+  .matches(/^[0-9]+$/, "Price must be only digits"),
+  // groupSize: yup.string().required('Please enter your group size')
+  // .matches(/^[0-9]+$/, "Group size must be only digits"),
+  // language: yup.string().required('Please enter your trip language'),
+  // information: yup.string(),
+  // nameOfStartLocation: yup.string().required('Please enter your trip start location'),
+  // informationOfStartLocation: yup.string(),
+  // nameOfEndLocation: yup.string().required('Please enter your trip end location'),
+  // informationOfEndLocation: yup.string()
+});
 
 const createTrip = () => {
-  const [name, setName] = useState('');
-  const [start, setStart] = useState('');
-  const [startTime, setStartTime] = useState('');
-  const [end, setEnd] = useState('');
-  const [endTime, setEndTime] = useState('');
-  const [price, setPrice] = useState('');
-  const [groupSize, setGroupSize] = useState('');
-  const [language, setLanguage] = useState('');
-  const [information, setInformation] = useState('');
-  const [nameOfStartLocation, setnameOfStartLocation] = useState('');
-  const [informationOfStartLocation, setInformationOfStartLocation] = useState('');
-  const [nameOfEndLocation, setNameOfEndLocation] = useState('');
-  const [informationOfEndLocation, setInformationOfEndLocation] = useState('');
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log({
-      'Name': name,
-      'Start': start,
-      'End': end,
-      'Price': price,
-      'Group Size': groupSize,
-      'Language': language,
-      'Start Location Name': nameOfStartLocation,
-      'Start Location Information': informationOfStartLocation,
-      'End Location Name': nameOfEndLocation,
-      'End Location Information': informationOfEndLocation,
-      'Additional Information': information,})
-  };
+  const [locationNumber, setLocationNumber] = useState(0);
+
+  const onSubmit = (data : FormData) => {
+    console.log(data);
+  }
+  const {
+    register,
+    watch,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<FormData>({
+    resolver: yupResolver(validationSchema),
+  });
+
 
   return (
-    <form style={{display:'flex', alignItems: 'center',flexDirection:'column'}}onSubmit={handleSubmit}>
+    <form style={{display:'flex', alignItems: 'center',flexDirection:'column'}}onSubmit={handleSubmit(onSubmit)}>
       {/* <Link href="../register" passHref><button type="button" onClick={handleBackButton}>Back</button></Link> */}
-      <Link href="./manage_account" passHref><button type="button">Back</button></Link>
-      <label>Profile</label>
-      <label>Trip Name</label>
-      <input
-        type="text"
-        placeholder="Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-      <label>Duration</label>
-      <label>Start</label>
-      <div>
-      <input
-        type="Date"
-        value={start}
-        onChange={(e) => setStart(e.target.value)}
-      />
-      <input
-        type="Time"
-        value={startTime}
-        onChange={(e) => setStartTime(e.target.value)}
-      />
-      </div>
-      <label>End</label>
-      <div>
-      <input
-        type="Date"
-        value={end}
-        onChange={(e) => setEnd(e.target.value)}
-      />
-      <input
-        type="Time"
-        value={endTime}
-        onChange={(e) => setEndTime(e.target.value)}
-      />
-      </div>
-      <label>Price:Baht</label>
-      <input
-        type="guideLicenseID"
-        placeholder="Price in Baht Unit"
-        value={price}
-        onChange={(e) => setPrice(e.target.value)}
-      />
-      <label>Group Size</label>
-      <input
-        type="text"
-        placeholder="Number of participant(s)"
-        value={groupSize}
-        onChange={(e) => setGroupSize(e.target.value)}
-      />
-      <label>Language</label>
-      <input
-        type="text"
-        placeholder="Thai/English/Spanish"
-        value={language}
-        onChange={(e) => setLanguage(e.target.value)}
-      />
-      <div>
-        <input
-          type="Time"
-          value={startTime}
-          readOnly = {true}
-          onChange={(e) => setStartTime(e.target.value)}
-        />
-        <label>Departure</label>
-      </div>
-      <div>
-        <label>Location :</label>
+        {/* <Link href="./manage_account" passHref><button type="button">Back</button></Link>
+        <label>Profile</label>
+        <label>Trip Name</label>
         <input
           type="text"
-          placeholder="Name of Location"
-          value={nameOfStartLocation}
-          onChange={(e) => setnameOfStartLocation(e.target.value)}
+          placeholder="Name"
+          {...register("name")}
         />
+        {errors.name && <p className="errorMsg">{errors.name.message}</p>} */}
+        {/* <label>Duration</label>
+        <label>Start</label>
+        <div>
         <input
-          type="text"
-          placeholder="information"
-          value={informationOfStartLocation}
-          onChange={(e) => setInformationOfStartLocation(e.target.value)}
+          type="Date"
+          {...register("start")}
         />
-      </div>
-      <div>
+        {errors.start && <p className="errorMsg">{errors.start.message}</p>}
         <input
           type="Time"
-          value={endTime}
+          {...register("startTime")}
+        />
+        {errors.startTime && <p className="errorMsg">{errors.startTime.message}</p>}
+        </div>
+        <label>End</label>
+        <div>
+        <input
+          type="Date"
+          {...register("end")}
+        />
+        {errors.end && <p className="errorMsg">{errors.end.message}</p>}
+        <input
+          type="Time"
+          {...register("endTime")}
+        />
+        {errors.endTime && <p className="errorMsg">{errors.endTime.message}</p>}
+        </div> */}
+        <label>Price:Baht</label>
+        <input
+          type="guideLicenseID"
+          placeholder="Price in Baht Unit"
+          {...register("price")}
+        />
+        {errors.price && <p className="errorMsg">{errors.price.message}</p>}
+        {/* <label>Group Size</label>
+        <input
+          type="text"
+          placeholder="Number of participant(s)"
+          {...register("groupSize")}
+        />
+        {errors.groupSize && <p className="errorMsg">{errors.groupSize.message}</p>}
+        <label>Language</label>
+        <input
+          type="text"
+          placeholder="Thai/English/Spanish"
+          {...register("language")}
+        />
+        {errors.language && <p className="errorMsg">{errors.language.message}</p>}
+        <div>
+          <input
+            type="Time"
+            readOnly = {true}
+            value = {watch('startTime')}
+          />
+          <label>Departure</label>
+        </div>
+        <div>
+          <label>Location :</label>
+          <input
+            type="text"
+            placeholder="Name of Location"
+            {...register("nameOfStartLocation")}
+          />
+          {errors.nameOfStartLocation && <p className="errorMsg">{errors.nameOfStartLocation.message}</p>}
+          <input
+            type="text"
+            placeholder="information"
+            {...register("informationOfStartLocation")}
+          />
+          {errors.informationOfStartLocation && <p className="errorMsg">{errors.informationOfStartLocation.message}</p>}
+        </div> */}
+      <div id="attractionList"></div>
+      { [...Array(locationNumber) ].map((_, i) => <Attraction key={i}/>) }
+      <div>
+        <button type="button" onClick= {() => setLocationNumber(locationNumber+1)}>Add</button>
+        <button type="button" onClick= {() => locationNumber>0?setLocationNumber(locationNumber-1):setLocationNumber(locationNumber)}>Delete</button>
+      </div>
+      {/* <div>
+        <input
+          type="Time"
           readOnly = {true}
-          onChange={(e) => setEndTime(e.target.value)}
+          value = {watch('endTime')}
         />
         <label>Return</label>
       </div>
@@ -134,23 +163,23 @@ const createTrip = () => {
         <input
           type="text"
           placeholder="Name of Location"
-          value={nameOfEndLocation}
-          onChange={(e) => setNameOfEndLocation(e.target.value)}
+          {...register("nameOfEndLocation")}
         />
+        {errors.nameOfEndLocation && <p className="errorMsg">{errors.nameOfEndLocation.message}</p>}
         <input
           type="text"
           placeholder="information"
-          value={informationOfEndLocation}
-          onChange={(e) => setInformationOfEndLocation(e.target.value)}
+          {...register("informationOfEndLocation")}
         />
+        {errors.informationOfEndLocation && <p className="errorMsg">{errors.informationOfEndLocation.message}</p>}
       </div>
       <label>Additional Information</label>
       <input
         type="text"
         placeholder="More Information..."
-        value={information}
-        onChange={(e) => setInformation(e.target.value)}
+        {...register("information")}
       />
+      {errors.information && <p className="errorMsg">{errors.information.message}</p>} */}
       <button type="submit">Publish</button>
     </form>
   );
