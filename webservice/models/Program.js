@@ -4,4 +4,4 @@ const ProgramSchema = new mongoose.Schema({
 
 })
 
-modeule.exporst = mongoose.model('Program', ProgramSchema);
+module.exporst = mongoose.model('Program', ProgramSchema);
