@@ -25,6 +25,7 @@
     "react-datetime-picker": "^4.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.43.0",
+    "react-router-dom": "^6.8.1",
     "typescript": "4.9.5",
     "yup": "^0.32.11"
   }

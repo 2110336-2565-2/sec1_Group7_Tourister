@@ -1,10 +1,13 @@
+// "use client";
+
 import React from "react";
+import { Button } from "@mui/material";
 
 export default function Card(props: any) {
   return (
     <div
       className="card"
-      style={{ display: "flex", alignItems: "center", flexDirection: "column" }}
+      style={{ display: "flex", alignItems: "center", flexDirection: "column", margin: "2%"}}
     >
       <img src={`../images/${props.item.profileImg}`} className="card--image" />
       <div className="card--fullname">
@@ -22,8 +25,19 @@ export default function Card(props: any) {
       <div className="card--tripname">
         <span>{props.item.trip_name}</span>
       </div>
-      <div className="card--tripname">
+      <div className="card--date">
         <span>{props.item.date}</span>
+      </div>
+      <div className="card--numtourists">
+        <h4>{props.item.numTourists}/{props.item.numMax}</h4>
+      </div>
+      <div>
+        <Button variant="outlined" color="error">
+          Declined
+        </Button>
+        <Button variant="contained" color="success">
+          Accept
+        </Button>
       </div>
     </div>
   );

@@ -61,7 +61,7 @@ const LoginForm = () => {
         handleMouseDownPassword={handleMouseDownPassword}
       />
       <Button type="submit" variant="contained">
-        Login{" "}
+        Login
       </Button>
     </form>
   );
