@@ -5,47 +5,55 @@ import Link from 'next/link';
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup";
+import { nanoid } from "nanoid";
 import Attraction from "./attraction";
 var ReactDOM = require('react-dom');
 
 type FormData = {
-  // accountType: accountType;
-  // name: string;
-  // start: Date;
-  // startTime: string;
-  // end: Date;
-  // endTime: string;
+  accountType: accountType;
+  name: string;
+  start: Date;
+  startTime: string;
+  end: Date;
+  endTime: string;
   price: string;
-  // groupSize: string;
-  // language: string;
+  groupSize: string;
+  language: string;
   attractionsList: any[];
-  // nameOfStartLocation: string;
-  // informationOfStartLocation: string;
-  // nameOfEndLocation: string;
-  // informationOfEndLocation: string;
-  // information: string;
+  nameOfStartLocation: string;
+  informationOfStartLocation: string;
+  nameOfEndLocation: string;
+  informationOfEndLocation: string;
+  information: string;
 }
-// type accountType = 'tourist' | 'guide';
+type accountType = 'tourist' | 'guide';
 const validationSchema = yup.object().shape({
-  // name: yup.string().required("Please enter your trip name"),
-  // start: yup.date().required('Please enter your start date'),
-  // startTime: yup.string().required('Please enter your start time'),
-  // end: yup.date().required('Please enter your end date'),
-  // endTime: yup.string().required('Please enter your end time'),
+  name: yup.string().required("Please enter your trip name"),
+  start: yup.date().required('Please enter your start date'),
+  startTime: yup.string().required('Please enter your start time'),
+  end: yup.date().required('Please enter your end date'),
+  endTime: yup.string().required('Please enter your end time'),
   price: yup.string().required('Please enter your price')
   .matches(/^[0-9]+$/, "Price must be only digits"),
-  // groupSize: yup.string().required('Please enter your group size')
-  // .matches(/^[0-9]+$/, "Group size must be only digits"),
-  // language: yup.string().required('Please enter your trip language'),
-  // information: yup.string(),
-  // nameOfStartLocation: yup.string().required('Please enter your trip start location'),
-  // informationOfStartLocation: yup.string(),
-  // nameOfEndLocation: yup.string().required('Please enter your trip end location'),
-  // informationOfEndLocation: yup.string()
+  groupSize: yup.string().required('Please enter your group size')
+  .matches(/^[0-9]+$/, "Group size must be only digits"),
+  language: yup.string().required('Please enter your trip language'),
+  information: yup.string(),
+  nameOfStartLocation: yup.string().required('Please enter your trip start location'),
+  informationOfStartLocation: yup.string(),
+  nameOfEndLocation: yup.string().required('Please enter your trip end location'),
+  informationOfEndLocation: yup.string()
 });
 
 const createTrip = () => {
   const [locationNumber, setLocationNumber] = useState(0);
+  const [attractions,setAttractions] = useState([{
+    "id": "01",
+    "name": "",
+    "option": "Addmission not needed",
+    "editing": true,
+    "error": false
+  }]);
 
   const onSubmit = (data : FormData) => {
     console.log(data);
@@ -59,11 +67,28 @@ const createTrip = () => {
     resolver: yupResolver(validationSchema),
   });
 
+  const handleAdd = ()=>{
+    const newAttraction = {
+      id: nanoid(),
+      name: "",
+      option: "Admission not needed",
+      editing: true,
+      error: false
+    }
+    const newAttractions = [...attractions, newAttraction]
+    setAttractions(newAttractions)
+  }
+  const handleDelete = (id:string)=>{
+    const newAttractions = [...attractions]
+    const index = attractions.findIndex((attraction)=>attraction.id===id)
+    newAttractions.splice(index,1)
+    setAttractions(newAttractions)
+  }
 
   return (
     <form style={{display:'flex', alignItems: 'center',flexDirection:'column'}}onSubmit={handleSubmit(onSubmit)}>
       {/* <Link href="../register" passHref><button type="button" onClick={handleBackButton}>Back</button></Link> */}
-        {/* <Link href="./manage_account" passHref><button type="button">Back</button></Link>
+        <Link href="./manage_account" passHref><button type="button">Back</button></Link>
         <label>Profile</label>
         <label>Trip Name</label>
         <input
@@ -71,8 +96,8 @@ const createTrip = () => {
           placeholder="Name"
           {...register("name")}
         />
-        {errors.name && <p className="errorMsg">{errors.name.message}</p>} */}
-        {/* <label>Duration</label>
+        {errors.name && <p className="errorMsg">{errors.name.message}</p>}
+        <label>Duration</label>
         <label>Start</label>
         <div>
         <input
@@ -98,7 +123,7 @@ const createTrip = () => {
           {...register("endTime")}
         />
         {errors.endTime && <p className="errorMsg">{errors.endTime.message}</p>}
-        </div> */}
+        </div>
         <label>Price:Baht</label>
         <input
           type="guideLicenseID"
@@ -106,7 +131,7 @@ const createTrip = () => {
           {...register("price")}
         />
         {errors.price && <p className="errorMsg">{errors.price.message}</p>}
-        {/* <label>Group Size</label>
+        <label>Group Size</label>
         <input
           type="text"
           placeholder="Number of participant(s)"
@@ -142,14 +167,10 @@ const createTrip = () => {
             {...register("informationOfStartLocation")}
           />
           {errors.informationOfStartLocation && <p className="errorMsg">{errors.informationOfStartLocation.message}</p>}
-        </div> */}
-      <div id="attractionList"></div>
-      { [...Array(locationNumber) ].map((_, i) => <Attraction key={i}/>) }
+        </div>
+      {attractions.map((att)=>(<Attraction id={att.id} handleDelete={handleDelete}/>))}
+        <button type="button" onClick= {() => handleAdd()}>Add</button>
       <div>
-        <button type="button" onClick= {() => setLocationNumber(locationNumber+1)}>Add</button>
-        <button type="button" onClick= {() => locationNumber>0?setLocationNumber(locationNumber-1):setLocationNumber(locationNumber)}>Delete</button>
-      </div>
-      {/* <div>
         <input
           type="Time"
           readOnly = {true}
@@ -179,7 +200,7 @@ const createTrip = () => {
         placeholder="More Information..."
         {...register("information")}
       />
-      {errors.information && <p className="errorMsg">{errors.information.message}</p>} */}
+      {errors.information && <p className="errorMsg">{errors.information.message}</p>}
       <button type="submit">Publish</button>
     </form>
   );
