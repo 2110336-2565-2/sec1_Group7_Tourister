@@ -22,33 +22,39 @@ const ProgramSchema = new mongoose.Schema({
         type: Date,
         required: [true, 'Please add end date']
     },
-    startTime: {
-        type: String,
-        required: [true, 'Please add start time']
-    },
-    endTime: {
-        type: String,
-        required: [true, 'Please add end time']
-    },
+    // startTime: {
+    //     type: String,
+    //     required: [true, 'Please add start time']
+    // },
+    // endTime: {
+    //     type: String,
+    //     required: [true, 'Please add end time']
+    // },
     max_participant: {
         type: Number,
         required: [true, 'Please add max participant']
     },
     num_participant: {
         type: Number,
-        required: true,
         default: 0
     },
     meetLocation: {
         type: String,
+    },
+    descriptionOfMeetLocation: {
+        type: String
     },
     guide: {
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'User',
         required: [true, 'Please add a guide']
     },
-    location: {
-        type: [String]
+    attractions: {
+        type: [new mongoose.Schema({ 
+            place: String,
+            place_description: String,
+            place_imageUrl: String,
+        }, {_id: false})]
     },
     imageUrl: {
         type: String
@@ -66,14 +72,18 @@ const ProgramSchema = new mongoose.Schema({
       type: [mongoose.Schema.Types.ObjectId],
       ref: "User",
     },
-    accept_participan: {
+    accepted_participant: {
       type: [mongoose.Schema.Types.ObjectId],
       ref: "User",
     },
-    decline_participan: {
+    declined_participant: {
       type: [mongoose.Schema.Types.ObjectId],
       ref: "User",
     },
+    published : {
+        type : Boolean,
+        default : true
+    }
 })
 
 module.exports = mongoose.model("Program", ProgramSchema);
