@@ -44,7 +44,7 @@ const UserSchema = new mongoose.Schema({
   },
   licenseId: {
     type: String,
-    unique: true,
+    //unique: true,
   },
 });
 
