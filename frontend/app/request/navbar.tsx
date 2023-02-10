@@ -1,33 +1,21 @@
 "use client";
 
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import Link from "next/link";
+import { Button } from "@mui/material";
 
 export default function Navbar() {
-  const navigate = useNavigate();
-
-  function handleClickPage(e: any) {
-    navigate("/pending");
-  }
-  function handleClickAccpeted(e: any) {
-    navigate("/accepted");
-  }
-  function handleClickDeclined(e: any) {
-    navigate("/declined");
-  }
   return (
     <nav>
-      <div className="nav">
-        <button className="nav__pending-page" onClick={handleClickPage}>
-          Pending
-        </button>
-        <button className="nav__accepted-page" onClick={handleClickAccpeted}>
-          Accepted
-        </button>
-        <button className="nav__declined-page" onClick={handleClickDeclined}>
-          Declined
-        </button>
-      </div>
+      <Link href="./request/pending" passHref>
+        <Button variant="text">Pending</Button>
+      </Link>
+      <Link href="./request/accepted" passHref>
+        <Button variant="text">Accepted</Button>
+      </Link>
+      <Link href="./request/declined" passHref>
+        <Button variant="text">Declined</Button>
+      </Link>
     </nav>
   );
 }
