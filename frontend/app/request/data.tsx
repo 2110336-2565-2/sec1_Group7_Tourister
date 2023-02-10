@@ -1,6 +1,7 @@
 export default [
   {
     id: 1,
+    status: "pending",
     name: "Akkharawat",
     surname: "Bu",
     contact: "akkharawatbct@gmail.com",
@@ -9,10 +10,11 @@ export default [
     trip_name: "To the moon",
     datetime: "14/02/2023, 13.00",
     numTourists: "99",
-    numMax: "100"
+    numMax: "100",
   },
   {
     id: 2,
+    status: "accepted",
     name: "aaaa",
     surname: "bbbbbbbb",
     contact: "akkharawatbct@gmail.com",
@@ -21,6 +23,19 @@ export default [
     trip_name: "hahaha",
     datetime: "15/02/2023, 13.00",
     numTourists: "5",
-    numMax: "20"
-  }
+    numMax: "20",
+  },
+  {
+    id: 3,
+    status: "declined",
+    name: "aaaa",
+    surname: "bbbbbbbb",
+    contact: "akkharawatbct@gmail.com",
+    profileImg: "katie-zaferes.png",
+    request: "WTFfffff",
+    trip_name: "hahaha",
+    datetime: "15/02/2023, 13.00",
+    numTourists: "5",
+    numMax: "20",
+  },
 ];

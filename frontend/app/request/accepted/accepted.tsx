@@ -3,7 +3,6 @@
 import React from "react";
 import { useState } from "react";
 
-import Cards from "./card";
 import data from "./data";
 import Navbar from "./navbar";
 
