@@ -1,21 +1,6 @@
 "use client";
 
 import { useState, MouseEvent, Fragment } from "react";
-import Link from 'next/link';
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup"
-import * as yup from "yup";
-import PropTypes from 'prop-types'
-
-type FormData = {
-  // name: string;
-  // option: string;
-  // editing: boolean;
-}
-// type accountType = 'tourist' | 'guide';
-const validationSchema = yup.object().shape({
-  name: yup.string(),
-});
 
 const attraction = ({id,handleDelete}:{id:string,handleDelete:Function}) => {
   const [name,setName] = useState("");
@@ -23,14 +8,6 @@ const attraction = ({id,handleDelete}:{id:string,handleDelete:Function}) => {
   const [option,setOption] = useState("Admission not needed")
   const [error,setError] = useState(false);
 
-  const {
-    register,
-    watch,
-    formState: { errors }
-  } = useForm<FormData>({
-    resolver: yupResolver(validationSchema),
-  });
-  
   return (
     <div>
       {/* <a>{id}</a> */}

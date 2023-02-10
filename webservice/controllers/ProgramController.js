@@ -55,6 +55,7 @@ const ProgramController = {
             const payload = req.body
             const program = new Program(payload);
             await program.save()
+            console.log(program)
             return {
                 code: 201,
                 data: program, 
