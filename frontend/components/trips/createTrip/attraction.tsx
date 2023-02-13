@@ -1,12 +1,14 @@
 "use client";
 
 import { useState, MouseEvent, Fragment } from "react";
+import { FormInputText } from "@/components/formInput/FormInputText";
 
 const attraction = ({id,handleDelete}:{id:string,handleDelete:Function}) => {
   const [name,setName] = useState("");
   const [editing, setEditing] = useState(true);
   const [option,setOption] = useState("Admission not needed")
   const [error,setError] = useState(false);
+  const [file,setFile] = useState<File | string>();
 
   return (
     <div>
@@ -21,6 +23,7 @@ const attraction = ({id,handleDelete}:{id:string,handleDelete:Function}) => {
             {option==="Admission included" ? <Fragment></Fragment> : <option value="Admission included">Admission included</option>}
             {option==="Admission not included" ? <Fragment></Fragment> : <option value="Admission not included">Admission not included</option>}
           </select>
+          <input type="file" onChange={(e)=>{if(!e.target.files)return;setFile(e.target.files[0])}}></input>
           <button type="button" onClick={()=>{handleDelete(id)}}>delete</button>
           <button type="button" onClick={()=>{if(name==="") {(setError(true))} else {setEditing(false);setError(false)}}}>done</button>
           </Fragment>
