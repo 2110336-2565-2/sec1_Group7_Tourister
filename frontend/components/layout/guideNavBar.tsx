@@ -1,5 +1,3 @@
-"use client";
-
 import Link from 'next/link';
 import { css } from '@emotion/react';
 import BusinessCenterOutlinedIcon from '@mui/icons-material/BusinessCenterOutlined';
@@ -8,7 +6,7 @@ import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNone
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import { usePathname } from 'next/navigation';
 
-export default function BottomNavBarLayout({
+export default function GuideNavBar({
   children, // will be a page or nested layout
 }: {
   children: React.ReactNode,
@@ -68,7 +66,7 @@ export default function BottomNavBarLayout({
           </div>
         </Link>
         <Link href="./request" style={{ textDecoration: 'none'}}>
-            <div css={pathname==='/register' ?navLinkActive:navLink}>
+            <div css={navLink}>
               <CalendarMonthOutlinedIcon />
               Request
             </div>
@@ -86,7 +84,6 @@ export default function BottomNavBarLayout({
           </div>
         </Link>
       </nav>
-
       {children}
     </section>
   );
