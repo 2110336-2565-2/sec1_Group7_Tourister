@@ -53,6 +53,9 @@ const UserSchema = new mongoose.Schema({
       return this.isGuide;
     },
   },
+  imageURL: {
+    type: String,
+  },
 });
 
 module.exports = mongoose.model("User", UserSchema);
