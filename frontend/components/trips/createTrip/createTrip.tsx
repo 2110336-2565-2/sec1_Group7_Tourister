@@ -2,16 +2,24 @@
 
 import { useState, MouseEvent } from "react";
 import Link from 'next/link';
-import { useForm } from "react-hook-form";
+import { useForm,useFieldArray } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup";
 import { nanoid } from "nanoid";
 import Attraction from "./attraction";
 import axios from 'axios';
+import { FormInputText } from "@/components/formInput/FormInputText";
 
 var ReactDOM = require('react-dom');
 const API_URL = 'http://localhost:2000/api/program'
 
+type att = [{
+  "id": string,
+  "name": string,
+  "option": string,
+  "editing": boolean,
+  "error": boolean
+}]
 type FormData = {
   programId:string
   name: string;
@@ -27,8 +35,20 @@ type FormData = {
   endLocation: string;
   descriptionOfEndLocation: string;
   description: string;
+  // attractions: att
 }
 // type accountType = 'tourist' | 'guide';
+const defaultValues = {
+  programId: nanoid(),
+  // attractions: [{
+  //   "id": nanoid(),
+  //   "name": "",
+  //   "option": "Addmission not needed",
+  //   "editing": true,
+  //   "error": false
+  // }],
+}
+
 const validationSchema = yup.object().shape({
   name: yup.string().required("Please enter your trip name"),
   startDate: yup.date().required('Please enter your start date'),
@@ -70,10 +90,12 @@ const createTrip = () => {
     register,
     watch,
     setValue,
+    control,
     handleSubmit,
     formState: { errors }
   } = useForm<FormData>({
     resolver: yupResolver(validationSchema),
+    defaultValues: defaultValues
   });
 
   const handleAdd = ()=>{
@@ -99,118 +121,61 @@ const createTrip = () => {
         <Link href="/trips" passHref><button type="button">Back</button></Link>
         <label>Profile</label>
         <label>Trip Name</label>
-        <input
-          type="text"
-          placeholder="Name"
-          {...register("name")}
-        />
+        <FormInputText name="name" control={control} label="Name"/>
         {errors.name && <p className="errorMsg">{errors.name.message}</p>}
         <label>Duration</label>
         <label>Start</label>
         <div>
-        <input
-          type="Date"
-          {...register("startDate")}
-        />
-        {errors.startDate && <p className="errorMsg">{errors.startDate.message}</p>}
-        <input
-          type="Time"
-          {...register("startTime")}
-        />
-        {errors.startTime && <p className="errorMsg">{errors.startTime.message}</p>}
+          <input type="Date" {...register("startDate")}/>
+          {errors.startDate && <p className="errorMsg">{errors.startDate.message}</p>}
+          <input type="Time" {...register("startTime")}/>
+          {errors.startTime && <p className="errorMsg">{errors.startTime.message}</p>}
         </div>
         <label>End</label>
         <div>
-        <input
-          type="Date"
-          {...register("endDate")}
-        />
-        {errors.endDate && <p className="errorMsg">{errors.endDate.message}</p>}
-        <input
-          type="Time"
-          {...register("endTime")}
-        />
-        {errors.endTime && <p className="errorMsg">{errors.endTime.message}</p>}
+          <input type="Date" {...register("endDate")}/>
+          {errors.endDate && <p className="errorMsg">{errors.endDate.message}</p>}
+          <input type="Time" {...register("endTime")}/>
+          {errors.endTime && <p className="errorMsg">{errors.endTime.message}</p>}
         </div>
         <label>Price:Baht</label>
-        <input
-          type="guideLicenseID"
-          placeholder="Price in Baht Unit"
-          {...register("price")}
-        />
+        <FormInputText name="price" control={control} label="Price in Baht Unit"/>
         {errors.price && <p className="errorMsg">{errors.price.message}</p>}
         <label>Group Size</label>
-        <input
-          type="text"
-          placeholder="Number of participant(s)"
-          {...register("max_participant")}
-        />
+        <FormInputText name="max_participant" control={control} label="Number of participant(s)"/>
         {errors.max_participant && <p className="errorMsg">{errors.max_participant.message}</p>}
         <label>Language</label>
-        <input
-          type="text"
-          placeholder="Thai/English/Spanish"
-          {...register("language")}
-        />
+        <FormInputText name="language" control={control} label="Thai/English/Spanish"/>
         {errors.language && <p className="errorMsg">{errors.language.message}</p>}
         <div>
-          <input
-            type="Time"
-            readOnly = {true}
-            value = {watch('startTime')}
-          />
+          <input type="Time" readOnly = {true} value={watch('startTime')} />
           <label>Departure</label>
         </div>
         <div>
           <label>Location :</label>
-          <input
-            type="text"
-            placeholder="Name of Location"
-            {...register("meetLocation")}
-          />
+          <FormInputText name="meetLocation" control={control} label="Name of Location"/>
           {errors.meetLocation && <p className="errorMsg">{errors.meetLocation.message}</p>}
-          <input
-            type="text"
-            placeholder="information"
-            {...register("descriptionOfMeetLocation")}
-          />
+          <FormInputText name="descriptionOfMeetLocation" control={control} label="information"/>
           {errors.descriptionOfMeetLocation && <p className="errorMsg">{errors.descriptionOfMeetLocation.message}</p>}
         </div>
-      {attractions.map((att)=>(<Attraction id={att.id} handleDelete={handleDelete}/>))}
-        <button type="button" onClick= {() => handleAdd()}>Add</button>
-      <div>
-        <input
-          type="Time"
-          readOnly = {true}
-          value = {watch('endTime')}
-        />
-        <label>Return</label>
-      </div>
-      
-      <div>
-        <label>Location :</label>
-        <input
-          type="text"
-          placeholder="Name of Location"
-          {...register("endLocation")}
-        />
-        {errors.endLocation && <p className="errorMsg">{errors.endLocation.message}</p>}
-        <input
-          type="text"
-          placeholder="information"
-          {...register("descriptionOfEndLocation")}
-        />
-        {errors.descriptionOfEndLocation && <p className="errorMsg">{errors.descriptionOfEndLocation.message}</p>}
-      </div>
-      <label>Additional Information</label>
-      <input
-        type="text"
-        placeholder="More Information..."
-        {...register("description")}
-      />
-      {errors.description && <p className="errorMsg">{errors.description.message}</p>}
-      <button type="submit">Publish</button>
-    </form>
+        {attractions.map((att)=>(<Attraction id={att.id} handleDelete={handleDelete}/>))}
+          <button type="button" onClick= {() => handleAdd()}>Add</button>
+        <div>
+          <input type="Time" readOnly = {true} value={watch('endTime')}/>
+          <label>Return</label>
+        </div>
+        <div>
+          <label>Location :</label>
+          <FormInputText name="endLocation" control={control} label="Name of Location"/>
+          {errors.endLocation && <p className="errorMsg">{errors.endLocation.message}</p>}
+          <FormInputText name="descriptionOfEndLocation" control={control} label="information"/>
+          {errors.descriptionOfEndLocation && <p className="errorMsg">{errors.descriptionOfEndLocation.message}</p>}
+        </div>
+        <label>Additional Information</label>
+        <FormInputText name="description" control={control} label="More Information..."/>
+        {errors.description && <p className="errorMsg">{errors.description.message}</p>}
+        <button type="submit">Publish</button>
+      </form>
   );
 };
 
