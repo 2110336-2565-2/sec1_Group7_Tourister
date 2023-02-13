@@ -2,20 +2,24 @@
 
 import React from "react";
 import { useState } from "react";
+import Accepted from "./accepted/page";
 
 import Link from "next/link";
 import { Button, AppBar } from "@mui/material";
 
-export default function Navbar() {
-  const [cardstatus, setcardStatus] = useState("Pending");
+export default function Navbar({ value, setValue }: any) {
+  // const [cardstatus, setcardStatus] = useState("Pending");
 
   const handleCardStatusChange = (newStatus: any) => {
-    setcardStatus(newStatus);
+    setValue(newStatus);
   };
 
   return (
-    <nav style={{
-      display: "flex"}}>
+    <nav
+      style={{
+        display: "flex",
+      }}
+    >
       <div
         style={{
           alignItems: "center",
