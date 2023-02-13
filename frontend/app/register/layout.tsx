@@ -6,12 +6,15 @@ import BusinessCenterOutlinedIcon from '@mui/icons-material/BusinessCenterOutlin
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
+import { usePathname } from 'next/navigation';
 
 export default function BottomNavBarLayout({
   children, // will be a page or nested layout
 }: {
   children: React.ReactNode,
 }) {
+  const pathname = usePathname();
+  console.log(pathname);
 
   const nav = css({
     display: 'flex',
@@ -22,6 +25,14 @@ export default function BottomNavBarLayout({
     overflowX: "auto",
     justifyContent: "space-around",
     color: "gray",
+    fontFamily: "Avenir, Sans-serif",
+    fontWeight: "bold",
+    fontSize: "0.85rem",
+    left: "0px",
+    paddingBottom: "10px",
+    borderTop: "1px solid #202020",
+    BoxShadow: "0px, 1px, 1px, rgba(50, 50, 50, 0.75",
+    paddingTop: "10px"
   });
 
   const navLink = css({
@@ -35,6 +46,17 @@ export default function BottomNavBarLayout({
     color: 'gray',
   });
 
+  const navLinkActive = css({
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    flexGrow: 1,
+    minWidth: '50px',
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    color: '#4682B4',
+  });
+
   return (
     <section>
       {/* Include shared UI here e.g. a header or sidebar */}
@@ -46,7 +68,7 @@ export default function BottomNavBarLayout({
           </div>
         </Link>
         <Link href="./request" style={{ textDecoration: 'none'}}>
-            <div css={navLink}>
+            <div css={pathname==='/register' ?navLinkActive:navLink}>
               <CalendarMonthOutlinedIcon />
               Request
             </div>
