@@ -6,7 +6,8 @@ export interface FormInputProps {
     showPassword?: boolean;
     handleClickShowPassword?: () => void;
     handleMouseDownPassword?: (event: React.MouseEvent<HTMLButtonElement>) => void;
-    options?: option[]
+    options?: option[];
+    readonly?: boolean;
 }
 
 type option = {

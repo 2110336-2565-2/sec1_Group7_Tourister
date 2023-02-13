@@ -9,6 +9,8 @@ import { nanoid } from "nanoid";
 import Attraction from "./attraction";
 import axios from 'axios';
 import { FormInputText } from "@/components/formInput/FormInputText";
+import { FormInputDate} from "@/components/formInput/FormInputDate";
+import { FormInputTime} from "@/components/formInput/FormInputTime";
 
 var ReactDOM = require('react-dom');
 const API_URL = 'http://localhost:2000/api/program'
@@ -126,16 +128,16 @@ const createTrip = () => {
         <label>Duration</label>
         <label>Start</label>
         <div>
-          <input type="Date" {...register("startDate")}/>
+          <FormInputDate name="startDate" control={control} label=""/>
           {errors.startDate && <p className="errorMsg">{errors.startDate.message}</p>}
-          <input type="Time" {...register("startTime")}/>
+          <FormInputTime name="startTime" control={control} label="" readonly={false}/>
           {errors.startTime && <p className="errorMsg">{errors.startTime.message}</p>}
         </div>
         <label>End</label>
         <div>
-          <input type="Date" {...register("endDate")}/>
+          <FormInputDate name="endDate" control={control} label=""/>
           {errors.endDate && <p className="errorMsg">{errors.endDate.message}</p>}
-          <input type="Time" {...register("endTime")}/>
+          <FormInputTime name="endTime" control={control} label="" readonly={false}/>
           {errors.endTime && <p className="errorMsg">{errors.endTime.message}</p>}
         </div>
         <label>Price:Baht</label>
@@ -148,8 +150,8 @@ const createTrip = () => {
         <FormInputText name="language" control={control} label="Thai/English/Spanish"/>
         {errors.language && <p className="errorMsg">{errors.language.message}</p>}
         <div>
-          <input type="Time" readOnly = {true} value={watch('startTime')} />
-          <label>Departure</label>
+          <FormInputTime name="startTime" control={control} label="" readonly={true}/>
+          <label style={{padding:"20px 10px"}}>Departure</label>
         </div>
         <div>
           <label>Location :</label>
@@ -161,8 +163,8 @@ const createTrip = () => {
         {attractions.map((att)=>(<Attraction id={att.id} handleDelete={handleDelete}/>))}
           <button type="button" onClick= {() => handleAdd()}>Add</button>
         <div>
-          <input type="Time" readOnly = {true} value={watch('endTime')}/>
-          <label>Return</label>
+          <FormInputTime name="endTime" control={control} label="" readonly={true}/>
+          <label style={{padding:"20px 10px"}}>Return</label>
         </div>
         <div>
           <label>Location :</label>
