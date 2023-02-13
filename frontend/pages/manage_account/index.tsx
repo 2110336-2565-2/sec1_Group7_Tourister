@@ -1,5 +1,4 @@
-import React from 'react'
-import ManageAccount from './manageAccount';
+import ManageAccount from '@/components/manage_account/manageAccount';
 
 export default function Page() {
   return (

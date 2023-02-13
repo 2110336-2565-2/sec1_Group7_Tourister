@@ -1,7 +1,4 @@
-"use client";
-
-import React from 'react'
-import CreateTrip from './createTrip';
+import CreateTrip from "@/components/trips/createTrip/createTrip";
 
 export default function Page() {
   return (

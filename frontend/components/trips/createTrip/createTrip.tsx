@@ -96,7 +96,7 @@ const createTrip = () => {
   return (
     <form style={{display:'flex', alignItems: 'center',flexDirection:'column'}}onSubmit={handleSubmit(onSubmit)}>
       {/* <Link href="../register" passHref><button type="button" onClick={handleBackButton}>Back</button></Link> */}
-        <Link href="./manage_account" passHref><button type="button">Back</button></Link>
+        <Link href="/trips" passHref><button type="button">Back</button></Link>
         <label>Profile</label>
         <label>Trip Name</label>
         <input

@@ -1,11 +1,8 @@
-"use client";
-
-import React from "react";
 import { useState, useEffect } from "react";
 
-import Cards from "./card";
-import data from "./data";
-import Navbar from "./navbar";
+import Cards from "@/components/request/card";
+import data from "@/components/request/data";
+import Navbar from "@/components/request/navbar";
 import axios from "axios";
 
 const API_URL = "http://localhost:2000/api/program";

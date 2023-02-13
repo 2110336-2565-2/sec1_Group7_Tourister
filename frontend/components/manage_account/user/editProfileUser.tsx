@@ -12,7 +12,7 @@ type FormData = {
   surname: string;
   citizenId: string;
   phoneNumber: string;
-  guideLicenseId?: string;
+  // guideLicenseId?: string;
 }
 // type accountType = 'tourist' | 'guide';
 const validationSchema = yup.object().shape({
@@ -21,11 +21,11 @@ const validationSchema = yup.object().shape({
     .required("Please choose your account type"),
   name: yup.string().required("Please enter your name"),
   surname: yup.string().required("Please enter your surname"),
-  guideLicenseId: yup
-    .string()
-    // .matches(/^[0-9]+$/, "License Number must be only digits")
-    .test('number only', 'License Number must be only digits', val => yup.number().isValidSync(val) || val =='')
-    .test('len', 'License Number must have 7 numbers', val => val?.length===7 || val === ''),
+  // guideLicenseId: yup
+  //   .string()
+  //   // .matches(/^[0-9]+$/, "License Number must be only digits")
+  //   .test('number only', 'License Number must be only digits', val => yup.number().isValidSync(val) || val =='')
+    // .test('len', 'License Number must have 7 numbers', val => val?.length===7 || val === ''),
   phoneNumber: yup
     .string()
     .required("Please enter the phone number")
@@ -37,10 +37,10 @@ const validationSchema = yup.object().shape({
 const initName="Admin"
 const initSurname="Tester"
 const initCitizenID="1101111111111"
-const initLicenseID="9999999"
+// const initLicenseID="9999999"
 const initPhoneNumber="0999999999"
 
-const editProfileGuide = () => {
+const editProfileUser = () => {
   const onSubmit = (data : FormData) => {
     console.log(data);
   }
@@ -55,7 +55,7 @@ const editProfileGuide = () => {
   return (
     <form style={{display:'flex', alignItems: 'center',flexDirection:'column'}}onSubmit={handleSubmit(onSubmit)}>
       {/* <Link href="../register" passHref><button type="button" onClick={handleBackButton}>Back</button></Link> */}
-      <Link href="./manage_account" passHref><button type="button">Back</button></Link>
+      <Link href="/manage_account" passHref><button type="button">Back</button></Link>
       <label>Profile</label>
       <label>Name</label>
       <input
@@ -79,13 +79,13 @@ const editProfileGuide = () => {
         readOnly = {true}
       />
       {errors.citizenId && <p className="errorMsg">{errors.citizenId.message}</p>}
-      <label>Guide License ID</label>
+      {/* <label>Guide License ID</label>
       <input
         type="guideLicenseID"
         placeholder={initLicenseID}
         {...register("guideLicenseId")}
       />
-      {errors.guideLicenseId && <p className="errorMsg">{errors.guideLicenseId.message}</p>}
+      {errors.guideLicenseId && <p className="errorMsg">{errors.guideLicenseId.message}</p>} */}
       <label>Phone number</label>
       <input
         type="text"
@@ -98,4 +98,4 @@ const editProfileGuide = () => {
   );
 };
 
-export default editProfileGuide;
+export default editProfileUser;

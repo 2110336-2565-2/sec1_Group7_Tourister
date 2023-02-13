@@ -1,5 +1,4 @@
-import React from 'react'
-import EditProfileGuide from './editProfileGuide';
+import EditProfileGuide from "@/components/manage_account/guide/editProfileGuide";
 
 export default function Page() {
   return (
@@ -9,4 +8,3 @@ export default function Page() {
   </>
   );
 }
-

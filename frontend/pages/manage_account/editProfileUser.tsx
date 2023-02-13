@@ -1,5 +1,4 @@
-import React from 'react'
-import EditProfileUser from './editProfileUser';
+import EditProfileUser from "@/components/manage_account/user/editProfileUser";
 
 export default function Page() {
   return (
@@ -9,4 +8,3 @@ export default function Page() {
   </>
   );
 }
-
