@@ -7,60 +7,69 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup";
 import { nanoid } from "nanoid";
 import Attraction from "./attraction";
+import axios from 'axios';
+
 var ReactDOM = require('react-dom');
+const API_URL = 'http://localhost:2000/api/program'
 
 type FormData = {
-  accountType: accountType;
+  programId:string
   name: string;
-  start: Date;
+  startDate: Date;
   startTime: string;
-  end: Date;
+  endDate: Date;
   endTime: string;
   price: string;
-  groupSize: string;
+  max_participant: string;
   language: string;
-  attractionsList: any[];
-  nameOfStartLocation: string;
-  informationOfStartLocation: string;
-  nameOfEndLocation: string;
-  informationOfEndLocation: string;
-  information: string;
+  meetLocation: string;
+  descriptionOfMeetLocation: string;
+  endLocation: string;
+  descriptionOfEndLocation: string;
+  description: string;
 }
-type accountType = 'tourist' | 'guide';
+// type accountType = 'tourist' | 'guide';
 const validationSchema = yup.object().shape({
   name: yup.string().required("Please enter your trip name"),
-  start: yup.date().required('Please enter your start date'),
+  startDate: yup.date().required('Please enter your start date'),
   startTime: yup.string().required('Please enter your start time'),
-  end: yup.date().required('Please enter your end date'),
+  endDate: yup.date().required('Please enter your end date'),
   endTime: yup.string().required('Please enter your end time'),
   price: yup.string().required('Please enter your price')
   .matches(/^[0-9]+$/, "Price must be only digits"),
-  groupSize: yup.string().required('Please enter your group size')
+  max_participant: yup.string().required('Please enter your group size')
   .matches(/^[0-9]+$/, "Group size must be only digits"),
   language: yup.string().required('Please enter your trip language'),
-  information: yup.string(),
-  nameOfStartLocation: yup.string().required('Please enter your trip start location'),
-  informationOfStartLocation: yup.string(),
-  nameOfEndLocation: yup.string().required('Please enter your trip end location'),
-  informationOfEndLocation: yup.string()
+  description: yup.string(),
+  meetLocation: yup.string().required('Please enter your trip start location'),
+  descriptionOfMeetLocation: yup.string(),
+  endLocation: yup.string().required('Please enter your trip end location'),
+  descriptionOfEndLocation: yup.string()
 });
 
 const createTrip = () => {
   const [locationNumber, setLocationNumber] = useState(0);
   const [attractions,setAttractions] = useState([{
-    "id": "01",
+    "id": nanoid(),
     "name": "",
     "option": "Addmission not needed",
     "editing": true,
     "error": false
   }]);
 
-  const onSubmit = (data : FormData) => {
+  const onSubmit = async (data : FormData) => {
     console.log(data);
+    try {
+      const response = await axios.post(API_URL,data)
+      console.log(response)
+    } catch (error) {
+      console.log(error)
+    }
   }
   const {
     register,
     watch,
+    setValue,
     handleSubmit,
     formState: { errors }
   } = useForm<FormData>({
@@ -84,7 +93,6 @@ const createTrip = () => {
     newAttractions.splice(index,1)
     setAttractions(newAttractions)
   }
-
   return (
     <form style={{display:'flex', alignItems: 'center',flexDirection:'column'}}onSubmit={handleSubmit(onSubmit)}>
       {/* <Link href="../register" passHref><button type="button" onClick={handleBackButton}>Back</button></Link> */}
@@ -102,9 +110,9 @@ const createTrip = () => {
         <div>
         <input
           type="Date"
-          {...register("start")}
+          {...register("startDate")}
         />
-        {errors.start && <p className="errorMsg">{errors.start.message}</p>}
+        {errors.startDate && <p className="errorMsg">{errors.startDate.message}</p>}
         <input
           type="Time"
           {...register("startTime")}
@@ -115,9 +123,9 @@ const createTrip = () => {
         <div>
         <input
           type="Date"
-          {...register("end")}
+          {...register("endDate")}
         />
-        {errors.end && <p className="errorMsg">{errors.end.message}</p>}
+        {errors.endDate && <p className="errorMsg">{errors.endDate.message}</p>}
         <input
           type="Time"
           {...register("endTime")}
@@ -135,9 +143,9 @@ const createTrip = () => {
         <input
           type="text"
           placeholder="Number of participant(s)"
-          {...register("groupSize")}
+          {...register("max_participant")}
         />
-        {errors.groupSize && <p className="errorMsg">{errors.groupSize.message}</p>}
+        {errors.max_participant && <p className="errorMsg">{errors.max_participant.message}</p>}
         <label>Language</label>
         <input
           type="text"
@@ -158,15 +166,15 @@ const createTrip = () => {
           <input
             type="text"
             placeholder="Name of Location"
-            {...register("nameOfStartLocation")}
+            {...register("meetLocation")}
           />
-          {errors.nameOfStartLocation && <p className="errorMsg">{errors.nameOfStartLocation.message}</p>}
+          {errors.meetLocation && <p className="errorMsg">{errors.meetLocation.message}</p>}
           <input
             type="text"
             placeholder="information"
-            {...register("informationOfStartLocation")}
+            {...register("descriptionOfMeetLocation")}
           />
-          {errors.informationOfStartLocation && <p className="errorMsg">{errors.informationOfStartLocation.message}</p>}
+          {errors.descriptionOfMeetLocation && <p className="errorMsg">{errors.descriptionOfMeetLocation.message}</p>}
         </div>
       {attractions.map((att)=>(<Attraction id={att.id} handleDelete={handleDelete}/>))}
         <button type="button" onClick= {() => handleAdd()}>Add</button>
@@ -184,23 +192,23 @@ const createTrip = () => {
         <input
           type="text"
           placeholder="Name of Location"
-          {...register("nameOfEndLocation")}
+          {...register("endLocation")}
         />
-        {errors.nameOfEndLocation && <p className="errorMsg">{errors.nameOfEndLocation.message}</p>}
+        {errors.endLocation && <p className="errorMsg">{errors.endLocation.message}</p>}
         <input
           type="text"
           placeholder="information"
-          {...register("informationOfEndLocation")}
+          {...register("descriptionOfEndLocation")}
         />
-        {errors.informationOfEndLocation && <p className="errorMsg">{errors.informationOfEndLocation.message}</p>}
+        {errors.descriptionOfEndLocation && <p className="errorMsg">{errors.descriptionOfEndLocation.message}</p>}
       </div>
       <label>Additional Information</label>
       <input
         type="text"
         placeholder="More Information..."
-        {...register("information")}
+        {...register("description")}
       />
-      {errors.information && <p className="errorMsg">{errors.information.message}</p>}
+      {errors.description && <p className="errorMsg">{errors.description.message}</p>}
       <button type="submit">Publish</button>
     </form>
   );

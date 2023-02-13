@@ -32,6 +32,7 @@ const UserSchema = new mongoose.Schema({
   },
   isGuide: {
     type: Boolean,
+    default: false
   },
   bankName: {
     type: String,
@@ -41,10 +42,16 @@ const UserSchema = new mongoose.Schema({
   },
   remainingAmount: {
     type: Number,
+    default:0
   },
   licenseId: {
     type: String,
-    unique: true,
+    required: function() {
+      return this.isGuide;
+    },
+    unique: function() {
+      return this.isGuide;
+    },
   },
 });
 
