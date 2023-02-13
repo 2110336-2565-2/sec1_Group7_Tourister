@@ -40,14 +40,24 @@ export default function requestPage() {
 
   const [data, setData] = useState<Program | null>(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
+  const onChange = async (data : FormData) => {
+    console.log(data);
+    try {
       const result = await axios.get(API_URL);
       setData(result.data);
-    };
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const result = await axios.get(API_URL);
+  //     setData(result.data);
+  //   };
+
+  //   fetchData();
+  // }, []);
   console.log(data);
 
   var cards: Card[] = [];
@@ -61,13 +71,14 @@ export default function requestPage() {
     card.startdate = data.startdate;
     card.num_participant = data.num_participant;
     card.max_participant = data.max_participant;
-    for (let i = 0; i < card.userID.length; i++) {
+    for (var objectid in card.userID) {
+      // for (let i = 0; i < card.userID.length; i++) {
       useEffect(() => {
         const fetchData = async () => {
           const result = await axios.get(
-            `https://api.example.com/users/${card.userID[i]}`
+            `https://api.example.com/users/${objectid}`
           );
-          setUser(result.data);
+          // setUser(result.data);
           card.username = result.data.name;
           card.surname = result.data.surname;
           card.email = result.data.email;

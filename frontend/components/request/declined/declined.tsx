@@ -9,7 +9,7 @@ import { boolean } from "yup";
 export default function requestPage() {
   return (
     <>
-      <h1>accepted</h1>
+      <h1>declined</h1>
     </>
   );
 }
