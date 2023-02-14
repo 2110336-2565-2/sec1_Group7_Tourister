@@ -22,14 +22,14 @@ const ProgramSchema = new mongoose.Schema({
         type: Date,
         required: [true, 'Please add end date']
     },
-    // startTime: {
-    //     type: String,
-    //     required: [true, 'Please add start time']
-    // },
-    // endTime: {
-    //     type: String,
-    //     required: [true, 'Please add end time']
-    // },
+    startTime: {
+        type: String,
+        required: [true, 'Please add start time']
+    },
+    endTime: {
+        type: String,
+        required: [true, 'Please add end time']
+    },
     max_participant: {
         type: Number,
         required: [true, 'Please add max participant']
@@ -44,11 +44,11 @@ const ProgramSchema = new mongoose.Schema({
     descriptionOfMeetLocation: {
         type: String
     },
-    guide: {
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: 'User',
-        required: [true, 'Please add a guide']
-    },
+    // guide: {
+    //     type: mongoose.Schema.Types.ObjectId, 
+    //     ref: 'User',
+    //     required: [true, 'Please add a guide']
+    // },
     attractions: {
         type: [new mongoose.Schema({ 
             place: String,
