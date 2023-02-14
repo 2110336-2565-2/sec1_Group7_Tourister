@@ -11,7 +11,7 @@ import axios from 'axios';
 import { FormInputText } from "@/components/formInput/FormInputText";
 import { FormInputDate} from "@/components/formInput/FormInputDate";
 import { FormInputTime} from "@/components/formInput/FormInputTime";
-
+import { createProgram} from "@/services/programService"
 var ReactDOM = require('react-dom');
 const API_URL = 'http://localhost:2000/api/program'
 
