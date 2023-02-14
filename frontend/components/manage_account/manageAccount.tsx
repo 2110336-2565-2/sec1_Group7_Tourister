@@ -1,5 +1,3 @@
-"use client";
-
 import { useState, MouseEvent } from "react";
 import Link from 'next/link';
 
