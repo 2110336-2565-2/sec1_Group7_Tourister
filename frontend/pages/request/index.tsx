@@ -98,7 +98,7 @@ export default function requestPage() {
     <>
       <GuideNavBar/>
       <h1>REQUEST</h1>
-      <Navbar value={cardstatus} setValue={setcardStatus} />
+      <Navbar />
       {cards.map((card) => (
         <div key={card.username}>
           <h2>
