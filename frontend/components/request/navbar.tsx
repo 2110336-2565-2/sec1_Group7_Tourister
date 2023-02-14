@@ -5,8 +5,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Button, AppBar } from "@mui/material";
 
-const API_URL = `http://localhost:2000/api/program`;
-
 export default function Navbar({ value, setValue }: any) {
   const [isClicked, setIsClicked] = useState(false);
   const [cardstatus, setcardStatus] = useState<string>();
