@@ -13,7 +13,7 @@ export const getAllUsers = async () => {
     return res;
 } 
 
-export const getUserById = async (id: number) => {
+export const getUserById = async (id: string) => {
     const axios_res = await axios.get(`${appConfig.BACKEND_URL}/api/user/${id}`) 
     const res = axios_res.data as ApiResponseInterface<UserInterface>
     if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined)
@@ -34,14 +34,14 @@ export const registerUser = async (data: UserInterface) => {
     return res;
 }
 
-export const updateUserById = async (id: number, data: any) => {
+export const updateUserById = async (id: string, data: any) => {
     const axios_res = await axios.put(`${appConfig.BACKEND_URL}/api/user/${id}`, data)
     const res = axios_res.data as ApiResponseInterface<UserInterface>
     if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined)
     return res;
 }
 
-export const deleteUserById = async (id: number) => {
+export const deleteUserById = async (id: string) => {
     const axios_res = await axios.delete(`${appConfig.BACKEND_URL}/api/user/${id}`)
     const res = axios_res.data as ApiResponseInterface<UserInterface>
     if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined)

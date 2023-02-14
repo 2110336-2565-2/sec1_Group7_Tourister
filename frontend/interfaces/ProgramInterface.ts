@@ -14,7 +14,7 @@ export interface ProgramInterface {
     num_participant?: number,
     meetLocation?: string,
     descriptionOfMeetLocation?: string,
-    guide: string | UserInterface[], //objectId User
+    // guide: string | UserInterface[], //objectId User
     attractions?: AttractionInterface[],
     imageUrl?: string,
     language?: string,

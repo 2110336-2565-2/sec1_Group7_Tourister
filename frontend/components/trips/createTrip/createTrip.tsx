@@ -80,10 +80,11 @@ const createTrip = () => {
     "error": false
   }]);
 
-  const onSubmit = async (data : ProgramInterface) => {
+  const onSubmit = async (data : FormData) => {
     console.log(data);
     try {
-      const response = await createProgram(data)
+      // const response = await createProgram(data)
+      const response = await axios.post(API_URL,data)
       console.log(response)
     } catch (error) {
       console.log(error)
