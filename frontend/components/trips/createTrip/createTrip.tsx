@@ -12,6 +12,7 @@ import { FormInputText } from "@/components/formInput/FormInputText";
 import { FormInputDate} from "@/components/formInput/FormInputDate";
 import { FormInputTime} from "@/components/formInput/FormInputTime";
 import { createProgram} from "@/services/programService"
+import { ProgramInterface } from "@/interfaces/ProgramInterface";
 var ReactDOM = require('react-dom');
 const API_URL = 'http://localhost:2000/api/program'
 
@@ -79,10 +80,10 @@ const createTrip = () => {
     "error": false
   }]);
 
-  const onSubmit = async (data : FormData) => {
+  const onSubmit = async (data : ProgramInterface) => {
     console.log(data);
     try {
-      const response = await axios.post(API_URL,data)
+      const response = await createProgram(data)
       console.log(response)
     } catch (error) {
       console.log(error)
