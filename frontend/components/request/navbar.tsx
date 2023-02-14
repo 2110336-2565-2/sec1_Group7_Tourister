@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import Accepted from "./accepted/page";
 import { ProgramInterface } from "@/interfaces/ProgramInterface";
 import { UserCardInterface } from "@/interfaces/UserCardInterface";
+import { UserInterface } from "@/interfaces/UserInterface";
 import { getUserById } from "@/services/userService";
 import axios from "axios";
 import Link from "next/link";
@@ -14,6 +15,7 @@ const API_URL = `http://localhost:2000/api/program`;
 var data: any = [];
 
 export default function Navbar({ value, setValue }: any) {
+  const [isClicked, setIsClicked] = useState(false);
   const [cardstatus, setcardStatus] = useState<string>();
   const [userInfo, setuserInfo] = useState([
     {
@@ -75,146 +77,60 @@ export default function Navbar({ value, setValue }: any) {
 
   const statusChange = async (status: string) => {
     setcardStatus(status);
+    setIsClicked(!isClicked);
     // console.log(cardstatus);
-    handleChange();
+    // handleChange();
   };
   console.log(cardstatus);
   // console.log(data);
 
-  var cards: UserCardInterface[] = [];
-  if (cardstatus === "accepted") {
-    // console.log(data);
-    for (let program of data) {
-      // console.log(program);
-      var card: UserCardInterface = {};
-      for (let userid of program.accepted_participant) {
-        card.tripname = program.name;
-        card.description = program.description;
-        card.startdate = program.startDate;
-        card.num_participant = program.num_participant;
-        card.max_participant = program.max_participant;
-
-        const res = axios.get(`http://localhost:2000/api/user/${userid}`);
-        console.log(res.data);
-        card.username = res.data.name;
-        card.surname = res.data.surname;
-        card.email = res.data.email;
-
-        // fillUser(userid);
-        // console.log(userInfo.name);
-
-        // card.username = userInfo.name;
-        // console.log(card.username);
-        // card.surname = userInfo.surname;
-        // console.log(card.surname);
-        // card.email = userInfo.email;
-        // console.log(card.email);
-
-        cards.push(card);
-      }
-    }
-    // console.log(cards);
-    var allCards = [];
-    for (let card of cards) {
-      allCards.push(
-        <div className="card">
-          <div id="card__username">
-            {card.username} {card.surname}
-          </div>
-          <div id="card__email">Contact: {card.email}</div>
-          <div id="card__description">Request: {card.description}</div>
-          <div id="card__tripname">{card.tripname}</div>
-          <div id="card__date">{card.startdate}</div>
-          <div id="card__date">
-            {card.num_participant}/{card.max_participant}
-          </div>
-        </div>
-      );
-    }
-  } else if (cardstatus === "pending") {
-    // console.log(data);
-    for (let program of data) {
-      // console.log(program);
-      for (let user of program.pending_participant) {
-        var card: UserCardInterface = {};
-        card.tripname = program.name;
-        card.description = program.description;
-        card.startdate = program.startDate;
-        card.num_participant = program.num_participant;
-        card.max_participant = program.max_participant;
-
-        // let res = await getUserById(user);
-        // const resPromise = res.then((res) => res);
-        // console.log(res.data);
-        // card.username = resPromise.name;
-        // console.log(card.username);
-        // card.surname = res.surname;
-        // card.email = res.email;
-        // card.userID = res._id;
-        // cards.push(card);
-      }
-    }
-    // console.log(cards);
-    var allCards = [];
-    for (let card of cards) {
-      allCards.push(
-        <div className="card">
-          <div id="card__username">
-            {card.username} {card.surname}
-          </div>
-          <div id="card__email">Contact: {card.email}</div>
-          <div id="card__description">Request: {card.description}</div>
-          <div id="card__tripname">{card.tripname}</div>
-          <div id="card__date">{card.startdate}</div>
-          <div id="card__date">
-            {card.num_participant}/{card.max_participant}
-          </div>
-        </div>
-      );
-    }
+  const [programs, setPrograms] = useState([
+    {
+      _id: "",
+      programId: "",
+      name: "",
+      description: "",
+      startDate: Date,
+      endDate: Date,
+      startTime: Date,
+      endTime: Date,
+      max_participant: 0,
+      num_participant: 0,
+      meetLocation: "",
+      descriptionOfMeetLocation: "",
+      attractions: [],
+      imageUrl: "",
+      language: "",
+      endLocation: "",
+      descriptionOfEndLocation: "",
+      pending_participant: [],
+      accepted_participant: [],
+      declined_participant: [],
+      user: [],
+    },
+  ]);
+  // useEffect(() => {
+  if (isClicked && cardstatus === "accepted") {
+    setIsClicked(false);
+    axios.get(`http://localhost:2000/api/program`).then((response: any) => {
+      // console.log(response.data);
+      const programsWithUsers = response.data.data.map((program: any) => {
+        const userPromises = program.accepted_participant.map((userId: any) =>
+          axios.get(`http://localhost:2000/api/user/${userId}`)
+        );
+        return Promise.all(userPromises).then((user) => ({
+          ...program,
+          user,
+        }));
+      });
+      Promise.all(programsWithUsers).then((programsWithUsers) => {
+        setPrograms(programsWithUsers);
+      });
+    });
   }
-  if (cardstatus === "declined") {
-    // console.log(data);
-    for (let program of data) {
-      // console.log(program);
-      for (let user of program.declined_participant) {
-        var card: UserCardInterface = {};
-        card.tripname = program.name;
-        card.description = program.description;
-        card.startdate = program.startDate;
-        card.num_participant = program.num_participant;
-        card.max_participant = program.max_participant;
-
-        // let res = getUserById(user);
-        // const resPromise = res.then((res) => res);
-        // console.log(resPromise);
-        // card.username = resPromise.name;
-        // console.log(card.username);
-        // card.surname = res.surname;
-        // card.email = res.email;
-        // card.userID = res._id;
-        // cards.push(card);
-      }
-    }
-    // console.log(cards);
-    var allCards = [];
-    for (let card of cards) {
-      allCards.push(
-        <div className="card">
-          <div id="card__username">
-            {card.username} {card.surname}
-          </div>
-          <div id="card__email">Contact: {card.email}</div>
-          <div id="card__description">Request: {card.description}</div>
-          <div id="card__tripname">{card.tripname}</div>
-          <div id="card__date">{card.startdate}</div>
-          <div id="card__date">
-            {card.num_participant}/{card.max_participant}
-          </div>
-        </div>
-      );
-    }
-  }
+  // }, []);
+  console.log(programs);
+  console.log(programs[0].user);
 
   return (
     <div>
@@ -248,7 +164,26 @@ export default function Navbar({ value, setValue }: any) {
           {/* </Link> */}
         </div>
       </nav>
-      <div>{allCards}</div>
+      <div>
+        {programs.map((program) => (
+          <div key={program._id}>
+            <ul>
+              {program.user.map((user: any) => (
+                <h3 key={user.data.data._id}>
+                  {user.data.data.name} {user.data.data.surname}
+                  <div>Contact: {user.data.data.email}</div>
+                </h3>
+              ))}
+            </ul>
+            <h2>{program.name}</h2>
+            <p>{program.description}</p>
+            <p>{program.startDate}</p>
+            <p>
+              {program.num_participant}/{program.max_participant}
+            </p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
