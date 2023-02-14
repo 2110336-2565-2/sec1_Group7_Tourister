@@ -5,7 +5,6 @@ import GuideNavBar from '@/components/layout/guideNavBar';
 const Page  = () => {
   return (
   <>
-    <GuideNavBar/>
     <h1>Tourister</h1>
     <RegisterForm/>
   </>
