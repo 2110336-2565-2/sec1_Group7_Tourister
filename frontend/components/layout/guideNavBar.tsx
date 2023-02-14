@@ -6,11 +6,7 @@ import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNone
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import { usePathname } from 'next/navigation';
 
-export default function GuideNavBar({
-  children, // will be a page or nested layout
-}: {
-  children: React.ReactNode,
-}) {
+export default function GuideNavBar() {
   const pathname = usePathname();
   console.log(pathname);
 
@@ -59,32 +55,31 @@ export default function GuideNavBar({
     <section>
       {/* Include shared UI here e.g. a header or sidebar */}
       <nav css={nav}>
-        <Link href="./trips/createTrip" style={{ textDecoration: 'none'}}>
+        <Link href="/trips" style={{ textDecoration: 'none'}}>
           <div css={navLink}>
             <BusinessCenterOutlinedIcon />
             Trips
           </div>
         </Link>
-        <Link href="./request" style={{ textDecoration: 'none'}}>
+        <Link href="/request" style={{ textDecoration: 'none'}}>
             <div css={navLink}>
               <CalendarMonthOutlinedIcon />
               Request
             </div>
         </Link>
-        <Link href="./request" style={{ textDecoration: 'none'}}>
+        <Link href="/request" style={{ textDecoration: 'none'}}>
           <div css={navLink}>
             <NotificationsNoneOutlinedIcon />
             Notification
           </div>
         </Link>
-        <Link href="./manage_account" style={{ textDecoration: 'none'}}>
+        <Link href="/manage_account" style={{ textDecoration: 'none'}}>
           <div css={navLink}>
             <AccountCircleOutlinedIcon />
             Account
           </div>
         </Link>
       </nav>
-      {children}
     </section>
   );
 }

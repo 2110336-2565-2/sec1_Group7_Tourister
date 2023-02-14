@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Cards from "@/components/request/card";
 import data from "@/components/request/data";
 import Navbar from "@/components/request/navbar";
+import GuideNavBar from "@/components/layout/guideNavBar";
 import axios from "axios";
 
 const API_URL = "http://localhost:2000/api/program";
@@ -95,6 +96,7 @@ export default function requestPage() {
 
   return (
     <>
+      <GuideNavBar/>
       <h1>REQUEST</h1>
       <Navbar value={cardstatus} setValue={setcardStatus} />
       {cards.map((card) => (
