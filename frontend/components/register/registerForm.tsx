@@ -69,11 +69,11 @@ const registerForm = () => {
       <label>Surname</label>
       <FormInputText name="surname" control={control} label="Surname"/>
       <label>Citizen ID</label>
-      <FormInputText name="citizenId" control={control} label="Citizen number"/>
+      <FormInputText name="citizenId" control={control} label="Citizen ID"/>
       {watchAccountType==="guide" && 
         <>
           <label>Guide License ID</label>
-          <FormInputText name="guideLicenseId" control={control} label="License Number"/>
+          <FormInputText name="guideLicenseId" control={control} label="License ID"/>
           <p>*optional</p>
         </>
       }
