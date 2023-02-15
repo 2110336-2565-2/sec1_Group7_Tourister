@@ -16,32 +16,27 @@ type FormData = {
   surname: string;
   citizenId: string;
   phoneNumber: string;
-  guideLicenseId?: string;
+  licenseId?: string;
 }
 type accountType = 'tourist' | 'guide';
 const validationSchema = yup.object().shape({
   // accountType: yup
   //   .string()
   //   .required("Please choose your account type"),
-  // name: yup.string().required("Please enter your name"),
-  // surname: yup.string().required("Please enter your surname"),
-  // guideLicenseId: yup
-  //   .string()
-  //   // .matches(/^[0-9]+$/, "License Number must be only digits")
-  //   .test('number only', 'License Number must be only digits', val => yup.number().isValidSync(val) || val =='')
-  //   .test('len', 'License Number must have 7 numbers', val => val?.length===7 || val === ''),
-  // phoneNumber: yup
-  //   .string()
-  //   .required("Please enter the phone number")
-  //   .matches(/^[0-9]+$/, "Phone number must be only digits")
-  //   .min(9, 'Please enter the valid phone number')
-  //   .max(10, 'Please enter the valid phone number')
+  name: yup.string().required("Please enter your name"),
+  surname: yup.string().required("Please enter your surname"),
+  licenseId: yup
+    .string()
+    // .matches(/^[0-9]+$/, "License Number must be only digits")
+    .test('number only', 'License Number must be only digits', val => yup.number().isValidSync(val) || val =='')
+    .test('len', 'License Number must have 7 numbers', val => val?.length===7 || val === ''),
+  phoneNumber: yup
+    .string()
+    .required("Please enter the phone number")
+    .matches(/^[0-9]+$/, "Phone number must be only digits")
+    .min(9, 'Please enter the valid phone number')
+    .max(10, 'Please enter the valid phone number')
 });
-const initName="Admin"
-const initSurname="Tester"
-const initCitizenID="1101111111111"
-const initLicenseID="9999999"
-const initPhoneNumber="0999999999"
 
 const editProfile = ({user} : {user:UserInterface}) => {
   const defaultValues = {
@@ -49,11 +44,11 @@ const editProfile = ({user} : {user:UserInterface}) => {
     surname: user.surname,
     citizenId: user.citizenId,
     phoneNumber: user.phoneNumber,
-    guideLicenseId: user.licenseId
+    licenseId: user.licenseId
   }
   const onSubmit = async (data : FormData) => {
     console.log(data);
-    if(user._id != null)  await updateUserById(user._id,data)
+    if(user._id != null)console.log( await updateUserById(user._id,data))
   }
   const {
     register,
@@ -71,26 +66,21 @@ const editProfile = ({user} : {user:UserInterface}) => {
       <Link href="/manage_account" passHref><button type="button">Back</button></Link>
       <label>Profile</label>
       <label>Name</label>
-      <FormInputText name="name" control={control} label={initName}/>
-      {errors.name && <p className="errorMsg">{errors.name.message}</p>}
+      <FormInputText name="name" control={control} label="Name"/>
       <label>Surname</label>
-      <FormInputText name="surname" control={control} label={initSurname}/>
-      {errors.surname && <p className="errorMsg">{errors.surname.message}</p>}
+      <FormInputText name="surname" control={control} label="Surname"/>
       <label>Citizen ID</label>
-      <FormInputText name="citizenId" control={control} label={initCitizenID} readonly={true}/>
-      {errors.citizenId && <p className="errorMsg">{errors.citizenId.message}</p>}
+      <FormInputText name="citizenId" control={control} label="Citizen ID" readonly={true}/>
       {user.isGuide? (
         <Fragment>
           <label>Guide License ID</label>
-          <FormInputText name="guideLicenseID" control={control} label={initLicenseID}/>
-          {errors.guideLicenseId && <p className="errorMsg">{errors.guideLicenseId.message}</p>}
+          <FormInputText name="licenseId" control={control} label="License ID"/>
         </Fragment>
       ):(
         <Fragment></Fragment>
       )}
       <label>Phone number</label>
-      <FormInputText name="phoneNumber" control={control} label={initPhoneNumber}/>
-      {errors.phoneNumber && <p className="errorMsg">{errors.phoneNumber.message}</p>}
+      <FormInputText name="phoneNumber" control={control} label="Phone number"/>
       <button type="submit">Update</button>
     </form>
   );
@@ -107,6 +97,7 @@ editProfile.defaultProps = {
     phoneNumber:"111111111",
     isGuide:true,
     remainingAmount:{"$numberInt":"0"},
+    licenseId:"1234567",
     __v:{"$numberInt":"0"}
   }
 }
