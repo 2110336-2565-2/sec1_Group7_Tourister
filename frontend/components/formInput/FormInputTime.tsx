@@ -39,6 +39,8 @@ export const FormInputTime = ({ name, control, label, readonly }: FormInputProps
           InputProps={{
             readOnly: readonly
           }}
+          helperText={error ? error.message : null}
+          error={Boolean(error)}
         />
       )}
     />

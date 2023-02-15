@@ -36,6 +36,8 @@ export const FormInputDate = ({ name, control, label }: FormInputProps) => {
           InputLabelProps={{
             shrink: true,
           }}
+          helperText={error ? error.message : null}
+          error={Boolean(error)}
         />
       )}
     />
