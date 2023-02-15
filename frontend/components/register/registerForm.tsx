@@ -62,7 +62,7 @@ const registerForm = () => {
   }
 
   return (
-    <form style={{display:'flex', alignItems: 'center',flexDirection:'column'}} onSubmit={handleSubmit(onSubmit)}>
+    <form style={{display:'flex', alignItems: 'flex-start',flexDirection:'column', marginLeft:'1rem',gap:'0.3rem'}} onSubmit={handleSubmit(onSubmit)}>
       <FormInputRadio name="accountType" control={control} label="" options={[{label: "tourist", value: "tourist"}, { label:"guide", value: "guide" }]}/>
       <label>Name</label>
       <FormInputText name="name" control={control} label="Name"/>
@@ -74,7 +74,7 @@ const registerForm = () => {
         <>
           <label>Guide License ID</label>
           <FormInputText name="guideLicenseId" control={control} label="License ID"/>
-          <p>*optional</p>
+          <label>*optional</label>
         </>
       }
       <label>Phone number</label>
@@ -85,7 +85,7 @@ const registerForm = () => {
       <FormInputPassword name="password" control={control} label="Password" showPassword={showPassword} handleClickShowPassword={handleClickShowPassword} handleMouseDownPassword={handleMouseDownPassword} />
       <label>Confirm Password</label>
       <FormInputPassword name="confirmPassword" control={control} label="Password" showPassword={showConfirmPassword} handleClickShowPassword={handleClickShowConfirmPassword} handleMouseDownPassword={handleMouseDownPassword} />
-      <Button type="submit" variant="contained" >Sign Up </Button>
+      <Button style={{alignSelf:"center"}} type="submit" variant="contained" >Sign Up </Button>
     </form>
   );
 };
