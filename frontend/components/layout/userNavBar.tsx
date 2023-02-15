@@ -1,85 +1,55 @@
-import Link from 'next/link';
-import { css } from '@emotion/react';
+import { Paper, BottomNavigation, BottomNavigationAction } from '@mui/material';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumberOutlined';
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
-import { usePathname } from 'next/navigation';
+import { useState } from 'react';
+import { useRouter } from 'next/router';
 
-export default function GuideNavBar() {
-  const pathname = usePathname();
-  console.log(pathname);
+export default function userNavBar() {
+  const router = useRouter();
+  const [path, setPath] = useState<String|null>(router.pathname)
 
-  const nav = css({
-    display: 'flex',
-    bottom: 0,
-    width: "100%",
-    position: "fixed",
-    boxShadow: "0 0 3px SportsRugbySharp(0,0,0,0.2)",
-    overflowX: "auto",
-    justifyContent: "space-around",
-    color: "gray",
-    fontFamily: "Avenir, Sans-serif",
-    fontWeight: "bold",
-    fontSize: "0.85rem",
-    left: "0px",
-    paddingBottom: "10px",
-    borderTop: "1px solid #202020",
-    BoxShadow: "0px, 1px, 1px, rgba(50, 50, 50, 0.75",
-    paddingTop: "10px"
-  });
-
-  const navLink = css({
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    flexGrow: 1,
-    minWidth: '50px',
-    overflow: 'hidden',
-    whiteSpace: 'nowrap',
-    color: 'gray',
-  });
-
-  const navLinkActive = css({
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    flexGrow: 1,
-    minWidth: '50px',
-    overflow: 'hidden',
-    whiteSpace: 'nowrap',
-    color: '#4682B4',
-  });
+  const handleChange = (event: any, newPathname:String) => {
+    setPath(newPathname)
+  }
+  
+  const onLink = (href: string) => {
+    router.push(href)
+  };
 
   return (
-    <section>
-      {/* Include shared UI here e.g. a header or sidebar */}
-      <nav css={nav}>
-        <Link href="/search" style={{ textDecoration: 'none'}}>
-          <div css={navLink}>
-            <SearchOutlinedIcon />
-            Search
-          </div>
-        </Link>
-        <Link href="/search" style={{ textDecoration: 'none'}}>
-            <div css={navLink}>
-              <ConfirmationNumberOutlinedIcon />
-              Booking
-            </div>
-        </Link>
-        <Link href="/search" style={{ textDecoration: 'none'}}>
-          <div css={navLink}>
-            <NotificationsNoneOutlinedIcon />
-            Notification
-          </div>
-        </Link>
-        <Link href="/manage_account" style={{ textDecoration: 'none'}}>
-          <div css={navLink}>
-            <AccountCircleOutlinedIcon />
-            Account
-          </div>
-        </Link>
-      </nav>
-    </section>
+    <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, color:"light", zIndex:100}} elevation={5}>
+        <BottomNavigation
+          showLabels
+          value={path}
+          onChange={handleChange}
+          >
+          <BottomNavigationAction 
+            label="Search" 
+            value="/search" 
+            icon={<SearchOutlinedIcon fontSize="large"/>} 
+            onClick={()=>onLink("/search")}
+            />
+          <BottomNavigationAction 
+            label="Booking" 
+            value="/booking" 
+            icon={<ConfirmationNumberOutlinedIcon fontSize="large"/>} 
+            onClick={()=>onLink("/search")}
+            />
+          <BottomNavigationAction 
+            label="Notication" 
+            value="/notification" 
+            icon={<NotificationsNoneOutlinedIcon fontSize="large"/>} 
+            onClick={()=>onLink("/search")}
+          />
+          <BottomNavigationAction 
+            label="Account" 
+            value="/manage_account" 
+            icon={<AccountCircleOutlinedIcon fontSize="large"/>} 
+            onClick={()=>onLink("/manage_account")}
+            />
+      </BottomNavigation>
+    </Paper>
   );
 }
