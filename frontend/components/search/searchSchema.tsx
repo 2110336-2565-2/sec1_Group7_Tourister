@@ -1,6 +1,7 @@
 import * as yup from "yup";
 
 export type FormData = {
+    location: string,
     startDate: Date;
     startTime: string;
     endDate: Date;
@@ -17,6 +18,7 @@ export const defaultValues = {
 };
   
   export const validationSchema = yup.object().shape({
+    location: yup.string().required('Please enter the town that you want to explore'),
     startDate: yup.date().required("Please enter the start date of the trip"),
     startTime: yup.string().required('Please enter your start time'),
     endDate: yup.date().required('Please enter your end date'),

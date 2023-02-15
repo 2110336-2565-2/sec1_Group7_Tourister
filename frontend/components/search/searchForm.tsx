@@ -57,29 +57,27 @@ const SearchForm = () => {
     };
   
     return (
+      <>
+
       <form
         style={{ display: "flex", alignItems: "center", flexDirection: "column" }}
         onSubmit={handleSubmit(onSubmit)}
       >
-        <label>Location</label>
-        <FormInputText name="Location" control={control} label="Location" />
-
-        <label>Start Date</label>
-        <div>
-          <FormInputDate name="startDate" control={control} label=""/>
-          {errors.startDate && <p className="errorMsg">{errors.startDate.message}</p>}
-          <FormInputTime name="startTime" control={control} label="" readonly={false}/>
-          {errors.startTime && <p className="errorMsg">{errors.startTime.message}</p>}
-        </div>
-        <label>End Date</label>
-        <div>
-          <FormInputDate name="endDate" control={control} label=""/>
-          {errors.endDate && <p className="errorMsg">{errors.endDate.message}</p>}
-          <FormInputTime name="endTime" control={control} label="" readonly={false}/>
-          {errors.endTime && <p className="errorMsg">{errors.endTime.message}</p>}
-        </div>
-        <label>Price</label>
         <Box sx={{ width: 300 }}>
+            <label>Location</label>
+            <FormInputText name="location" control={control} label="Location" />
+
+            <label>Start Date</label>
+            <div>
+              <FormInputDate name="startDate" control={control} label="Start Date"/>
+              <FormInputTime name="startTime" control={control} label="Start Time" readonly={false}/>
+            </div>
+            <label>End Date</label>
+            <div>
+              <FormInputDate name="endDate" control={control} label="End Date"/>
+              <FormInputTime name="endTime" control={control} label="End Time" readonly={false}/>
+            </div>
+            <label>Price</label>
             <Slider 
                 getAriaLabel={() => 'Price range'}
                 value={value}
@@ -88,13 +86,13 @@ const SearchForm = () => {
                 valueLabelDisplay="auto"
                 getAriaValueText={valuetext}>
             </Slider>
-
         </Box>
         
         <Button type="submit" variant="contained">
           Search
         </Button>
       </form>
+      </>
     );
   };
   
