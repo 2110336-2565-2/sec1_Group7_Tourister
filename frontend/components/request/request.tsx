@@ -1,17 +1,15 @@
 "use client";
 
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
-import { Button, AppBar } from "@mui/material";
+import { Button } from "@mui/material";
 import { getProgramById, updateProgramById } from "@/services/programService";
-import { getUserById } from "@/services/userService";
 
 export default function Navbar() {
   const [isClicked, setIsClicked] = useState(false);
   const [cardstatus, setcardStatus] = useState<string>();
   const [moved, setMoved] = useState(false);
-  const [showCard, setShowCard] = useState(true);
   const [programs, setPrograms] = useState([
     {
       _id: "",
@@ -48,52 +46,38 @@ export default function Navbar() {
     setMoved(!moved);
     if (status === "accepted") {
       const res = await getProgramById(programid);
-      // console.log(userid);
-      // console.log(programid);
       const acceptedarr = res.data.accepted_participant;
       acceptedarr.push(userid);
       const pendingarr = res.data.pending_participant.filter(
         (user: any) => user !== userid
       );
-      // console.log(pendingarr);
-      // console.log(acceptedarr);
 
       const update = {
         pending_participant: pendingarr,
         accepted_participant: acceptedarr,
       };
 
-      // console.log(update);
-      // console.log(programid);
       const response = await updateProgramById(programid, update);
-      // console.log(response.data);
-      setShowCard(false);
     }
     if (status === "declined") {
       const res = await getProgramById(programid);
-      // console.log(userid);
-      // console.log(programid);
+
       const declineddarr = res.data.declined_participant;
       declineddarr.push(userid);
       const pendingarr = res.data.pending_participant.filter(
         (user: any) => user !== userid
       );
-      // console.log(pendingarr);
-      // console.log(declineddarr);
 
       const update = {
         pending_participant: pendingarr,
         declined_participant: declineddarr,
       };
 
-      // console.log(update);
-      // console.log(programid);
       const response = await updateProgramById(programid, update);
-      // console.log(response.data);
+
       setShowCard(false);
     }
     axios.get(`http://localhost:2000/api/program`).then((response: any) => {
-      // console.log(response.data);
       const programsWithUsers = response.data.data.map((program: any) => {
         const userPromises = program.pending_participant.map((userId: any) =>
           axios.get(`http://localhost:2000/api/user/${userId}`)
@@ -112,7 +96,6 @@ export default function Navbar() {
   if (isClicked && cardstatus === "accepted") {
     setIsClicked(false);
     axios.get(`http://localhost:2000/api/program`).then((response: any) => {
-      // console.log(response.data);
       const programsWithUsers = response.data.data.map((program: any) => {
         const userPromises = program.accepted_participant.map((userId: any) =>
           axios.get(`http://localhost:2000/api/user/${userId}`)
@@ -129,10 +112,7 @@ export default function Navbar() {
   }
   if (isClicked && cardstatus === "pending") {
     setIsClicked(false);
-    // useEffect(() => {
-    // if (cardstatus === "pending") {
     axios.get(`http://localhost:2000/api/program`).then((response: any) => {
-      // console.log(response.data);
       const programsWithUsers = response.data.data.map((program: any) => {
         const userPromises = program.pending_participant.map((userId: string) =>
           axios.get(`http://localhost:2000/api/user/${userId}`)
@@ -146,13 +126,10 @@ export default function Navbar() {
         setPrograms(programsWithUsers);
       });
     });
-    // }
-    // }, [cardstatus]);
   }
   if (isClicked && cardstatus === "declined") {
     setIsClicked(false);
     axios.get(`http://localhost:2000/api/program`).then((response: any) => {
-      // console.log(response.data);
       const programsWithUsers = response.data.data.map((program: any) => {
         const userPromises = program.declined_participant.map(
           (userId: string) =>
@@ -168,9 +145,7 @@ export default function Navbar() {
       });
     });
   }
-  // }, []);
   console.log(programs);
-  // console.log(programs[0].user);
 
   return (
     <div>
