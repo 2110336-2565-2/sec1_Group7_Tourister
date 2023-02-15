@@ -5,7 +5,7 @@ export default function Page() {
     return (
      <>
       <GuideNavBar/>
-      <h1>Overall trips</h1>
+      {/* <h1>Trips</h1> */}
       <Landing/>
      </>
     );

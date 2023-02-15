@@ -58,12 +58,13 @@ const SearchForm = () => {
   
     return (
       <>
-
+        <h1 style=
+        {{textAlign: "center"}}> Searching</h1>
       <form
         style={{ display: "flex", alignItems: "center", flexDirection: "column" }}
         onSubmit={handleSubmit(onSubmit)}
       >
-        <Box sx={{ width: 300 }}>
+        <Box sx={{ width: 'sm' ,padding:'5%'}}>
             <label>Location</label>
             <FormInputText name="location" control={control} label="Location" />
 

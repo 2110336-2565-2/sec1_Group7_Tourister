@@ -1,5 +1,6 @@
 "use client";
-import { Button, Tab, Tabs } from "@mui/material";
+import {Button,Tab, Tabs } from "@mui/material";
+// import Button from '@mui/material-next/Button';
 import * as React from "react";
 import Box from "@mui/material/Box";
 
@@ -29,9 +30,30 @@ const Landing = () => {
 
   return (
     <>
-      <Button href="/trips/createTrip" variant="contained">
-        Create Trip
-      </Button>
+    <Box
+      sx={{
+        width: 1,
+        height: '25%' ,
+        backgroundColor: '#2385C1',
+        borderBottomLeftRadius:18,
+        borderBottomRightRadius:18,
+
+        // '&:hover': {
+        //   backgroundColor: 'primary.main',
+        //   opacity: [0.9, 0.8, 0.7],
+        // },
+        alignItems : 'center',
+        textAlign: 'center',
+      }}
+    >
+        <h5>Hello Guide,</h5>
+        <h4>Name Surname</h4>
+        <Button href="/trips/createTrip" variant="contained" color="inherit" >
+            Create Trip
+        </Button>
+    </Box>
+      
+     
       <Box sx={{ width: "100%" }}>
         <Tabs
           value={value}

@@ -5,7 +5,7 @@ export default function Page() {
     return (
      <>
       <UserNavBar/>
-      <h1>Searching</h1>
+      {/* <h1>Searching</h1> */}
       <Searching/>
      </>
     );
