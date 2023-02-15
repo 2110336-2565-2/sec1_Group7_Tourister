@@ -51,9 +51,13 @@ const ProgramSchema = new mongoose.Schema({
     // },
     attractions: {
         type: [new mongoose.Schema({ 
-            place: String,
-            place_description: String,
-            place_imageUrl: String,
+            // place: String,
+            // place_description: String,
+            // place_imageUrl: String,
+            id: String,
+            name: String,
+            option: String,
+            // file: Buffer,
         }, {_id: false})]
     },
     imageUrl: {

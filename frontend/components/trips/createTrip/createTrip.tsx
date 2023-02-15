@@ -11,7 +11,7 @@ import axios from 'axios';
 import { FormInputText } from "@/components/formInput/FormInputText";
 import { FormInputDate} from "@/components/formInput/FormInputDate";
 import { FormInputTime} from "@/components/formInput/FormInputTime";
-import { createProgram} from "@/services/programService"
+import { createProgram,updateProgramById} from "@/services/programService"
 import { ProgramInterface } from "@/interfaces/ProgramInterface";
 var ReactDOM = require('react-dom');
 const API_URL = 'http://localhost:2000/api/program'
@@ -76,15 +76,12 @@ const createTrip = () => {
     "id": nanoid(),
     "name": "",
     "option": "Addmission not needed",
-    "editing": true,
-    "error": false
   }]);
 
   const onSubmit = async (data : FormData) => {
-    console.log(data);
     try {
-      // const response = await createProgram(data)
-      const response = await axios.post(API_URL,data)
+      // const response = await createProgram({...data,attractions:attractions})
+      const response = await axios.post(API_URL,{...data,attractions:attractions})
       console.log(response)
     } catch (error) {
       console.log(error)
@@ -118,6 +115,16 @@ const createTrip = () => {
     const index = attractions.findIndex((attraction)=>attraction.id===id)
     newAttractions.splice(index,1)
     setAttractions(newAttractions)
+  }
+  const handleCallback = (id:string, name:string, option:string, file:File|undefined) => {
+    const updatedAttractions = attractions.map((att) => {
+      if(att.id===id){
+        const updatedAtt = {...att,id,name,option,file}
+        return updatedAtt
+      }
+      return att
+    })
+    setAttractions(updatedAttractions)
   }
   return (
     <form style={{display:'flex', alignItems: 'center',flexDirection:'column'}}onSubmit={handleSubmit(onSubmit)}>
@@ -162,7 +169,7 @@ const createTrip = () => {
           <FormInputText name="descriptionOfMeetLocation" control={control} label="information"/>
           {errors.descriptionOfMeetLocation && <p className="errorMsg">{errors.descriptionOfMeetLocation.message}</p>}
         </div>
-        {attractions.map((att)=>(<Attraction id={att.id} handleDelete={handleDelete}/>))}
+        {attractions.map((att)=>(<Attraction id={att.id} handleDelete={handleDelete} handleCallback={handleCallback}/>))}
           <button type="button" onClick= {() => handleAdd()}>Add</button>
         <div>
           <FormInputTime name="endTime" control={control} label="" readonly={true}/>
