@@ -2,52 +2,101 @@
 
 import React from "react";
 import { useState, useEffect } from "react";
-import Accepted from "./accepted/page";
-
 import axios from "axios";
-import Link from "next/link";
 import { Button, AppBar } from "@mui/material";
 
-const API_URL = `http://localhost:2000/api/program`;
-
-interface Program {
-  name: string;
-  description: string;
-  startdate: Date;
-  email: string;
-  num_participant: number;
-  max_participant: number;
-  pending_participant: Object[];
-  accepted_participant: Object[];
-  declined_participant: Object[];
-}
-
 export default function Navbar({ value, setValue }: any) {
-  // const [cardstatus, setcardStatus] = useState("Pending");
-  const [data, setData] = useState<Program | null>(null);
+  const [isClicked, setIsClicked] = useState(false);
+  const [cardstatus, setcardStatus] = useState<string>();
 
-  const handleCardStatusChange = (newStatus: any) => {
-    setValue(newStatus);
+  const statusChange = async (status: string) => {
+    setcardStatus(status);
+    setIsClicked(!isClicked);
   };
+  console.log(cardstatus);
 
-  const handleChange = async () => {
-    // try {
-    //   const result = await axios.get(API_URL);
-    //   console.log(result);
-    //   setData(result.data);
-    // } catch (error) {
-    //   console.log(error);
-    // }
-    // useEffect(() => {
-    // const fetchData = async () => {
-    const res = await axios.get(API_URL);
-    console.log(res.data.data);
-    setData(res.data);
-    // };
-    // fetchData().catch(console.error);
-    // });
-  };
-  // console.log(data);
+  const [programs, setPrograms] = useState([
+    {
+      _id: "",
+      programId: "",
+      name: "",
+      description: "",
+      startDate: Date,
+      endDate: Date,
+      startTime: Date,
+      endTime: Date,
+      max_participant: 0,
+      num_participant: 0,
+      meetLocation: "",
+      descriptionOfMeetLocation: "",
+      attractions: [],
+      imageUrl: "",
+      language: "",
+      endLocation: "",
+      descriptionOfEndLocation: "",
+      pending_participant: [],
+      accepted_participant: [],
+      declined_participant: [],
+      user: [],
+    },
+  ]);
+  if (isClicked && cardstatus === "accepted") {
+    setIsClicked(false);
+    axios.get(`http://localhost:2000/api/program`).then((response: any) => {
+      // console.log(response.data);
+      const programsWithUsers = response.data.data.map((program: any) => {
+        const userPromises = program.accepted_participant.map((userId: any) =>
+          axios.get(`http://localhost:2000/api/user/${userId}`)
+        );
+        return Promise.all(userPromises).then((user) => ({
+          ...program,
+          user,
+        }));
+      });
+      Promise.all(programsWithUsers).then((programsWithUsers) => {
+        setPrograms(programsWithUsers);
+      });
+    });
+  }
+  if (isClicked && cardstatus === "pending") {
+    setIsClicked(false);
+    axios.get(`http://localhost:2000/api/program`).then((response: any) => {
+      // console.log(response.data);
+      const programsWithUsers = response.data.data.map((program: any) => {
+        const userPromises = program.pending_participant.map((userId: any) =>
+          axios.get(`http://localhost:2000/api/user/${userId}`)
+        );
+        return Promise.all(userPromises).then((user) => ({
+          ...program,
+          user,
+        }));
+      });
+      Promise.all(programsWithUsers).then((programsWithUsers) => {
+        setPrograms(programsWithUsers);
+      });
+    });
+  }
+  if (isClicked && cardstatus === "declined") {
+    setIsClicked(false);
+    axios.get(`http://localhost:2000/api/program`).then((response: any) => {
+      // console.log(response.data);
+      const programsWithUsers = response.data.data.map((program: any) => {
+        const userPromises = program.declined_participant.map((userId: any) =>
+          axios.get(`http://localhost:2000/api/user/${userId}`)
+        );
+        return Promise.all(userPromises).then((user) => ({
+          ...program,
+          user,
+        }));
+      });
+      Promise.all(programsWithUsers).then((programsWithUsers) => {
+        setPrograms(programsWithUsers);
+      });
+    });
+  }
+  // }, []);
+  console.log(programs);
+  console.log(programs[0].user);
 
   return (
     <div>
@@ -64,24 +113,42 @@ export default function Navbar({ value, setValue }: any) {
             alignSelf: "center",
           }}
         >
-          <Link href="./request/pending" passHref>
-            <button type="button" onClick={handleChange}>
-              Pending
-            </button>
-          </Link>
-          <Link href="./request/accepted" passHref>
-            <button type="button" onClick={handleChange}>
-              Accepted
-            </button>
-          </Link>
-          <Link href="./request/declined" passHref>
-            <button type="button" onClick={handleChange}>
-              Declined
-            </button>
-          </Link>
+          <Button type="button" onClick={() => statusChange("pending")}>
+            Pending
+          </Button>
+
+          <Button type="button" onClick={() => statusChange("accepted")}>
+            Accepted
+          </Button>
+
+          <Button type="button" onClick={() => statusChange("declined")}>
+            Declined
+          </Button>
         </div>
       </nav>
-      <div>{data && <p>Data: {JSON.stringify(data)}</p>}</div>
+      <div>
+        {programs.map((program) => (
+          <div key={program._id}>
+            <ul>
+              {program.user.map((user: any) => (
+                <div key={user.data.data._id}>
+                  {user.data.data.name} {user.data.data.surname}
+                  <div>Contact: {user.data.data.email}</div>
+                  <h2>{program.name}</h2>
+                  <p>{program.description}</p>
+                  <p>{program.startDate}</p>
+                  <p>
+                    {program.num_participant}/{program.max_participant}
+                  </p>
+                  <p>
+                    ---------------------------------------------------------
+                  </p>
+                </div>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

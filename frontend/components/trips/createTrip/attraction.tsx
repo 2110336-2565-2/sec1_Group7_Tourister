@@ -3,7 +3,7 @@
 import { useState, MouseEvent, Fragment } from "react";
 import { FormInputText } from "@/components/formInput/FormInputText";
 
-const attraction = ({id,handleDelete}:{id:string,handleDelete:Function}) => {
+const attraction = ({id,handleDelete,handleCallback}:{id:string,handleDelete:Function,handleCallback:Function}) => {
   const [name,setName] = useState("");
   const [editing, setEditing] = useState(true);
   const [option,setOption] = useState("Admission not needed")
@@ -25,7 +25,10 @@ const attraction = ({id,handleDelete}:{id:string,handleDelete:Function}) => {
           </select>
           <input type="file" onChange={(e)=>{if(!e.target.files)return;setFile(e.target.files[0])}}></input>
           <button type="button" onClick={()=>{handleDelete(id)}}>delete</button>
-          <button type="button" onClick={()=>{if(name==="") {(setError(true))} else {setEditing(false);setError(false)}}}>done</button>
+          <button type="button" onClick={()=>{
+            handleCallback(id,name,option,file)
+            if(name==="") {(setError(true))} else {setEditing(false);setError(false)}
+          }}>done</button>
           </Fragment>
         ) : (
           <Fragment>

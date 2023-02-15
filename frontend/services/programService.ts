@@ -13,7 +13,7 @@ export const getAllPrograms = async () => {
     return res;
 } 
 
-export const getProgramById = async (id: number) => {
+export const getProgramById = async (id: string) => {
     const axios_res = await axios.get(`${appConfig.BACKEND_URL}/api/program/${id}`)
     const res = axios_res.data as ApiResponseInterface<ProgramInterface>
     if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined)
@@ -27,14 +27,14 @@ export const createProgram = async (data: ProgramInterface) => {
     return res;
 }
 
-export const updateProgramById = async (id: number, data: any) => {
+export const updateProgramById = async (id: string, data: any) => {
     const axios_res = await axios.put(`${appConfig.BACKEND_URL}/api/program/${id}`, data) 
     const res = axios_res.data as ApiResponseInterface<ProgramInterface>
     if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined)
     return res;
 }
 
-export const deleteProgramById = async (id: number) => {
+export const deleteProgramById = async (id: string) => {
     const axios_res = await axios.delete(`${appConfig.BACKEND_URL}/api/program/${id}`)
     const res = axios_res.data as ApiResponseInterface<ProgramInterface>
     if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined)

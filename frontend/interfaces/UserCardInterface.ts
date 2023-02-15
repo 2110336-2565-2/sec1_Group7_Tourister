@@ -1,7 +1,6 @@
-import { UserInterface } from "./UserInterface";
-import { AttractionInterface } from "./AttractionInterface";
+import { UserInterface } from "@/interfaces/UserInterface";
 
-export interface ProgramInterface {
+export interface UserCardInterface {
   _id?: string;
   programId: string;
   name: string;
@@ -24,4 +23,5 @@ export interface ProgramInterface {
   accepted_participant?: string[] | UserInterface[]; //objectId User
   declined_participant?: string[] | UserInterface[]; //objectId User
   published?: boolean;
+  user: UserInterface[];
 }
