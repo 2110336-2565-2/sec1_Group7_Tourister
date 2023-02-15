@@ -90,7 +90,7 @@ const createTrip = () => {
   const {
     register,
     watch,
-    setValue,
+    getValues,
     control,
     handleSubmit,
     formState: { errors }
@@ -133,31 +133,23 @@ const createTrip = () => {
         <label>Profile</label>
         <label>Trip Name</label>
         <FormInputText name="name" control={control} label="Name"/>
-        {errors.name && <p className="errorMsg">{errors.name.message}</p>}
         <label>Duration</label>
         <label>Start</label>
         <div>
           <FormInputDate name="startDate" control={control} label=""/>
-          {errors.startDate && <p className="errorMsg">{errors.startDate.message}</p>}
           <FormInputTime name="startTime" control={control} label="" readonly={false}/>
-          {errors.startTime && <p className="errorMsg">{errors.startTime.message}</p>}
         </div>
         <label>End</label>
         <div>
           <FormInputDate name="endDate" control={control} label=""/>
-          {errors.endDate && <p className="errorMsg">{errors.endDate.message}</p>}
           <FormInputTime name="endTime" control={control} label="" readonly={false}/>
-          {errors.endTime && <p className="errorMsg">{errors.endTime.message}</p>}
         </div>
         <label>Price:Baht</label>
         <FormInputText name="price" control={control} label="Price in Baht Unit"/>
-        {errors.price && <p className="errorMsg">{errors.price.message}</p>}
         <label>Group Size</label>
         <FormInputText name="max_participant" control={control} label="Number of participant(s)"/>
-        {errors.max_participant && <p className="errorMsg">{errors.max_participant.message}</p>}
         <label>Language</label>
         <FormInputText name="language" control={control} label="Thai/English/Spanish"/>
-        {errors.language && <p className="errorMsg">{errors.language.message}</p>}
         <div>
           <FormInputTime name="startTime" control={control} label="" readonly={true}/>
           <label style={{padding:"20px 10px"}}>Departure</label>
@@ -165,9 +157,7 @@ const createTrip = () => {
         <div>
           <label>Location :</label>
           <FormInputText name="meetLocation" control={control} label="Name of Location"/>
-          {errors.meetLocation && <p className="errorMsg">{errors.meetLocation.message}</p>}
           <FormInputText name="descriptionOfMeetLocation" control={control} label="information"/>
-          {errors.descriptionOfMeetLocation && <p className="errorMsg">{errors.descriptionOfMeetLocation.message}</p>}
         </div>
         {attractions.map((att)=>(<Attraction id={att.id} handleDelete={handleDelete} handleCallback={handleCallback}/>))}
           <button type="button" onClick= {() => handleAdd()}>Add</button>
@@ -178,13 +168,10 @@ const createTrip = () => {
         <div>
           <label>Location :</label>
           <FormInputText name="endLocation" control={control} label="Name of Location"/>
-          {errors.endLocation && <p className="errorMsg">{errors.endLocation.message}</p>}
           <FormInputText name="descriptionOfEndLocation" control={control} label="information"/>
-          {errors.descriptionOfEndLocation && <p className="errorMsg">{errors.descriptionOfEndLocation.message}</p>}
         </div>
         <label>Additional Information</label>
         <FormInputText name="description" control={control} label="More Information..."/>
-        {errors.description && <p className="errorMsg">{errors.description.message}</p>}
         <button type="submit">Publish</button>
       </form>
   );

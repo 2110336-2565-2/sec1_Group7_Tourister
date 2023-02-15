@@ -53,7 +53,7 @@ const ProgramSchema = new mongoose.Schema({
         type: [new mongoose.Schema({ 
             // place: String,
             // place_description: String,
-            // place_imageUrl: String,
+            place_imageUrl: String,
             id: String,
             name: String,
             option: String,
