@@ -6,7 +6,6 @@ import axios from "axios";
 import { Button, AppBar } from "@mui/material";
 import { getProgramById, updateProgramById } from "@/services/programService";
 import { getUserById } from "@/services/userService";
-const mongoose = require("mongoose");
 
 export default function Navbar() {
   const [isClicked, setIsClicked] = useState(false);

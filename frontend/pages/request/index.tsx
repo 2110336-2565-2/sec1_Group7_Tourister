@@ -1,4 +1,4 @@
-import Navbar from "@/components/request/navbar";
+import Page from "@/components/request/page";
 import GuideNavBar from "@/components/layout/guideNavBar";
 
 export default function requestPage() {
@@ -6,7 +6,7 @@ export default function requestPage() {
     <>
       <GuideNavBar />
       <h1>REQUEST</h1>
-      <Navbar />
+      <Page />
     </>
   );
 }
