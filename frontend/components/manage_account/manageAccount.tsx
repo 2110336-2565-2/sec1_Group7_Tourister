@@ -26,8 +26,7 @@ const manageAccount = () => {
 
   return (
     <form style={{display:'flex', alignItems: 'center',flexDirection:'column'}}onSubmit={handleSubmit}>
-      <Link href="./manage_account/editProfileGuide" passHref><button type="button">Edit Guide Profile</button></Link>
-      <Link href="./manage_account/editProfileUser" passHref><button type="button">Edit User Profile</button></Link>
+      <Link href="./manage_account/editProfile" passHref><button type="button">Edit Profile</button></Link>
       <Link href="../register" passHref><button type="button">Transfer Funds</button></Link>
     </form>
   );

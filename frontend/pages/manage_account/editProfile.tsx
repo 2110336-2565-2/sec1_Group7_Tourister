@@ -1,4 +1,4 @@
-import EditProfileGuide from "@/components/manage_account/guide/editProfileGuide";
+import EditProfile from "@/components/manage_account/editProfile/editProfile";
 import GuideNavBar from "@/components/layout/guideNavBar";
 
 export default function Page() {
@@ -6,7 +6,7 @@ export default function Page() {
   <>
     <GuideNavBar/>
     <h1>Tourister</h1>
-    <EditProfileGuide/>
+    <EditProfile/>
   </>
   );
 }

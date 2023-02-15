@@ -43,7 +43,7 @@ const initCitizenID="1101111111111"
 const initLicenseID="9999999"
 const initPhoneNumber="0999999999"
 
-const editProfile = (user : UserInterface) => {
+const editProfile = ({user} : {user:UserInterface}) => {
   const defaultValues = {
     name: user.name,
     surname: user.surname,
@@ -53,7 +53,6 @@ const editProfile = (user : UserInterface) => {
   }
   const onSubmit = async (data : FormData) => {
     console.log(data);
-    console.log(user._id)
     if(user._id != null)  await updateUserById(user._id,data)
   }
   const {
@@ -98,15 +97,17 @@ const editProfile = (user : UserInterface) => {
 };
 
 editProfile.defaultProps = {
-  _id:"63eb4a40b2be37de33f126ec",
-  citizenId:"1111111111111",
-  name:"TestForManageAccount",
-  surname:"DontDelete",
-  email:"realprasrodo@gmail.com",
-  password:"$2b$10$4Mq3/MqcL36n7fNCsK7POewcN3BWlDJ3oh0rP41bC8vgOopT/m5oq",
-  phoneNumber:"111111111",
-  isGuide:true,
-  remainingAmount:{"$numberInt":"0"},
-  __v:{"$numberInt":"0"}
+  user : {
+    _id:"63eb4a40b2be37de33f126ec",
+    citizenId:"1111111111111",
+    name:"TestForManageAccount",
+    surname:"DontDelete",
+    email:"realprasrodo@gmail.com",
+    password:"$2b$10$4Mq3/MqcL36n7fNCsK7POewcN3BWlDJ3oh0rP41bC8vgOopT/m5oq",
+    phoneNumber:"111111111",
+    isGuide:true,
+    remainingAmount:{"$numberInt":"0"},
+    __v:{"$numberInt":"0"}
+  }
 }
 export default editProfile;
