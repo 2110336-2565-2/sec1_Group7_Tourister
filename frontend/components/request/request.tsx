@@ -92,6 +92,21 @@ export default function Navbar() {
       // console.log(response.data);
       setShowCard(false);
     }
+    axios.get(`http://localhost:2000/api/program`).then((response: any) => {
+      // console.log(response.data);
+      const programsWithUsers = response.data.data.map((program: any) => {
+        const userPromises = program.pending_participant.map((userId: any) =>
+          axios.get(`http://localhost:2000/api/user/${userId}`)
+        );
+        return Promise.all(userPromises).then((user) => ({
+          ...program,
+          user,
+        }));
+      });
+      Promise.all(programsWithUsers).then((programsWithUsers) => {
+        setPrograms(programsWithUsers);
+      });
+    });
   };
 
   if (isClicked && cardstatus === "accepted") {
