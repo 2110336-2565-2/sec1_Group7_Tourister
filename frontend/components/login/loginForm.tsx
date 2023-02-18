@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button } from "@mui/material";
+import Link from "next/link";
+import { COLOR } from "@/theme/globalTheme";
 
 import { validationSchema, FormData, defaultValues } from "./loginSchema";
 import { FormInputText } from "@/components/formInput/FormInputText";
@@ -37,7 +39,7 @@ const LoginForm = () => {
 
   return (
     <form
-      style={{ display: "flex", alignItems: "center", flexDirection: "column" }}
+      style={{display:'flex', alignItems:'flex-start',flexDirection:'column', margin:'0.8rem',gap:'0.3rem'}}
       onSubmit={handleSubmit(onSubmit)}
     >
       <FormInputRadio
@@ -60,9 +62,13 @@ const LoginForm = () => {
         handleClickShowPassword={handleClickShowPassword}
         handleMouseDownPassword={handleMouseDownPassword}
       />
-      <Button type="submit" variant="contained">
+      <Button style={{alignSelf:"center"}} type="submit" variant="contained">
         Login
       </Button>
+      <div style={{alignSelf:"center", fontSize:"0.8rem", marginTop:"0.5rem"}}>
+        <label>Don't have an account? </label>
+        <Link href="/register" style={{textDecoration:"none", color:COLOR.primary}}>Create Now</Link>
+      </div>
     </form>
   );
 };
