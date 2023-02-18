@@ -62,7 +62,7 @@ const registerForm = () => {
   }
 
   return (
-    <form style={{display:'flex', alignItems: 'flex-start',flexDirection:'column', marginLeft:'1rem',gap:'0.3rem'}} onSubmit={handleSubmit(onSubmit)}>
+    <form style={{display:'flex', alignItems:'flex-start',flexDirection:'column', margin:'0.8rem',gap:'0.3rem'}} onSubmit={handleSubmit(onSubmit)}>
       <FormInputRadio name="accountType" control={control} label="" options={[{label: "tourist", value: "tourist"}, { label:"guide", value: "guide" }]}/>
       <label>Name</label>
       <FormInputText name="name" control={control} label="Name"/>
