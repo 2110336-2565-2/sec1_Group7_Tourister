@@ -1,4 +1,5 @@
 import { createTheme } from "@mui/material/styles"
+import { COLOR } from "@/theme/globalTheme";
 
 export const muiTheme = createTheme({
   typography:{
@@ -7,13 +8,13 @@ export const muiTheme = createTheme({
   palette: {
     mode: 'light',
     primary: {
-      main: '#0277bd',
+      main: COLOR.primary,
     },
     secondary: {
-      main: '#d32f2f',
+      main: COLOR.secondary,
     },
     error: {
-      main: '#d50000',
+      main: COLOR.error,
     },
   },
 });
