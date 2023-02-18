@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup"
 import { Button } from "@mui/material"
+import styled from 'styled-components'
+import Link from 'next/link';
 
 import { validationSchema, FormData, defaultValues} from "./registerSchema";
 import { registerUser } from "@/services/userService";
@@ -9,6 +11,7 @@ import { UserInterface } from "@/interfaces/UserInterface";
 import { FormInputText } from "@/components/formInput/FormInputText";
 import { FormInputPassword } from "@/components/formInput/FormInputPassword";
 import { FormInputRadio } from "@/components/formInput/FormInputRadio";
+import { COLOR } from "@/theme/globalTheme";
 
 const registerForm = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -27,7 +30,6 @@ const registerForm = () => {
   };
 
   const {
-    register,
     watch,
     handleSubmit,
     control,
@@ -49,9 +51,7 @@ const registerForm = () => {
       isGuide: data.accountType === "guide",
       licenseId: data?.guideLicenseId
     }
-    // const { accountType: _, ...userData } = data;
 
-    console.log(data);
     console.log(userData);
     try {
       const response = await registerUser(userData)
@@ -74,7 +74,6 @@ const registerForm = () => {
         <>
           <label>Guide License ID</label>
           <FormInputText name="guideLicenseId" control={control} label="License ID"/>
-          <label>*optional</label>
         </>
       }
       <label>Phone number</label>
@@ -86,6 +85,10 @@ const registerForm = () => {
       <label>Confirm Password</label>
       <FormInputPassword name="confirmPassword" control={control} label="Password" showPassword={showConfirmPassword} handleClickShowPassword={handleClickShowConfirmPassword} handleMouseDownPassword={handleMouseDownPassword} />
       <Button style={{alignSelf:"center"}} type="submit" variant="contained" >Sign Up </Button>
+      <div style={{alignSelf:"center", fontSize:"0.8rem", marginTop:"0.5rem"}}>
+        <label>Already have an account? </label>
+        <Link href="/login" style={{textDecoration:"none", color:COLOR.primary}}>Log in</Link>
+      </div>
     </form>
   );
 };
