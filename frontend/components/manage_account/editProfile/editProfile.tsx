@@ -14,7 +14,7 @@ type FormData = {
   // accountType: accountType;
   name: string;
   surname: string;
-  citizenId: string;
+  email: string;
   phoneNumber: string;
   licenseId?: string;
 }
@@ -25,11 +25,6 @@ const validationSchema = yup.object().shape({
   //   .required("Please choose your account type"),
   name: yup.string().required("Please enter your name"),
   surname: yup.string().required("Please enter your surname"),
-  licenseId: yup
-    .string()
-    // .matches(/^[0-9]+$/, "License Number must be only digits")
-    .test('number only', 'License Number must be only digits', val => yup.number().isValidSync(val) || val =='')
-    .test('len', 'License Number must have 7 numbers', val => val?.length===7 || val === ''),
   phoneNumber: yup
     .string()
     .required("Please enter the phone number")
@@ -42,9 +37,9 @@ const editProfile = ({user} : {user:UserInterface}) => {
   const defaultValues = {
     name: user.name,
     surname: user.surname,
-    citizenId: user.citizenId,
     phoneNumber: user.phoneNumber,
-    licenseId: user.licenseId
+    licenseId: user.licenseId,
+    email: user.email,
   }
   const onSubmit = async (data : FormData) => {
     console.log(data);
@@ -69,18 +64,18 @@ const editProfile = ({user} : {user:UserInterface}) => {
       <FormInputText name="name" control={control} label="Name"/>
       <label>Surname</label>
       <FormInputText name="surname" control={control} label="Surname"/>
-      <label>Citizen ID</label>
-      <FormInputText name="citizenId" control={control} label="Citizen ID" readonly={true}/>
       {user.isGuide? (
         <Fragment>
           <label>Guide License ID</label>
-          <FormInputText name="licenseId" control={control} label="License ID"/>
+          <FormInputText name="licenseId" control={control} label="License ID" readonly={true}/>
         </Fragment>
       ):(
         <Fragment></Fragment>
       )}
       <label>Phone number</label>
       <FormInputText name="phoneNumber" control={control} label="Phone number"/>
+      <label>Email</label>
+      <FormInputText name="email" control={control} label="Email" readonly={true}/>
       <button type="submit">Update</button>
     </form>
   );
