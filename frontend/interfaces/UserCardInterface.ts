@@ -1,4 +1,5 @@
 import { UserInterface } from "@/interfaces/UserInterface";
+import { AttractionInterface } from "./AttractionInterface";
 
 export interface UserCardInterface {
   _id?: string;

@@ -3,9 +3,9 @@ import { AttractionInterface } from "./AttractionInterface";
 
 export interface ProgramInterface {
   _id?: string;
-  programId: string;
   name: string;
   description?: string;
+  price: Number;
   startDate: Date;
   endDate: Date;
   startTime: Date;
@@ -17,11 +17,12 @@ export interface ProgramInterface {
   // guide: string | UserInterface[], //objectId User
   attractions?: AttractionInterface[];
   imageUrl?: string;
-  language?: string;
+  language?: string[];
   endLocation?: string;
   descriptionOfEndLocation?: string;
-  pending_participant?: string[] | UserInterface[]; //objectId User
-  accepted_participant?: string[] | UserInterface[]; //objectId User
-  declined_participant?: string[] | UserInterface[]; //objectId User
+  // pending_participant?: string[] | UserInterface[]; //objectId User
+  // accepted_participant?: string[] | UserInterface[]; //objectId User
+  // declined_participant?: string[] | UserInterface[]; //objectId User
   published?: boolean;
+  status?: String;
 }

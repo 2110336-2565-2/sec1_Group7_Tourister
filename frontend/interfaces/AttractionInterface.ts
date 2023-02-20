@@ -1,9 +1,11 @@
 export interface AttractionInterface {
-    // place?: string,
-    // place_description?: string,
-    place_imageUrl?: string,
-    id: string,
-    name: string,
-    option: string,
+    location: string,
+    province?: string,
+    imageUrl?: string,
+    admissionsIncluded : Boolean,
+    visitDate : Date,
+    // id: string,
+    // name: string,
+    // option: string,
     // file: Buffer
 }
