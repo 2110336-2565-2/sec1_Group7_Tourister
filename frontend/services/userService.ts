@@ -1,6 +1,6 @@
 import appConfig from "@/configs/appConfig";
 import ApiErrorResponse from "@/exceptions/ApiErrorResponse";
-import { ApiResponseInterface } from "@/interfaces/ApiResponsetInterface";
+import { ApiLoginResponseInterface, ApiResponseInterface } from "@/interfaces/ApiResponsetInterface";
 import { UserInterface } from "@/interfaces/UserInterface";
 import { isHttpStatusOk } from "@/utils/Utils";
 import axios from "axios";
@@ -82,3 +82,21 @@ export const deleteUserById = async (id: string) => {
     );
   return res;
 };
+
+export const userLogin = async (email: string, password: string) => {
+    const axios_res = await axios.post(
+        `${appConfig.BACKEND_URL}/auth/login`,
+        {
+            email: email,
+            password: password,
+        }
+    )
+    const res = axios_res.data as ApiLoginResponseInterface;
+    if (!isHttpStatusOk(res.code))
+        throw new ApiErrorResponse(
+            res.message ?? "",
+            res.code,
+            res.errors ?? undefined
+        );
+    return res;
+}
