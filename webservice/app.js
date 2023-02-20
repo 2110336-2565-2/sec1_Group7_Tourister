@@ -6,6 +6,7 @@ const mongoose = require('mongoose')
 const dbConfig = require('./configs/database')
 
 const apiRoute = require('./routes/api')
+const authRoute = require('./routes/auth')
 
 const app = express()
 
@@ -13,14 +14,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(logger('dev'))
 app.use(cors())
+app.use(cookieParser());
 
 // use express router
 app.use('/api', apiRoute)
-
-app.get('/helloworld', async (req, res, next) => {
-    console.log("Hello SE2 Project !!")
-    return res.json({ message : "Hello World"})
-})
+app.use('/auth', authRoute)
 
 
 // Error handler
@@ -41,7 +39,7 @@ const errorHandler = (err, req, res, next) => {
 app.use(errorHandler)
 
 
-const PORT = process.env.PORT || 255;
+const PORT = process.env.PORT || 2555;
 app.listen(PORT, () => 
     {
         console.log(`Server is running on PORT ${PORT}`);
