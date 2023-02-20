@@ -2,12 +2,12 @@ const dotenv = require('dotenv')
 dotenv.config()
 
 const appConfig = {
-    'DEV': {
-
+    'development': {
+        TOKEN_EXPIRES_IN: '1h'
     },
-    'PRD': {
-
+    'production': {
+        TOKEN_EXPIRES_IN: '1h'
     },
 }
 
-module.exports=appConfig[process.env.NODE_ENV ?? 'DEV']
+module.exports=appConfig[process.env.NODE_ENV ?? 'development']
