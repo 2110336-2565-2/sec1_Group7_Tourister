@@ -74,8 +74,6 @@ export default function Navbar() {
       };
 
       const response = await updateProgramById(programid, update);
-
-      setShowCard(false);
     }
     axios.get(`http://localhost:2000/api/program`).then((response: any) => {
       const programsWithUsers = response.data.data.map((program: any) => {

@@ -6,7 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Button } from "@mui/material";
 import Link from "next/link";
 import { COLOR } from "@/theme/globalTheme";
-
+import { userLogin } from "@/services/userService";
 import { validationSchema, FormData, defaultValues } from "./loginSchema";
 import { FormInputText } from "@/components/formInput/FormInputText";
 import { FormInputPassword } from "@/components/formInput/FormInputPassword";
@@ -34,12 +34,18 @@ const LoginForm = () => {
   });
 
   const onSubmit = (data: FormData) => {
-    console.log(data);
+    // console.log(data);
+    userLogin(data.email, data.password);
   };
-
   return (
     <form
-      style={{display:'flex', alignItems:'flex-start',flexDirection:'column', margin:'0.8rem',gap:'0.3rem'}}
+      style={{
+        display: "flex",
+        alignItems: "flex-start",
+        flexDirection: "column",
+        margin: "0.8rem",
+        gap: "0.3rem",
+      }}
       onSubmit={handleSubmit(onSubmit)}
     >
       <FormInputRadio
@@ -62,12 +68,19 @@ const LoginForm = () => {
         handleClickShowPassword={handleClickShowPassword}
         handleMouseDownPassword={handleMouseDownPassword}
       />
-      <Button style={{alignSelf:"center"}} type="submit" variant="contained">
+      <Button style={{ alignSelf: "center" }} type="submit" variant="contained">
         Login
       </Button>
-      <div style={{alignSelf:"center", fontSize:"0.8rem", marginTop:"0.5rem"}}>
+      <div
+        style={{ alignSelf: "center", fontSize: "0.8rem", marginTop: "0.5rem" }}
+      >
         <label>Don't have an account? </label>
-        <Link href="/register" style={{textDecoration:"none", color:COLOR.primary}}>Create Now</Link>
+        <Link
+          href="/register"
+          style={{ textDecoration: "none", color: COLOR.primary }}
+        >
+          Create Now
+        </Link>
       </div>
     </form>
   );
