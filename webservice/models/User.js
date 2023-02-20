@@ -1,12 +1,6 @@
 const mongoose = require("mongoose");
 
 const UserSchema = new mongoose.Schema({
-  citizenId: {
-    type: String,
-    required: [true, "Please add Citizen ID"],
-    unique: true,
-    maxlength: [13, "Citizen ID can not be more than 13 digits"],
-  },
   name: {
     type: String,
     trim: true,
@@ -21,10 +15,15 @@ const UserSchema = new mongoose.Schema({
     type: String,
     unique: true,
     required: [true, "Please add an email"],
+    match : [
+      /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+      'Please add a valid email'
+    ]
   },
   password: {
     type: String,
     required: [true, "Please add a password"],
+    minlength : 6
   },
   phoneNumber: {
     type: String,
@@ -33,12 +32,6 @@ const UserSchema = new mongoose.Schema({
   isGuide: {
     type: Boolean,
     default: false
-  },
-  bankName: {
-    type: String,
-  },
-  bankAccount: {
-    type: String,
   },
   remainingAmount: {
     type: Number,

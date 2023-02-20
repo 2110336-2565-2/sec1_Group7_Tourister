@@ -2,17 +2,16 @@ const mongoose = require("mongoose");
 const User = require("./User");
 
 const ProgramSchema = new mongoose.Schema({
-    programId: {
-        type: String,
-        required: [true,'Please add Program ID'],
-        unique: true,
-    },
     name: {
         type: String,
         required: [true, 'Please add a program name']
     },
     description: {
         type: String,
+    },
+    price: {
+        type: Number,
+        required: [true, 'Please add a price']
     },
     startDate: {
         type: Date,
@@ -24,11 +23,11 @@ const ProgramSchema = new mongoose.Schema({
     },
     startTime: {
         type: String,
-        required: [true, 'Please add start time']
+        //required: [true, 'Please add start time']
     },
     endTime: {
         type: String,
-        required: [true, 'Please add end time']
+        //required: [true, 'Please add end time']
     },
     max_participant: {
         type: Number,
@@ -40,6 +39,7 @@ const ProgramSchema = new mongoose.Schema({
     },
     meetLocation: {
         type: String,
+        required: [true, 'Please add meeting location']
     },
     descriptionOfMeetLocation: {
         type: String
@@ -51,12 +51,20 @@ const ProgramSchema = new mongoose.Schema({
     // },
     attractions: {
         type: [new mongoose.Schema({ 
-            // place: String,
-            // place_description: String,
-            place_imageUrl: String,
-            id: String,
-            name: String,
-            option: String,
+            location: {
+                type : String,
+                require : true
+            },
+            province: String,
+            imageUrl: String,
+            admissionsIncluded : {
+                type : Boolean,
+                default: false
+            },
+            visitDate : Date,
+            //id: String,
+            //name: String,
+            //option: String,
             // file: Buffer,
         }, {_id: false})]
     },
@@ -64,7 +72,7 @@ const ProgramSchema = new mongoose.Schema({
         type: String
     },
     language: {
-        type: String
+        type: [String]
     },
     endLocation: {
         type: String
@@ -72,21 +80,26 @@ const ProgramSchema = new mongoose.Schema({
     descriptionOfEndLocation: {
         type: String
     },
-    pending_participant: {
-      type: [mongoose.Schema.Types.ObjectId],
-      ref: "User",
-    },
-    accepted_participant: {
-      type: [mongoose.Schema.Types.ObjectId],
-      ref: "User",
-    },
-    declined_participant: {
-      type: [mongoose.Schema.Types.ObjectId],
-      ref: "User",
-    },
+    // pending_participant: {
+    //   type: [mongoose.Schema.Types.ObjectId],
+    //   ref: "User",
+    // },
+    // accepted_participant: {
+    //   type: [mongoose.Schema.Types.ObjectId],
+    //   ref: "User",
+    // },
+    // declined_participant: {
+    //   type: [mongoose.Schema.Types.ObjectId],
+    //   ref: "User",
+    // },
     published : {
         type : Boolean,
         default : true
+    },
+    status :{
+        type : String,
+        enum : ['ongoing','upcoming','complete'],
+        default : 'upcoming'
     }
 })
 
