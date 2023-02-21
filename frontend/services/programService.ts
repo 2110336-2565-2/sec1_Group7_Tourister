@@ -1,13 +1,14 @@
 import appConfig from "@/configs/appConfig";
 import ApiErrorResponse from "@/exceptions/ApiErrorResponse";
 import { ApiResponseInterface } from "@/interfaces/ApiResponsetInterface";
+import { ProgramFilterInterface } from "@/interfaces/filter/ProgramFilterInterface";
 import { ProgramInterface } from "@/interfaces/ProgramInterface";
-import { isHttpStatusOk } from "@/utils/Utils";
+import { filterObjectToQueryString, isHttpStatusOk } from "@/utils/Utils";
 import axios from "axios";
 
-export const getAllPrograms = async () => {
-    const query = undefined // TODO: discuss how will we query data
-    const axios_res = await axios.get(`${appConfig.BACKEND_URL}/api/program`)
+export const getAllPrograms = async (filter: ProgramFilterInterface | undefined = undefined) => {
+    const query = filter != null ? '?' + filterObjectToQueryString(filter) : ""
+    const axios_res = await axios.get(`${appConfig.BACKEND_URL}/api/program${query}`)
     const res = axios_res.data as ApiResponseInterface<ProgramInterface[]>
     if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined)
     return res;

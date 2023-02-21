@@ -1,53 +1,40 @@
 "use client";
 
 import { useState, MouseEvent, Fragment } from "react";
-// import { useForm,useFieldArray } from "react-hook-form";
+import { Controller,useFormContext,useForm,useFieldArray } from "react-hook-form";
 // import { yupResolver } from "@hookform/resolvers/yup"
 // import * as yup from "yup";
 import { FormInputText } from "@/components/formInput/FormInputText";
+import TextField from "@mui/material/TextField";
 
-
-// type FormData = {
-//   name:string;
-//   option:string;
-//   place_imageUrl:string;
-// }
-// const validationSchema = yup.object().shape({
-//   name: yup.string().required("Please enter your trip name"),
-// });
-// const defaultValues = {
-//   option:"Admission not needed",
-// }
 const attraction = ({id,handleDelete,handleCallback}:{id:string,handleDelete:Function,handleCallback:Function}) => {
+  const [time,setTime] = useState("")
   const [name,setName] = useState("");
-  const [editing, setEditing] = useState(true);
+  const [province,setProvince] = useState("")
   const [option,setOption] = useState("Admission not needed")
-  const [error,setError] = useState(false);
   const [file,setFile] = useState<File | string>();
+  //----------------------------------------------------------
+  const [editing, setEditing] = useState(true);
+  const [error,setError] = useState(false);
   // const [place_imageUrl,setFile] = useState("");
   
-  // const onSubmit = async (data : FormData) => {
-  //   handleCallback(id,data.name,data.option,data.place_imageUrl)
-  // }
-  // const {
-  //   register,
-  //   watch,
-  //   control,
-  //   getValues,
-  //   handleSubmit,
-  //   formState: { errors }
-  // } = useForm<FormData>({
-  //   resolver: yupResolver(validationSchema),
-  //   defaultValues: defaultValues
-  // });
   return (
-    // <form style={{display:'flex', alignItems: 'center',flexDirection:'column'}}onSubmit={handleSubmit(onSubmit)}>
     <div>
-      {/* <a>{id}</a> */}
       {editing===true ? (
         <Fragment>
-        <input type="text" placeholder="Name" value={name} onChange={(e)=>setName(e.target.value)}/>
-      {/* <FormInputText name="name" control={control} label="Name"/> */}
+        
+        <TextField value={name} onChange={(e)=>setName(e.target.value)} label="Name" variant="outlined" size="small"
+          // helperText={error ? error.message : null}
+          // error={Boolean(error)}
+        />
+        <TextField value={time} onChange={(e)=>setTime(e.target.value)} type="time" variant="outlined" size="small"
+          // helperText={error ? error.message : null}
+          // error={Boolean(error)}
+        />
+        <TextField value={province} onChange={(e)=>setProvince(e.target.value)} label="Province" variant="outlined" size="small"
+          // helperText={error ? error.message : null}
+          // error={Boolean(error)}
+        />
         {error===true&&editing===true ? <p>Please add a name for the location</p> : <Fragment/>}
         <select onChange={(e)=>setOption(e.target.value)}>
           <option value={option}>{option}</option>
@@ -56,8 +43,6 @@ const attraction = ({id,handleDelete,handleCallback}:{id:string,handleDelete:Fun
           {option==="Admission not included" ? <Fragment></Fragment> : <option value="Admission not included">Admission not included</option>}
         </select>
         <input type="file" onChange={(e)=>{if(!e.target.files)return;setFile(e.target.files[0])}}></input>
-        {/* <input type="text" placeholder="Image URL" value={name} onChange={(e)=>setName(e.target.value)}/> */}
-        {/* <FormInputText name="file" control={control} label="Enter Image URL"/> */}
         <button type="button" onClick={()=>{handleDelete(id)}}>delete</button>
         <button type="button" onClick={()=>{
           handleCallback(id,name,option,file)
@@ -66,13 +51,14 @@ const attraction = ({id,handleDelete,handleCallback}:{id:string,handleDelete:Fun
         </Fragment>
         ) : (
         <Fragment>
-          <a>{name}</a>
           <button type="button" onClick={()=>{setEditing(true)}}>edit</button>
-          <a>{option}</a>
+          <h4>{time}</h4>
+          <h3>{name}</h3>
+          <h4>{province}</h4>
+          <h4>{option}</h4>
         </Fragment>
         )
       }
-      {/* </form> */}
     </div>
   );
 };

@@ -4,6 +4,7 @@ const cors = require('cors')
 const logger = require('morgan')
 const mongoose = require('mongoose')
 const dbConfig = require('./configs/database')
+const MyLogger = require('./middlewares/myLogger')
 
 const apiRoute = require('./routes/api')
 const authRoute = require('./routes/auth')
@@ -15,6 +16,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(logger('dev'))
 app.use(cors())
 app.use(cookieParser());
+app.use(MyLogger)
 
 // use express router
 app.use('/api', apiRoute)
