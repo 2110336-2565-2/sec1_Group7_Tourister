@@ -27,13 +27,6 @@ export const createBooking = async (data: BookingInterface) => {
     return res;
 }
 
-export const updateBookingById = async (id: string, data: any) => {
-    const axios_res = await axios.put(`${appConfig.BACKEND_URL}/api/booking/${id}`, data) 
-    const res = axios_res.data as ApiResponseInterface<BookingInterface>
-    if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined)
-    return res;
-}
-
 export const deleteBookingById = async (id: string) => {
     const axios_res = await axios.delete(`${appConfig.BACKEND_URL}/api/booking/${id}`)
     const res = axios_res.data as ApiResponseInterface<BookingInterface>
