@@ -12,13 +12,14 @@ import { FormInputPassword } from "@/components/formInput/FormInputPassword";
 import { FormInputRadio } from "@/components/formInput/FormInputRadio";
 import { PrimaryButton } from "@/css/styling";
 import styled from "styled-components";
+import { FormInputAccountType } from "../formInput/FormInputAccountType";
 
 const Form = styled.form`
   display: flex;
   flex-direction: column;
   margin: 0px;
   padding-top: 20px;
-  padding-bottom: 60px;
+  padding-bottom: 20px;
   padding-left: 60px;
   padding-right: 60px;
   gap: 24px;
@@ -73,7 +74,7 @@ const LoginForm = () => {
       <Title style={{alignSelf: "center"}}>LOG IN</Title>
       <Field>
         <FieldName>Choose Account Type</FieldName>
-        <FormInputRadio
+        <FormInputAccountType
           name="accountType"
           control={control}
           label=""
