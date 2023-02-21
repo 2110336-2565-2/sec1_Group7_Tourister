@@ -53,8 +53,13 @@ const LoginForm = () => {
       style={{
         display: "flex",
         flexDirection: "column",
-        margin: "0.8rem",
+        margin: "0.0rem",
+        paddingLeft: "60px",
+        paddingRight: "60px",
         gap: "0.3rem",
+        backgroundColor: "white",
+        borderTopLeftRadius: "2.5rem",
+        borderTopRightRadius: "2.5rem"
       }}
       onSubmit={handleSubmit(onSubmit)}
     >
