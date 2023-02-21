@@ -105,6 +105,46 @@ const BookingController = {
         })
         res.json(result)
     },
+
+    /**
+     * acceptBookingById
+     * @param {import('express').Request} req
+     * @param {import('express').Response} res
+     * @param {import('express').NextFunction} next
+     */
+     async acceptBookingById(req, res, next) {
+        const result = await tryCatchMongooseService(async () => {
+            const bookingId = req.params.id
+            await Booking.findByIdAndUpdate(bookingId, { $set: "accepted" })
+            const updatedBooking = await Booking.findById(bookingId)
+            return {
+                code: 204,
+                data: updatedBooking,
+                message: "booking accepted"
+            }
+        }) 
+        res.json(result)
+    },
+
+    /**
+     * declineBookingById
+     * @param {import('express').Request} req
+     * @param {import('express').Response} res
+     * @param {import('express').NextFunction} next
+     */
+     async declineBookingById(req, res, next) {
+        const result = await tryCatchMongooseService(async () => {
+            const bookingId = req.params.id
+            await Booking.findByIdAndUpdate(bookingId, { $set: "declined" })
+            const updatedBooking = await Booking.findById(bookingId)
+            return {
+                code: 204,
+                data: updatedBooking,
+                message: "booking declined"
+            }
+        }) 
+        res.json(result)
+    },
 }
 
 module.exports = BookingController
