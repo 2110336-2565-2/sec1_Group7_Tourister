@@ -10,6 +10,7 @@ export interface ProgramInterface {
   endDate: Date;
   startTime: Date;
   endTime: Date;
+  province: string;
   max_participant: number;
   num_participant?: number;
   meetLocation?: string;

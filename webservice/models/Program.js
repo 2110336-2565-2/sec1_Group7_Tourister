@@ -29,6 +29,10 @@ const ProgramSchema = new mongoose.Schema({
         type: String,
         //required: [true, 'Please add end time']
     },
+    province: {
+        type: String,
+        required: [true, 'Please add province']
+    },
     max_participant: {
         type: Number,
         required: [true, 'Please add max participant']
