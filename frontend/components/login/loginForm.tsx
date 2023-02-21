@@ -13,15 +13,35 @@ import { FormInputRadio } from "@/components/formInput/FormInputRadio";
 import { PrimaryButton } from "@/css/styling";
 import styled from "styled-components";
 
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  margin: 0px;
+  padding-top: 20px;
+  padding-bottom: 60px;
+  padding-left: 60px;
+  padding-right: 60px;
+  gap: 24px;
+  background-color: white;
+  border-top-left-radius: 2.5rem;
+  border-top-right-radius: 2.5rem
+`;
+
 const Title = styled.h3`
-  font-size: 1.2em;
+  font-size: 1.4em;
   text-align: center;
   font-weight: bold;
+  margin: 0px;
+`;
+
+const Field = styled.div`
+  display: grid;
+  gap: 10px;
 `;
 
 const FieldName = styled.label`
-  font-size: 0.8em;
-`
+  font-size: 1em;
+`;
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -49,49 +69,42 @@ const LoginForm = () => {
     userLogin(data.email, data.password);
   };
   return (
-    <form
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        margin: "0.0rem",
-        paddingLeft: "60px",
-        paddingRight: "60px",
-        gap: "0.3rem",
-        backgroundColor: "white",
-        borderTopLeftRadius: "2.5rem",
-        borderTopRightRadius: "2.5rem"
-      }}
-      onSubmit={handleSubmit(onSubmit)}
-    >
+    <Form onSubmit={handleSubmit(onSubmit)}>
       <Title style={{alignSelf: "center"}}>LOG IN</Title>
-      <FieldName>Choose Account Type</FieldName>
-      <FormInputRadio
-        name="accountType"
-        control={control}
-        label=""
-        options={[
-          { label: "tourist", value: "tourist" },
-          { label: "guide", value: "guide" },
-        ]}
-      />
-      <FieldName>Email</FieldName>
-      <FormInputMail name="email" control={control} label="Email" />
-      <FieldName>Password</FieldName>
-      <FormInputPassword
-        name="password"
-        control={control}
-        label="Password"
-        showPassword={showPassword}
-        handleClickShowPassword={handleClickShowPassword}
-        handleMouseDownPassword={handleMouseDownPassword}
-      />
-      <PrimaryButton style={{ alignSelf: "center" }} type="submit" variant="contained">
-        Login
+      <Field>
+        <FieldName>Choose Account Type</FieldName>
+        <FormInputRadio
+          name="accountType"
+          control={control}
+          label=""
+          options={[
+            { label: "tourist", value: "tourist" },
+            { label: "guide", value: "guide" },
+          ]}
+        />
+      </Field>
+      <Field>
+        <FieldName>Email</FieldName>
+        <FormInputMail name="email" control={control} label="Email" />
+      </Field>
+      <Field>
+        <FieldName>Password</FieldName>
+        <FormInputPassword
+          name="password"
+          control={control}
+          label="Password"
+          showPassword={showPassword}
+          handleClickShowPassword={handleClickShowPassword}
+          handleMouseDownPassword={handleMouseDownPassword}
+        />
+      </Field>
+      <PrimaryButton style={{ alignSelf: "center", width: "100%", margin: "0" }} type="submit" variant="contained">
+        Log in
       </PrimaryButton>
       <div
         style={{ alignSelf: "center", fontSize: "0.8rem", marginTop: "0.5rem" }}
       >
-        <label>Don&apos;t have an account? </label>
+        <label style={{ color: "gray"}}>Don&apos;t have an account? </label>
         <Link
           href="/register"
           style={{ textDecoration: "none", color: COLOR.primary }}
@@ -99,7 +112,7 @@ const LoginForm = () => {
           Create Now
         </Link>
       </div>
-    </form>
+    </Form>
   );
 };
 
