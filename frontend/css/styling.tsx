@@ -1,6 +1,7 @@
 import { Button } from "@mui/material";
 import { styled } from '@mui/material/styles';
 import { FormLabel } from '@mui/material';
+import { createTheme } from "@mui/material";
 
 
 export const PrimaryButton = styled(Button)({
@@ -19,7 +20,26 @@ export const PrimaryButton = styled(Button)({
 });
 
 
-export const CustomLabel = styled(FormLabel)({
+export const RequireLabel = styled(FormLabel)({
     color: 'black',
+    fontSize: 15,
     fontWeight: 'bold',
+    padding: '5px 0',
+    asterisk: { color: 'red' }
+})
+
+
+export const formLabelsTheme  = createTheme({
+    components: {
+        MuiFormLabel: {
+            styleOverrides: {
+                asterisk: {
+                    color: "#db3131",
+                    "&$error": {
+                        color: "#db3131",
+                    },
+                },
+            },
+        },
+    },
 })

@@ -12,18 +12,8 @@ import { FormInputText } from "@/components/formInput/FormInputText";
 import { FormInputPassword } from "@/components/formInput/FormInputPassword";
 import { FormInputRadio } from "@/components/formInput/FormInputRadio";
 import { COLOR } from "@/theme/globalTheme";
-import { PrimaryButton } from "@/css/styling";
-import styled from "styled-components";
+import { PrimaryButton, RequireLabel } from "@/css/styling";
 
-const Title = styled.h3`
-  font-size: 1.2em;
-  text-align: center;
-  font-weight: bold;
-`;
-
-const FieldName = styled.label`
-  font-size: 0.8em;
-`
 
 const registerForm = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -75,25 +65,25 @@ const registerForm = () => {
   return (
     <form style={{display:'flex', alignItems:'flex-start',flexDirection:'column', margin:'0.8rem',gap:'0.3rem'}} onSubmit={handleSubmit(onSubmit)}>
       <FormInputRadio name="accountType" control={control} label="" options={[{label: "tourist", value: "tourist"}, { label:"guide", value: "guide" }]}/>
-      <label>Name</label>
+      <RequireLabel required>Name</RequireLabel>
       <FormInputText name="name" control={control} label="Name"/>
-      <label>Surname</label>
+      <RequireLabel required>Surname</RequireLabel>
       <FormInputText name="surname" control={control} label="Surname"/>
-      <label>Citizen ID</label>
+      <RequireLabel required>Citizen ID</RequireLabel>
       <FormInputText name="citizenId" control={control} label="Citizen ID"/>
       {watchAccountType==="guide" && 
         <>
-          <label>Guide License ID</label>
+          <RequireLabel required>Guide License ID</RequireLabel>
           <FormInputText name="guideLicenseId" control={control} label="License ID"/>
         </>
       }
-      <label>Phone number</label>
+      <RequireLabel required>Phone number</RequireLabel>
       <FormInputText name="phoneNumber" control={control} label="Phone number"/>
-      <label>Email</label>
+      <RequireLabel required>Email</RequireLabel>
       <FormInputText name="email" control={control} label="Email"/>
-      <label>Password</label>
+      <RequireLabel required>Password</RequireLabel>
       <FormInputPassword name="password" control={control} label="Password" showPassword={showPassword} handleClickShowPassword={handleClickShowPassword} handleMouseDownPassword={handleMouseDownPassword} />
-      <label>Confirm Password</label>
+      <RequireLabel required>Confirm Password</RequireLabel>
       <FormInputPassword name="confirmPassword" control={control} label="Password" showPassword={showConfirmPassword} handleClickShowPassword={handleClickShowConfirmPassword} handleMouseDownPassword={handleMouseDownPassword} />
       <PrimaryButton style={{alignSelf:"center"}} type="submit" variant="contained" >Sign Up </PrimaryButton>
       <div style={{alignSelf:"center", fontSize:"0.8rem", marginTop:"0.5rem"}}>
