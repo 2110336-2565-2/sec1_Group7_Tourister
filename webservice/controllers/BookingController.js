@@ -115,7 +115,7 @@ const BookingController = {
      async acceptBookingById(req, res, next) {
         const result = await tryCatchMongooseService(async () => {
             const bookingId = req.params.id
-            await Booking.findByIdAndUpdate(bookingId, { $set: "accepted" })
+            await Booking.findByIdAndUpdate(bookingId, { $set: {status:"accepted"} })
             const updatedBooking = await Booking.findById(bookingId)
             return {
                 code: 204,
@@ -135,7 +135,7 @@ const BookingController = {
      async declineBookingById(req, res, next) {
         const result = await tryCatchMongooseService(async () => {
             const bookingId = req.params.id
-            await Booking.findByIdAndUpdate(bookingId, { $set: "declined" })
+            await Booking.findByIdAndUpdate(bookingId, { $set: {status:"declined"} })
             const updatedBooking = await Booking.findById(bookingId)
             return {
                 code: 204,

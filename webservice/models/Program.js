@@ -102,7 +102,7 @@ const ProgramSchema = new mongoose.Schema({
     },
     status :{
         type : String,
-        enum : ['ongoing','upcoming','complete'],
+        enum : ['ongoing','upcoming','complete','cancel'],
         default : 'upcoming'
     }
 })
