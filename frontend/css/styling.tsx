@@ -21,10 +21,11 @@ export const PrimaryButton = styled(Button)({
 
 
 export const RequireLabel = styled(FormLabel)({
+    required: true,
     color: 'black',
     fontSize: 15,
     fontWeight: 'bold',
-    padding: '5px 0',
+    padding: '5px 0px',
     asterisk: { color: 'red' }
 })
 
