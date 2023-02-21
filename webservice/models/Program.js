@@ -48,11 +48,11 @@ const ProgramSchema = new mongoose.Schema({
     descriptionOfMeetLocation: {
         type: String
     },
-    // guide: {
-    //     type: mongoose.Schema.Types.ObjectId, 
-    //     ref: 'User',
-    //     required: [true, 'Please add a guide']
-    // },
+    guide: {
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'User',
+        required: [true, 'Please add a guide']
+    },
     attractions: {
         type: [new mongoose.Schema({ 
             location: {

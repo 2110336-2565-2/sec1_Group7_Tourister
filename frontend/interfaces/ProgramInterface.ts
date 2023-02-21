@@ -5,7 +5,7 @@ export interface ProgramInterface {
   _id?: string;
   name: string;
   description?: string;
-  price: Number;
+  price: number;
   startDate: Date;
   endDate: Date;
   startTime: Date;
@@ -15,7 +15,7 @@ export interface ProgramInterface {
   num_participant?: number;
   meetLocation?: string;
   descriptionOfMeetLocation?: string;
-  // guide: string | UserInterface[], //objectId User
+  guide: string | UserInterface[], //objectId User
   attractions?: AttractionInterface[];
   imageUrl?: string;
   language?: string[];
