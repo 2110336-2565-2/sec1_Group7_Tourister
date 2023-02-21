@@ -8,9 +8,20 @@ import Link from "next/link";
 import { COLOR } from "@/theme/globalTheme";
 import { userLogin } from "@/services/userService";
 import { validationSchema, FormData, defaultValues } from "./loginSchema";
-import { FormInputText } from "@/components/formInput/FormInputText";
+import { FormInputMail } from "@/components/formInput/FormInputMail";
 import { FormInputPassword } from "@/components/formInput/FormInputPassword";
 import { FormInputRadio } from "@/components/formInput/FormInputRadio";
+import styled from "styled-components";
+
+const Title = styled.h3`
+  font-size: 1.2em;
+  text-align: center;
+  font-weight: bold;
+`;
+
+const FieldName = styled.label`
+  font-size: 0.8em;
+`
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -41,13 +52,14 @@ const LoginForm = () => {
     <form
       style={{
         display: "flex",
-        alignItems: "flex-start",
         flexDirection: "column",
         margin: "0.8rem",
         gap: "0.3rem",
       }}
       onSubmit={handleSubmit(onSubmit)}
     >
+      <Title style={{alignSelf: "center"}}>LOG IN</Title>
+      <FieldName>Choose Account Type</FieldName>
       <FormInputRadio
         name="accountType"
         control={control}
@@ -57,9 +69,9 @@ const LoginForm = () => {
           { label: "guide", value: "guide" },
         ]}
       />
-      <label>Email</label>
-      <FormInputText name="email" control={control} label="Email" />
-      <label>Password</label>
+      <FieldName>Email</FieldName>
+      <FormInputMail name="email" control={control} label="Email" />
+      <FieldName>Password</FieldName>
       <FormInputPassword
         name="password"
         control={control}
@@ -74,7 +86,7 @@ const LoginForm = () => {
       <div
         style={{ alignSelf: "center", fontSize: "0.8rem", marginTop: "0.5rem" }}
       >
-        <label>Don't have an account? </label>
+        <label>Don&apos;t have an account? </label>
         <Link
           href="/register"
           style={{ textDecoration: "none", color: COLOR.primary }}
