@@ -11,7 +11,6 @@ import { FormInputHiddenText } from "@/components/formInput/FormInputHiddenText"
 import { FormInputRadio } from "@/components/formInput/FormInputRadio";
 import { COLOR } from "@/theme/globalTheme";
 import { PrimaryButton, RequireFormLabel } from "@/css/styling";
-// import { FormLabel } from '@mui/material';
 
 
 const registerForm = () => {
@@ -78,25 +77,25 @@ const registerForm = () => {
       } onSubmit={handleSubmit(onSubmit)}>
       <RequireFormLabel>Choose Account Type</RequireFormLabel>
       <FormInputRadio name="accountType" control={control} label="" options={[{label: "tourist", value: "tourist"}, { label:"guide", value: "guide" }]}/>
-      <RequireFormLabel required>Name</RequireFormLabel>
+      <RequireFormLabel className="AsteriskRequired">Name</RequireFormLabel>
       <FormInputText name="name" control={control} label="Name"/>
-      <RequireFormLabel required>Surname</RequireFormLabel>
+      <RequireFormLabel className="AsteriskRequired">Surname</RequireFormLabel>
       <FormInputText name="surname" control={control} label="Surname"/>
-      <RequireFormLabel required>Citizen ID</RequireFormLabel>
+      <RequireFormLabel className="AsteriskRequired">Citizen ID</RequireFormLabel>
       <FormInputText name="citizenId" control={control} label="Citizen ID"/>
       {watchAccountType==="guide" && 
         <>
-          <RequireFormLabel required>Guide License ID</RequireFormLabel>
+          <RequireFormLabel className="AsteriskRequired">Guide License ID</RequireFormLabel>
           <FormInputText name="guideLicenseId" control={control} label="License ID"/>
         </>
       }
-      <RequireFormLabel required>Phone number</RequireFormLabel>
+      <RequireFormLabel className="AsteriskRequired">Phone number</RequireFormLabel>
       <FormInputText name="phoneNumber" control={control} label="Phone number"/>
-      <RequireFormLabel required>Email</RequireFormLabel>
+      <RequireFormLabel className="AsteriskRequired">Email</RequireFormLabel>
       <FormInputText name="email" control={control} label="Email"/>
-      <RequireFormLabel required>Password</RequireFormLabel>
+      <RequireFormLabel className="AsteriskRequired">Password</RequireFormLabel>
       <FormInputHiddenText name="password" control={control} label="Password" showPassword={showPassword} handleClickShowPassword={handleClickShowPassword} handleMouseDownPassword={handleMouseDownPassword} />
-      <RequireFormLabel required>Confirm Password</RequireFormLabel>
+      <RequireFormLabel className="AsteriskRequired">Confirm Password</RequireFormLabel>
       <FormInputHiddenText name="confirmPassword" control={control} label="Confirm Password" showPassword={showConfirmPassword} handleClickShowPassword={handleClickShowConfirmPassword} handleMouseDownPassword={handleMouseDownPassword} />
       <PrimaryButton style={{alignSelf:"center"}} type="submit" variant="contained" >Sign Up </PrimaryButton>
       <div style={{alignSelf:"center", fontSize:"0.8rem", marginTop:"0.5rem"}}>
