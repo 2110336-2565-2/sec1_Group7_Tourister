@@ -11,6 +11,7 @@ import { FormInputHiddenText } from "@/components/formInput/FormInputHiddenText"
 import { FormInputRadio } from "@/components/formInput/FormInputRadio";
 import { COLOR } from "@/theme/globalTheme";
 import { PrimaryButton, RequireFormLabel } from "@/css/styling";
+import { FormInputAccountType } from "../formInput/FormInputAccountType";
 
 
 const registerForm = () => {
@@ -76,7 +77,7 @@ const registerForm = () => {
       }
       } onSubmit={handleSubmit(onSubmit)}>
       <RequireFormLabel>Choose Account Type</RequireFormLabel>
-      <FormInputRadio name="accountType" control={control} label="" options={[{label: "tourist", value: "tourist"}, { label:"guide", value: "guide" }]}/>
+      <FormInputAccountType name="accountType" control={control} label="" options={[{label: "tourist", value: "tourist"}, { label:"guide", value: "guide" }]}/>
       <RequireFormLabel className="AsteriskRequired">Name</RequireFormLabel>
       <FormInputText name="name" control={control} label="Name"/>
       <RequireFormLabel className="AsteriskRequired">Surname</RequireFormLabel>
