@@ -20,16 +20,17 @@ export const PrimaryButton = styled(Button)({
 });
 
 
-export const RequireLabel = styled(FormLabel)({
+// fontWeight: 'bold',
+export const RequireFormLabel = styled(FormLabel)({
     required: true,
     color: 'black',
     fontSize: 15,
-    fontWeight: 'bold',
     padding: '5px 0px',
     asterisk: { color: 'red' }
 })
 
 
+// to make asterisk red
 export const formLabelsTheme  = createTheme({
     components: {
         MuiFormLabel: {

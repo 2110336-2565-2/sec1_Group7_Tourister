@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button } from "@mui/material";
 import Link from "next/link";
 import { COLOR } from "@/theme/globalTheme";
 import { userLogin } from "@/services/userService";
@@ -11,6 +10,7 @@ import { validationSchema, FormData, defaultValues } from "./loginSchema";
 import { FormInputMail } from "@/components/formInput/FormInputMail";
 import { FormInputPassword } from "@/components/formInput/FormInputPassword";
 import { FormInputRadio } from "@/components/formInput/FormInputRadio";
+import { PrimaryButton } from "@/css/styling";
 import styled from "styled-components";
 
 const Title = styled.h3`
@@ -85,9 +85,9 @@ const LoginForm = () => {
         handleClickShowPassword={handleClickShowPassword}
         handleMouseDownPassword={handleMouseDownPassword}
       />
-      <Button style={{ alignSelf: "center" }} type="submit" variant="contained">
+      <PrimaryButton style={{ alignSelf: "center" }} type="submit" variant="contained">
         Login
-      </Button>
+      </PrimaryButton>
       <div
         style={{ alignSelf: "center", fontSize: "0.8rem", marginTop: "0.5rem" }}
       >
