@@ -48,7 +48,10 @@ const ProgramController = {
         if(filterBody.endDate != null) filter.push({ endDate: { $lte: filterBody.endDate } })
 
         const result = await tryCatchMongooseService(async () => {
-            const programs = await Program.find({ $and: filter })
+            const programs = await Program.find({ $and: filter }).populate({
+                path:'guide',
+                select: 'name surname'
+            })
 
             return {
                 code: 200,
