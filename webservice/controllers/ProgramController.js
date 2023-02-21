@@ -32,7 +32,7 @@ const ProgramController = {
      * @param {import('express').NextFunction} next
      */
     async getAllPrograms(req, res, next) {
-        const filterBody = req.body
+        const filterBody = req.query
         let filter = []
         if(filterBody.province != null) filter.push({ province: filterBody.province })
         if(filterBody.language != null) filter.push({ language: filterBody.language }) 
