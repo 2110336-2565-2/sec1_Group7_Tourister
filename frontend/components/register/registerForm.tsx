@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup"
-import { Button } from "@mui/material"
-import styled from 'styled-components'
+// import { Button } from "@mui/material"
+// import styled from 'styled-components'
 import Link from 'next/link';
 
 import { validationSchema, FormData, defaultValues} from "./registerSchema";
@@ -12,6 +12,18 @@ import { FormInputText } from "@/components/formInput/FormInputText";
 import { FormInputPassword } from "@/components/formInput/FormInputPassword";
 import { FormInputRadio } from "@/components/formInput/FormInputRadio";
 import { COLOR } from "@/theme/globalTheme";
+import { PrimaryButton } from "@/css/styling";
+import styled from "styled-components";
+
+const Title = styled.h3`
+  font-size: 1.2em;
+  text-align: center;
+  font-weight: bold;
+`;
+
+const FieldName = styled.label`
+  font-size: 0.8em;
+`
 
 const registerForm = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -44,7 +56,6 @@ const registerForm = () => {
     const userData: UserInterface = {
       name: data.name,
       surname: data.surname,
-      citizenId: data.citizenId,
       email: data.email,
       password: data.password,
       phoneNumber: data.phoneNumber,
@@ -84,7 +95,7 @@ const registerForm = () => {
       <FormInputPassword name="password" control={control} label="Password" showPassword={showPassword} handleClickShowPassword={handleClickShowPassword} handleMouseDownPassword={handleMouseDownPassword} />
       <label>Confirm Password</label>
       <FormInputPassword name="confirmPassword" control={control} label="Password" showPassword={showConfirmPassword} handleClickShowPassword={handleClickShowConfirmPassword} handleMouseDownPassword={handleMouseDownPassword} />
-      <Button style={{alignSelf:"center"}} type="submit" variant="contained" >Sign Up </Button>
+      <PrimaryButton style={{alignSelf:"center"}} type="submit" variant="contained" >Sign Up </PrimaryButton>
       <div style={{alignSelf:"center", fontSize:"0.8rem", marginTop:"0.5rem"}}>
         <label>Already have an account? </label>
         <Link href="/login" style={{textDecoration:"none", color:COLOR.primary}}>Log in</Link>

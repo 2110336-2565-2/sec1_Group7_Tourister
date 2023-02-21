@@ -1,13 +1,25 @@
 import { Button } from "@mui/material";
 import { styled } from '@mui/material/styles';
+import { FormLabel } from '@mui/material';
 
-// TODO: set style
-export const CustomButton = styled(Button)({
-    background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+
+export const PrimaryButton = styled(Button)({
+    background: '#257AFF',
     border: 0,
-    borderRadius: 3,
-    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+    borderRadius: 12,
+    boxShadow: '0 3px 5px 2px rgba(0, 0, 0, .4)',
+    height: 50,
+    width: 280,
+    padding: '10px 30px',
+    margin: 15,
     color: 'white',
-    height: 48,
-    padding: '0 30px',
+    fontSize: '20px',
+    fontWeight: "bold",
+    textTransform: 'capitalize'
 });
+
+
+export const CustomLabel = styled(FormLabel)({
+    color: 'black',
+    fontWeight: 'bold',
+})
