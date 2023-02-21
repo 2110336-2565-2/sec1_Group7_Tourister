@@ -32,8 +32,23 @@ const ProgramController = {
      * @param {import('express').NextFunction} next
      */
     async getAllPrograms(req, res, next) {
+        const filterBody = req.body
+        let filter = []
+        if(filterBody.province != null) filter.push({ province: filterBody.province })
+        if(filterBody.language != null) filter.push({ language: filterBody.language }) 
+        if(filterBody.minPrice != null && filterBody.maxPrice != null) {
+            filter.push({ price: { $gte: filterBody.minPrice } })
+            filter.push({ price: { $lte: filterBody.maxPrice } })
+        }
+        if(filterBody.minPeople != null && filterBody.maxPeople != null) {
+            filter.push({ max_participant: { $gte: filterBody.minPeople } })
+            filter.push({ max_participant: { $lte: filterBody.maxPeople } })
+        }
+        if(filterBody.startDate != null) filter.push({ startDate: { $gte: filterBody.startDate} })
+        if(filterBody.endDate != null) filter.push({ endDate: { $lte: filterBody.endDate } })
+
         const result = await tryCatchMongooseService(async () => {
-            const programs = await Program.find({})
+            const programs = await Program.find({ $and: filter })
 
             return {
                 code: 200,
