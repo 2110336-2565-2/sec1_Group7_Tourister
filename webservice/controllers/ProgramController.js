@@ -14,7 +14,10 @@ const ProgramController = {
     async getProgramById(req, res, next) {
         const result = await tryCatchMongooseService( async () => {
             const programId = req.params.id
-            const program = await Program.findById(programId)
+            const program = await Program.findById(programId).populate({
+                path:'guide',
+                select: 'name surname'
+            })
 
             return {
                 code: 200,
