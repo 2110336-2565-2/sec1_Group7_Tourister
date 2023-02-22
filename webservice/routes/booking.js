@@ -3,7 +3,7 @@ const router = express.Router()
 const bookingController = require('../controllers/BookingController')
 const { authTourist, authUser, authGuide } = require('../middlewares/auth')
 
-router.get('/booking', authUser, bookingController.getAllBookings)
+router.get('/booking', bookingController.getAllBookings)
 router.get('/booking/:id', authUser, bookingController.getBookingById)
 router.post('/booking', authTourist, bookingController.createBooking)
 router.delete('/booking/:id', authUser, bookingController.deleteBookingById)

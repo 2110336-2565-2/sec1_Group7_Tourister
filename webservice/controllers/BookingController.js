@@ -14,7 +14,13 @@ const BookingController = {
     async getBookingById(req, res, next) {
         const result = await tryCatchMongooseService( async () => {
             const bookingId = req.params.id
-            const booking = await Booking.findById(bookingId)
+            const booking = await Booking.findById(bookingId).populate([{
+                path:'user',
+                select: 'name surname phoneNumber imageUrl'
+            },{
+                path:'program',
+                select: 'name'
+            }])
 
             return {
                 code: 200,
@@ -33,7 +39,13 @@ const BookingController = {
      */
     async getAllBookings(req, res, next) {
         const result = await tryCatchMongooseService(async () => {
-            const bookings = await Booking.find({})
+            const bookings = await Booking.find({}).populate([{
+                path:'user',
+                select: 'name surname phoneNumber imageUrl'
+            },{
+                path:'program',
+                select: 'name'
+            }])
 
             return {
                 code: 200,
