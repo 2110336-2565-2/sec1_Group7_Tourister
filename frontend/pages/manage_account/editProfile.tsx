@@ -5,7 +5,6 @@ export default function Page() {
   return (
   <>
     <NavBar/>
-    <h1>Tourister</h1>
     <EditProfile/>
   </>
   );
