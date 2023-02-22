@@ -38,7 +38,7 @@ export default function programPending() {
     // console.log(response.data);
     for (let i = 0; i < response.data.length; i++) {
       if (response.data[i].status === "pending") {
-        if (response.data[i].program in programPendingDict) {
+        if (response.data[i].program._id in programPendingDict) {
           programPendingDict[response.data[i].program._id].push(
             response.data[i].user._id
           );
