@@ -29,16 +29,6 @@ export default function userPending() {
   const { programId } = router.query;
   console.log(programId);
 
-  const statusChange = async (bookingId: string, status: string) => {
-    if (status === "accepted") {
-      const res = acceptBookingById(bookingId);
-      console.log(res);
-    } else if (status === "declined") {
-      const res = declineBookingById(bookingId);
-      console.log(res);
-    }
-  };
-
   async function fetchData() {
     var userArr: any = [];
     var requestArr: any = [];
@@ -81,6 +71,18 @@ export default function userPending() {
     setuserCards(usercards);
   }
   console.log(userCards);
+
+  const statusChange = async (bookingId: string, status: string) => {
+    if (status === "accepted") {
+      const res = acceptBookingById(bookingId);
+      console.log(res);
+    } else if (status === "declined") {
+      const res = declineBookingById(bookingId);
+      console.log(res);
+    }
+    fetchData();
+  };
+
   useEffect(() => {
     fetchData();
   }, []);

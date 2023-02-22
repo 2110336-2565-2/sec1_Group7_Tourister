@@ -33,9 +33,7 @@ export default function userPending() {
       user: [],
     },
   ]);
-  const router = useRouter();
-  const { programId } = router.query;
-  console.log(programId);
+
 
   const statusChange = async (status: string) => {
     setcardStatus(status);
