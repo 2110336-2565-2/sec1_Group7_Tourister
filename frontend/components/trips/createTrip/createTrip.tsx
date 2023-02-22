@@ -18,6 +18,7 @@ import TextField from "@mui/material/TextField";
 import { createProgram,updateProgramById} from "@/services/programService"
 import { ProgramInterface } from "@/interfaces/ProgramInterface";
 import { set } from "react-hook-form/dist/utils";
+import { useRouter } from "next/router";
 var ReactDOM = require('react-dom');
 const API_URL = 'http://localhost:2000/api/program'
 
@@ -82,6 +83,8 @@ const validationSchema = yup.object().shape({
 });
 
 const createTrip = () => {
+  const user = JSON.parse(localStorage.getItem("user")||`{}`)
+  console.log(user)
   const [stage, setStage ] = useState(0);
   const [days,setDays] =  useState<string[]>([]);
   // const [dayTrips,setDayTrips] = useState<Object>();
@@ -96,6 +99,7 @@ const createTrip = () => {
       "file": File | undefined
     }[]
   }[]>();
+  const router = useRouter();
 
   const HandleNext = () => {
     setDays([])
@@ -230,7 +234,7 @@ const createTrip = () => {
         {stage===0?(
           <Fragment>
             <label>Trip Name</label>
-            <Link href="/trips" passHref><button type="button">Back</button></Link>
+            <button type="button" onClick={()=>{router.push("/trips");}}>Back</button>
             <FormInputText name="name" control={control} label="Name"/>
             <label>Trip Description</label>
             <FormInputText name="description" control={control} label="More Information..."/>
