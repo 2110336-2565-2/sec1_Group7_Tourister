@@ -1,10 +1,8 @@
 "use client";
 
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useState } from "react";
-import axios from "axios";
 import { Button } from "@mui/material";
-import { getProgramById, updateProgramById } from "@/services/programService";
 import { useRouter } from "next/router";
 import {
   acceptBookingById,
@@ -13,7 +11,9 @@ import {
 } from "@/services/bookingService";
 import { UserCardInterface } from "@/interfaces/UserCardInterface";
 import { getUserById } from "@/services/userService";
+import Link from "next/link";
 
+var programName = "";
 export default function userPending() {
   const [userCards, setuserCards] = useState<[UserCardInterface]>([
     {
@@ -35,12 +35,13 @@ export default function userPending() {
     var bookingIdArr: any = [];
     var usercards: any = [];
     const response = await getAllBookings();
-    console.log(response.data);
+    // console.log(response.data);
     for (let i = 0; i < response.data.length; i++) {
       if (
         response.data[i].program._id === programId &&
         response.data[i].status === "pending"
       ) {
+        programName = response.data[i].program.name;
         userArr.push(response.data[i].user._id);
         requestArr.push(response.data[i].request);
         bookingIdArr.push(response.data[i]._id);
@@ -67,25 +68,26 @@ export default function userPending() {
 
       usercards.push(usercard);
     }
-    console.log(usercards);
+    // console.log(usercards);
     setuserCards(usercards);
   }
-  console.log(userCards);
+  // console.log(userCards);
 
   const statusChange = async (bookingId: string, status: string) => {
     if (status === "accepted") {
       const res = acceptBookingById(bookingId);
-      console.log(res);
+      // console.log(res);
     } else if (status === "declined") {
       const res = declineBookingById(bookingId);
-      console.log(res);
+      // console.log(res);
     }
-    fetchData();
+    await fetchData();
   };
 
   useEffect(() => {
     fetchData();
   }, []);
+  console.log(programName);
 
   return (
     <div>
@@ -94,43 +96,55 @@ export default function userPending() {
           display: "flex",
         }}
       >
-        <div
+        <Link href="/request" passHref>
+          <button type="button">Back</button>
+        </Link>
+        <h2
           style={{
             alignItems: "center",
             textAlign: "center",
             margin: "auto",
             alignSelf: "center",
           }}
-        ></div>
+        >
+          {programName}
+        </h2>
+        <div> All ({userCards.length})</div>
       </nav>
-
-      <div>
-        {userCards.map((user: any) => (
-          <div key={user.userId}>
-            <div>
-              {user.name} {user.surname}
+      {userCards.length > 0 ? (
+        <div>
+          {userCards.map((user: any) => (
+            <div key={user.userId}>
+              <div>
+                {user.name} {user.surname}
+              </div>
+              <div>Tel: {user.phoneNumber}</div>
+              <div>Request: </div>
+              <div>{user.request}</div>
+              <Button
+                type="button"
+                variant="outlined"
+                onClick={() => statusChange(user.bookingId, "declined")}
+              >
+                DECLINED
+              </Button>
+              <Button
+                type="button"
+                variant="contained"
+                onClick={() => statusChange(user.bookingId, "accepted")}
+              >
+                ACCEPT
+              </Button>
+              <p>---------------------------------------------------------</p>
             </div>
-            <div>Tel: {user.phoneNumber}</div>
-            <div>Request: </div>
-            <div>{user.request}</div>
-            <Button
-              type="button"
-              variant="outlined"
-              onClick={() => statusChange(user.bookingId, "declined")}
-            >
-              DECLINED
-            </Button>
-            <Button
-              type="button"
-              variant="contained"
-              onClick={() => statusChange(user.bookingId, "accepted")}
-            >
-              ACCEPT
-            </Button>
-            <p>---------------------------------------------------------</p>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      ) : (
+        <div>
+          Looks like there are no more requests for this trip. Please return to
+          the Request page
+        </div>
+      )}
     </div>
   );
 }
