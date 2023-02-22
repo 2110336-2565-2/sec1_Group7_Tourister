@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button } from "@mui/material";
@@ -33,10 +33,18 @@ const LoginForm = () => {
     defaultValues: defaultValues,
   });
 
-  const onSubmit = (data: FormData) => {
-    // console.log(data);
-    userLogin(data.email, data.password);
+  const onSubmit = async (data: FormData) => {
+    try {
+      const response = await userLogin(data.email, data.password);
+      console.log(response.data);
+      localStorage.setItem("user", JSON.stringify(response.data));
+      console.log(localStorage.getItem("user"));
+    } catch (error) {
+      console.log(error);
+      window.alert(error);
+    }
   };
+
   return (
     <form
       style={{
@@ -48,6 +56,8 @@ const LoginForm = () => {
       }}
       onSubmit={handleSubmit(onSubmit)}
     >
+      <h2>LOG IN</h2>
+      <h4>Choose Account Type</h4>
       <FormInputRadio
         name="accountType"
         control={control}
