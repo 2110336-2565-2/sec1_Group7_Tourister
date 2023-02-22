@@ -8,8 +8,10 @@ import axios from "axios";
 export const getAllBookings = async () => {
     const query = undefined // TODO: discuss how will we query data
     const axios_res = await axios.get(`${appConfig.BACKEND_URL}/api/booking`)
+    
     const res = axios_res.data as ApiResponseInterface<BookingInterface[]>
     if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined)
+    // console.log(res)
     return res;
 } 
 
@@ -19,6 +21,7 @@ export const getBookingById = async (id: string) => {
     if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined)
     return res;
 }
+
 
 export const createBooking = async (data: BookingInterface) => {
     const axios_res = await axios.post(`${appConfig.BACKEND_URL}/api/booking`, data) 

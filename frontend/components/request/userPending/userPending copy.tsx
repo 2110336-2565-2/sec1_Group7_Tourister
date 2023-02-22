@@ -5,8 +5,9 @@ import { useState } from "react";
 import axios from "axios";
 import { Button } from "@mui/material";
 import { getProgramById, updateProgramById } from "@/services/programService";
+import { useRouter } from 'next/router';
 
-export default function Navbar() {
+export default function userPending() {
   const [isClicked, setIsClicked] = useState(false);
   const [cardstatus, setcardStatus] = useState<string>();
   const [moved, setMoved] = useState(false);
@@ -29,12 +30,10 @@ export default function Navbar() {
       language: "",
       endLocation: "",
       descriptionOfEndLocation: "",
-      pending_participant: [],
-      accepted_participant: [],
-      declined_participant: [],
       user: [],
     },
   ]);
+
 
   const statusChange = async (status: string) => {
     setcardStatus(status);
