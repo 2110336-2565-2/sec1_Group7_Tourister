@@ -12,10 +12,11 @@ type AccountType = "tourist" | "guide";
 
 const ProfileBox = styled.div`
   width: 80%;
-  height: 10rem;
+  height: 11rem;
   border-radius: 1rem;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: flex-start;
   align-items: center;
   box-shadow: 0.1rem 0.1rem 0.5rem 0 rgba(0, 0, 0, 0.5);
   margin-bottom: 1rem;
@@ -53,13 +54,17 @@ const manageAccount = () => {
       onSubmit={handleSubmit}
     >
       <ProfileBox style={{ backgroundColor: COLOR.primary }}>
-        <div>
-          <h2>{`hello ${accountType}`}</h2>
-          <h1>{`${user.name} ${user.surname}`}</h1>
-          {/* </div>
-        <div> */}
-          <h4>Total</h4>
-          <h1>{`THB ${user.remainingAmount}`}</h1>
+        <div style={{width:"100%",height:"5.5rem",display:"flex",flexDirection:"row",justifyContent:"flex-start",alignItems:"center",alignSelf:"flex-start",marginTop:"0.3rem",paddingLeft:"15%"}}>
+          <div style={{backgroundColor:"white",width:"3.4rem",height:"3.4rem",borderRadius:"1.7rem",marginTop:0,marginBottom:0}}></div>
+          <div style={{display:"flex",flexDirection:"column",justifyContent:"flex-start",padding:"1rem"}}>
+            <h5 style={{color:"white",marginTop:"0.5rem",marginBottom:0}}>{`hello ${accountType}`}</h5>
+            <h3 style={{color:"white",marginTop:0,marginBottom:0,fontWeight:"bolder"}}>{`${user.name} ${user.surname}`}</h3>
+          </div>
+        </div>
+        <div style={{width:"70%",height:"0.07rem",backgroundColor:"white"}}/>
+        <div style={{width:"100%",height:"4.43rem",alignSelf:"flex-start",paddingLeft:"15%"}}>
+          <h5 style={{color:"white",marginTop:"0.8rem",marginBottom:0}}>Total</h5>
+          <h2 style={{color:"white",marginTop:0,marginBottom:0}}>{`THB ${user.remainingAmount}`}</h2>
         </div>
       </ProfileBox>
       <Link
