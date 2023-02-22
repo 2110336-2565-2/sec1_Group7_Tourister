@@ -11,25 +11,8 @@ import { FormInputHiddenText } from "@/components/formInput/FormInputHiddenText"
 import { COLOR } from "@/theme/globalTheme";
 import { PrimaryButton, RequireFormLabel } from "@/css/styling";
 import { FormInputAccountType } from "../formInput/FormInputAccountType";
-import styled from "styled-components";
+import { Form, FieldName } from "@/css/layout";
 
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  margin: 0px;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  padding-left: 60px;
-  padding-right: 60px;
-  gap: 24px;
-  background-color: white;
-  border-top-left-radius: 2.5rem;
-  border-top-right-radius: 2.5rem
-`;
-
-const FieldName = styled.label`
-  font-size: 1em;
-`;
 
 const registerForm = () => {
   const [showPassword, setShowPassword] = useState(false);

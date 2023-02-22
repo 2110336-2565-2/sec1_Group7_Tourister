@@ -9,40 +9,10 @@ import { userLogin } from "@/services/userService";
 import { validationSchema, FormData, defaultValues } from "./loginSchema";
 import { FormInputMail } from "@/components/formInput/FormInputMail";
 import { FormInputPassword } from "@/components/formInput/FormInputPassword";
-import { FormInputRadio } from "@/components/formInput/FormInputRadio";
 import { PrimaryButton } from "@/css/styling";
-import styled from "styled-components";
 import { FormInputAccountType } from "../formInput/FormInputAccountType";
+import { Form, Title, Field, FieldName } from "@/css/layout";
 
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  margin: 0px;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  padding-left: 60px;
-  padding-right: 60px;
-  gap: 24px;
-  background-color: white;
-  border-top-left-radius: 2.5rem;
-  border-top-right-radius: 2.5rem
-`;
-
-const Title = styled.h3`
-  font-size: 1.4em;
-  text-align: center;
-  font-weight: bold;
-  margin: 0px;
-`;
-
-const Field = styled.div`
-  display: grid;
-  gap: 10px;
-`;
-
-const FieldName = styled.label`
-  font-size: 1em;
-`;
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
