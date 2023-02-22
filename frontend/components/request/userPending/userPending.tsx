@@ -1,10 +1,8 @@
 "use client";
 
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useState } from "react";
-import axios from "axios";
-import { Button} from "@mui/material";
-import { getProgramById, updateProgramById } from "@/services/programService";
+import { Button } from "@mui/material";
 import { useRouter } from "next/router";
 import {
   acceptBookingById,
@@ -30,12 +28,6 @@ export default function userPending() {
   const router = useRouter();
   const { programId } = router.query;
   console.log(programId);
-
-  // async function getProgramName() {
-  //   const response = await getProgramById(programId);
-  //   programName = response.data.name;
-  // }
-  // getProgramName();
 
   async function fetchData() {
     var userArr: any = [];
@@ -89,7 +81,7 @@ export default function userPending() {
       const res = declineBookingById(bookingId);
       // console.log(res);
     }
-    fetchData();
+    await fetchData();
   };
 
   useEffect(() => {
@@ -104,7 +96,9 @@ export default function userPending() {
           display: "flex",
         }}
       >
-        <Link href="/request" passHref><button type="button">Back</button></Link>
+        <Link href="/request" passHref>
+          <button type="button">Back</button>
+        </Link>
         <h2
           style={{
             alignItems: "center",
@@ -117,33 +111,40 @@ export default function userPending() {
         </h2>
         <div> All ({userCards.length})</div>
       </nav>
-      <div>
-        {userCards.map((user: any) => (
-          <div key={user.userId}>
-            <div>
-              {user.name} {user.surname}
+      {userCards.length > 0 ? (
+        <div>
+          {userCards.map((user: any) => (
+            <div key={user.userId}>
+              <div>
+                {user.name} {user.surname}
+              </div>
+              <div>Tel: {user.phoneNumber}</div>
+              <div>Request: </div>
+              <div>{user.request}</div>
+              <Button
+                type="button"
+                variant="outlined"
+                onClick={() => statusChange(user.bookingId, "declined")}
+              >
+                DECLINED
+              </Button>
+              <Button
+                type="button"
+                variant="contained"
+                onClick={() => statusChange(user.bookingId, "accepted")}
+              >
+                ACCEPT
+              </Button>
+              <p>---------------------------------------------------------</p>
             </div>
-            <div>Tel: {user.phoneNumber}</div>
-            <div>Request: </div>
-            <div>{user.request}</div>
-            <Button
-              type="button"
-              variant="outlined"
-              onClick={() => statusChange(user.bookingId, "declined")}
-            >
-              DECLINED
-            </Button>
-            <Button
-              type="button"
-              variant="contained"
-              onClick={() => statusChange(user.bookingId, "accepted")}
-            >
-              ACCEPT
-            </Button>
-            <p>---------------------------------------------------------</p>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      ) : (
+        <div>
+          Looks like there are no more requests for this trip. Please return to
+          the Request page
+        </div>
+      )}
     </div>
   );
 }
