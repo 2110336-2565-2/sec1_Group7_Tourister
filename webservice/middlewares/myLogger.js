@@ -5,7 +5,7 @@
  * @param {import('express').NextFunction} next
  */
 function Log(req, res, next) {
-    if(req.cookies != null) console.log("cookies found: \n", req.cookies)
+    if(req.cookies) console.log("cookies found: \n", req.cookies)
 
     return next()
 }

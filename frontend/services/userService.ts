@@ -2,12 +2,14 @@ import appConfig from "@/configs/appConfig";
 import ApiErrorResponse from "@/exceptions/ApiErrorResponse";
 import { ApiLoginResponseInterface, ApiResponseInterface } from "@/interfaces/ApiResponsetInterface";
 import { UserInterface } from "@/interfaces/UserInterface";
-import { isHttpStatusOk } from "@/utils/Utils";
+import { addHoursToDate, isHttpStatusOk } from "@/utils/Utils";
 import axios from "axios";
+import { setCookie, getCookie, hasCookie } from 'cookies-next'
 
 export const getAllUsers = async () => {
+  const configs = localStorage.getItem("accessToken") != undefined ? { headers: { 'Authorization' : `Bearer ${localStorage.getItem("accessToken")}`} } : {}
   const query = undefined; // TODO: discuss how will we query data
-  const axios_res = await axios.get(`${appConfig.BACKEND_URL}/api/user`);
+  const axios_res = await axios.get(`${appConfig.BACKEND_URL}/api/user`, configs);
   const res = axios_res.data as ApiResponseInterface<UserInterface[]>;
   if (!isHttpStatusOk(res.code))
     throw new ApiErrorResponse(
@@ -19,7 +21,8 @@ export const getAllUsers = async () => {
 };
 
 export const getUserById = async (id: string) => {
-  const axios_res = await axios.get(`${appConfig.BACKEND_URL}/api/user/${id}`);
+  const configs = localStorage.getItem("accessToken") != undefined ? { headers: { 'Authorization' : `Bearer ${localStorage.getItem("accessToken")}`} } : {}
+  const axios_res = await axios.get(`${appConfig.BACKEND_URL}/api/user/${id}`, configs);
   const res = axios_res.data as ApiResponseInterface<UserInterface>;
   if (!isHttpStatusOk(res.code))
     throw new ApiErrorResponse(
@@ -55,9 +58,11 @@ export const registerUser = async (data: UserInterface) => {
 };
 
 export const updateUserById = async (id: string, data: any) => {
+  const configs = localStorage.getItem("accessToken") != undefined ? { headers: { 'Authorization' : `Bearer ${localStorage.getItem("accessToken")}`} } : {}
   const axios_res = await axios.put(
     `${appConfig.BACKEND_URL}/api/user/${id}`,
-    data
+    data,
+    configs
   );
   const res = axios_res.data as ApiResponseInterface<UserInterface>;
   if (!isHttpStatusOk(res.code))
@@ -70,8 +75,10 @@ export const updateUserById = async (id: string, data: any) => {
 };
 
 export const deleteUserById = async (id: string) => {
+  const configs = localStorage.getItem("accessToken") != undefined ? { headers: { 'Authorization' : `Bearer ${localStorage.getItem("accessToken")}`} } : {}
   const axios_res = await axios.delete(
-    `${appConfig.BACKEND_URL}/api/user/${id}`
+    `${appConfig.BACKEND_URL}/api/user/${id}`,
+    configs
   );
   const res = axios_res.data as ApiResponseInterface<UserInterface>;
   if (!isHttpStatusOk(res.code))
@@ -98,5 +105,15 @@ export const userLogin = async (email: string, password: string) => {
             res.code,
             res.errors ?? undefined
         );
+    else {
+        const cookieOptions = {
+            expires: addHoursToDate(new Date(), 1)
+        }
+        setCookie('accessToken', res.token, cookieOptions)
+        if(res.token != null) {
+            localStorage.setItem("accessToken", res.token)
+            localStorage.setItem("token_expires", addHoursToDate(new Date(), 1).toString())
+        }
+    }
     return res;
 }
