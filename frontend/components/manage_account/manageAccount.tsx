@@ -6,6 +6,7 @@ import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import SwapHorizOutlinedIcon from "@mui/icons-material/SwapHorizOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import NavigateNextOutlinedIcon from "@mui/icons-material/NavigateNextOutlined";
+import { UserInterface } from "@/interfaces/UserInterface";
 
 type AccountType = "tourist" | "guide";
 
@@ -33,7 +34,14 @@ const Button = styled.button`
 `;
 
 const manageAccount = () => {
-  const user = JSON.parse(localStorage.getItem("user") || `{}`);
+  let user:UserInterface
+  if (typeof window !== 'undefined') {
+    // console.log('we are running on the client');
+    user = JSON.parse(localStorage.getItem("user")||`{}`)
+  } else {
+    // console.log('we are running on the server');
+    user = JSON.parse(`{}`)
+  }
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   };
@@ -51,7 +59,7 @@ const manageAccount = () => {
           {/* </div>
         <div> */}
           <h4>Total</h4>
-          <h1>{`THB ${user.balance}`}</h1>
+          <h1>{`THB ${user.remainingAmount}`}</h1>
         </div>
       </ProfileBox>
       <Link
