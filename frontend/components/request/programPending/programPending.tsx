@@ -5,7 +5,6 @@ import { useState } from "react";
 import Link from "next/link";
 import { getProgramById } from "@/services/programService";
 import { getAllBookings } from "@/services/bookingService";
-import { ProgramInterface } from "@/interfaces/ProgramInterface";
 
 export default function programPending() {
   const [programs, setPrograms] = useState<[ProgramInterface]>([
@@ -39,7 +38,7 @@ export default function programPending() {
     // console.log(response.data);
     for (let i = 0; i < response.data.length; i++) {
       if (response.data[i].status === "pending") {
-        if (response.data[i].program._id in programPendingDict) {
+        if (response.data[i].program in programPendingDict) {
           programPendingDict[response.data[i].program._id].push(
             response.data[i].user._id
           );
@@ -50,11 +49,11 @@ export default function programPending() {
         }
       }
     }
-    console.log(programPendingDict);
     for (const [key, value] of Object.entries(programPendingDict)) {
       // console.log(`${key}: ${value}`);
       const response = await getProgramById(key);
-      response.data.num_pending = programPendingDict[key].length;
+      // console.log(response.data);
+      response.data.num_pending = value.length;
       programArr.push(response.data);
     }
     setPrograms(programArr);
