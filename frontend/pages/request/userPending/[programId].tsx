@@ -10,7 +10,6 @@ export default function Page() {
   return (
     <>
       <GuideNavBar />
-      <h1>Tourister</h1>
       <UserPending />
       {/* <h1>{programName}</h1> */}
     </>

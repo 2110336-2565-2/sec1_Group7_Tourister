@@ -46,7 +46,7 @@ export default function programPending() {
   async function fetchData() {
     const response = await getAllBookings();
     // setBookings(response.data);
-    console.log(response.data);
+    // console.log(response.data);
     for (let i = 0; i < response.data.length; i++) {
       if (response.data[i].status === "pending") {
         // bookingStatusArr.push(response.data[i].user);
@@ -62,10 +62,10 @@ export default function programPending() {
       }
     }
     for (const [key, value] of Object.entries(programPendingDict)) {
-      console.log(`${key}: ${value}`);
-      console.log(key);
+      // console.log(`${key}: ${value}`);
+      // console.log(key);
       const response = await getProgramById(key);
-      console.log(response.data);
+      // console.log(response.data);
       response.data.num_pending = value.length;
       programArr.push(response.data);
       // programArr[-1].num_pending = value.length;
@@ -77,11 +77,11 @@ export default function programPending() {
     fetchData();
   }, []);
 
-  console.log(programs);
+  // console.log(programs);
 
   return (
     <div>
-      <h1>Program Pending</h1>
+      <h1>Request</h1>
       {programs.map((program) => (
         <Link href={`/request/userPending/${program._id}`} key={program._id}>
           <div key={program._id}>
