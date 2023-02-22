@@ -103,7 +103,7 @@ const createTrip = () => {
       return;
     }
     setStage(1)
-    console.log(date)
+    // console.log(date)
     end.setDate(end.getDate() + 1)
     let k = 0
     while(date.toString()!==end.toString()){
@@ -113,7 +113,7 @@ const createTrip = () => {
       k = k+1
       if(k>100){break}
     }
-    console.log(days)
+    // console.log(days)
   }
   const HandleSaveDraft = () => {
     setStage(0)

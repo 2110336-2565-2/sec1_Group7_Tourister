@@ -7,14 +7,14 @@ import { Controller,useFormContext,useForm,useFieldArray } from "react-hook-form
 import { FormInputText } from "@/components/formInput/FormInputText";
 import TextField from "@mui/material/TextField";
 
-const attraction = ({id,handleDelete,handleCallback}:{id:string,handleDelete:Function,handleCallback:Function}) => {
-  const [time,setTime] = useState("")
-  const [location,setLocation] = useState("");
-  const [province,setProvince] = useState("")
-  const [option,setOption] = useState("Admission not needed")
+const attraction = ({id,t,l,p,o,handleDelete,handleCallback}:{id:string,t:string,l:string,p:string,o:string,handleDelete:Function,handleCallback:Function}) => {
+  const [time,setTime] = useState(t)
+  const [location,setLocation] = useState(l);
+  const [province,setProvince] = useState(p)
+  const [option,setOption] = useState(o)
   const [file,setFile] = useState<File | string>();
   //----------------------------------------------------------
-  const [editing, setEditing] = useState(true);
+  const [editing, setEditing] = useState(l==="");
   const [errorTime,setErrorTime] = useState(false);
   const [errorName,setErrorName] = useState(false);
   const [errorProvince,setErrorProvince] = useState(false);
