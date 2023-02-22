@@ -33,24 +33,22 @@ const Button = styled.button`
 `
 
 const manageAccount = () => {
+  const user = JSON.parse(localStorage.getItem("user")||`{}`)
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   };
 
-  const accountType = "Guide"
-  const name = "Name"
-  const surname = "Surname"
-  const balance = 999999
+  const accountType = user.isGuide?"Guide":"Tourist"
   return (
     <form style={{display:'flex', alignItems: 'center',flexDirection:'column'}}onSubmit={handleSubmit}>
       <ProfileBox style={{backgroundColor:COLOR.primary}}>
         <div>
           <h2>{`hello ${accountType}`}</h2>
-          <h1>{`${name} ${surname}`}</h1>
+          <h1>{`${user.name} ${user.surname}`}</h1>
         {/* </div>
         <div> */}
           <h4>Total</h4>
-          <h1>{`THB ${balance}`}</h1>
+          <h1>{`THB ${user.balance}`}</h1>
         </div>
       </ProfileBox>
       <Link href="./manage_account/editProfile" style={{width:"100%",textDecoration:"none"}} passHref>
