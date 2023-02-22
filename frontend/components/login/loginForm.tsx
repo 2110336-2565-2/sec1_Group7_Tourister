@@ -34,6 +34,7 @@ const LoginForm = () => {
     resolver: yupResolver(validationSchema),
     defaultValues: defaultValues,
   });
+
   const router = useRouter();
   const onSubmit = async (data: FormData) => {
     try {
@@ -42,7 +43,7 @@ const LoginForm = () => {
       localStorage.setItem("user", JSON.stringify(response.data));
 
       console.log(localStorage.getItem("user"));
-      if (response.data?.isGuide) {
+      if (response.data.isGuide) {
         router.push("/trips");
       } else {
         router.push("/search");
@@ -52,7 +53,6 @@ const LoginForm = () => {
       window.alert(error);
     }
   };
-
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
       <Title style={{ alignSelf: "center" }}>LOG IN</Title>
