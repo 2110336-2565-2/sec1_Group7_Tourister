@@ -16,7 +16,7 @@ const ProgramController = {
             const programId = req.params.id
             const program = await Program.findById(programId).populate({
                 path:'guide',
-                select: 'name surname'
+                //select: 'name surname'
             })
 
             return {
@@ -53,7 +53,7 @@ const ProgramController = {
         const result = await tryCatchMongooseService(async () => {
             const programs = await Program.find({ $and: filter }).populate({
                 path:'guide',
-                select: 'name surname'
+                //select: 'name surname'
             })
 
             return {
