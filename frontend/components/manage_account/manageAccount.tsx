@@ -33,29 +33,26 @@ const Button = styled.button`
 `
 
 const manageAccount = () => {
-  const [name, setName] = useState('Admin');
-  const [surname, setSurname] = useState('Tester');
-  // const [citizenId, setCitizenId] = useState('190xx-xxxxx-xx-x');
-  const [guideLicenseID, setGuideLicenseID] = useState('9-999999');
-  const [phoneNumber, setPhoneNumber] = useState('099-999-9999');
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log({
-      'Name': name,
-      'Surname': surname,
-      'Guide License ID': guideLicenseID,
-      'Phone Number': phoneNumber})
   };
-  // const handleBackButton = (e: MouseEvent) => {
-  //   e.preventDefault();
-  //   console.log({
-  //     'Name': name,
-  //     'Surname': surname})
-  // };
 
+  const accountType = "Guide"
+  const name = "Name"
+  const surname = "Surname"
+  const balance = 999999
   return (
     <form style={{display:'flex', alignItems: 'center',flexDirection:'column'}}onSubmit={handleSubmit}>
-      <ProfileBox style={{backgroundColor:COLOR.primary}}>TODO: SHOW PROFILE</ProfileBox>
+      <ProfileBox style={{backgroundColor:COLOR.primary}}>
+        <div>
+          <h2>{`hello ${accountType}`}</h2>
+          <h1>{`${name} ${surname}`}</h1>
+        {/* </div>
+        <div> */}
+          <h4>Total</h4>
+          <h1>{`THB ${balance}`}</h1>
+        </div>
+      </ProfileBox>
       <Link href="./manage_account/editProfile" style={{width:"100%",textDecoration:"none"}} passHref>
         <Button>
           <PersonOutlinedIcon style={{width:"20%",color:"gray"}}></PersonOutlinedIcon>
