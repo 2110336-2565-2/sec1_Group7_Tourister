@@ -50,7 +50,7 @@ const manageAccount = () => {
         <div>Test3</div>
       </ButtonContainer> */}
       
-      <ButtonContainer>
+      {/* <ButtonContainer>
         <Icon>???</Icon>
         <Link href="./manage_account/editProfile" style={{width:"60%"}} passHref><button type="button">Edit Profile</button></Link>
         <Icon style={{width:"20%"}}>???</Icon>
@@ -64,11 +64,11 @@ const manageAccount = () => {
         <Icon style={{width:"20%"}}>???</Icon>
         <Link href="" style={{width:"60%"}} passHref><button type="button">Log Out</button></Link>
         <Icon style={{width:"20%"}}>???</Icon>
-      </ButtonContainer>
+      </ButtonContainer> */}
 
 
-      {/* <Link href="./manage_account/editProfile" passHref><button type="button">Edit Profile</button></Link>
-      <Link href="../register" passHref><button type="button">Transfer Funds</button></Link> */}
+      <Link href="./manage_account/editProfile" passHref><button type="button">Edit Profile</button></Link>
+      <Link href="../register" passHref><button type="button">Transfer Funds</button></Link>
     </form>
   );
 };
