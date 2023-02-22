@@ -9,6 +9,12 @@ import { FormInputText } from "@/components/formInput/FormInputText";
 import {updateUserById} from "@/services/userService";
 import { UserInterface } from "@/interfaces/UserInterface";
 import axios from 'axios';
+
+import { COLOR } from "@/theme/globalTheme";
+import { PrimaryButton, RequireFormLabel } from "@/css/styling";
+import { Form, FieldName } from "@/css/layout";
+import NavigateBeforeOutlinedIcon from '@mui/icons-material/NavigateBeforeOutlined';
+
 const API_URL = 'http://localhost:2000/api/program'
 type FormData = {
   // accountType: accountType;
@@ -58,8 +64,19 @@ const editProfile = ({user} : {user:UserInterface}) => {
   return (
     <form style={{display:'flex', alignItems: 'center',flexDirection:'column'}}onSubmit={handleSubmit(onSubmit)}>
       {/* <Link href="../register" passHref><button type="button" onClick={handleBackButton}>Back</button></Link> */}
+      {/* back + title */}
+      <div style={{width:"100%",height:"3.5rem",display:"flex",justifyContent:"center",backgroundColor:"red"}}>
+
+      </div>
       <Link href="/manage_account" passHref><button type="button">Back</button></Link>
+      {/* Title */}
       <label>Profile</label>
+      {/* Change picture */}
+
+      {/* Change profile detail */}
+
+
+      {/* old version */}
       <label>Name</label>
       <FormInputText name="name" control={control} label="Name"/>
       <label>Surname</label>

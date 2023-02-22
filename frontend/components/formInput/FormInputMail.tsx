@@ -1,9 +1,9 @@
-import React from "react";
-import { Controller, useFormContext } from "react-hook-form";
-import TextField from "@mui/material/TextField";
+import { Controller} from "react-hook-form";
 import { FormInputProps } from "./formInputProps";
+import { TextField, InputAdornment } from "@mui/material";
+import { MailOutlined } from "@mui/icons-material";
 
-export const FormInputText = ({ name, control, label, readonly }: FormInputProps) => {
+export const FormInputMail = ({ name, control}: FormInputProps) => {
   return (
     <Controller
       name={name}
@@ -20,10 +20,14 @@ export const FormInputText = ({ name, control, label, readonly }: FormInputProps
           onChange={onChange}
           value={value}
           fullWidth
-          placeholder={label}
+          placeholder="Email"
           variant="outlined"
           InputProps={{
-            readOnly: readonly
+            startAdornment: (
+                <InputAdornment position="start">
+                    <MailOutlined/>
+                </InputAdornment>
+            )
           }}
         />
       )}

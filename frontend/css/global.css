@@ -4,5 +4,15 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  height: fit-content;
   padding-bottom: 4rem;
+}
+body {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+.AsteriskRequired::after {
+  color: red;
+  content: "*";
 }

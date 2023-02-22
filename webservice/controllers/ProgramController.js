@@ -35,7 +35,11 @@ const ProgramController = {
      * @param {import('express').NextFunction} next
      */
     async getAllPrograms(req, res, next) {
+<<<<<<< HEAD
         const filterBody = req.query
+=======
+        const filterBody = req.body
+>>>>>>> styling
         let filter = []
         if(filterBody.province != null) filter.push({ province: filterBody.province })
         if(filterBody.language != null) filter.push({ language: filterBody.language }) 
@@ -51,10 +55,14 @@ const ProgramController = {
         if(filterBody.endDate != null) filter.push({ endDate: { $lte: filterBody.endDate } })
 
         const result = await tryCatchMongooseService(async () => {
+<<<<<<< HEAD
             const programs = await Program.find({ $and: filter }).populate({
                 path:'guide',
                 select: 'name surname'
             })
+=======
+            const programs = await Program.find({ $and: filter })
+>>>>>>> styling
 
             return {
                 code: 200,

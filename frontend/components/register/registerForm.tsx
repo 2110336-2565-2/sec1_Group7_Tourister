@@ -1,17 +1,18 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup"
-import { Button } from "@mui/material"
-import styled from 'styled-components'
 import Link from 'next/link';
 
 import { validationSchema, FormData, defaultValues} from "./registerSchema";
 import { registerUser } from "@/services/userService";
 import { UserInterface } from "@/interfaces/UserInterface";
 import { FormInputText } from "@/components/formInput/FormInputText";
-import { FormInputPassword } from "@/components/formInput/FormInputPassword";
-import { FormInputRadio } from "@/components/formInput/FormInputRadio";
+import { FormInputHiddenText } from "@/components/formInput/FormInputHiddenText";
 import { COLOR } from "@/theme/globalTheme";
+import { PrimaryButton, RequireFormLabel } from "@/css/styling";
+import { FormInputAccountType } from "../formInput/FormInputAccountType";
+import { Form, FieldName } from "@/css/layout";
+
 
 const registerForm = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -44,7 +45,6 @@ const registerForm = () => {
     const userData: UserInterface = {
       name: data.name,
       surname: data.surname,
-      citizenId: data.citizenId,
       email: data.email,
       password: data.password,
       phoneNumber: data.phoneNumber,
@@ -62,34 +62,35 @@ const registerForm = () => {
   }
 
   return (
-    <form style={{display:'flex', alignItems:'flex-start',flexDirection:'column', margin:'0.8rem',gap:'0.3rem'}} onSubmit={handleSubmit(onSubmit)}>
-      <FormInputRadio name="accountType" control={control} label="" options={[{label: "tourist", value: "tourist"}, { label:"guide", value: "guide" }]}/>
-      <label>Name</label>
+    <Form onSubmit={handleSubmit(onSubmit)}>
+      <FieldName>Choose Account Type</FieldName>
+      <FormInputAccountType name="accountType" control={control} label="" options={[{label: "tourist", value: "tourist"}, { label:"guide", value: "guide" }]}/>
+      <RequireFormLabel className="AsteriskRequired">Name</RequireFormLabel>
       <FormInputText name="name" control={control} label="Name"/>
-      <label>Surname</label>
+      <RequireFormLabel className="AsteriskRequired">Surname</RequireFormLabel>
       <FormInputText name="surname" control={control} label="Surname"/>
-      <label>Citizen ID</label>
+      <RequireFormLabel className="AsteriskRequired">Citizen ID</RequireFormLabel>
       <FormInputText name="citizenId" control={control} label="Citizen ID"/>
       {watchAccountType==="guide" && 
         <>
-          <label>Guide License ID</label>
+          <RequireFormLabel className="AsteriskRequired">Guide License ID</RequireFormLabel>
           <FormInputText name="guideLicenseId" control={control} label="License ID"/>
         </>
       }
-      <label>Phone number</label>
+      <RequireFormLabel className="AsteriskRequired">Phone number</RequireFormLabel>
       <FormInputText name="phoneNumber" control={control} label="Phone number"/>
-      <label>Email</label>
+      <RequireFormLabel className="AsteriskRequired">Email</RequireFormLabel>
       <FormInputText name="email" control={control} label="Email"/>
-      <label>Password</label>
-      <FormInputPassword name="password" control={control} label="Password" showPassword={showPassword} handleClickShowPassword={handleClickShowPassword} handleMouseDownPassword={handleMouseDownPassword} />
-      <label>Confirm Password</label>
-      <FormInputPassword name="confirmPassword" control={control} label="Password" showPassword={showConfirmPassword} handleClickShowPassword={handleClickShowConfirmPassword} handleMouseDownPassword={handleMouseDownPassword} />
-      <Button style={{alignSelf:"center"}} type="submit" variant="contained" >Sign Up </Button>
+      <RequireFormLabel className="AsteriskRequired">Password</RequireFormLabel>
+      <FormInputHiddenText name="password" control={control} label="Password" showPassword={showPassword} handleClickShowPassword={handleClickShowPassword} handleMouseDownPassword={handleMouseDownPassword} />
+      <RequireFormLabel className="AsteriskRequired">Confirm Password</RequireFormLabel>
+      <FormInputHiddenText name="confirmPassword" control={control} label="Confirm Password" showPassword={showConfirmPassword} handleClickShowPassword={handleClickShowConfirmPassword} handleMouseDownPassword={handleMouseDownPassword} />
+      <PrimaryButton style={{alignSelf:"center"}} type="submit" variant="contained" >Sign Up </PrimaryButton>
       <div style={{alignSelf:"center", fontSize:"0.8rem", marginTop:"0.5rem"}}>
         <label>Already have an account? </label>
         <Link href="/login" style={{textDecoration:"none", color:COLOR.primary}}>Log in</Link>
       </div>
-    </form>
+    </Form>
   );
 };
 

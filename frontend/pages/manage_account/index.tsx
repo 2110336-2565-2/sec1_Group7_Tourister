@@ -5,7 +5,9 @@ export default function Page() {
   return (
   <>
     <GuideNavBar/>
-    <h1>Tourister</h1>
+    <div style={{paddingTop:"3rem",paddingBottom:"0.9rem",justifyContent:"center"}}>
+      <h1 style={{textAlign:"center",fontWeight:"bolder"}}>TOURISTER</h1>
+    </div>
     <ManageAccount/>
   </>
   );
