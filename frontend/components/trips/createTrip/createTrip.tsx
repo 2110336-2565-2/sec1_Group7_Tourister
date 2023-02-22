@@ -19,7 +19,6 @@ import { createProgram,updateProgramById} from "@/services/programService"
 import { ProgramInterface } from "@/interfaces/ProgramInterface";
 import { set } from "react-hook-form/dist/utils";
 import { useRouter } from "next/router";
-import { UserInterface } from "@/interfaces/UserInterface";
 var ReactDOM = require('react-dom');
 const API_URL = 'http://localhost:2000/api/program'
 
@@ -84,6 +83,8 @@ const validationSchema = yup.object().shape({
 });
 
 const createTrip = () => {
+  const user = JSON.parse(localStorage.getItem("user")||`{}`)
+  console.log(user)
   const [stage, setStage ] = useState(0);
   const [days,setDays] =  useState<string[]>([]);
   // const [dayTrips,setDayTrips] = useState<Object>();
@@ -129,7 +130,7 @@ const createTrip = () => {
     try {
       if(dayTrips){
         console.log({...data,dayTrips:dayTrips})
-        const response = await createProgram({...data,dayTrips:dayTrips,guide:user})
+        const response = await createProgram({...data,dayTrips:dayTrips})
         // const response = await axios.post(API_URL,{...data,dayTrips:dayTrips})
         console.log(response)
       }
@@ -227,16 +228,6 @@ const createTrip = () => {
       "file": undefined
     }]
   }}
-  // let user:JSON
-  let user:UserInterface
-  if (typeof window !== 'undefined') {
-    // console.log('we are running on the client');
-    user = JSON.parse(localStorage.getItem("user")||`{}`)
-  } else {
-    // console.log('we are running on the server');
-    user = JSON.parse(`{}`)
-  }
-  // console.log(user)
   return (
     <form style={{display:'flex', alignItems: 'center',flexDirection:'column'}}onSubmit={handleSubmit(onSubmit)}>
       {/* <Link href="../register" passHref><button type="button" onClick={handleBackButton}>Back</button></Link> */}

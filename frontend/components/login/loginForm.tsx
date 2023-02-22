@@ -40,8 +40,9 @@ const LoginForm = () => {
       const response = await userLogin(data.email, data.password);
       console.log(response.data);
       localStorage.setItem("user", JSON.stringify(response.data));
+      
       console.log(localStorage.getItem("user"));
-      if (data.accountType === "guide") {
+      if (response.data?.isGuide) {
         router.push("/trips");
       } else {
         router.push("/search");
@@ -53,11 +54,7 @@ const LoginForm = () => {
   };
 
   return (
-<<<<<<< Updated upstream
     <form
-=======
-    <Form
->>>>>>> Stashed changes
       style={{
         display: "flex",
         alignItems: "flex-start",

@@ -6,8 +6,9 @@ import { isHttpStatusOk } from "@/utils/Utils";
 import axios from "axios";
 
 export const getAllBookings = async () => {
+    const configs = localStorage.getItem("accessToken") != undefined ? { headers: { 'Authorization' : `Bearer ${localStorage.getItem("accessToken")}`} } : {}
     const query = undefined // TODO: discuss how will we query data
-    const axios_res = await axios.get(`${appConfig.BACKEND_URL}/api/booking`)
+    const axios_res = await axios.get(`${appConfig.BACKEND_URL}/api/booking`, configs)
     
     const res = axios_res.data as ApiResponseInterface<BookingInterface[]>
     if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined)
@@ -16,7 +17,8 @@ export const getAllBookings = async () => {
 } 
 
 export const getBookingById = async (id: string) => {
-    const axios_res = await axios.get(`${appConfig.BACKEND_URL}/api/booking/${id}`)
+    const configs = localStorage.getItem("accessToken") != undefined ? { headers: { 'Authorization' : `Bearer ${localStorage.getItem("accessToken")}`} } : {}
+    const axios_res = await axios.get(`${appConfig.BACKEND_URL}/api/booking/${id}`, configs)
     const res = axios_res.data as ApiResponseInterface<BookingInterface>
     if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined)
     return res;
@@ -24,28 +26,32 @@ export const getBookingById = async (id: string) => {
 
 
 export const createBooking = async (data: BookingInterface) => {
-    const axios_res = await axios.post(`${appConfig.BACKEND_URL}/api/booking`, data) 
+    const configs = localStorage.getItem("accessToken") != undefined ? { headers: { 'Authorization' : `Bearer ${localStorage.getItem("accessToken")}`} } : {}
+    const axios_res = await axios.post(`${appConfig.BACKEND_URL}/api/booking`, data, configs) 
     const res = axios_res.data as ApiResponseInterface<BookingInterface>
     if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined)
     return res;
 }
 
 export const deleteBookingById = async (id: string) => {
-    const axios_res = await axios.delete(`${appConfig.BACKEND_URL}/api/booking/${id}`)
+    const configs = localStorage.getItem("accessToken") != undefined ? { headers: { 'Authorization' : `Bearer ${localStorage.getItem("accessToken")}`} } : {}
+    const axios_res = await axios.delete(`${appConfig.BACKEND_URL}/api/booking/${id}`, configs)
     const res = axios_res.data as ApiResponseInterface<BookingInterface>
     if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined)
     return res;
 }
 
 export const acceptBookingById = async (id: string) => {
-    const axios_res = await axios.post(`${appConfig.BACKEND_URL}/api/booking/accept/${id}`)
+    const configs = localStorage.getItem("accessToken") != undefined ? { headers: { 'Authorization' : `Bearer ${localStorage.getItem("accessToken")}`} } : {}
+    const axios_res = await axios.post(`${appConfig.BACKEND_URL}/api/booking/accept/${id}`, configs)
     const res = axios_res.data as ApiResponseInterface<BookingInterface>
     if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined)
     return res;
 }
 
 export const declineBookingById = async (id: string) => {
-    const axios_res = await axios.post(`${appConfig.BACKEND_URL}/api/booking/decline/${id}`)
+    const configs = localStorage.getItem("accessToken") != undefined ? { headers: { 'Authorization' : `Bearer ${localStorage.getItem("accessToken")}`} } : {}
+    const axios_res = await axios.post(`${appConfig.BACKEND_URL}/api/booking/decline/${id}`, configs)
     const res = axios_res.data as ApiResponseInterface<BookingInterface>
     if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined)
     return res;
