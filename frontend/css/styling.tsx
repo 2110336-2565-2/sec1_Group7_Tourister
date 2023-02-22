@@ -19,10 +19,9 @@ export const PrimaryButton = styled(Button)({
 });
 
 
-// fontWeight: 'bold'
+// fontWeight: 'bold', asterisk: {color: 'red'}
 export const RequireFormLabel = styled(FormLabel)({
     required: true,
     color: 'black',
     fontSize: 15,
-    padding: '5px 0px',
 })

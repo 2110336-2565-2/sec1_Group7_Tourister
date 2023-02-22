@@ -8,11 +8,28 @@ import { registerUser } from "@/services/userService";
 import { UserInterface } from "@/interfaces/UserInterface";
 import { FormInputText } from "@/components/formInput/FormInputText";
 import { FormInputHiddenText } from "@/components/formInput/FormInputHiddenText";
-import { FormInputRadio } from "@/components/formInput/FormInputRadio";
 import { COLOR } from "@/theme/globalTheme";
 import { PrimaryButton, RequireFormLabel } from "@/css/styling";
 import { FormInputAccountType } from "../formInput/FormInputAccountType";
+import styled from "styled-components";
 
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  margin: 0px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-left: 60px;
+  padding-right: 60px;
+  gap: 24px;
+  background-color: white;
+  border-top-left-radius: 2.5rem;
+  border-top-right-radius: 2.5rem
+`;
+
+const FieldName = styled.label`
+  font-size: 1em;
+`;
 
 const registerForm = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -62,21 +79,8 @@ const registerForm = () => {
   }
 
   return (
-    <form style={
-      {
-        display:'flex', 
-        alignItems:'flex-start',
-        flexDirection:'column', 
-        margin:'0.8rem',
-        paddingLeft: "60px",
-        paddingRight: "60px",
-        gap:'0.3rem',
-        height: 50,
-        width: 280,
-        alignSelf: 'center'
-      }
-      } onSubmit={handleSubmit(onSubmit)}>
-      <RequireFormLabel>Choose Account Type</RequireFormLabel>
+    <Form onSubmit={handleSubmit(onSubmit)}>
+      <FieldName>Choose Account Type</FieldName>
       <FormInputAccountType name="accountType" control={control} label="" options={[{label: "tourist", value: "tourist"}, { label:"guide", value: "guide" }]}/>
       <RequireFormLabel className="AsteriskRequired">Name</RequireFormLabel>
       <FormInputText name="name" control={control} label="Name"/>
@@ -103,7 +107,7 @@ const registerForm = () => {
         <label>Already have an account? </label>
         <Link href="/login" style={{textDecoration:"none", color:COLOR.primary}}>Log in</Link>
       </div>
-    </form>
+    </Form>
   );
 };
 
