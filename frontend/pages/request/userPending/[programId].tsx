@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import UserPending from "@/components/request/userPending/userPending";
-import GuideNavBar from "@/components/layout/guideNavBar";
+import NavBar from "@/components/layout/navBar";
 
 export default function Page() {
   // const router = useRouter();
@@ -9,7 +9,7 @@ export default function Page() {
 
   return (
     <>
-      <GuideNavBar />
+      <NavBar />
       <UserPending />
       {/* <h1>{programName}</h1> */}
     </>

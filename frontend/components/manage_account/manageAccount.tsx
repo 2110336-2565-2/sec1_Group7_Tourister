@@ -37,10 +37,10 @@ const manageAccount = () => {
   let user:UserInterface
   if (typeof window !== 'undefined') {
     // console.log('we are running on the client');
-    user = JSON.parse(localStorage.getItem("user")||`{}`)
+    user = JSON.parse(localStorage.getItem("user")||`{user:Name,surname:Surname,remainingAmount:0,isGuide:true}`)
   } else {
     // console.log('we are running on the server');
-    user = JSON.parse(`{}`)
+    user = JSON.parse(`{user:Name,surname:Surname,remainingAmount:0,isGuide:true}`)
   }
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

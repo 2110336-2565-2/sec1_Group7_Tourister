@@ -1,10 +1,10 @@
 import Landing from "@/components/trips/Landing";
-import GuideNavBar from "@/components/layout/guideNavBar";
+import NavBar from "@/components/layout/navBar";
 
 export default function Page() {
     return (
      <>
-      <GuideNavBar/>
+      <NavBar/>
       {/* <h1>Trips</h1> */}
       <Landing/>
      </>

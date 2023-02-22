@@ -1,11 +1,11 @@
 import CreateTrip from "@/components/trips/createTrip/createTrip";
-import GuideNavBar from "@/components/layout/guideNavBar";
+import NavBar from "@/components/layout/navBar";
 
 export default function Page() {
   return (
 
   <>
-    <GuideNavBar/>
+    <NavBar/>
     <CreateTrip/>
   </>
   );
