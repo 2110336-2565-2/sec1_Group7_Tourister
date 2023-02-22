@@ -49,6 +49,7 @@ const BookingController = {
 
             return {
                 code: 200,
+                count : bookings.length,
                 data: bookings,
                 message: "",
             }
