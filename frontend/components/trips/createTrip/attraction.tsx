@@ -9,33 +9,43 @@ import TextField from "@mui/material/TextField";
 
 const attraction = ({id,handleDelete,handleCallback}:{id:string,handleDelete:Function,handleCallback:Function}) => {
   const [time,setTime] = useState("")
-  const [name,setName] = useState("");
+  const [location,setLocation] = useState("");
   const [province,setProvince] = useState("")
   const [option,setOption] = useState("Admission not needed")
   const [file,setFile] = useState<File | string>();
   //----------------------------------------------------------
   const [editing, setEditing] = useState(true);
-  const [error,setError] = useState(false);
+  const [errorTime,setErrorTime] = useState(false);
+  const [errorName,setErrorName] = useState(false);
+  const [errorProvince,setErrorProvince] = useState(false);
   // const [place_imageUrl,setFile] = useState("");
   
+  const valid= ()=>{
+    setErrorTime(time==="")
+    setErrorName(location==="")
+    setErrorProvince(province==="")
+    return time!=="" && location!=="" && province!==""
+  }
   return (
     <div>
       {editing===true ? (
         <Fragment>
-        
-        <TextField value={name} onChange={(e)=>setName(e.target.value)} label="Name" variant="outlined" size="small"
+        {/* <input value={name} onChange={(e)=>setName(e.target.value)}/> */}
+        <TextField value={location} onChange={(e)=>setLocation(e.target.value)} label="Name" variant="outlined" size="small"
           // helperText={error ? error.message : null}
           // error={Boolean(error)}
         />
+        {errorName? <p>Please add a name for the location</p> : <Fragment/>}
         <TextField value={time} onChange={(e)=>setTime(e.target.value)} type="time" variant="outlined" size="small"
           // helperText={error ? error.message : null}
           // error={Boolean(error)}
         />
+        {errorTime? <p>Please add a time for the location</p> : <Fragment/>}
         <TextField value={province} onChange={(e)=>setProvince(e.target.value)} label="Province" variant="outlined" size="small"
           // helperText={error ? error.message : null}
           // error={Boolean(error)}
         />
-        {error===true&&editing===true ? <p>Please add a name for the location</p> : <Fragment/>}
+        {errorProvince? <p>Please add a province for the location</p> : <Fragment/>}
         <select onChange={(e)=>setOption(e.target.value)}>
           <option value={option}>{option}</option>
           {option==="Admission not needed" ? <Fragment></Fragment> : <option value="Admission not needed">Admission not needed</option>}
@@ -45,15 +55,14 @@ const attraction = ({id,handleDelete,handleCallback}:{id:string,handleDelete:Fun
         <input type="file" onChange={(e)=>{if(!e.target.files)return;setFile(e.target.files[0])}}></input>
         <button type="button" onClick={()=>{handleDelete(id)}}>delete</button>
         <button type="button" onClick={()=>{
-          handleCallback(id,name,option,file)
-          if(name==="") {(setError(true))} else {setEditing(false);setError(false)}
+          if(valid()) {setEditing(false);handleCallback(id,time,location,province,option,file)}
         }}>done</button>
         </Fragment>
         ) : (
         <Fragment>
           <button type="button" onClick={()=>{setEditing(true)}}>edit</button>
           <h4>{time}</h4>
-          <h3>{name}</h3>
+          <h3>{location}</h3>
           <h4>{province}</h4>
           <h4>{option}</h4>
         </Fragment>

@@ -53,23 +53,52 @@ const ProgramSchema = new mongoose.Schema({
         ref: 'User',
         required: [true, 'Please add a guide']
     },
-    attractions: {
+    // attractions: {
+    //     type: [new mongoose.Schema({ 
+    //         location: {
+    //             type : String,
+    //             require : true
+    //         },
+    //         province: String,
+    //         imageUrl: String,
+    //         admissionsIncluded : {
+    //             type : Boolean,
+    //             default: false
+    //         },
+    //         visitDate : Date,
+    //         //id: String,
+    //         //name: String,
+    //         //option: String,
+    //         // file: Buffer,
+    //     }, {_id: false})]
+    // },
+    dayTrips: {
         type: [new mongoose.Schema({ 
-            location: {
-                type : String,
+            date: {
+                type : Date,
                 require : true
             },
-            province: String,
-            imageUrl: String,
-            admissionsIncluded : {
-                type : Boolean,
-                default: false
-            },
-            visitDate : Date,
-            //id: String,
-            //name: String,
-            //option: String,
-            // file: Buffer,
+            attractions:{
+                type: [new mongoose.Schema({ 
+                    location: {
+                        type : String,
+                        require : true
+                    },
+                    province: {
+                        type : String,
+                        require : true
+                    },
+                    time: {
+                        type : String,
+                        require : true
+                    },
+                    option: {
+                        type : String,
+                        require : true
+                    },
+                    imageUrl: String,
+                    // file: File | undefined
+                }, {_id: false})]}
         }, {_id: false})]
     },
     imageUrl: {

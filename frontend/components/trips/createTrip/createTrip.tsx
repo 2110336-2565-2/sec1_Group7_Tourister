@@ -71,7 +71,7 @@ const validationSchema = yup.object().shape({
   price: yup.number().required('Please enter your price'),
   max_participant: yup.string().required('Please enter your group size')
   .matches(/^[0-9]+$/, "Group size must be only digits"),
-  language: yup.string().required('Please enter your trip language'),
+  // language: yup.string().required('Please enter your trip language'),
   description: yup.string(),
   meetLocation: yup.string().required('Please enter your trip start location'),
   descriptionOfMeetLocation: yup.string(),
@@ -81,70 +81,52 @@ const validationSchema = yup.object().shape({
 
 const createTrip = () => {
   const [stage, setStage ] = useState(0);
-  const [attractions,setAttractions] = useState([{"Tue Jan 03 2023 07:00:00 GMT+0700 (เวลาอินโดจีน)":[{
-    "id": nanoid(),
-    "name": "",
-    "option": "Addmission not needed",
-  }]}]);
-  const [day,setDay] =  useState<string[]>([]);
-  const [dayTrips,setDayTrips] = useState<[{
-    day:  string,
-    attractions : [{
+  const [days,setDays] =  useState<string[]>([]);
+  // const [dayTrips,setDayTrips] = useState<Object>();
+  const [dayTrips,setDayTrips] = useState<{
+    date:  string,
+    attractions : {
       "id": string,
       "time": string,
-      "name": string,
+      "location": string,
       "province": string,
       "option": string,
       "file": File | undefined
-    }]
-  }]>();
-  // const [attractions,setAttractions] = useState();
+    }[]
+  }[]>();
 
   const HandleNext = () => {
+    setDays([])
     let date = new Date(getValues("startDate"))
     let end = new Date(getValues("endDate"))
     if(date > end){
       return;
     }
     setStage(1)
-    console.log(attractions)
     console.log(date)
     end.setDate(end.getDate() + 1)
     let k = 0
     while(date.toString()!==end.toString()){
       const i = date.toString()
-      setDay(day => [...day,i])
-      // if(!(date.toString() in attractions)){
-      //   const D = date.toString()
-      //   const newDate = {
-      //     D : [{
-      //       id: nanoid(),
-      //       name: "",
-      //       option: "Admission not needed",
-      //       editing: true,
-      //       error: false
-      //     }]
-      //   }
-      //   setAttractions({...attractions,...newDate})
-      // }
+      setDays(days => [...days,i])
       date.setDate(date.getDate() + 1);
       k = k+1
       if(k>100){break}
     }
-    console.log(day)
-    // console.log(attractions)
+    console.log(days)
   }
   const HandleSaveDraft = () => {
     setStage(0)
   }
   const onSubmit = async (data : FormData) => {
-    try {
-      // const response = await createProgram({...data,attractions:attractions})
-      const response = await axios.post(API_URL,{...data,attractions:attractions})
-      console.log(response)
-    } catch (error) {
-      console.log(error)
-    }
+    console.log({...data,dayTrips:dayTrips})
+    // try {
+    //   // const response = await createProgram({...data,attractions:attractions})
+    //   const response = await axios.post(API_URL,{...data,dayTrips:dayTrips})
+    //   console.log(response)
+    // } catch (error) {
+    //   console.log(error)
+    // }
   }
   const {
     register,
@@ -160,27 +142,82 @@ const createTrip = () => {
   });
 
   const handleCallback = (day:string,attractions:{
-    id: string;
-    name: string;
-    option: string;
-}[]) => {
-  const updatedDayTrips = dayTrips?.map((daytrip)=>{
-    if(daytrip.day===day){
-      const updateDT = {...daytrip,day,attractions}
-      return updateDT
+    "id": string,
+    "time": string,
+    "location": string,
+    "province": string,
+    "option": string,
+    "file": File | undefined
+  }[]) => {
+  let updatedDayTrips : {
+    date:  string,
+    attractions : {
+      "id": string,
+      "time": string,
+      "location": string,
+      "province": string,
+      "option": string,
+      "file": File | undefined
+    }[]
+  }[];
+  // let found = false
+  // if(dayTrips){
+  //   console.log("case 1")
+  //   updatedDayTrips = Object.values(dayTrips).map((daytrip,i)=>{
+  //     if(daytrip===day){
+  //       found = true;
+  //       const updateDT = {[day]:attractions}
+  //       console.log("updateDT")
+  //       console.log(updateDT)
+  //       return updateDT
+  //     }
+  //     console.log("daytrip")
+  //     console.log(daytrip)
+  //     console.log(i)
+  //     return dayTrips[daytrip]
+  //   })
+  //   if(!found){
+  //     setDayTrips({...updatedDayTrips,[day]:attractions})
+  //   } else setDayTrips(updatedDayTrips)
+  // } else {
+  //   console.log("case 2")
+  //   setDayTrips({[day]:attractions})
+  // }
+  // console.log(dayTrips)
+  let found = false
+  if(dayTrips){
+    updatedDayTrips = dayTrips.map((daytrip)=>{
+      if(daytrip.date===day){
+        found = true;
+        const updateDT = {...daytrip,day:day,attractions:attractions}
+        return updateDT
+      }
+      return daytrip
+    })
+    if(!found){
+      updatedDayTrips = [...updatedDayTrips,{date:day,attractions:attractions}]
     }
-    return daytrip
-  })
-  updatedDayTrips?setDayTrips(updatedDayTrips?updatedDayTrips:[{day,attractions}])
-    // const updatedAttractions = attractions.map((att) => {
-      // if(att.id===id){
-      //   const updatedAtt = {...att,id,name,option,file}
-      //   return updatedAtt
-      // }
-      // return att
-    // })
-    // setAttractions(updatedAttractions)
+    setDayTrips(updatedDayTrips)
+  } else {
+    updatedDayTrips = [{date:day,attractions:attractions}]
+    setDayTrips([{date:day,attractions:attractions}])
   }
+  }
+  const checkDayExisted = (d:string) => {return dayTrips?.some((day)=>{return day.date===d})}
+  const getAttractionsByDate = (d:string) => {
+    if(dayTrips){
+    for(let i=0;i<dayTrips.length;i=i+1){
+      if(dayTrips[i].date===d)return dayTrips[i].attractions
+    }
+    return [{
+      "id": nanoid(),
+      "time": "",
+      "location": "",
+      "province": "",
+      "option": "Addmission not needed",
+      "file": undefined
+    }]
+  }}
   return (
     <form style={{display:'flex', alignItems: 'center',flexDirection:'column'}}onSubmit={handleSubmit(onSubmit)}>
       {/* <Link href="../register" passHref><button type="button" onClick={handleBackButton}>Back</button></Link> */}
@@ -209,21 +246,6 @@ const createTrip = () => {
             <label>Group Size</label>
             <FormInputText name="max_participant" control={control} label="Number of participant(s)"/>
             <label>Language</label>
-            <FormInputRadio name="language" control={control} label="" 
-              options={[
-                {label: "Thai", value: "Thai"}, 
-                {label: "English", value: "English" },
-                {label: "Chinese", value: "Chinese"}, 
-                {label: "Japanese", value: "Japanese" },
-                {label: "Korean", value: "Korean"}, 
-                {label: "Spanish", value: "Spanish" },
-                {label: "Russian", value: "Russian"}, 
-                {label: "German", value: "German" },
-              ]}/>
-              <FormInputRadio name="thai" control={control} label="" 
-                options={[
-                  {label: "Thai", value: "Thai"}, 
-                ]}/>
             <button type="button" onClick={()=>{HandleNext()}}>Next</button>
           </Fragment>
         ):(
@@ -239,7 +261,9 @@ const createTrip = () => {
             ))}
             <Attraction id={nanoid()} handleDelete={handleDelete} handleCallback={handleCallback}/> */}
             
-        {day.map((d)=>(<DayTrip key={nanoid()} date={d} handleCB={handleCallback}/>))}
+        {days.map((d)=>(
+          <DayTrip key={d} date={d} savedAttraction={getAttractionsByDate(d)} handleCB={handleCallback}/>
+        ))}
             {/* <div>
               <FormInputTime name="startTime" control={control} label="" readonly={true}/>
               <label style={{padding:"20px 10px"}}>Departure</label>

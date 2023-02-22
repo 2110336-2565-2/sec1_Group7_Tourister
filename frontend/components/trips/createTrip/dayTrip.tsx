@@ -5,29 +5,29 @@ import { nanoid } from "nanoid";
 import Attraction from "./attraction";
 import TextField from "@mui/material/TextField";
 
-const dayTrip = ({date,handleCB}:{date:string,handleCB:Function}) => {
+const dayTrip = ({date,savedAttraction,handleCB}:{date:string,savedAttraction:{
+  "id": string,
+  "time": string,
+  "location": string,
+  "province": string,
+  "option": string,
+  "file": File | undefined
+}[],handleCB:Function}) => {
   const [stage, setStage ] = useState(0);
-  const [attractions,setAttractions] = useState<[{
+  const [attractions,setAttractions] = useState<{
       "id": string,
       "time": string,
-      "name": string,
+      "location": string,
       "province": string,
       "option": string,
       "file": File | undefined
-    }]>([{
-    "id": nanoid(),
-    "time": "",
-    "name": "",
-    "province": "",
-    "option": "Addmission not needed",
-    "file": undefined
-  }]);
+    }[]>(savedAttraction);
 
   const handleAdd = ()=>{
     const newAttraction = {
       "id": nanoid(),
       "time": "",
-      "name": "",
+      "location": "",
       "option": "Admission not needed",
       "province": "",
       "file": undefined
@@ -42,24 +42,34 @@ const dayTrip = ({date,handleCB}:{date:string,handleCB:Function}) => {
     newAttractions.splice(index,1)
     setAttractions(newAttractions)
   }
-  const handleCallback = (id:string, name:string, option:string, file:File|undefined) => {
+  const handleCallback = (id:string, time:string, location:string, province:string, option:string, file:File|undefined) => {
     const updatedAttractions = attractions.map((att) => {
       if(att.id===id){
-        const updatedAtt = {...att,id,name,option,file}
+        const updatedAtt = {...att,id,time,location,province,option,file}
         return updatedAtt
       }
       return att
     })
     setAttractions(updatedAttractions)
-    handleCB(date,attractions)
+    handleCB(date,updatedAttractions)
   }
   return (
           <Fragment>
         <h2>{date}</h2>
-        {attractions.map((att)=>(<Attraction id={att.id} handleDelete={handleDelete} handleCallback={handleCallback}/>))}
+        {attractions.map((att)=>(<Attraction key={att.id} id={att.id} handleDelete={handleDelete} handleCallback={handleCallback}/>))}
           <button type="button" onClick= {() => handleAdd()}>Add</button>
           </Fragment>
   );
 };
 
+dayTrip.defaultProps = {
+  savedAttraction : [{
+    "id": nanoid(),
+    "time": "",
+    "location": "",
+    "province": "",
+    "option": "Addmission not needed",
+    "file": undefined
+  }]
+}
 export default dayTrip;
