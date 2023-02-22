@@ -1,150 +1,89 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
 import { Button } from "@mui/material";
 import { getProgramById, updateProgramById } from "@/services/programService";
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
+import {
+  acceptBookingById,
+  declineBookingById,
+  getAllBookings,
+} from "@/services/bookingService";
+import { UserCardInterface } from "@/interfaces/UserCardInterface";
+import { getUserById } from "@/services/userService";
 
 export default function userPending() {
-  const [isClicked, setIsClicked] = useState(false);
-  const [cardstatus, setcardStatus] = useState<string>();
-  const [moved, setMoved] = useState(false);
-  const [programs, setPrograms] = useState([
+  const [userCards, setuserCards] = useState<[UserCardInterface]>([
     {
-      _id: "",
-      programId: "",
+      bookingId: "",
+      userId: "",
       name: "",
-      description: "",
-      startDate: Date,
-      endDate: Date,
-      startTime: Date,
-      endTime: Date,
-      max_participant: 0,
-      num_participant: 0,
-      meetLocation: "",
-      descriptionOfMeetLocation: "",
-      attractions: [],
-      imageUrl: "",
-      language: "",
-      endLocation: "",
-      descriptionOfEndLocation: "",
-      user: [],
+      surname: "",
+      request: "",
+      phoneNumber: "",
     },
   ]);
   const router = useRouter();
   const { programId } = router.query;
   console.log(programId);
 
-  const statusChange = async (status: string) => {
-    setcardStatus(status);
-    setIsClicked(!isClicked);
-  };
-  console.log(cardstatus);
-
-  const moveUsers = async (userid: any, programid: any, status: string) => {
-    setMoved(!moved);
+  const statusChange = async (bookingId: string, status: string) => {
     if (status === "accepted") {
-      const res = await getProgramById(programid);
-      const acceptedarr = res.data.accepted_participant;
-      acceptedarr.push(userid);
-      const pendingarr = res.data.pending_participant.filter(
-        (user: any) => user !== userid
-      );
-
-      const update = {
-        pending_participant: pendingarr,
-        accepted_participant: acceptedarr,
-      };
-
-      const response = await updateProgramById(programid, update);
+      const res = acceptBookingById(bookingId);
+      console.log(res);
+    } else if (status === "declined") {
+      const res = declineBookingById(bookingId);
+      console.log(res);
     }
-    if (status === "declined") {
-      const res = await getProgramById(programid);
-
-      const declineddarr = res.data.declined_participant;
-      declineddarr.push(userid);
-      const pendingarr = res.data.pending_participant.filter(
-        (user: any) => user !== userid
-      );
-
-      const update = {
-        pending_participant: pendingarr,
-        declined_participant: declineddarr,
-      };
-
-      const response = await updateProgramById(programid, update);
-    }
-    axios.get(`http://localhost:2000/api/program`).then((response: any) => {
-      const programsWithUsers = response.data.data.map((program: any) => {
-        const userPromises = program.pending_participant.map((userId: any) =>
-          axios.get(`http://localhost:2000/api/user/${userId}`)
-        );
-        return Promise.all(userPromises).then((user) => ({
-          ...program,
-          user,
-        }));
-      });
-      Promise.all(programsWithUsers).then((programsWithUsers) => {
-        setPrograms(programsWithUsers);
-      });
-    });
   };
 
-  if (isClicked && cardstatus === "accepted") {
-    setIsClicked(false);
-    axios.get(`http://localhost:2000/api/program`).then((response: any) => {
-      const programsWithUsers = response.data.data.map((program: any) => {
-        const userPromises = program.accepted_participant.map((userId: any) =>
-          axios.get(`http://localhost:2000/api/user/${userId}`)
-        );
-        return Promise.all(userPromises).then((user) => ({
-          ...program,
-          user,
-        }));
-      });
-      Promise.all(programsWithUsers).then((programsWithUsers) => {
-        setPrograms(programsWithUsers);
-      });
-    });
+  async function fetchData() {
+    var userArr: any = [];
+    var requestArr: any = [];
+    var bookingIdArr: any = [];
+    var usercards: any = [];
+    const response = await getAllBookings();
+    console.log(response.data);
+    for (let i = 0; i < response.data.length; i++) {
+      if (
+        response.data[i].program._id === programId &&
+        response.data[i].status === "pending"
+      ) {
+        userArr.push(response.data[i].user._id);
+        requestArr.push(response.data[i].request);
+        bookingIdArr.push(response.data[i]._id);
+      }
+    }
+
+    for (let i = 0; i < userArr.length; i++) {
+      const usercard: UserCardInterface = {
+        bookingId: "",
+        userId: "",
+        name: "",
+        surname: "",
+        request: "",
+        phoneNumber: "",
+      };
+      const response = await getUserById(userArr[i]);
+
+      usercard.bookingId = bookingIdArr[i];
+      usercard.userId = response.data._id;
+      usercard.name = response.data.name;
+      usercard.surname = response.data.surname;
+      usercard.request = requestArr[i];
+      usercard.phoneNumber = response.data.phoneNumber;
+
+      usercards.push(usercard);
+    }
+    console.log(usercards);
+    setuserCards(usercards);
   }
-  if (isClicked && cardstatus === "pending") {
-    setIsClicked(false);
-    axios.get(`http://localhost:2000/api/program`).then((response: any) => {
-      const programsWithUsers = response.data.data.map((program: any) => {
-        const userPromises = program.pending_participant.map((userId: string) =>
-          axios.get(`http://localhost:2000/api/user/${userId}`)
-        );
-        return Promise.all(userPromises).then((user) => ({
-          ...program,
-          user,
-        }));
-      });
-      Promise.all(programsWithUsers).then((programsWithUsers) => {
-        setPrograms(programsWithUsers);
-      });
-    });
-  }
-  if (isClicked && cardstatus === "declined") {
-    setIsClicked(false);
-    axios.get(`http://localhost:2000/api/program`).then((response: any) => {
-      const programsWithUsers = response.data.data.map((program: any) => {
-        const userPromises = program.declined_participant.map(
-          (userId: string) =>
-            axios.get(`http://localhost:2000/api/user/${userId}`)
-        );
-        return Promise.all(userPromises).then((user) => ({
-          ...program,
-          user,
-        }));
-      });
-      Promise.all(programsWithUsers).then((programsWithUsers) => {
-        setPrograms(programsWithUsers);
-      });
-    });
-  }
-  console.log(programs);
+  console.log(userCards);
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <div>
@@ -160,88 +99,36 @@ export default function userPending() {
             margin: "auto",
             alignSelf: "center",
           }}
-        >
-          <Button type="button" onClick={() => statusChange("pending")}>
-            Pending
-          </Button>
-
-          <Button type="button" onClick={() => statusChange("accepted")}>
-            Accepted
-          </Button>
-
-          <Button type="button" onClick={() => statusChange("declined")}>
-            Declined
-          </Button>
-        </div>
+        ></div>
       </nav>
-      {cardstatus === "pending" && (
-        <div>
-          {programs.map((program) => (
-            <div key={program._id}>
-              <ul>
-                {program.user.map((user: any) => (
-                  <div key={user.data.data._id}>
-                    {user.data.data.name} {user.data.data.surname}
-                    <div>Contact: {user.data.data.email}</div>
-                    <h2>{program.name}</h2>
-                    <p>{program.description}</p>
-                    <p>{program.startDate}</p>
-                    <p>
-                      {program.num_participant}/{program.max_participant}
-                    </p>
-                    <Button
-                      type="button"
-                      variant="outlined"
-                      onClick={() =>
-                        moveUsers(user.data.data._id, program._id, "declined")
-                      }
-                    >
-                      DECLINED
-                    </Button>
-                    <Button
-                      type="button"
-                      variant="contained"
-                      onClick={() =>
-                        moveUsers(user.data.data._id, program._id, "accepted")
-                      }
-                    >
-                      ACCEPT
-                    </Button>
-                    <p>
-                      ---------------------------------------------------------
-                    </p>
-                  </div>
-                ))}
-              </ul>
+
+      <div>
+        {userCards.map((user: any) => (
+          <div key={user.userId}>
+            <div>
+              {user.name} {user.surname}
             </div>
-          ))}
-        </div>
-      )}
-      {(cardstatus === "accepted" || cardstatus === "declined") && (
-        <div>
-          {programs.map((program) => (
-            <div key={program._id}>
-              <ul>
-                {program.user.map((user: any) => (
-                  <div key={user.data.data._id}>
-                    {user.data.data.name} {user.data.data.surname}
-                    <div>Contact: {user.data.data.email}</div>
-                    <h2>{program.name}</h2>
-                    <p>{program.description}</p>
-                    <p>{program.startDate}</p>
-                    <p>
-                      {program.num_participant}/{program.max_participant}
-                    </p>
-                    <p>
-                      ---------------------------------------------------------
-                    </p>
-                  </div>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-      )}
+            <div>Tel: {user.phoneNumber}</div>
+            <div>Request: </div>
+            <div>{user.request}</div>
+            <Button
+              type="button"
+              variant="outlined"
+              onClick={() => statusChange(user.bookingId, "declined")}
+            >
+              DECLINED
+            </Button>
+            <Button
+              type="button"
+              variant="contained"
+              onClick={() => statusChange(user.bookingId, "accepted")}
+            >
+              ACCEPT
+            </Button>
+            <p>---------------------------------------------------------</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
