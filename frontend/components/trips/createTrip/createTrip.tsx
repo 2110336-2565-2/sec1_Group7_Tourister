@@ -46,11 +46,13 @@ type FormData = {
   endLocation: string;
   endProvince: string;
   descriptionOfEndLocation: string;
+  num_pending: number;
   // attractions: att
 }
 // type accountType = 'tourist' | 'guide';
 const defaultValues = {
   programId: nanoid(),
+  num_panding: 0,
   // attractions: [{
   //   "id": nanoid(),
   //   "name": "",
