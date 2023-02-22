@@ -3,22 +3,37 @@ import Link from 'next/link';
 import { COLOR } from "@/theme/globalTheme";
 import styled from "styled-components";
 
+import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
+import SwapHorizOutlinedIcon from '@mui/icons-material/SwapHorizOutlined';
+import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
+import NavigateNextOutlinedIcon from '@mui/icons-material/NavigateNextOutlined';
+import { Title } from "@mui/icons-material";
+import { FieldName } from "@/css/layout";
+import { Grid } from "@mui/material";
+
 type AccountType = 'tourist' | 'guide';
 
-const ButtonContainer = styled.div`
+const ProfileBox = styled.div`
+  width: 80%;
+  height: 10rem;
+  border-radius: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0.1rem 0.1rem 0.5rem 0 rgba(0, 0, 0, 0.5);
+  margin-bottom: 1rem;
+`
+
+const Button = styled.button`
   display: flex;
   flex-flow: row nowrap;
   justify-content: flex-start;
   align-items: center;
-  
-  
   width: 100%;
-  background: transparent;
-  padding: 1.5rem;
-`
-
-const Icon = styled.div`
-  background: red;
+  height: 9vh;
+  background: none;
+  border: none;
+  padding: 0;
 `
 
 const manageAccount = () => {
@@ -44,31 +59,31 @@ const manageAccount = () => {
 
   return (
     <form style={{display:'flex', alignItems: 'center',flexDirection:'column'}}onSubmit={handleSubmit}>
-      {/* <ButtonContainer>
-        <div>Test1</div>
-        <div>Test2</div>
-        <div>Test3</div>
-      </ButtonContainer> */}
-      
-      {/* <ButtonContainer>
-        <Icon>???</Icon>
-        <Link href="./manage_account/editProfile" style={{width:"60%"}} passHref><button type="button">Edit Profile</button></Link>
-        <Icon style={{width:"20%"}}>???</Icon>
-      </ButtonContainer>
-      <ButtonContainer>
-        <Icon style={{width:"20%"}}>???</Icon>
-        <Link href="" style={{width:"60%"}} passHref><button type="button">Transfer Funds</button></Link>
-        <Icon style={{width:"20%"}}>???</Icon>
-      </ButtonContainer>
-      <ButtonContainer>
-        <Icon style={{width:"20%"}}>???</Icon>
-        <Link href="" style={{width:"60%"}} passHref><button type="button">Log Out</button></Link>
-        <Icon style={{width:"20%"}}>???</Icon>
-      </ButtonContainer> */}
+      <ProfileBox style={{backgroundColor:COLOR.primary}}>TODO: SHOW PROFILE</ProfileBox>
+      <Link href="./manage_account/editProfile" style={{width:"100%",textDecoration:"none"}} passHref>
+        <Button>
+          <PersonOutlinedIcon style={{width:"20%",color:"gray"}}></PersonOutlinedIcon>
+          <h3 style={{width:"60%",paddingTop:"0.1rem",textAlign:"left",fontFamily:"Poppins",fontSize:"1.05rem"}}>Edit Profile</h3>
+          <NavigateNextOutlinedIcon style={{width:"20%",color:"gray"}}></NavigateNextOutlinedIcon>
+        </Button>
+      </Link>
+      <Link href="" style={{width:"100%",textDecoration:"none"}} passHref>
+        <Button>
+          <SwapHorizOutlinedIcon style={{width:"20%",color:"gray"}}/>
+          <h3 style={{width:"60%",paddingTop:"0.1rem",textAlign:"left",fontFamily:"Poppins",fontSize:"1.05rem"}}>Transfer Funds</h3>
+          <NavigateNextOutlinedIcon style={{width:"20%",color:"gray"}}/>
+        </Button>
+      </Link>
+      <Link href="" style={{width:"100%",textDecoration:"none"}} passHref>
+        <Button>
+          <LogoutOutlinedIcon style={{width:"20%",color:"gray"}}/>
+          <h3 style={{width:"60%",paddingTop:"0.1rem",textAlign:"left",fontFamily:"Poppins",fontSize:"1.05rem"}}>Log Out</h3>
+          <NavigateNextOutlinedIcon style={{width:"20%",color:"gray"}}/>
+        </Button>
+      </Link>
 
-
-      <Link href="./manage_account/editProfile" passHref><button type="button">Edit Profile</button></Link>
-      <Link href="../register" passHref><button type="button">Transfer Funds</button></Link>
+      {/* <Link href="./manage_account/editProfile" passHref><button type="button">Edit Profile</button></Link>
+      <Link href="../register" passHref><button type="button">Transfer Funds</button></Link> */}
     </form>
   );
 };
