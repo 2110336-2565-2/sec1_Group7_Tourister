@@ -1,100 +1,79 @@
-"use client";
-
 import * as React from "react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Slider } from "@mui/material";
 
-import { validationSchema, FormData, defaultValues} from "./searchSchema";
+import { validationSchema, defaultValues} from "./searchSchema";
+import { ProgramFilterInterface } from "@/interfaces/filter/ProgramFilterInterface";
+
 import { FormInputText } from "@/components/formInput/FormInputText";
 import { FormInputDate} from "@/components/formInput/FormInputDate";
 import { FormInputTime} from "@/components/formInput/FormInputTime";
+import { FormInputNumber } from "@/components/formInput/FormInputNumber";
+import { SearchPopup } from "./SearchPopup";
 import { Box } from "@mui/system";
 import MuiInput from '@mui/material/Input';
 
-function valuetext(value: number) {
-    return `${value}THB`;
-  }
-  
-  const minDistance = 50;
-
-//   const MaxPriceInput = styled(MuiInput)`
-//     width: 42px;
-// `;
 const SearchForm = () => {
-    //slider bar
-    const [value, setValue] = React.useState<number[]>([500, 10000]);
-    //try to use slider with input
-    // const [value, setValue] = React.useState<number | string | Array<number | string>>(
-    //     30,
-    //   );
+  const [advanceSearchPopup, setAdvanceSearchPopup] = useState(false);
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<ProgramFilterInterface>({
+    resolver: yupResolver(validationSchema),
+    defaultValues: defaultValues,
+  });
 
-    const handleChange = (event: Event, newValue: number | number[], activeThumb: number,) => {
-      setValue(newValue as number[]);
-      if (!Array.isArray(newValue)) {
-        return;
-      }
-  
-      if (activeThumb === 0) {
-        setValue([Math.min(newValue[0], value[1] - minDistance), value[1]]);
-      } else {
-        setValue([value[0], Math.max(newValue[1], value[0] + minDistance)]);
-      }
-    };
-  
-    const {
-      handleSubmit,
-      control,
-      formState: { errors },
-    } = useForm<FormData>({
-      resolver: yupResolver(validationSchema),
-      defaultValues: defaultValues,
-    });
-  
-    const onSubmit = (data: FormData) => {
-      console.log(data);
-    };
-  
-    return (
-      <>
-        <h1 style=
-        {{textAlign: "center"}}> Searching</h1>
-      <form
-        style={{ display: "flex", alignItems: "center", flexDirection: "column" }}
-        onSubmit={handleSubmit(onSubmit)}
-      >
+  const onSubmit = (data: ProgramFilterInterface) => {
+    console.log(data);
+  };
+
+  const showAdvanceSearchPopup = () => {
+    setAdvanceSearchPopup(true);
+    document.body.style.overflow = 'hidden';
+  }
+
+  return (
+    <>
+      <h1 style=
+      {{textAlign: "center"}}> Searching</h1>
+    <form
+      style={{ display: "flex", alignItems: "center", flexDirection: "column" }}
+      onSubmit={handleSubmit(onSubmit)}
+    >
+      <label>Location</label>
+      <FormInputText name="location" control={control} label="Ready to find your perfect trips?" />
+
+      <Button onClick={showAdvanceSearchPopup} variant="outlined">Advance</Button>
+      <SearchPopup trigger={advanceSearchPopup} setTrigger={setAdvanceSearchPopup}>
         <Box sx={{ width: 'sm' ,padding:'5%'}}>
-            <label>Location</label>
-            <FormInputText name="location" control={control} label="Location" />
-
-            <label>Start Date</label>
+            <h4>Sort by</h4>
+            <h4>Date Range</h4>
+            <label>Start</label>
             <div>
               <FormInputDate name="startDate" control={control} label="Start Date"/>
-              <FormInputTime name="startTime" control={control} label="Start Time" readonly={false}/>
             </div>
-            <label>End Date</label>
+            <label>End</label>
             <div>
               <FormInputDate name="endDate" control={control} label="End Date"/>
-              <FormInputTime name="endTime" control={control} label="End Time" readonly={false}/>
             </div>
-            <label>Price</label>
-            <Slider 
-                getAriaLabel={() => 'Price range'}
-                value={value}
-                min={100} max={50000} step={100}
-                onChange={handleChange}
-                valueLabelDisplay="auto"
-                getAriaValueText={valuetext}>
-            </Slider>
+            <h4>Price Range</h4>
+            <div style={{display:"flex", alignItems:"center"}}>
+              <FormInputNumber name="minPrice" control={control} label="minimum"/>
+              -
+              <FormInputNumber name="maxPrice" control={control} label="maximum"/>
+            </div>
         </Box>
-        
-        <Button type="submit" variant="contained">
-          Search
-        </Button>
-      </form>
-      </>
-    );
+      </SearchPopup>
+      
+      <Button type="submit" variant="contained">
+        Search
+      </Button>
+    </form>
+    </>
+  );
   };
   
   export default SearchForm;

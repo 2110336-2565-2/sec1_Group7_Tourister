@@ -6,6 +6,6 @@ export interface ProgramFilterInterface {
     maxPrice?: number,
     minPeople?: number,
     maxPeople?: number,
-    language?: string[],
+    language?: string,
     province?: string,
 }
