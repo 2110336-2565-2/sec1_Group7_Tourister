@@ -2,14 +2,10 @@ import { useState, MouseEvent } from "react";
 import Link from 'next/link';
 import { COLOR } from "@/theme/globalTheme";
 import styled from "styled-components";
-
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 import SwapHorizOutlinedIcon from '@mui/icons-material/SwapHorizOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import NavigateNextOutlinedIcon from '@mui/icons-material/NavigateNextOutlined';
-import { Title } from "@mui/icons-material";
-import { FieldName } from "@/css/layout";
-import { Grid } from "@mui/material";
 
 type AccountType = 'tourist' | 'guide';
 
@@ -81,9 +77,6 @@ const manageAccount = () => {
           <NavigateNextOutlinedIcon style={{width:"20%",color:"gray"}}/>
         </Button>
       </Link>
-
-      {/* <Link href="./manage_account/editProfile" passHref><button type="button">Edit Profile</button></Link>
-      <Link href="../register" passHref><button type="button">Transfer Funds</button></Link> */}
     </form>
   );
 };
