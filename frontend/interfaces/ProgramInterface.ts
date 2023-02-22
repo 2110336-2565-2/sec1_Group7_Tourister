@@ -8,16 +8,16 @@ export interface ProgramInterface {
   price: number;
   startDate: Date;
   endDate: Date;
-  startTime: Date;
-  endTime: Date;
+  startTime: string;
+  endTime: string;
   province: string;
   max_participant: number;
   num_participant?: number;
   meetLocation?: string;
   descriptionOfMeetLocation?: string;
-  guide: string | UserInterface[], //objectId User
+  guide?: string | UserInterface[], //objectId User
   // attractions?: AttractionInterface[];
-  dayTrips : {date:Date,attractions: AttractionInterface[]}[]
+  dayTrips : {date:string,attractions: AttractionInterface[]}[]
   imageUrl?: string;
   language?: string[];
   endLocation?: string;

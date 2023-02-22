@@ -53,11 +53,9 @@ const dayTrip = ({date,savedAttraction,handleCB}:{date:string,savedAttraction:{
     setAttractions(updatedAttractions)
     handleCB(date,updatedAttractions)
   }
-  console.log(date)
-  console.log(attractions)
   return (
           <Fragment>
-        <h2>{date}</h2>
+        <h2>{date.toString()}</h2>
         {attractions.map((att)=>(<Attraction key={att.id} id={att.id} t={att.time} l={att.location} p={att.province} o={att.option} handleDelete={handleDelete} handleCallback={handleCallback}/>))}
           <button type="button" onClick= {() => handleAdd()}>Add</button>
           </Fragment>
