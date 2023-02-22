@@ -3,14 +3,13 @@
 import { useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
-import { Button } from "@mui/material";
+import Link from "next/link";
 import { getProgramById, updateProgramById } from "@/services/programService";
 import { getAllBookings, getBookingByStatus } from "@/services/bookingService";
 import { BookingInterface } from "@/interfaces/BookingInterface";
 import { ProgramInterface } from "@/interfaces/ProgramInterface";
 
 export default function programPending() {
-  const [isClicked, setIsClicked] = useState(false);
   const [cardstatus, setcardStatus] = useState<string>();
   const [programs, setPrograms] = useState<[ProgramInterface]>([
     {
@@ -31,6 +30,7 @@ export default function programPending() {
       descriptionOfEndLocation: "",
       published: true,
       status: "",
+      num_pending: 0,
     },
   ]);
 
@@ -46,23 +46,29 @@ export default function programPending() {
   async function fetchData() {
     const response = await getAllBookings();
     // setBookings(response.data);
+    console.log(response.data);
     for (let i = 0; i < response.data.length; i++) {
       if (response.data[i].status === "pending") {
         // bookingStatusArr.push(response.data[i].user);
         if (response.data[i].program in programPendingDict) {
-          programPendingDict[response.data[i].program].push(
-            response.data[i].user
+          programPendingDict[response.data[i].program._id].push(
+            response.data[i].user._id
           );
-        }else{
-          programPendingDict[response.data[i].program] = [response.data[i].user];
+        } else {
+          programPendingDict[response.data[i].program._id] = [
+            response.data[i].user._id,
+          ];
         }
       }
     }
     for (const [key, value] of Object.entries(programPendingDict)) {
       console.log(`${key}: ${value}`);
+      console.log(key);
       const response = await getProgramById(key);
       console.log(response.data);
+      response.data.num_pending = value.length;
       programArr.push(response.data);
+      // programArr[-1].num_pending = value.length;
     }
     setPrograms(programArr);
     // console.log(response.data);
@@ -77,13 +83,22 @@ export default function programPending() {
     <div>
       <h1>Program Pending</h1>
       {programs.map((program) => (
-        <div key={program._id}>
-          <ul>
-            <li>{program.name}</li>
-            <li>{program.startDate} to {program.endDate}</li>
-            <li>{program.num_participant} / {program.max_participant}</li>
-          </ul>
-        </div>
+        <Link href={`/request/userPending/${program._id}`} key={program._id}>
+          <div key={program._id}>
+            <ul>
+              {/* <li>{program._id}</li> */}
+              <li>{program.name}</li>
+              <li>
+                {program.startDate} to {program.endDate}
+              </li>
+              <li>
+                {program.num_participant} / {program.max_participant}
+              </li>
+              <h4>{program.num_pending} more request(s)</h4>
+            </ul>
+            <div>---------------------------</div>
+          </div>
+        </Link>
       ))}
     </div>
   );

@@ -27,4 +27,5 @@ export interface ProgramInterface {
   // declined_participant?: string[] | UserInterface[]; //objectId User
   published?: boolean;
   status?: String;
+  num_pending: number;
 }
