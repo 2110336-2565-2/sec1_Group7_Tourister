@@ -3,18 +3,16 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { Button } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
 import { COLOR } from "@/theme/globalTheme";
 import { userLogin } from "@/services/userService";
 import { validationSchema, FormData, defaultValues } from "./loginSchema";
-import { FormInputMail } from "@/components/formInput/FormInputMail";
+import { FormInputText } from "@/components/formInput/FormInputText";
 import { FormInputPassword } from "@/components/formInput/FormInputPassword";
-import { PrimaryButton } from "@/css/styling";
-import { FormInputAccountType } from "../formInput/FormInputAccountType";
-import { Form, Title, Field, FieldName } from "@/css/layout";
-
+import { FormInputRadio } from "@/components/formInput/FormInputRadio";
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -55,7 +53,6 @@ const LoginForm = () => {
   };
 
   return (
-<<<<<<< HEAD
     <form
       style={{
         display: "flex",
@@ -91,44 +88,10 @@ const LoginForm = () => {
       <Button style={{ alignSelf: "center" }} type="submit" variant="contained">
         Login
       </Button>
-=======
-    <Form onSubmit={handleSubmit(onSubmit)}>
-      <Title style={{alignSelf: "center"}}>LOG IN</Title>
-      <Field>
-        <FieldName>Choose Account Type</FieldName>
-        <FormInputAccountType
-          name="accountType"
-          control={control}
-          label=""
-          options={[
-            { label: "tourist", value: "tourist" },
-            { label: "guide", value: "guide" },
-          ]}
-        />
-      </Field>
-      <Field>
-        <FieldName>Email</FieldName>
-        <FormInputMail name="email" control={control} label="Email" />
-      </Field>
-      <Field>
-        <FieldName>Password</FieldName>
-        <FormInputPassword
-          name="password"
-          control={control}
-          label="Password"
-          showPassword={showPassword}
-          handleClickShowPassword={handleClickShowPassword}
-          handleMouseDownPassword={handleMouseDownPassword}
-        />
-      </Field>
-      <PrimaryButton style={{ alignSelf: "center", width: "100%", margin: "0" }} type="submit" variant="contained">
-        Log in
-      </PrimaryButton>
->>>>>>> styling
       <div
         style={{ alignSelf: "center", fontSize: "0.8rem", marginTop: "0.5rem" }}
       >
-        <label style={{ color: "gray"}}>Don&apos;t have an account? </label>
+        <label>Don't have an account? </label>
         <Link
           href="/register"
           style={{ textDecoration: "none", color: COLOR.primary }}
@@ -136,7 +99,7 @@ const LoginForm = () => {
           Create Now
         </Link>
       </div>
-    </Form>
+    </form>
   );
 };
 

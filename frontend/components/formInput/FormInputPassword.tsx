@@ -1,8 +1,8 @@
 import { Controller } from "react-hook-form";
-import { TextField, InputAdornment, IconButton } from "@mui/material";
-import { LockOutlined, VisibilityOffOutlined, VisibilityOutlined } from "@mui/icons-material";
+import { TextField, FormControl, InputLabel, OutlinedInput, InputAdornment, IconButton } from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { FormInputProps } from "./formInputProps";
-export const FormInputPassword = ({name, control, showPassword, handleClickShowPassword, handleMouseDownPassword} : FormInputProps ) => {
+export const FormInputPassword = ({name, control, label, showPassword, handleClickShowPassword, handleMouseDownPassword} : FormInputProps ) => {
     return (
         <Controller
             name={name}
@@ -13,7 +13,7 @@ export const FormInputPassword = ({name, control, showPassword, handleClickShowP
             formState,
             })=>(
             <TextField
-                placeholder='Password'
+                label='Password'
                 variant="outlined"
                 type={showPassword ? "text" : "password"} // <-- This is where the magic happens
                 onChange={onChange}
@@ -22,11 +22,6 @@ export const FormInputPassword = ({name, control, showPassword, handleClickShowP
                 error={Boolean(error)}
                 helperText={error ? error.message : null}
                 InputProps={{ // <-- This is where the toggle button is added.
-                    startAdornment: (
-                    <InputAdornment position="start">
-                        <LockOutlined />
-                    </InputAdornment>
-                    ),
                     endAdornment: (
                     <InputAdornment position="end">
                     <IconButton
@@ -34,7 +29,7 @@ export const FormInputPassword = ({name, control, showPassword, handleClickShowP
                         onClick={handleClickShowPassword}
                         onMouseDown={handleMouseDownPassword}
                     >
-                        {showPassword ? <VisibilityOutlined /> : <VisibilityOffOutlined />}
+                        {showPassword ? <Visibility /> : <VisibilityOff />}
                     </IconButton>
                     </InputAdornment>
                     )
