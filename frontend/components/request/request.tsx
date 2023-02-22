@@ -29,9 +29,6 @@ export default function Navbar() {
       language: "",
       endLocation: "",
       descriptionOfEndLocation: "",
-      pending_participant: [],
-      accepted_participant: [],
-      declined_participant: [],
       user: [],
     },
   ]);
