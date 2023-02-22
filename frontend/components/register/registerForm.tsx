@@ -44,7 +44,6 @@ const registerForm = () => {
     const userData: UserInterface = {
       name: data.name,
       surname: data.surname,
-      citizenId: data.citizenId,
       email: data.email,
       password: data.password,
       phoneNumber: data.phoneNumber,

@@ -1,32 +1,34 @@
 import * as yup from "yup";
 
-export type FormData = {
-    location: string,
-    startDate: Date;
-    startTime: string;
-    endDate: Date;
-    endTime: string;
-    price: string;
-};
+// export type FormData = {
+//     location: string,
+//     startDate: Date;
+//     startTime: string;
+//     endDate: Date;
+//     endTime: string;
+//     price: string;
+// };
   
 export const defaultValues = {
-    // startDate: "",
-    // startTime: "",
-    // endDate: "",
-    // endTime: "",
-    //price: ''
+    // sortBy: null,
+    // startDate: null,
+    // endDate: null,
+    // minPrice: null,
+    // maxPrice: null,
+    // minPeople: null,
+    // maxPeople: null,
+    // language: null,
+    // province: null,
 };
   
-  export const validationSchema = yup.object().shape({
-    location: yup.string().required('Please enter the town that you want to explore'),
-    startDate: yup.date().required("Please enter the start date of the trip"),
-    startTime: yup.string().required('Please enter your start time'),
-    endDate: yup.date().required('Please enter your end date'),
-    endTime: yup.string().required('Please enter your end time'),
-    price: yup.string().required("Please enter price")
-  
-    // accountType: yup.string().required("Please choose your account type"),
-    // email: yup.string().required("Please enter email"),
-    // password: yup.string().required("Please enter password"),
-
+export const validationSchema = yup.object().shape({
+    sortBy: yup.string(),
+    startDate: yup.date(),
+    endDate: yup.date(),
+    minPrice: yup.number(),
+    maxPrice: yup.number(),
+    minPeople: yup.number(),
+    maxPeople: yup.number(),
+    language: yup.string(),
+    province: yup.string(),
 });
