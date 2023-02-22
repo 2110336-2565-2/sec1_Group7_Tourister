@@ -48,7 +48,7 @@ const manageAccount = () => {
         {/* </div>
         <div> */}
           <h4>Total</h4>
-          <h1>{`THB ${user.remainingAmount}`}</h1>
+          <h1>{`THB ${user.balance}`}</h1>
         </div>
       </ProfileBox>
       <Link href="./manage_account/editProfile" style={{width:"100%",textDecoration:"none"}} passHref>
