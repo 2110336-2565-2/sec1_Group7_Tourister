@@ -55,44 +55,14 @@ const LoginForm = () => {
   };
 
   return (
-<<<<<<< HEAD
-    <form
-      style={{
+    <Form style={{
         display: "flex",
         alignItems: "flex-start",
         flexDirection: "column",
         margin: "0.8rem",
         gap: "0.3rem",
       }}
-      onSubmit={handleSubmit(onSubmit)}
-    >
-      <h2>LOG IN</h2>
-      <h4>Choose Account Type</h4>
-      <FormInputRadio
-        name="accountType"
-        control={control}
-        label=""
-        options={[
-          { label: "tourist", value: "tourist" },
-          { label: "guide", value: "guide" },
-        ]}
-      />
-      <label>Email</label>
-      <FormInputText name="email" control={control} label="Email" />
-      <label>Password</label>
-      <FormInputPassword
-        name="password"
-        control={control}
-        label="Password"
-        showPassword={showPassword}
-        handleClickShowPassword={handleClickShowPassword}
-        handleMouseDownPassword={handleMouseDownPassword}
-      />
-      <Button style={{ alignSelf: "center" }} type="submit" variant="contained">
-        Login
-      </Button>
-=======
-    <Form onSubmit={handleSubmit(onSubmit)}>
+      onSubmit={handleSubmit(onSubmit)}>
       <Title style={{alignSelf: "center"}}>LOG IN</Title>
       <Field>
         <FieldName>Choose Account Type</FieldName>
@@ -124,7 +94,6 @@ const LoginForm = () => {
       <PrimaryButton style={{ alignSelf: "center", width: "100%", margin: "0" }} type="submit" variant="contained">
         Log in
       </PrimaryButton>
->>>>>>> styling
       <div
         style={{ alignSelf: "center", fontSize: "0.8rem", marginTop: "0.5rem" }}
       >
