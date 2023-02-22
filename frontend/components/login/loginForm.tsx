@@ -53,11 +53,7 @@ const LoginForm = () => {
   };
 
   return (
-<<<<<<< Updated upstream
     <form
-=======
-    <Form
->>>>>>> Stashed changes
       style={{
         display: "flex",
         alignItems: "flex-start",
