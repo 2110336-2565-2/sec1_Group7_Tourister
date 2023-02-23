@@ -8,6 +8,7 @@ export interface FormInputProps {
     handleMouseDownPassword?: (event: React.MouseEvent<HTMLButtonElement>) => void;
     options?: option[];
     readonly?: boolean;
+    style?:any;
 }
 
 type option = {

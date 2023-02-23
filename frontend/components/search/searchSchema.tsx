@@ -1,5 +1,5 @@
 import * as yup from "yup";
-
+import { sortByType } from "@/interfaces/filter/ProgramFilterInterface";
 // export type FormData = {
 //     location: string,
 //     startDate: Date;
@@ -10,25 +10,27 @@ import * as yup from "yup";
 // };
   
 export const defaultValues = {
-    // sortBy: null,
-    // startDate: null,
-    // endDate: null,
-    // minPrice: null,
-    // maxPrice: null,
-    // minPeople: null,
-    // maxPeople: null,
-    // language: null,
-    // province: null,
+    province: "",
+    sortBy: "date" as sortByType,
+    startDate: null,
+    endDate: null,
+    minPrice: 1,
+    maxPrice: 999999,
+    minPeople: null,
+    maxPeople: null,
+    language: null,
+    participant: null,
 };
   
 export const validationSchema = yup.object().shape({
-    sortBy: yup.string(),
-    startDate: yup.date(),
-    endDate: yup.date(),
-    minPrice: yup.number(),
-    maxPrice: yup.number(),
-    minPeople: yup.number(),
-    maxPeople: yup.number(),
-    language: yup.string(),
-    province: yup.string(),
+    sortBy: yup.string().nullable(),
+    startDate: yup.date().nullable(),
+    endDate: yup.date().nullable(),
+    minPrice: yup.number().nullable(),
+    maxPrice: yup.number().nullable(),
+    minPeople: yup.number().nullable(),
+    maxPeople: yup.number().nullable(),
+    language: yup.string().nullable(),
+    province: yup.string().nullable(),
+    participant: yup.string().nullable(),
 });

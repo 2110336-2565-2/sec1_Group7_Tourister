@@ -22,6 +22,8 @@ const InnerPopup = styled.div`
   width: 100%;
   max-width: 640px;
   background-color: #FFF;
+  display: flex;
+  flex-direction: column;
 `
 
 const CloseButton = styled(Button)`
@@ -35,7 +37,7 @@ export const SearchPopup = (props:any) => {
     props.setTrigger(false);
     document.body.style.overflow= 'unset';
   }
-  return (props.trigger) ? (
+  return (props.trigger) && (
     <Popup>
       <InnerPopup>
         <CloseButton onClick={closeAdvanceSearchPopup}>
@@ -44,5 +46,5 @@ export const SearchPopup = (props:any) => {
         {props.children}
       </InnerPopup>
     </Popup>
-  ) : <></>;
+  ) ;
 }

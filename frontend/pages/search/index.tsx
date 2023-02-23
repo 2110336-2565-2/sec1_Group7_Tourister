@@ -1,6 +1,8 @@
 import { TextField } from "@mui/material";
 import { useEffect, useState, useReducer } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 import Searching from "@/components/search/searchForm";
 import NavBar from "@/components/layout/navBar";
@@ -22,14 +24,14 @@ export default function Page() {
 
   return (
     <AuthProvider role="tourist">
-    <>
-    <NavBar/>
-    {/* <h1>Searching</h1> */}
-    <Searching/>
-    {programs?.map((program:ProgramInterface)=>{
-      return <ProgramCardForUser program={program}/>
-    })}
-    </>
+      <LocalizationProvider dateAdapter={AdapterMoment}>
+        <NavBar/>
+        {/* <h1>Searching</h1> */}
+        <Searching/>
+        {programs?.map((program:ProgramInterface)=>{
+          return <ProgramCardForUser program={program}/>
+        })}
+      </LocalizationProvider>
     </AuthProvider>
   );
 } 

@@ -1,19 +1,23 @@
-import * as React from "react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Slider } from "@mui/material";
+import { Button } from "@mui/material";
 
 import { validationSchema, defaultValues} from "./searchSchema";
 import { ProgramFilterInterface } from "@/interfaces/filter/ProgramFilterInterface";
 
 import { FormInputText } from "@/components/formInput/FormInputText";
-import { FormInputDate} from "@/components/formInput/FormInputDate";
-import { FormInputTime} from "@/components/formInput/FormInputTime";
+import { FormInputDateWithMUIX } from "@/components/formInput/FormInputDateWithMUIX"
 import { FormInputNumber } from "@/components/formInput/FormInputNumber";
 import { SearchPopup } from "./SearchPopup";
 import { Box } from "@mui/system";
-import MuiInput from '@mui/material/Input';
+import { FormInputRadio } from "../formInput/FormInputRadio"
+import styled from "styled-components";
+import { IconlessRadio } from "./IconlessRadio";
+
+const HeaderInPopup = styled.h4`
+  margin:0.7rem 0 0.5rem 0;
+`
 
 const SearchForm = () => {
   const [advanceSearchPopup, setAdvanceSearchPopup] = useState(false);
@@ -21,6 +25,7 @@ const SearchForm = () => {
     handleSubmit,
     control,
     formState: { errors },
+    reset,
   } = useForm<ProgramFilterInterface>({
     resolver: yupResolver(validationSchema),
     defaultValues: defaultValues,
@@ -35,6 +40,10 @@ const SearchForm = () => {
     document.body.style.overflow = 'hidden';
   }
 
+  const resetForm = () => {
+    reset(defaultValues);
+  }
+
   return (
     <>
       <h1 style=
@@ -44,28 +53,63 @@ const SearchForm = () => {
       onSubmit={handleSubmit(onSubmit)}
     >
       <label>Location</label>
-      <FormInputText name="location" control={control} label="Ready to find your perfect trips?" />
+      <FormInputText name="province" control={control} label="Ready to find your perfect trips?" />
 
       <Button onClick={showAdvanceSearchPopup} variant="outlined">Advance</Button>
       <SearchPopup trigger={advanceSearchPopup} setTrigger={setAdvanceSearchPopup}>
-        <Box sx={{ width: 'sm' ,padding:'5%'}}>
-            <h4>Sort by</h4>
-            <h4>Date Range</h4>
-            <label>Start</label>
-            <div>
-              <FormInputDate name="startDate" control={control} label="Start Date"/>
+            <HeaderInPopup>Sort by</HeaderInPopup>
+            <FormInputRadio 
+            name="sortBy" 
+            control={control} 
+            label="" 
+            options={[
+              {value:"date",label:"Start Date"},
+              {value:"price",label:"Price"}
+            ]}
+            />
+            <HeaderInPopup>Date Range</HeaderInPopup>
+            <div style={{width:"100%", display:"flex", gap:"1rem"}}>
+              <FormInputDateWithMUIX name="startDate" control={control} label="Start Date"/>
+              <FormInputDateWithMUIX name="endDate" control={control} label="End Date"/>
             </div>
-            <label>End</label>
-            <div>
-              <FormInputDate name="endDate" control={control} label="End Date"/>
-            </div>
-            <h4>Price Range</h4>
-            <div style={{display:"flex", alignItems:"center"}}>
+            <HeaderInPopup>Price Range</HeaderInPopup>
+            <div style={{display:"flex", alignItems:"center", gap:"0.3rem"}}>
               <FormInputNumber name="minPrice" control={control} label="minimum"/>
               -
               <FormInputNumber name="maxPrice" control={control} label="maximum"/>
             </div>
-        </Box>
+            {/* <HeaderInPopup>Participants</HeaderInPopup>
+            <IconlessRadio 
+              name="participant" 
+              control={control} 
+              label="" 
+              options={[
+                {value:"",label:"Any"},
+                {value:"1-5",label:"1-5"},
+                {value:"6-15",label:"6-15"},
+                {value:"16-40",label:"16-40"},
+                {value:"41+",label:"41+"}
+              ]}
+            /> */}
+            <HeaderInPopup>Language</HeaderInPopup>
+            <FormInputRadio 
+              name="language" 
+              control={control} 
+              label="" 
+              options={[
+                {value:"Thai",label:"Thai"},
+                {value:"English",label:"English"},
+                {value:"Chinese",label:"Chinese"},
+                {value:"Japanese",label:"Japanese"},
+                {value:"Korean",label:"Korean"},
+                {value:"Spanish",label:"Spanish"},
+                {value:"Russian",label:"Russian"}
+              ]}
+            />
+        <div style={{display:"flex",alignSelf:"center", gap:"1rem"}}>
+          <Button style={{width:"10rem"}} onClick={resetForm} variant="outlined">Reset</Button>
+          <Button style={{width:"10rem"}} type="submit" variant="contained">Apply</Button>
+        </div>
       </SearchPopup>
       
       <Button type="submit" variant="contained">
