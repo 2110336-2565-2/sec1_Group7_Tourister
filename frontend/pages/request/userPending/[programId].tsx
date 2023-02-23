@@ -9,7 +9,7 @@ export default function Page() {
   // console.log(programId);
 
   return (
-    <AuthProvider role="tourist">
+    <AuthProvider role="guide">
     <>
       <NavBar />
       <UserPending />
