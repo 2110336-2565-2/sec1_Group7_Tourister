@@ -9,6 +9,13 @@ import { FormInputText } from "@/components/formInput/FormInputText";
 import {updateUserById} from "@/services/userService";
 import { UserInterface } from "@/interfaces/UserInterface";
 import axios from 'axios';
+
+import { PrimaryButton } from "@/css/styling";
+import { COLOR } from "@/theme/globalTheme";
+import styled from "styled-components";
+import NavigateBeforeOutlinedIcon from '@mui/icons-material/NavigateBeforeOutlined';
+import { FieldName } from "@/css/layout";
+
 const API_URL = 'http://localhost:2000/api/program'
 type FormData = {
   // accountType: accountType;
@@ -58,25 +65,39 @@ const editProfile = ({user} : {user:UserInterface}) => {
   return (
     <form style={{display:'flex', alignItems: 'center',flexDirection:'column'}}onSubmit={handleSubmit(onSubmit)}>
       {/* <Link href="../register" passHref><button type="button" onClick={handleBackButton}>Back</button></Link> */}
-      <Link href="/manage_account" passHref><button type="button">Back</button></Link>
-      <label>Profile</label>
-      <label>Name</label>
-      <FormInputText name="name" control={control} label="Name"/>
-      <label>Surname</label>
-      <FormInputText name="surname" control={control} label="Surname"/>
-      {user.isGuide? (
+      {/* <Link href="/manage_account" passHref><button type="button">Back</button></Link> */}
+
+      <div style={{marginTop:"6rem",width:"100%",height:"4rem",display:"flex",flexDirection:"row",justifyContent:"flex-start",alignItems:"center"}}>
+        <Link href="/manage_account" style={{width:"20%"}} passHref>
+          <button type="button" style={{width:"100%",height:"4rem",background:"none",border:"none",padding:0}}>
+            <NavigateBeforeOutlinedIcon style={{fontSize:"2.5rem",color:"gray"}}/>
+          </button>
+        </Link>
+        <h3 style={{width:"60%",textAlign:"center",fontSize:"1.5rem"}}>Profile</h3>
+      </div>
+      <div style={{width:"6rem",height:"6rem",backgroundColor:COLOR.primary,marginBottom:"2rem"}}>
+        {/* TODO: ICON */}
+      </div>
+      <div style={{display:"grid",width:"80%",justifyContent:"center"}}>
+        <FieldName style={{alignSelf:"flex-start",marginTop:"1rem",marginBottom:"0.5rem"}}>Name</FieldName>
+        <FormInputText name="name" control={control} label="Name"/>
+        <FieldName style={{alignSelf:"flex-start",marginTop:"1rem",marginBottom:"0.5rem"}}>Surname</FieldName>
+        <FormInputText name="surname" control={control} label="Surname"/>
+        {user.isGuide? (
         <Fragment>
-          <label>Guide License ID</label>
-          <FormInputText name="licenseId" control={control} label="License ID" readonly={true}/>
+          <FieldName style={{color:"rgba(0,0,0,1)",alignSelf:"flex-start",marginTop:"1rem",marginBottom:"0.5rem"}}>Guide License ID</FieldName>
+          <div style={{backgroundColor:"rgba(0,0,0,0.15)"}}><FormInputText name="licenseId" control={control} label="License ID" readonly={true}/></div>
         </Fragment>
-      ):(
-        <Fragment></Fragment>
-      )}
-      <label>Phone number</label>
-      <FormInputText name="phoneNumber" control={control} label="Phone number"/>
-      <label>Email</label>
-      <FormInputText name="email" control={control} label="Email" readonly={true}/>
-      <button type="submit">Update</button>
+        ):(
+          <Fragment></Fragment>
+        )}
+        <FieldName style={{alignSelf:"flex-start",marginTop:"1rem",marginBottom:"0.5rem"}}>Phone number</FieldName>
+        <FormInputText name="phoneNumber" control={control} label="Phone number"/>
+        <FieldName style={{color:"rgba(0,0,0,1)",alignSelf:"flex-start",marginTop:"1rem",marginBottom:"0.5rem"}}>Email</FieldName>
+        <div style={{backgroundColor:"rgba(0,0,0,0.15)"}}><FormInputText name="email" control={control} label="Email" readonly={true}/></div>
+        <PrimaryButton style={{alignSelf:"center",marginTop:"2rem"}} type="submit" variant="contained">UPDATE</PrimaryButton>
+      </div>
+      {/* <button type="submit">Update</button> */}
     </form>
   );
 };

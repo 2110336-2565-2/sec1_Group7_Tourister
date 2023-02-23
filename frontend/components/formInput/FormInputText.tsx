@@ -20,7 +20,7 @@ export const FormInputText = ({ name, control, label, readonly }: FormInputProps
           onChange={onChange}
           value={value}
           fullWidth
-          label={label}
+          placeholder={label}
           variant="outlined"
           InputProps={{
             readOnly: readonly

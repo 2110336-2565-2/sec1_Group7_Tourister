@@ -7,7 +7,6 @@ export default function Page() {
   <AuthProvider>
   <>
     <NavBar/>
-    <h1>Tourister</h1>
     <EditProfile/>
   </>
   </AuthProvider>

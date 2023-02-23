@@ -8,16 +8,24 @@ import {
 import { Controller } from "react-hook-form";
 import { FormInputProps } from "./formInputProps";
 
-export const FormInputRadio  = ({ name, control, label, options }: FormInputProps) => {
+export const FormInputRadio = ({
+  name,
+  control,
+  label,
+  options,
+}: FormInputProps) => {
   const generateRadioOptions = () => {
-    return options && options.map((singleOption, index) => (
-      <FormControlLabel
-        key={index}
-        value={singleOption.value}
-        label={singleOption.label}
-        control={<Radio />}
-      />
-    ));
+    return (
+      options &&
+      options.map((singleOption, index) => (
+        <FormControlLabel
+          key={index}
+          value={singleOption.value}
+          label={singleOption.label}
+          control={<Radio />}
+        />
+      ))
+    );
   };
 
   return (
