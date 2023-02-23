@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import UserPending from "@/components/request/userPending/userPending";
 import NavBar from "@/components/layout/navBar";
+import { AuthProvider } from "@/components/AuthProvider";
 
 export default function Page() {
   // const router = useRouter();
@@ -8,11 +9,13 @@ export default function Page() {
   // console.log(programId);
 
   return (
+    <AuthProvider role="guide">
     <>
       <NavBar />
       <UserPending />
       {/* <h1>{programName}</h1> */}
     </>
+    </AuthProvider>
   );
 }
 

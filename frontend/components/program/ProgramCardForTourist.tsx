@@ -13,7 +13,7 @@ export const ProgramCardForUser:FC<IProgramInterface> = ({program}) => {
     <div>{program.province}</div>
     <div>{program.description}</div>
     <div>
-    <div>{program.guide?.name} {program.guide?.surname}</div>
+    {/* <div>{program.guide?.name} {program.guide?.surname}</div> */}
     <div>{program.price}</div>
     </div>
   </div>
