@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@tanstack/react-query": "^4.24.10",
     "bcrypt": "^5.1.0",
     "cookie-parser": "^1.4.6",
     "cookies-next": "^2.1.1",
