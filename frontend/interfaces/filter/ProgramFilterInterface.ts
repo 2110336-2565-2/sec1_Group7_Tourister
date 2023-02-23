@@ -1,11 +1,13 @@
+export type sortByType = "date" | "price";
+
 export interface ProgramFilterInterface {
-    sortBy?: "date" | "price",
-    startDate?: Date,
-    endDate?: Date,
-    minPrice?: number,
-    maxPrice?: number,
-    minPeople?: number,
-    maxPeople?: number,
-    language?: string,
-    province?: string,
+    sortBy?: sortByType,
+    startDate?: Date | null,
+    endDate?: Date | null,
+    minPrice?: number | null,
+    maxPrice?: number | null,
+    minPeople?: number | null,
+    maxPeople?: number | null,
+    language?: string | null,
+    province?: string | null,
 }

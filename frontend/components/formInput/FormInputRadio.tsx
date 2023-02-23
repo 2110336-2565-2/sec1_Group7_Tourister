@@ -13,6 +13,7 @@ export const FormInputRadio = ({
   control,
   label,
   options,
+  style
 }: FormInputProps) => {
   const generateRadioOptions = () => {
     return (
@@ -39,7 +40,7 @@ export const FormInputRadio = ({
           fieldState: { error },
           formState,
         }) => (
-          <RadioGroup value={value} onChange={onChange}>
+          <RadioGroup style={style} value={value} onChange={onChange}>
             {generateRadioOptions()}
           </RadioGroup>
         )}
