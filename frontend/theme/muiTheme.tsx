@@ -16,5 +16,9 @@ export const muiTheme = createTheme({
     error: {
       main: COLOR.error,
     },
+    success:{
+      main: COLOR.success,
+    },
+    
   },
 });

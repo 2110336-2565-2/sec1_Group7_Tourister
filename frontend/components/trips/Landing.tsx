@@ -3,6 +3,7 @@ import {Button,Tab, Tabs } from "@mui/material";
 // import Button from '@mui/material-next/Button';
 import * as React from "react";
 import Box from "@mui/material/Box";
+import { COLOR } from "@/theme/globalTheme";
 
 interface LinkTabProps {
   label?: string;
@@ -34,9 +35,10 @@ const Landing = () => {
       sx={{
         width: 1,
         height: '25%' ,
-        backgroundColor: '#2385C1',
+        backgroundColor: COLOR.background,
         borderBottomLeftRadius:18,
         borderBottomRightRadius:18,
+        color: COLOR.white,
 
         // '&:hover': {
         //   backgroundColor: 'primary.main',
@@ -48,7 +50,7 @@ const Landing = () => {
     >
         <h5>Hello Guide,</h5>
         <h4>Name Surname</h4>
-        <Button href="/trips/createTrip" variant="contained" color="inherit" >
+        <Button href="/trips/createTrip" variant="contained" color = 'primary'  >
             Create Trip
         </Button>
     </Box>
@@ -64,8 +66,7 @@ const Landing = () => {
         >
             <LinkTab label="Ongoing" href="/trips/ongoing" />
             <LinkTab label="Upcoming" href="/trips/upcoming" />
-            <LinkTab label="Successful" href="/trips/successful" />
-            <LinkTab label="Failed" href="/trips/failed" />
+            <LinkTab label="Complete" href="/trips/successful" />
           </Tabs>
       </Box>
     </>
