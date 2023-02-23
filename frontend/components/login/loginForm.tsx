@@ -43,7 +43,7 @@ const LoginForm = () => {
       localStorage.setItem("user", JSON.stringify(response.data));
 
       console.log(localStorage.getItem("user"));
-      if (response.data.isGuide) {
+      if (response.data?.isGuide) {
         router.push("/trips");
       } else {
         router.push("/search");
