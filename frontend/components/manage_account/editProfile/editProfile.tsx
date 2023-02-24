@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup";
 import { FormInputText } from "@/components/formInput/FormInputText";
-import {updateUserById} from "@/services/userService";
+import {getUserById, updateUserById} from "@/services/userService";
 import { UserInterface } from "@/interfaces/UserInterface";
 import axios from 'axios';
 
@@ -40,7 +40,15 @@ const validationSchema = yup.object().shape({
     .max(10, 'Please enter the valid phone number')
 });
 
-const editProfile = ({user} : {user:UserInterface}) => {
+const editProfile = () => {
+  let user:UserInterface
+  if (typeof window !== 'undefined') {
+    // console.log('we are running on the client');
+    user = JSON.parse(localStorage.getItem("user")||`{}`)
+  } else {
+    // console.log('we are running on the server');
+    user = JSON.parse(`{}`)
+  }
   const defaultValues = {
     name: user.name,
     surname: user.surname,
@@ -51,6 +59,11 @@ const editProfile = ({user} : {user:UserInterface}) => {
   const onSubmit = async (data : FormData) => {
     console.log(data);
     if(user._id != null)console.log( await updateUserById(user._id,data))
+
+    
+    const response = await getUserById(user._id);
+    console.log(response.data);
+    localStorage.setItem("user", JSON.stringify(response.data));
   }
   const {
     register,
@@ -61,7 +74,7 @@ const editProfile = ({user} : {user:UserInterface}) => {
     resolver: yupResolver(validationSchema),
     defaultValues: defaultValues
   });
-
+  
   return (
     <form style={{display:'flex', alignItems: 'center',flexDirection:'column'}}onSubmit={handleSubmit(onSubmit)}>
       {/* <Link href="../register" passHref><button type="button" onClick={handleBackButton}>Back</button></Link> */}
@@ -102,19 +115,4 @@ const editProfile = ({user} : {user:UserInterface}) => {
   );
 };
 
-editProfile.defaultProps = {
-  user : {
-    _id:"63eb4a40b2be37de33f126ec",
-    citizenId:"1111111111111",
-    name:"TestForManageAccount",
-    surname:"DontDelete",
-    email:"realprasrodo@gmail.com",
-    password:"$2b$10$4Mq3/MqcL36n7fNCsK7POewcN3BWlDJ3oh0rP41bC8vgOopT/m5oq",
-    phoneNumber:"111111111",
-    isGuide:true,
-    remainingAmount:{"$numberInt":"0"},
-    licenseId:"1234567",
-    __v:{"$numberInt":"0"}
-  }
-}
 export default editProfile;
