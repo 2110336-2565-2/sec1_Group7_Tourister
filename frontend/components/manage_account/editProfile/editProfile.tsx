@@ -60,10 +60,11 @@ const editProfile = () => {
     console.log(data);
     if(user._id != null)console.log( await updateUserById(user._id,data))
 
-    
-    const response = await getUserById(user._id);
-    console.log(response.data);
-    localStorage.setItem("user", JSON.stringify(response.data));
+    if(user._id){
+      const response = await getUserById(user._id);
+      console.log(response.data);
+      localStorage.setItem("user", JSON.stringify(response.data));
+    }
   }
   const {
     register,
