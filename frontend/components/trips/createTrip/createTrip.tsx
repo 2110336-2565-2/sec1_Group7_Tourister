@@ -17,6 +17,8 @@ import { createProgram,updateProgramById} from "@/services/programService"
 import { getUserById, updateUserById } from "@/services/userService";
 import { ProgramInterface } from "@/interfaces/ProgramInterface";
 import { UserInterface } from "@/interfaces/UserInterface";
+import { AttractionInterface } from "@/interfaces/AttractionInterface";
+import { FormInputDateWithMUIX } from "@/components/formInput/FormInputDateWithMUIX";
 
 type FormData = {
   _id:string
@@ -59,25 +61,75 @@ const validationSchema = yup.object().shape({
 });
 
 const createTrip = () => {
+  // let user:JSON
+  // let user:UserInterface
+  // if (typeof window !== 'undefined') {
+  //   // console.log('we are running on the client');
+  //   user = JSON.parse(localStorage.getItem("user")||`{}`)
+  // } else {
+  //   // console.log('we are running on the server');
+  //   user = JSON.parse(`{}`)
+  // }
   const [stage, setStage ] = useState(0);
   const [user, setUser] = useState<UserInterface>()
   const [draft, setDraft] = useState<ProgramInterface>()
   const [days,setDays] =  useState<string[]>([]);
   const [dayTrips,setDayTrips] = useState<{
     date:  string,
-    attractions : {
-      "id": string,
-      "time": string,
-      "location": string,
-      "province": string,
-      "option": string,
-      "file": File | undefined
-    }[]
+    // attractions : {
+    //   "id": string,
+    //   "time": string,
+    //   "location": string,
+    //   "province": string,
+    //   "option": string,
+    //   "file": File | undefined
+    // }[]
+    attractions : AttractionInterface[]
   }[]>();
   const router = useRouter();
-  useEffect(()=>setUser(JSON.parse(localStorage.getItem("user")||`{}`)),[])
-  useEffect(()=>setDraft(JSON.parse(localStorage.getItem("editing")||`{}`)),[])
+  
+  let defaultValues;
+  useEffect(()=>{
+    setUser(JSON.parse(localStorage.getItem("user")||`{}`))
+    if(localStorage.getItem("editing")!==null){
+    console.log("cannot find draft in local storatge")
+    setDraft(JSON.parse(localStorage.getItem("editing")||`{}`))}}
+  ,[])
 
+  
+  useEffect(()=>{
+    reset(draft)
+  // if(draft){
+  //   console.log("draft found")
+  //   defaultValues = {
+  //     _id: draft._id? draft._id : nanoid(),
+  //     name: draft.name? draft.name : "" ,
+  //     description: draft.description? draft.description : "" ,
+  //     price: draft.price? draft.price : 0 ,
+  //     province: draft.province? draft.province : "" ,
+  //     startDate: draft.startDate? draft.startDate : new Date() ,
+  //     startTime: draft.startTime? draft.startTime : "00.00" ,
+  //     endDate: draft.endDate? draft.endDate : new Date() ,
+  //     endTime: draft.endTime? draft.endTime : "00.00" ,
+  //     max_participant: draft.max_participant? draft.max_participant : 1 ,
+  //     language: draft.language? draft.language : [] ,
+  //     meetLocation: draft.meetLocation? draft.meetLocation : "" ,
+  //     meetProvince: draft.meetProvince? draft.meetProvince : "" ,
+  //     descriptionOfMeetLocation: draft.descriptionOfMeetLocation? draft.descriptionOfMeetLocation : "" ,
+  //     endLocation: draft.endLocation? draft.endLocation : "" ,
+  //     endProvince: draft.endProvince? draft.endProvince : "" ,
+  //     descriptionOfEndLocation: draft.descriptionOfEndLocation? draft.descriptionOfEndLocation : "" ,
+  //     num_pending: draft.num_pending? draft.num_pending : 0 ,
+  //   }
+    if(draft && draft.dayTrips){setDayTrips(draft.dayTrips)}
+  // }else {
+  //   console.log("cannot find draft")
+  //   defaultValues = {
+  //     _id: nanoid(),
+  //     num_pending: 0,
+  //   }
+  // }
+  },[draft])
   const HandleNext = () => {
     setDays([])
     let date = new Date(getValues("startDate"))
@@ -124,41 +176,13 @@ const createTrip = () => {
     } catch (error) {
       console.log(error)
     }
-  }
-  let defaultValues;
-  if(draft){
-    console.log(draft)
-    defaultValues = {
-      _id: draft._id? draft._id : nanoid(),
-      name: draft.name? draft.name : "" ,
-      description: draft.description? draft.description : "" ,
-      price: draft.price? draft.price : 0 ,
-      province: draft.province? draft.province : "" ,
-      startDate: draft.startDate? draft.startDate : new Date() ,
-      startTime: draft.startTime? draft.startTime : "00.00" ,
-      endDate: draft.endDate? draft.endDate : new Date() ,
-      endTime: draft.endTime? draft.endTime : "00.00" ,
-      max_participant: draft.max_participant? draft.max_participant : 1 ,
-      language: draft.language? draft.language : [] ,
-      meetLocation: draft.meetLocation? draft.meetLocation : "" ,
-      meetProvince: draft.meetProvince? draft.meetProvince : "" ,
-      descriptionOfMeetLocation: draft.descriptionOfMeetLocation? draft.descriptionOfMeetLocation : "" ,
-      endLocation: draft.endLocation? draft.endLocation : "" ,
-      endProvince: draft.endProvince? draft.endProvince : "" ,
-      descriptionOfEndLocation: draft.descriptionOfEndLocation? draft.descriptionOfEndLocation : "" ,
-      num_pending: draft.num_pending? draft.num_pending : 0 ,
     }
-  }else {
-    defaultValues = {
-      _id: nanoid(),
-      num_pending: 0,
-    }
-  }
   const {
     register,
     watch,
     getValues,
     control,
+    reset,
     clearErrors,
     handleSubmit,
     formState: { errors }
@@ -167,24 +191,29 @@ const createTrip = () => {
     defaultValues: defaultValues
   });
 
-  const handleCallback = (day:string,attractions:{
-    "id": string,
-    "time": string,
-    "location": string,
-    "province": string,
-    "option": string,
-    "file": File | undefined
-  }[]) => {
+  // const handleCallback = (day:string,attractions:{
+  //   "id": string,
+  //   "time": string,
+  //   "location": string,
+  //   "province": string,
+  //   "option": string,
+  //   "file": File | undefined
+  // }[]) => {
+  // let updatedDayTrips : {
+  //   date:  string,
+  //   attractions : {
+  //     "id": string,
+  //     "time": string,
+  //     "location": string,
+  //     "province": string,
+  //     "option": string,
+  //     "file": File | undefined
+  //   }[]
+  // }[];
+  const handleCallback = (day:string,attractions:AttractionInterface[]) => {
   let updatedDayTrips : {
     date:  string,
-    attractions : {
-      "id": string,
-      "time": string,
-      "location": string,
-      "province": string,
-      "option": string,
-      "file": File | undefined
-    }[]
+    attractions : AttractionInterface[]
   }[];
   let found = false
   if(dayTrips){
@@ -220,16 +249,13 @@ const createTrip = () => {
       "file": undefined
     }]
   }}
-  // let user:JSON
-  // let user:UserInterface
-  // if (typeof window !== 'undefined') {
-  //   // console.log('we are running on the client');
-  //   user = JSON.parse(localStorage.getItem("user")||`{}`)
-  // } else {
-  //   // console.log('we are running on the server');
-  //   user = JSON.parse(`{}`)
-  // }
-  console.log(user)
+  // console.log("-------------------------------------------")
+  // console.log("user")
+  // console.log(user)
+  // console.log("draft")
+  // console.log(draft)
+  // console.log("getValues()")
+  // console.log(getValues())
   return (
     <form style={{display:'flex', alignItems: 'center',flexDirection:'column'}}onSubmit={handleSubmit(onSubmit)}>
       <button type="button" onClick={()=>{router.push("/trips/createTrip/chooseDraft");}}>Draft</button>
@@ -248,13 +274,15 @@ const createTrip = () => {
             <label>Duration</label>
             <label>Start</label>
             <div>
-              <FormInputDate name="startDate" control={control} label=""/>
-              <FormInputTime name="startTime" control={control} label="" readonly={false}/>
+              <FormInputDate name="startDate" control={control} label="Start Date"/>
+              {/* <FormInputDateWithMUIX name="startDate" control={control} label="Start Date"/> */}
+              <FormInputTime name="startTime" control={control} label="Start Time"/>
             </div>
             <label>End</label>
             <div>
-              <FormInputDate name="endDate" control={control} label=""/>
-              <FormInputTime name="endTime" control={control} label="" readonly={false}/>
+              <FormInputDate name="endDate" control={control} label="End Date"/>
+              {/* <FormInputDateWithMUIX name="endDate" control={control} label="End Date"/> */}
+              <FormInputTime name="endTime" control={control} label="End Time"/>
             </div>
             <label>Group Size</label>
             <FormInputText name="max_participant" control={control} label="Number of participant(s)"/>

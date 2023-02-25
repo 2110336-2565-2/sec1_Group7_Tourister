@@ -3,6 +3,13 @@ import { Controller, useFormContext } from "react-hook-form";
 // import { makeStyles } from '@mui/core/styles';
 import TextField from "@mui/material/TextField";
 import { FormInputProps } from "./formInputProps";
+import { DesktopDatePicker } from "@mui/x-date-pickers";
+// import { Dayjs } from 'dayjs';
+// import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+// import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+// import Stack from '@mui/material/Stack';
+// import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+// import { LocalizationProvider } from '@mui/x-date-pickers-pro'; 
 
 // const useStyles = makeStyles((theme) => ({
 //   container: {
@@ -18,6 +25,9 @@ import { FormInputProps } from "./formInputProps";
 
 export const FormInputDate = ({ name, control, label }: FormInputProps) => {
   return (
+    // <LocalizationProvider dateAdapter={AdapterDayjs}>
+      // <Stack spacing={3}>
+// {/* <LocalizationProvider dateAdapter={AdapterDateFns} localeText={locale}> */}
     <Controller
       name={name}
       control={control}
@@ -26,13 +36,18 @@ export const FormInputDate = ({ name, control, label }: FormInputProps) => {
         fieldState: { error },
         formState,
       }) => (
+        // <DesktopDatePicker
+        //   label={label}
+        //   value={value}
+        //   onChange={onChange}
+        //   renderInput={(params) => <TextField {...params} />}
+        // />
         <TextField
-          id="date"
           onChange={onChange}
+          label={label}
           size="small"
           type="date"
           defaultValue="2023-01-01"
-          // className={useStyles().textField}
           InputLabelProps={{
             shrink: true,
           }}
@@ -41,5 +56,8 @@ export const FormInputDate = ({ name, control, label }: FormInputProps) => {
         />
       )}
     />
+    // </LocalizationProvider> 
+    // </Stack>
+  // </LocalizationProvider>
   );
 };

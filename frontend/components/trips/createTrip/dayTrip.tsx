@@ -4,24 +4,11 @@ import { useState, MouseEvent, Fragment } from "react";
 import { nanoid } from "nanoid";
 import Attraction from "./attraction";
 import TextField from "@mui/material/TextField";
+import { AttractionInterface } from "@/interfaces/AttractionInterface";
 
-const dayTrip = ({date,savedAttraction,handleCB}:{date:string,savedAttraction:{
-  "id": string,
-  "time": string,
-  "location": string,
-  "province": string,
-  "option": string,
-  "file": File | undefined
-}[],handleCB:Function}) => {
+const dayTrip = ({date,savedAttraction,handleCB}:{date:string,savedAttraction:AttractionInterface[],handleCB:Function}) => {
   const [stage, setStage ] = useState(0);
-  const [attractions,setAttractions] = useState<{
-      "id": string,
-      "time": string,
-      "location": string,
-      "province": string,
-      "option": string,
-      "file": File | undefined
-    }[]>(savedAttraction);
+  const [attractions,setAttractions] = useState<AttractionInterface[]>(savedAttraction);
 
   const handleAdd = ()=>{
     const newAttraction = {

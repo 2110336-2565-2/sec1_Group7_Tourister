@@ -27,12 +27,11 @@ export const FormInputTime = ({ name, control, label, readonly }: FormInputProps
         formState,
       }) => (
         <TextField
-          id="time"
           onChange={onChange}
+          label={label}
           size="small"
           type="time"
           defaultValue="00:00"      
-          // className={useStyles().textField}
           InputLabelProps={{
             shrink: true,
           }}
