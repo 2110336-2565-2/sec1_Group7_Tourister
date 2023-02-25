@@ -19,7 +19,8 @@ import { ProgramInterface } from "@/interfaces/ProgramInterface";
 import { UserInterface } from "@/interfaces/UserInterface";
 import { AttractionInterface } from "@/interfaces/AttractionInterface";
 import { FormInputDateWithMUIX } from "@/components/formInput/FormInputDateWithMUIX";
-
+import axios from "axios";
+const API_URL = 'http://localhost:2000/api/program'
 type FormData = {
   _id:string
   name: string;
@@ -61,15 +62,6 @@ const validationSchema = yup.object().shape({
 });
 
 const createTrip = () => {
-  // let user:JSON
-  // let user:UserInterface
-  // if (typeof window !== 'undefined') {
-  //   // console.log('we are running on the client');
-  //   user = JSON.parse(localStorage.getItem("user")||`{}`)
-  // } else {
-  //   // console.log('we are running on the server');
-  //   user = JSON.parse(`{}`)
-  // }
   const [stage, setStage ] = useState(0);
   const [user, setUser] = useState<UserInterface>()
   const [draft, setDraft] = useState<ProgramInterface>()
@@ -99,36 +91,7 @@ const createTrip = () => {
   
   useEffect(()=>{
     reset(draft)
-  // if(draft){
-  //   console.log("draft found")
-  //   defaultValues = {
-  //     _id: draft._id? draft._id : nanoid(),
-  //     name: draft.name? draft.name : "" ,
-  //     description: draft.description? draft.description : "" ,
-  //     price: draft.price? draft.price : 0 ,
-  //     province: draft.province? draft.province : "" ,
-  //     startDate: draft.startDate? draft.startDate : new Date() ,
-  //     startTime: draft.startTime? draft.startTime : "00.00" ,
-  //     endDate: draft.endDate? draft.endDate : new Date() ,
-  //     endTime: draft.endTime? draft.endTime : "00.00" ,
-  //     max_participant: draft.max_participant? draft.max_participant : 1 ,
-  //     language: draft.language? draft.language : [] ,
-  //     meetLocation: draft.meetLocation? draft.meetLocation : "" ,
-  //     meetProvince: draft.meetProvince? draft.meetProvince : "" ,
-  //     descriptionOfMeetLocation: draft.descriptionOfMeetLocation? draft.descriptionOfMeetLocation : "" ,
-  //     endLocation: draft.endLocation? draft.endLocation : "" ,
-  //     endProvince: draft.endProvince? draft.endProvince : "" ,
-  //     descriptionOfEndLocation: draft.descriptionOfEndLocation? draft.descriptionOfEndLocation : "" ,
-  //     num_pending: draft.num_pending? draft.num_pending : 0 ,
-  //   }
     if(draft && draft.dayTrips){setDayTrips(draft.dayTrips)}
-  // }else {
-  //   console.log("cannot find draft")
-  //   defaultValues = {
-  //     _id: nanoid(),
-  //     num_pending: 0,
-  //   }
-  // }
   },[draft])
   const HandleNext = () => {
     setDays([])
@@ -153,8 +116,8 @@ const createTrip = () => {
     try {
       if(dayTrips&&user?._id){
         console.log({...data,dayTrips:dayTrips})
-        const response = await updateUserById(user._id,{draft:{...user.draft,[data._id]:{...data,dayTrips:dayTrips}}})
-        // const response = await axios.post(API_URL,{...data,dayTrips:dayTrips})
+        // const response = await updateUserById(user._id,{draft:{...user.draft,[data._id]:{...data,dayTrips:dayTrips}}})
+        const response = await axios.post(API_URL,{...data,dayTrips:dayTrips})
         console.log(response)
         
         const res = await getUserById(user._id);
@@ -165,13 +128,36 @@ const createTrip = () => {
     }
   }
   const onSubmit = async (data : FormData) => {
-    // console.log({...data,dayTrips:dayTrips})
     try {
       if(dayTrips&&user){
-        console.log({...data,dayTrips:dayTrips})
-        const response = await createProgram({...data,dayTrips:dayTrips,guide:user})
-        // const response = await axios.post(API_URL,{...data,dayTrips:dayTrips})
+        let programData : ProgramInterface = {
+          name: data.name,
+          price: data.price,
+          startDate: data.startDate,
+          endDate: data.endDate,
+          startTime: data.startTime,
+          endTime: data.endTime,
+          province: data.province,
+          max_participant: data.max_participant,
+          num_participant: 0,
+          descriptionOfMeetLocation: data.descriptionOfMeetLocation,
+          guide: user,
+          dayTrips : dayTrips,
+          language: data.language,
+          descriptionOfEndLocation: data.descriptionOfEndLocation,
+          num_pending: 0,
+        }
+        if(data.description){programData = {...programData,description: data.description}}
+        if(data.meetLocation){programData = {...programData,meetLocation: data.meetLocation}}
+        if(data.meetProvince){programData = {...programData,meetProvince: data.meetProvince}}
+        if(data.endLocation){programData = {...programData,endLocation: data.endLocation}}
+        if(data.endProvince){programData = {...programData,endProvince: data.endProvince}}
+        console.log(programData)
+        const response = await createProgram(programData)
+        // const response = await axios.post(API_URL,programData)
+        // const response = await createProgram({...data,dayTrips:dayTrips,guide:user})
         console.log(response)
+        // if(response.code===201){router.push("/trips")}
       }
     } catch (error) {
       console.log(error)
@@ -293,7 +279,7 @@ const createTrip = () => {
           <Fragment>
             <button type="button" onClick={()=>{setStage(0)}}>Back</button>
             <div>
-              {/* <FormInputTime name="startTime" control={control} label="" readonly={true}/> */}
+              <FormInputTime name="startTime" control={control} label="" readonly={true}/>
               {/* <label style={{padding:"20px 10px"}}>Departure</label> */}
               <label>Meeting point</label>
               <label>Location :</label>
@@ -306,7 +292,7 @@ const createTrip = () => {
               <DayTrip key={d.toString()} date={d} savedAttraction={getAttractionsByDate(d)} handleCB={handleCallback}/>
             ))}
             <div>
-              {/* <FormInputTime name="endTime" control={control} label="" readonly={true}/> */}
+              <FormInputTime name="endTime" control={control} label="" readonly={true}/>
               {/* <label style={{padding:"20px 10px"}}>Return</label> */}
               <label>Drop off</label>
               <label>Location :</label>

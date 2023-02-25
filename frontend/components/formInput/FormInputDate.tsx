@@ -45,6 +45,7 @@ export const FormInputDate = ({ name, control, label }: FormInputProps) => {
         <TextField
           onChange={onChange}
           label={label}
+          value={value}
           size="small"
           type="date"
           defaultValue="2023-01-01"
