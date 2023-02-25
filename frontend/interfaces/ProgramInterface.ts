@@ -14,6 +14,7 @@ export interface ProgramInterface {
   max_participant: number;
   num_participant?: number;
   meetLocation?: string;
+  meetProvince?: string;
   descriptionOfMeetLocation?: string;
   guide: string | UserInterface, //objectId User
   // attractions?: AttractionInterface[];
@@ -21,6 +22,7 @@ export interface ProgramInterface {
   imageUrl?: string;
   language?: string[];
   endLocation?: string;
+  endProvince?: string;
   descriptionOfEndLocation?: string;
   // pending_participant?: string[] | UserInterface[]; //objectId User
   // accepted_participant?: string[] | UserInterface[]; //objectId User

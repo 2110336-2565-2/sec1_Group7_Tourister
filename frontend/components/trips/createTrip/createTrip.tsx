@@ -1,37 +1,25 @@
 "use client";
 
-import React from "react";
-import { useState, MouseEvent, Fragment } from "react";
-import Link from 'next/link';
+import React, { useEffect, useState, MouseEvent, Fragment } from "react";
 import { Controller,useFormContext,useForm,useFieldArray } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup";
+import { useRouter } from "next/router";
 import { nanoid } from "nanoid";
-import Attraction from "./attraction";
+
 import DayTrip from "./dayTrip";
-import axios from 'axios';
+
 import { FormInputText } from "@/components/formInput/FormInputText";
-import { FormInputRadio } from "@/components/formInput/FormInputRadio";
 import { FormInputDate} from "@/components/formInput/FormInputDate";
 import { FormInputTime} from "@/components/formInput/FormInputTime";
 import TextField from "@mui/material/TextField";
 import { createProgram,updateProgramById} from "@/services/programService"
+import { getUserById, updateUserById } from "@/services/userService";
 import { ProgramInterface } from "@/interfaces/ProgramInterface";
-import { set } from "react-hook-form/dist/utils";
-import { useRouter } from "next/router";
 import { UserInterface } from "@/interfaces/UserInterface";
-var ReactDOM = require('react-dom');
-const API_URL = 'http://localhost:2000/api/program'
 
-type att = [{
-  "id": string,
-  "name": string,
-  "option": string,
-  "editing": boolean,
-  "error": boolean
-}]
 type FormData = {
-  programId:string
+  _id:string
   name: string;
   description: string;
   price: number;
@@ -41,7 +29,7 @@ type FormData = {
   endDate: Date;
   endTime: string;
   max_participant: number;
-  language: [string];
+  language: string[];
   meetLocation: string;
   meetProvince: string;
   descriptionOfMeetLocation: string;
@@ -49,44 +37,32 @@ type FormData = {
   endProvince: string;
   descriptionOfEndLocation: string;
   num_pending: number;
-  // attractions: att
-}
-// type accountType = 'tourist' | 'guide';
-const defaultValues = {
-  programId: nanoid(),
-  num_panding: 0,
-  // attractions: [{
-  //   "id": nanoid(),
-  //   "name": "",
-  //   "option": "Addmission not needed",
-  //   "editing": true,
-  //   "error": false
-  // }],
 }
 
 const validationSchema = yup.object().shape({
-  // name: yup.string().required("Please enter your trip name"),
-  // startDate: yup.date().required('Please enter your start date'),
-  // startTime: yup.string().required('Please enter your start time'),
-  // endDate: yup.date().required('Please enter your end date'),
-  // endTime: yup.string().required('Please enter your end time'),
-  // // price: yup.string().required('Please enter your price')
-  // // .matches(/^[0-9]+$/, "Price must be only digits"),
-  // price: yup.number().required('Please enter your price'),
-  // max_participant: yup.string().required('Please enter your group size')
-  // .matches(/^[0-9]+$/, "Group size must be only digits"),
-  // // language: yup.string().required('Please enter your trip language'),
-  // description: yup.string(),
-  // meetLocation: yup.string().required('Please enter your trip start location'),
-  // descriptionOfMeetLocation: yup.string(),
-  // endLocation: yup.string().required('Please enter your trip end location'),
-  // descriptionOfEndLocation: yup.string()
+  name: yup.string().required("Please enter your trip name"),
+  startDate: yup.date().required('Please enter your start date'),
+  startTime: yup.string().required('Please enter your start time'),
+  endDate: yup.date().required('Please enter your end date'),
+  endTime: yup.string().required('Please enter your end time'),
+  // price: yup.string().required('Please enter your price')
+  // .matches(/^[0-9]+$/, "Price must be only digits"),
+  price: yup.number().required('Please enter your price'),
+  max_participant: yup.string().required('Please enter your group size')
+  .matches(/^[0-9]+$/, "Group size must be only digits"),
+  // language: yup.string().required('Please enter your trip language'),
+  description: yup.string(),
+  meetLocation: yup.string().required('Please enter your trip start location'),
+  descriptionOfMeetLocation: yup.string(),
+  endLocation: yup.string().required('Please enter your trip end location'),
+  descriptionOfEndLocation: yup.string()
 });
 
 const createTrip = () => {
   const [stage, setStage ] = useState(0);
+  const [user, setUser] = useState<UserInterface>()
+  const [draft, setDraft] = useState<ProgramInterface>()
   const [days,setDays] =  useState<string[]>([]);
-  // const [dayTrips,setDayTrips] = useState<Object>();
   const [dayTrips,setDayTrips] = useState<{
     date:  string,
     attractions : {
@@ -99,6 +75,8 @@ const createTrip = () => {
     }[]
   }[]>();
   const router = useRouter();
+  useEffect(()=>setUser(JSON.parse(localStorage.getItem("user")||`{}`)),[])
+  useEffect(()=>setDraft(JSON.parse(localStorage.getItem("editing")||`{}`)),[])
 
   const HandleNext = () => {
     setDays([])
@@ -108,26 +86,36 @@ const createTrip = () => {
       return;
     }
     setStage(1)
-    // console.log(date)
     end.setDate(end.getDate() + 1)
     let k = 0
     while(date.toString()!==end.toString()){
       const i = date.toString()
-      // const i = new Date(date.toString())
       setDays(days => [...days,i])
       date.setDate(date.getDate() + 1);
       k = k+1
       if(k>100){break}
     }
-    // console.log(days)
   }
-  const HandleSaveDraft = () => {
-    setStage(0)
+  const HandleSaveDraft = async () => {
+    const data = getValues();
+    try {
+      if(dayTrips&&user?._id){
+        console.log({...data,dayTrips:dayTrips})
+        const response = await updateUserById(user._id,{draft:{...user.draft,[data._id]:{...data,dayTrips:dayTrips}}})
+        // const response = await axios.post(API_URL,{...data,dayTrips:dayTrips})
+        console.log(response)
+        
+        const res = await getUserById(user._id);
+        localStorage.setItem("user", JSON.stringify(res.data));
+      }
+    } catch (error) {
+      console.log(error)
+    }
   }
   const onSubmit = async (data : FormData) => {
     // console.log({...data,dayTrips:dayTrips})
     try {
-      if(dayTrips){
+      if(dayTrips&&user){
         console.log({...data,dayTrips:dayTrips})
         const response = await createProgram({...data,dayTrips:dayTrips,guide:user})
         // const response = await axios.post(API_URL,{...data,dayTrips:dayTrips})
@@ -135,6 +123,35 @@ const createTrip = () => {
       }
     } catch (error) {
       console.log(error)
+    }
+  }
+  let defaultValues;
+  if(draft){
+    console.log(draft)
+    defaultValues = {
+      _id: draft._id? draft._id : nanoid(),
+      name: draft.name? draft.name : "" ,
+      description: draft.description? draft.description : "" ,
+      price: draft.price? draft.price : 0 ,
+      province: draft.province? draft.province : "" ,
+      startDate: draft.startDate? draft.startDate : new Date() ,
+      startTime: draft.startTime? draft.startTime : "00.00" ,
+      endDate: draft.endDate? draft.endDate : new Date() ,
+      endTime: draft.endTime? draft.endTime : "00.00" ,
+      max_participant: draft.max_participant? draft.max_participant : 1 ,
+      language: draft.language? draft.language : [] ,
+      meetLocation: draft.meetLocation? draft.meetLocation : "" ,
+      meetProvince: draft.meetProvince? draft.meetProvince : "" ,
+      descriptionOfMeetLocation: draft.descriptionOfMeetLocation? draft.descriptionOfMeetLocation : "" ,
+      endLocation: draft.endLocation? draft.endLocation : "" ,
+      endProvince: draft.endProvince? draft.endProvince : "" ,
+      descriptionOfEndLocation: draft.descriptionOfEndLocation? draft.descriptionOfEndLocation : "" ,
+      num_pending: draft.num_pending? draft.num_pending : 0 ,
+    }
+  }else {
+    defaultValues = {
+      _id: nanoid(),
+      num_pending: 0,
     }
   }
   const {
@@ -169,30 +186,6 @@ const createTrip = () => {
       "file": File | undefined
     }[]
   }[];
-  // let found = false
-  // if(dayTrips){
-  //   console.log("case 1")
-  //   updatedDayTrips = Object.values(dayTrips).map((daytrip,i)=>{
-  //     if(daytrip===day){
-  //       found = true;
-  //       const updateDT = {[day]:attractions}
-  //       console.log("updateDT")
-  //       console.log(updateDT)
-  //       return updateDT
-  //     }
-  //     console.log("daytrip")
-  //     console.log(daytrip)
-  //     console.log(i)
-  //     return dayTrips[daytrip]
-  //   })
-  //   if(!found){
-  //     setDayTrips({...updatedDayTrips,[day]:attractions})
-  //   } else setDayTrips(updatedDayTrips)
-  // } else {
-  //   console.log("case 2")
-  //   setDayTrips({[day]:attractions})
-  // }
-  // console.log(dayTrips)
   let found = false
   if(dayTrips){
     updatedDayTrips = dayTrips.map((daytrip)=>{
@@ -228,17 +221,18 @@ const createTrip = () => {
     }]
   }}
   // let user:JSON
-  let user:UserInterface
-  if (typeof window !== 'undefined') {
-    // console.log('we are running on the client');
-    user = JSON.parse(localStorage.getItem("user")||`{}`)
-  } else {
-    // console.log('we are running on the server');
-    user = JSON.parse(`{}`)
-  }
-  // console.log(user)
+  // let user:UserInterface
+  // if (typeof window !== 'undefined') {
+  //   // console.log('we are running on the client');
+  //   user = JSON.parse(localStorage.getItem("user")||`{}`)
+  // } else {
+  //   // console.log('we are running on the server');
+  //   user = JSON.parse(`{}`)
+  // }
+  console.log(user)
   return (
     <form style={{display:'flex', alignItems: 'center',flexDirection:'column'}}onSubmit={handleSubmit(onSubmit)}>
+      <button type="button" onClick={()=>{router.push("/trips/createTrip/chooseDraft");}}>Draft</button>
       {/* <Link href="../register" passHref><button type="button" onClick={handleBackButton}>Back</button></Link> */}
         {stage===0?(
           <Fragment>
