@@ -19,8 +19,14 @@ import { ProgramInterface } from "@/interfaces/ProgramInterface";
 import { UserInterface } from "@/interfaces/UserInterface";
 import { AttractionInterface } from "@/interfaces/AttractionInterface";
 import { FormInputDateWithMUIX } from "@/components/formInput/FormInputDateWithMUIX";
-import axios from "axios";
-const API_URL = 'http://localhost:2000/api/program'
+import Box from '@mui/material/Box';
+import FormLabel from '@mui/material/FormLabel';
+import FormControl from '@mui/material/FormControl';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormHelperText from '@mui/material/FormHelperText';
+import Checkbox from '@mui/material/Checkbox';
+
 type FormData = {
   _id:string
   name: string;
@@ -78,13 +84,14 @@ const createTrip = () => {
     // }[]
     attractions : AttractionInterface[]
   }[]>();
+  const [languageCheck,setLanguageCheck] = useState([false,false,false,false,false,false,false,false])
   const router = useRouter();
+  const languageMap : {[key:string]:number} = {'Thai':0,'English':1,'Chinese':2,'Japanese':3,'Korean':4,'Spanish':5,'Russian':6,'German':7}
   
   let defaultValues;
   useEffect(()=>{
     setUser(JSON.parse(localStorage.getItem("user")||`{}`))
     if(localStorage.getItem("editing")!==null){
-    console.log("cannot find draft in local storatge")
     setDraft(JSON.parse(localStorage.getItem("editing")||`{}`))}}
   ,[])
 
@@ -92,6 +99,13 @@ const createTrip = () => {
   useEffect(()=>{
     reset(draft)
     if(draft && draft.dayTrips){setDayTrips(draft.dayTrips)}
+    if(draft){
+      const lang = Object.keys(languageMap).map((l,i)=>{
+        if(draft.language && draft.language.some(language => language.toString()==l.toString()))return true
+        return false
+      })
+      setLanguageCheck(lang)
+    }
   },[draft])
   const HandleNext = () => {
     setDays([])
@@ -110,14 +124,21 @@ const createTrip = () => {
       k = k+1
       if(k>100){break}
     }
+    HandleSaveDraft()
   }
   const HandleSaveDraft = async () => {
     const data = getValues();
+    const lang = Object.keys(languageMap).map((lang,i)=>{
+      if(languageCheck[i])return lang
+      return null
+    }).filter(function(i): i is string {return i!==null})
+    // const lang : string[] = langwithnull.filter(function(i){return i!==null})
+    setValue("language",lang)
     try {
       if(dayTrips&&user?._id){
-        console.log({...data,dayTrips:dayTrips})
-        // const response = await updateUserById(user._id,{draft:{...user.draft,[data._id]:{...data,dayTrips:dayTrips}}})
-        const response = await axios.post(API_URL,{...data,dayTrips:dayTrips})
+        console.log({...data,dayTrips:dayTrips,language:lang})
+        const response = await updateUserById(user._id,{draft:{...user.draft,[data._id]:{...data,dayTrips:dayTrips,language:lang}}})
+        // const response = await axios.post(API_URL,{...data,dayTrips:dayTrips})
         console.log(response)
         
         const res = await getUserById(user._id);
@@ -167,6 +188,7 @@ const createTrip = () => {
     register,
     watch,
     getValues,
+    setValue,
     control,
     reset,
     clearErrors,
@@ -177,25 +199,6 @@ const createTrip = () => {
     defaultValues: defaultValues
   });
 
-  // const handleCallback = (day:string,attractions:{
-  //   "id": string,
-  //   "time": string,
-  //   "location": string,
-  //   "province": string,
-  //   "option": string,
-  //   "file": File | undefined
-  // }[]) => {
-  // let updatedDayTrips : {
-  //   date:  string,
-  //   attractions : {
-  //     "id": string,
-  //     "time": string,
-  //     "location": string,
-  //     "province": string,
-  //     "option": string,
-  //     "file": File | undefined
-  //   }[]
-  // }[];
   const handleCallback = (day:string,attractions:AttractionInterface[]) => {
   let updatedDayTrips : {
     date:  string,
@@ -235,13 +238,21 @@ const createTrip = () => {
       "file": undefined
     }]
   }}
-  // console.log("-------------------------------------------")
+  const toggleLanguage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const toggled = Object.keys(languageMap).map((l:string,i)=>{
+      if(l===event.target.name)return event.target.checked
+      return languageCheck[i]
+    })
+    setLanguageCheck(toggled)
+    console.log(toggled)
+  }
+  console.log("-------------------------------------------")
   // console.log("user")
   // console.log(user)
   // console.log("draft")
-  // console.log(draft)
+  console.log(draft)
   // console.log("getValues()")
-  // console.log(getValues())
+  // console.log(languageCheck)
   return (
     <form style={{display:'flex', alignItems: 'center',flexDirection:'column'}}onSubmit={handleSubmit(onSubmit)}>
       <button type="button" onClick={()=>{router.push("/trips/createTrip/chooseDraft");}}>Draft</button>
@@ -261,7 +272,9 @@ const createTrip = () => {
             <label>Start</label>
             <div>
               <FormInputDate name="startDate" control={control} label="Start Date"/>
-              {/* <FormInputDateWithMUIX name="startDate" control={control} label="Start Date"/> */}
+            {/* <div style={{width:"100%", display:"flex", gap:"1rem"}}>
+              <FormInputDateWithMUIX name="startDate" control={control} label="Start Date"/>
+              </div> */}
               <FormInputTime name="startTime" control={control} label="Start Time"/>
             </div>
             <label>End</label>
@@ -273,6 +286,16 @@ const createTrip = () => {
             <label>Group Size</label>
             <FormInputText name="max_participant" control={control} label="Number of participant(s)"/>
             <label>Language</label>
+            <FormGroup>
+              {Object.keys(languageMap).map((lang:string,i)=>(
+                <FormControlLabel
+                  control={
+                    <Checkbox checked={languageCheck[i]} onChange={toggleLanguage} name={lang} />
+                  }
+                  label={lang}
+                />)
+              )}
+            </FormGroup>
             <button type="button" onClick={()=>{HandleNext()}}>Next</button>
           </Fragment>
         ):(

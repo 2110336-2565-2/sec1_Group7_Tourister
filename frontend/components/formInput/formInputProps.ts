@@ -9,7 +9,7 @@ export interface FormInputProps {
     options?: option[];
     readonly?: boolean;
     style?:any;
-    defaultValue?: string;
+    item?: string[];
 }
 
 type option = {
