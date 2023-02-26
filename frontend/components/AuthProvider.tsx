@@ -2,6 +2,7 @@ import { verifyToken } from '@/services/authService';
 import { addHoursToDate } from '@/utils/Utils';
 import Router, { useRouter } from 'next/router'
 import React, { createContext, useState, useContext, useEffect } from 'react'
+import Swal from 'sweetalert2';
 
 const AuthContext = createContext({});
 
@@ -43,6 +44,7 @@ export const AuthProvider = ({ role, children }: Props) => {
             localStorage.removeItem('token_expires')
             router.push("/login");
             //ShowUnauthorizeError();
+            Swal.fire("Error","Please log in", 'error')
         }
 
         return () => clearInterval(interval);
