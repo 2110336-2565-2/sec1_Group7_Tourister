@@ -8,7 +8,7 @@ import Searching from "@/components/search/searchForm";
 import NavBar from "@/components/layout/navBar";
 import { AuthProvider } from "@/components/AuthProvider";
 import UserNavBar from "@/components/layout/userNavBar";
-import { ProgramCardForUser } from "@/components/program/ProgramCardForTourist";
+import { ProgramCardForTourist } from "@/components/program/ProgramCardForTourist";
 
 import { getAllPrograms } from "@/services/programService";
 
@@ -30,7 +30,7 @@ export default function Page() {
         <NavBar/>
         <Searching setProgramFilter={setProgramFilter}/>
         {programs?.map((program:ProgramInterface)=>{
-          return <ProgramCardForUser program={program}/>
+          return <ProgramCardForTourist program={program}/>
         })}
       </LocalizationProvider>
     </AuthProvider>

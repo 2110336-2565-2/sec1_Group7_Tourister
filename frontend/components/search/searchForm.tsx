@@ -51,13 +51,13 @@ const SearchForm = ({setProgramFilter}:{setProgramFilter:any}) => {
     <>
     <h1 style={{textAlign: "center"}}> Searching</h1>
     <form
-      style={{ display: "flex", alignItems: "center", flexDirection: "column" }}
+      style={{ display: "flex", alignItems: "center", flexDirection: "column", margin:"1.5rem"}}
       onSubmit={handleSubmit(onSubmit)}
     >
       <label>Location</label>
       <FormInputText name="province" control={control} label="Ready to find your perfect trips?" />
 
-      <Button onClick={showAdvanceSearchPopup} variant="outlined">Advance</Button>
+      <Button sx={{alignSelf:"flex-end"}} onClick={showAdvanceSearchPopup} variant="outlined">Advance</Button>
       <SearchPopup trigger={advanceSearchPopup} setTrigger={setAdvanceSearchPopup}>
         <HeaderInPopup>Sort by</HeaderInPopup>
         <FormInputRadio 
@@ -113,7 +113,7 @@ const SearchForm = ({setProgramFilter}:{setProgramFilter:any}) => {
             {value:"Russian",label:"Russian"}
           ]}
         />
-        
+
         <div style={{display:"flex",alignSelf:"center", gap:"1rem"}}>
           <Button style={{width:"10rem"}} onClick={resetForm} variant="outlined">Reset</Button>
           <Button style={{width:"10rem"}} type="submit" variant="contained">Apply</Button>
