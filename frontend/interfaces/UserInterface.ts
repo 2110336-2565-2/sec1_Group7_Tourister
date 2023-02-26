@@ -10,5 +10,5 @@ export interface UserInterface {
   isGuide?: boolean;
   remainingAmount?: number;
   licenseId?: string;
-  draft?: ProgramInterface[];
+  draft?: {[key:string]:ProgramInterface};
 }
