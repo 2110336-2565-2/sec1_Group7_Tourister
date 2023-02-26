@@ -49,6 +49,9 @@ const UserSchema = new mongoose.Schema({
   imageURL: {
     type: String,
   },
+  draft:{
+    type: Object,
+  },
 });
 
 module.exports = mongoose.model("User", UserSchema);

@@ -1,3 +1,5 @@
+import { ProgramInterface } from "./ProgramInterface";
+
 export interface UserInterface {
   _id?: string;
   name: string;
@@ -8,4 +10,5 @@ export interface UserInterface {
   isGuide?: boolean;
   remainingAmount?: number;
   licenseId?: string;
+  draft?: ProgramInterface[];
 }

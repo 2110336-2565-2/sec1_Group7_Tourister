@@ -1,37 +1,34 @@
 "use client";
 
-import React from "react";
-import { useState, MouseEvent, Fragment } from "react";
-import Link from 'next/link';
+import React, { useEffect, useState, MouseEvent, Fragment } from "react";
 import { Controller,useFormContext,useForm,useFieldArray } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup";
+import { useRouter } from "next/router";
 import { nanoid } from "nanoid";
-import Attraction from "./attraction";
+
 import DayTrip from "./dayTrip";
-import axios from 'axios';
+
 import { FormInputText } from "@/components/formInput/FormInputText";
-import { FormInputRadio } from "@/components/formInput/FormInputRadio";
 import { FormInputDate} from "@/components/formInput/FormInputDate";
 import { FormInputTime} from "@/components/formInput/FormInputTime";
 import TextField from "@mui/material/TextField";
 import { createProgram,updateProgramById} from "@/services/programService"
+import { getUserById, updateUserById } from "@/services/userService";
 import { ProgramInterface } from "@/interfaces/ProgramInterface";
-import { set } from "react-hook-form/dist/utils";
-import { useRouter } from "next/router";
 import { UserInterface } from "@/interfaces/UserInterface";
-var ReactDOM = require('react-dom');
-const API_URL = 'http://localhost:2000/api/program'
+import { AttractionInterface } from "@/interfaces/AttractionInterface";
+import { FormInputDateWithMUIX } from "@/components/formInput/FormInputDateWithMUIX";
+import Box from '@mui/material/Box';
+import FormLabel from '@mui/material/FormLabel';
+import FormControl from '@mui/material/FormControl';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormHelperText from '@mui/material/FormHelperText';
+import Checkbox from '@mui/material/Checkbox';
 
-type att = [{
-  "id": string,
-  "name": string,
-  "option": string,
-  "editing": boolean,
-  "error": boolean
-}]
 type FormData = {
-  programId:string
+  _id:string
   name: string;
   description: string;
   price: number;
@@ -41,7 +38,7 @@ type FormData = {
   endDate: Date;
   endTime: string;
   max_participant: number;
-  language: [string];
+  language: string[];
   meetLocation: string;
   meetProvince: string;
   descriptionOfMeetLocation: string;
@@ -49,57 +46,67 @@ type FormData = {
   endProvince: string;
   descriptionOfEndLocation: string;
   num_pending: number;
-  // attractions: att
-}
-// type accountType = 'tourist' | 'guide';
-const defaultValues = {
-  programId: nanoid(),
-  num_panding: 0,
-  // attractions: [{
-  //   "id": nanoid(),
-  //   "name": "",
-  //   "option": "Addmission not needed",
-  //   "editing": true,
-  //   "error": false
-  // }],
 }
 
 const validationSchema = yup.object().shape({
-  // name: yup.string().required("Please enter your trip name"),
-  // startDate: yup.date().required('Please enter your start date'),
-  // startTime: yup.string().required('Please enter your start time'),
-  // endDate: yup.date().required('Please enter your end date'),
-  // endTime: yup.string().required('Please enter your end time'),
-  // // price: yup.string().required('Please enter your price')
-  // // .matches(/^[0-9]+$/, "Price must be only digits"),
-  // price: yup.number().required('Please enter your price'),
-  // max_participant: yup.string().required('Please enter your group size')
-  // .matches(/^[0-9]+$/, "Group size must be only digits"),
-  // // language: yup.string().required('Please enter your trip language'),
-  // description: yup.string(),
-  // meetLocation: yup.string().required('Please enter your trip start location'),
-  // descriptionOfMeetLocation: yup.string(),
-  // endLocation: yup.string().required('Please enter your trip end location'),
-  // descriptionOfEndLocation: yup.string()
+  name: yup.string().required("Please enter your trip name"),
+  startDate: yup.date().required('Please enter your start date'),
+  startTime: yup.string().required('Please enter your start time'),
+  endDate: yup.date().required('Please enter your end date'),
+  endTime: yup.string().required('Please enter your end time'),
+  // price: yup.string().required('Please enter your price')
+  // .matches(/^[0-9]+$/, "Price must be only digits"),
+  price: yup.number().required('Please enter your price'),
+  max_participant: yup.string().required('Please enter your group size')
+  .matches(/^[0-9]+$/, "Group size must be only digits"),
+  // language: yup.string().required('Please enter your trip language'),
+  description: yup.string(),
+  meetLocation: yup.string().required('Please enter your trip start location'),
+  descriptionOfMeetLocation: yup.string(),
+  endLocation: yup.string().required('Please enter your trip end location'),
+  descriptionOfEndLocation: yup.string()
 });
 
 const createTrip = () => {
   const [stage, setStage ] = useState(0);
+  const [user, setUser] = useState<UserInterface>()
+  const [draft, setDraft] = useState<ProgramInterface>()
   const [days,setDays] =  useState<string[]>([]);
-  // const [dayTrips,setDayTrips] = useState<Object>();
   const [dayTrips,setDayTrips] = useState<{
     date:  string,
-    attractions : {
-      "id": string,
-      "time": string,
-      "location": string,
-      "province": string,
-      "option": string,
-      "file": File | undefined
-    }[]
+    // attractions : {
+    //   "id": string,
+    //   "time": string,
+    //   "location": string,
+    //   "province": string,
+    //   "option": string,
+    //   "file": File | undefined
+    // }[]
+    attractions : AttractionInterface[]
   }[]>();
+  const [languageCheck,setLanguageCheck] = useState([false,false,false,false,false,false,false,false])
   const router = useRouter();
+  const languageMap : {[key:string]:number} = {'Thai':0,'English':1,'Chinese':2,'Japanese':3,'Korean':4,'Spanish':5,'Russian':6,'German':7}
+  
+  let defaultValues;
+  useEffect(()=>{
+    setUser(JSON.parse(localStorage.getItem("user")||`{}`))
+    if(localStorage.getItem("editing")!==null){
+    setDraft(JSON.parse(localStorage.getItem("editing")||`{}`))}}
+  ,[])
 
+  
+  useEffect(()=>{
+    reset(draft)
+    if(draft && draft.dayTrips){setDayTrips(draft.dayTrips)}
+    if(draft){
+      const lang = Object.keys(languageMap).map((l,i)=>{
+        if(draft.language && draft.language.some(language => language.toString()==l.toString()))return true
+        return false
+      })
+      setLanguageCheck(lang)
+    }
+  },[draft])
   const HandleNext = () => {
     setDays([])
     let date = new Date(getValues("startDate"))
@@ -108,40 +115,86 @@ const createTrip = () => {
       return;
     }
     setStage(1)
-    // console.log(date)
     end.setDate(end.getDate() + 1)
     let k = 0
     while(date.toString()!==end.toString()){
       const i = date.toString()
-      // const i = new Date(date.toString())
       setDays(days => [...days,i])
       date.setDate(date.getDate() + 1);
       k = k+1
       if(k>100){break}
     }
-    // console.log(days)
+    HandleSaveDraft()
   }
-  const HandleSaveDraft = () => {
-    setStage(0)
-  }
-  const onSubmit = async (data : FormData) => {
-    // console.log({...data,dayTrips:dayTrips})
+  const HandleSaveDraft = async () => {
+    const data = getValues();
+    const lang = Object.keys(languageMap).map((lang,i)=>{
+      if(languageCheck[i])return lang
+      return null
+    }).filter(function(i): i is string {return i!==null})
+    // const lang : string[] = langwithnull.filter(function(i){return i!==null})
+    setValue("language",lang)
     try {
-      if(dayTrips){
-        console.log({...data,dayTrips:dayTrips})
-        const response = await createProgram({...data,dayTrips:dayTrips,guide:user})
+      if(dayTrips&&user?._id){
+        console.log({...data,dayTrips:dayTrips,language:lang})
+        const response = await updateUserById(user._id,{draft:{...user.draft,[data._id]:{...data,dayTrips:dayTrips,language:lang}}})
         // const response = await axios.post(API_URL,{...data,dayTrips:dayTrips})
         console.log(response)
+        
+        const res = await getUserById(user._id);
+        localStorage.setItem("user", JSON.stringify(res.data));
       }
     } catch (error) {
       console.log(error)
     }
   }
+  const onSubmit = async (data : FormData) => {
+    try {
+        if(dayTrips&&user){
+        const filterDayTrips = dayTrips.filter(function(daytrip){
+          if(days.some(day => day.toString()==daytrip["date"].toString()))return true
+          return false
+        })
+        let programData : ProgramInterface = {
+          name: data.name,
+          price: data.price,
+          startDate: data.startDate,
+          endDate: data.endDate,
+          startTime: data.startTime,
+          endTime: data.endTime,
+          province: data.province,
+          max_participant: data.max_participant,
+          num_participant: 0,
+          descriptionOfMeetLocation: data.descriptionOfMeetLocation,
+          guide: user,
+          dayTrips : filterDayTrips,
+          language: data.language,
+          descriptionOfEndLocation: data.descriptionOfEndLocation,
+          num_pending: 0,
+        }
+        if(data.description){programData = {...programData,description: data.description}}
+        if(data.meetLocation){programData = {...programData,meetLocation: data.meetLocation}}
+        if(data.meetProvince){programData = {...programData,meetProvince: data.meetProvince}}
+        if(data.endLocation){programData = {...programData,endLocation: data.endLocation}}
+        if(data.endProvince){programData = {...programData,endProvince: data.endProvince}}
+        console.log(programData)
+        const response = await createProgram(programData)
+        // const response = await axios.post(API_URL,programData)
+        // const response = await createProgram({...data,dayTrips:dayTrips,guide:user})
+        console.log(response)
+        // if(response.code===201){router.push("/trips")}
+      }
+    } catch (error) {
+      console.log(error)
+    }
+    }
   const {
     register,
     watch,
     getValues,
+    setValue,
     control,
+    reset,
     clearErrors,
     handleSubmit,
     formState: { errors }
@@ -150,49 +203,11 @@ const createTrip = () => {
     defaultValues: defaultValues
   });
 
-  const handleCallback = (day:string,attractions:{
-    "id": string,
-    "time": string,
-    "location": string,
-    "province": string,
-    "option": string,
-    "file": File | undefined
-  }[]) => {
+  const handleCallback = (day:string,attractions:AttractionInterface[]) => {
   let updatedDayTrips : {
     date:  string,
-    attractions : {
-      "id": string,
-      "time": string,
-      "location": string,
-      "province": string,
-      "option": string,
-      "file": File | undefined
-    }[]
+    attractions : AttractionInterface[]
   }[];
-  // let found = false
-  // if(dayTrips){
-  //   console.log("case 1")
-  //   updatedDayTrips = Object.values(dayTrips).map((daytrip,i)=>{
-  //     if(daytrip===day){
-  //       found = true;
-  //       const updateDT = {[day]:attractions}
-  //       console.log("updateDT")
-  //       console.log(updateDT)
-  //       return updateDT
-  //     }
-  //     console.log("daytrip")
-  //     console.log(daytrip)
-  //     console.log(i)
-  //     return dayTrips[daytrip]
-  //   })
-  //   if(!found){
-  //     setDayTrips({...updatedDayTrips,[day]:attractions})
-  //   } else setDayTrips(updatedDayTrips)
-  // } else {
-  //   console.log("case 2")
-  //   setDayTrips({[day]:attractions})
-  // }
-  // console.log(dayTrips)
   let found = false
   if(dayTrips){
     updatedDayTrips = dayTrips.map((daytrip)=>{
@@ -227,18 +242,24 @@ const createTrip = () => {
       "file": undefined
     }]
   }}
-  // let user:JSON
-  let user:UserInterface
-  if (typeof window !== 'undefined') {
-    // console.log('we are running on the client');
-    user = JSON.parse(localStorage.getItem("user")||`{}`)
-  } else {
-    // console.log('we are running on the server');
-    user = JSON.parse(`{}`)
+  const toggleLanguage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const toggled = Object.keys(languageMap).map((l:string,i)=>{
+      if(l===event.target.name)return event.target.checked
+      return languageCheck[i]
+    })
+    setLanguageCheck(toggled)
+    console.log(toggled)
   }
+  console.log("-------------------------------------------")
+  // console.log("user")
   // console.log(user)
+  // console.log("draft")
+  console.log(draft)
+  // console.log("getValues()")
+  // console.log(languageCheck)
   return (
     <form style={{display:'flex', alignItems: 'center',flexDirection:'column'}}onSubmit={handleSubmit(onSubmit)}>
+      <button type="button" onClick={()=>{router.push("/trips/createTrip/chooseDraft");}}>Draft</button>
       {/* <Link href="../register" passHref><button type="button" onClick={handleBackButton}>Back</button></Link> */}
         {stage===0?(
           <Fragment>
@@ -254,24 +275,38 @@ const createTrip = () => {
             <label>Duration</label>
             <label>Start</label>
             <div>
-              <FormInputDate name="startDate" control={control} label=""/>
-              <FormInputTime name="startTime" control={control} label="" readonly={false}/>
+              <FormInputDate name="startDate" control={control} label="Start Date"/>
+            {/* <div style={{width:"100%", display:"flex", gap:"1rem"}}>
+              <FormInputDateWithMUIX name="startDate" control={control} label="Start Date"/>
+              </div> */}
+              <FormInputTime name="startTime" control={control} label="Start Time"/>
             </div>
             <label>End</label>
             <div>
-              <FormInputDate name="endDate" control={control} label=""/>
-              <FormInputTime name="endTime" control={control} label="" readonly={false}/>
+              <FormInputDate name="endDate" control={control} label="End Date"/>
+              {/* <FormInputDateWithMUIX name="endDate" control={control} label="End Date"/> */}
+              <FormInputTime name="endTime" control={control} label="End Time"/>
             </div>
             <label>Group Size</label>
             <FormInputText name="max_participant" control={control} label="Number of participant(s)"/>
             <label>Language</label>
+            <FormGroup>
+              {Object.keys(languageMap).map((lang:string,i)=>(
+                <FormControlLabel
+                  control={
+                    <Checkbox checked={languageCheck[i]} onChange={toggleLanguage} name={lang} />
+                  }
+                  label={lang}
+                />)
+              )}
+            </FormGroup>
             <button type="button" onClick={()=>{HandleNext()}}>Next</button>
           </Fragment>
         ):(
           <Fragment>
             <button type="button" onClick={()=>{setStage(0)}}>Back</button>
             <div>
-              {/* <FormInputTime name="startTime" control={control} label="" readonly={true}/> */}
+              <FormInputTime name="startTime" control={control} label="" readonly={true}/>
               {/* <label style={{padding:"20px 10px"}}>Departure</label> */}
               <label>Meeting point</label>
               <label>Location :</label>
@@ -284,7 +319,7 @@ const createTrip = () => {
               <DayTrip key={d.toString()} date={d} savedAttraction={getAttractionsByDate(d)} handleCB={handleCallback}/>
             ))}
             <div>
-              {/* <FormInputTime name="endTime" control={control} label="" readonly={true}/> */}
+              <FormInputTime name="endTime" control={control} label="" readonly={true}/>
               {/* <label style={{padding:"20px 10px"}}>Return</label> */}
               <label>Drop off</label>
               <label>Location :</label>
