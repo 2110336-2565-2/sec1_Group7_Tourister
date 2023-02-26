@@ -150,7 +150,11 @@ const createTrip = () => {
   }
   const onSubmit = async (data : FormData) => {
     try {
-      if(dayTrips&&user){
+        if(dayTrips&&user){
+        const filterDayTrips = dayTrips.filter(function(daytrip){
+          if(days.some(day => day.toString()==daytrip["date"].toString()))return true
+          return false
+        })
         let programData : ProgramInterface = {
           name: data.name,
           price: data.price,
@@ -163,7 +167,7 @@ const createTrip = () => {
           num_participant: 0,
           descriptionOfMeetLocation: data.descriptionOfMeetLocation,
           guide: user,
-          dayTrips : dayTrips,
+          dayTrips : filterDayTrips,
           language: data.language,
           descriptionOfEndLocation: data.descriptionOfEndLocation,
           num_pending: 0,
