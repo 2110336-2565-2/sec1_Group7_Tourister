@@ -8,16 +8,18 @@ import Searching from "@/components/search/searchForm";
 import NavBar from "@/components/layout/navBar";
 import { AuthProvider } from "@/components/AuthProvider";
 import UserNavBar from "@/components/layout/userNavBar";
-import { ProgramCardForUser } from "@/components/program/ProgramCardForTourist";
+import { ProgramCardForTourist } from "@/components/program/ProgramCardForTourist";
 
 import { getAllPrograms } from "@/services/programService";
 
 import { ProgramInterface } from "@/interfaces/ProgramInterface"
+import { ProgramFilterInterface } from "@/interfaces/filter/ProgramFilterInterface";
 
 export default function Page() {
+  const [programFilter, setProgramFilter] = useState<ProgramFilterInterface>({})
   const { data:programResponse, refetch, isLoading, isError, error } = useQuery({
-    queryKey: ['searchPrograms'], 
-    queryFn: ()=>getAllPrograms()
+    queryKey: ['searchPrograms', programFilter],
+    queryFn: ()=>getAllPrograms(programFilter)
   })
   const programs = programResponse?.data;
   console.log(programs);
@@ -26,10 +28,9 @@ export default function Page() {
     <AuthProvider role="tourist">
       <LocalizationProvider dateAdapter={AdapterMoment}>
         <NavBar/>
-        {/* <h1>Searching</h1> */}
-        <Searching/>
+        <Searching setProgramFilter={setProgramFilter}/>
         {programs?.map((program:ProgramInterface)=>{
-          return <ProgramCardForUser program={program}/>
+          return <ProgramCardForTourist program={program}/>
         })}
       </LocalizationProvider>
     </AuthProvider>

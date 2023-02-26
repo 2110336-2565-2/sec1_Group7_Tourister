@@ -16,7 +16,7 @@ export interface ProgramInterface {
   meetLocation?: string;
   meetProvince?: string;
   descriptionOfMeetLocation?: string;
-  guide: string | UserInterface, //objectId User
+  guide: UserInterface, //objectId User
   // attractions?: AttractionInterface[];
   dayTrips : {date:string,attractions: AttractionInterface[]}[]
   imageUrl?: string;
