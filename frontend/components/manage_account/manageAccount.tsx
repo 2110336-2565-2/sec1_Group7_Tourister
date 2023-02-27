@@ -7,6 +7,8 @@ import SwapHorizOutlinedIcon from "@mui/icons-material/SwapHorizOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import NavigateNextOutlinedIcon from "@mui/icons-material/NavigateNextOutlined";
 import { UserInterface } from "@/interfaces/UserInterface";
+import Router, { useRouter } from 'next/router'
+import Swal from 'sweetalert2'
 
 type AccountType = "tourist" | "guide";
 
@@ -35,6 +37,8 @@ const Button = styled.button`
 `;
 
 const manageAccount = () => {
+  const router = useRouter();
+
   let user:UserInterface
   if (typeof window !== 'undefined') {
     // console.log('we are running on the client');
@@ -46,6 +50,23 @@ const manageAccount = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   };
+
+  const handleLogout = async () => {
+    const swal = await Swal.fire({
+      title: '',
+      text: 'Are you sure you want to log out ?',
+      icon: 'warning',
+      showCancelButton: true,
+      focusCancel: true,
+      cancelButtonText: 'Cancel',
+      confirmButtonText: 'Yes',
+    });
+    if(swal.isConfirmed) {
+      localStorage.removeItem('accessToken')
+      localStorage.removeItem('token_expires')
+      router.push("/login");
+    }
+  }
 
   const accountType = user.isGuide ? "Guide" : "Tourist";
   return (
@@ -110,7 +131,7 @@ const manageAccount = () => {
         </Button>
       </Link>
       <Link href="" style={{ width: "100%", textDecoration: "none" }} passHref>
-        <Button>
+        <Button onClick={() => handleLogout()}>
           <LogoutOutlinedIcon style={{ width: "20%", color: "gray" }} />
           <h3
             style={{
