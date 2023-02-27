@@ -1,7 +1,13 @@
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import styled from "styled-components";
+
 import { Button } from "@mui/material";
+import TextField from "@mui/material/TextField";
+import InputAdornment from '@mui/material/InputAdornment';
+import SearchIcon from '@mui/icons-material/Search';
+import TuneIcon from '@mui/icons-material/Tune';
 
 import { validationSchema, defaultValues, FormData, formDataToProgramFilter} from "./searchSchema";
 import { ProgramFilterInterface } from "@/interfaces/filter/ProgramFilterInterface";
@@ -9,12 +15,27 @@ import { ProgramFilterInterface } from "@/interfaces/filter/ProgramFilterInterfa
 import { FormInputText } from "@/components/formInput/FormInputText";
 import { FormInputDateWithMUIX } from "@/components/formInput/FormInputDateWithMUIX"
 import { FormInputNumber } from "@/components/formInput/FormInputNumber";
+import { FormInputSelect } from "@/components/formInput/FormInputSelect";
+import { FormInputRadio } from "@/components/formInput/FormInputRadio"
+
 import { SearchPopup } from "./SearchPopup";
-import { Box } from "@mui/system";
-import { FormInputRadio } from "../formInput/FormInputRadio"
-import styled from "styled-components";
-import { IconlessRadio } from "./IconlessRadio";
-import { FormInputSelect } from "../formInput/FormInputSelect";
+
+import { COLOR } from "@/theme/globalTheme";
+
+const SearchText = styled.div`
+  transform: translateY(-30px); 
+  width: 100%;
+  background: white;
+  borderRadius: 5px;
+`
+
+const AdvanceButton = styled(Button)`
+  transform: translateY(-20px); 
+  align-self: flex-end; 
+  border-radius: 1rem; 
+  color:${COLOR.background};
+  border-color:${COLOR.background};
+`
 
 const HeaderInPopup = styled.h4`
   margin:0.7rem 0 0.5rem 0;
@@ -49,15 +70,48 @@ const SearchForm = ({setProgramFilter}:{setProgramFilter:any}) => {
 
   return (
     <>
-    <h1 style={{textAlign: "center"}}> Searching</h1>
     <form
-      style={{ display: "flex", alignItems: "center", flexDirection: "column", margin:"1.5rem"}}
+      style={{ display: "flex", alignItems: "center", flexDirection: "column", margin:"0 1.5rem 0 1.5rem"}}
       onSubmit={handleSubmit(onSubmit)}
     >
-      <label>Location</label>
-      <FormInputText name="province" control={control} label="Ready to find your perfect trips?" />
+      <SearchText style={{transform:"translateY(-30px)", width:"100%", background:"white",borderRadius:"5px"}}>
+        <Controller
+          name="province"
+          control={control}
+          render={({
+            field: { onChange, value },
+            fieldState: { error },
+            formState,
+          }) => (
+            <TextField
+              helperText={error ? error.message : null}
+              size="medium"
+              error={Boolean(error)}
+              onChange={onChange}
+              value={value}
+              fullWidth
+              placeholder="Ready to find your perfect trips?"
+              variant="outlined"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon/>
+                  </InputAdornment>
+                ),
+              }}
+            />
+          )}
+        />
+      </SearchText>
 
-      <Button sx={{alignSelf:"flex-end"}} onClick={showAdvanceSearchPopup} variant="outlined">Advance</Button>
+      <AdvanceButton 
+        startIcon={<TuneIcon/>} 
+        // sx={{transform:"translateY(-20px)", alignSelf:"flex-end", borderRadius:"1rem", color:COLOR.background, borderColor:COLOR.background}} 
+        onClick={showAdvanceSearchPopup} 
+        variant="outlined"
+      >
+        Advance
+      </AdvanceButton>
       <SearchPopup trigger={advanceSearchPopup} setTrigger={setAdvanceSearchPopup}>
         <HeaderInPopup>Sort by</HeaderInPopup>
         <FormInputRadio 
@@ -120,9 +174,9 @@ const SearchForm = ({setProgramFilter}:{setProgramFilter:any}) => {
         </div>
       </SearchPopup>
       
-      <Button type="submit" variant="contained">
+      {/* <Button type="submit" variant="contained">
         Search
-      </Button>
+      </Button> */}
     </form>
     </>
   );
