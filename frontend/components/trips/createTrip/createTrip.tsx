@@ -26,6 +26,7 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormHelperText from '@mui/material/FormHelperText';
 import Checkbox from '@mui/material/Checkbox';
+import { all } from "axios";
 
 type FormData = {
   _id:string
@@ -88,7 +89,10 @@ const createTrip = () => {
   const router = useRouter();
   const languageMap : {[key:string]:number} = {'Thai':0,'English':1,'Chinese':2,'Japanese':3,'Korean':4,'Spanish':5,'Russian':6,'German':7}
   
-  let defaultValues;
+  let defaultValues = {
+    _id : nanoid(),
+    num_pending : 0,
+  };
   useEffect(()=>{
     setUser(JSON.parse(localStorage.getItem("user")||`{}`))
     if(localStorage.getItem("editing")!==null){
@@ -98,6 +102,7 @@ const createTrip = () => {
   
   useEffect(()=>{
     reset(draft)
+    localStorage.removeItem("editing")
     if(draft && draft.dayTrips){setDayTrips(draft.dayTrips)}
     if(draft){
       const lang = Object.keys(languageMap).map((l,i)=>{
@@ -138,7 +143,6 @@ const createTrip = () => {
       if(dayTrips&&user?._id){
         console.log({...data,dayTrips:dayTrips,language:lang})
         const response = await updateUserById(user._id,{draft:{...user.draft,[data._id]:{...data,dayTrips:dayTrips,language:lang}}})
-        // const response = await axios.post(API_URL,{...data,dayTrips:dayTrips})
         console.log(response)
         
         const res = await getUserById(user._id);
@@ -182,7 +186,34 @@ const createTrip = () => {
         // const response = await axios.post(API_URL,programData)
         // const response = await createProgram({...data,dayTrips:dayTrips,guide:user})
         console.log(response)
-        // if(response.code===201){router.push("/trips")}
+        if(response.code===201){
+          if(user._id&&draft&&user.draft&&draft._id){
+            let Drafts = user.draft
+            // const id = draft._id
+            // const {[id]: _, ...withoutId} = allDraft
+            // let allDraft = (user.draft).map((d)=>{
+            //   if(d._id?.toString()===draft._id?.toString())return null
+            //   return d
+            // }).filter(function(i): i is ProgramInterface {return i!==null})
+            // : {[key:string]: ProgramInterface }
+            const draftarray = Object.keys(user.draft).map((key:string,i)=>{
+              if(draft._id?.toString()===key.toString())return null
+              return Drafts[key];
+            }).filter(function(i) {return i!==null})
+            const allDraft : {[key:string]: ProgramInterface } = {}
+            draftarray.forEach((element,i)=>{
+              const id = element?._id
+              if(id)allDraft[id] = element
+            })
+            console.log(allDraft)
+            const response = await updateUserById(user._id,{draft:allDraft})
+            console.log(response)
+            
+            const res = await getUserById(user._id);
+            localStorage.setItem("user", JSON.stringify(res.data));
+          }
+          // router.push("/trips")
+        }
       }
     } catch (error) {
       console.log(error)
@@ -250,16 +281,23 @@ const createTrip = () => {
     setLanguageCheck(toggled)
     console.log(toggled)
   }
-  console.log("-------------------------------------------")
+  // console.log("-------------------------------------------")
   // console.log("user")
   // console.log(user)
   // console.log("draft")
-  console.log(draft)
+  // console.log(draft)
   // console.log("getValues()")
   // console.log(languageCheck)
   return (
     <form style={{display:'flex', alignItems: 'center',flexDirection:'column'}}onSubmit={handleSubmit(onSubmit)}>
       <button type="button" onClick={()=>{router.push("/trips/createTrip/chooseDraft");}}>Draft</button>
+      {/* <button type="button" onClick={async ()=>{
+            const response = await updateUserById(user?._id?user?._id:"",{draft:{}})
+            console.log(response)
+            
+            const res = await getUserById(user?._id?user?._id:"")
+            localStorage.setItem("user", JSON.stringify(res.data));
+            }}>delete draft</button> */}
       {/* <Link href="../register" passHref><button type="button" onClick={handleBackButton}>Back</button></Link> */}
         {stage===0?(
           <Fragment>
