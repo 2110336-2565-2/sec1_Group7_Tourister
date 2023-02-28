@@ -3,7 +3,8 @@ import ApiErrorResponse from "@/exceptions/ApiErrorResponse";
 import { ApiResponseInterface } from "@/interfaces/ApiResponsetInterface";
 import { ProgramFilterInterface } from "@/interfaces/filter/ProgramFilterInterface";
 import { ProgramInterface } from "@/interfaces/ProgramInterface";
-import { filterObjectToQueryString, isHttpStatusOk } from "@/utils/Utils";
+import {  isHttpStatusOk } from "@/utils/Utils";
+import { filterObjectToQueryString } from "@/utils/FilterQueryString";
 import axios from "axios";
 
 export const getAllPrograms = async (filter: ProgramFilterInterface | undefined = undefined) => {

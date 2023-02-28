@@ -79,6 +79,45 @@ const BookingController = {
     },
 
     /**
+     * getAllBookings
+     * @param {import('express').Request} req
+     * @param {import('express').Response} res
+     * @param {import('express').NextFunction} next
+     */
+     async getAllBookingsByUserId(req, res, next) {
+        const userId = req.params.userId
+        const filterBody = req.query
+        console.log(filterBody)
+        let filter = []
+        filter.push({ user: userId })
+        if(filterBody.status != null) {
+            let statusFilter = []
+            filterBody.status.split(" ").forEach((status) => {
+                statusFilter.push({ status: status })
+            })
+            filter.push({ $or: statusFilter })
+        }
+
+        const result = await tryCatchMongooseService(async () => {
+            const bookings = await Booking.find({ $and: filter }).populate([{
+                path:'user',
+                select: 'name surname phoneNumber imageUrl'
+            },{
+                path:'program',
+                select: 'name'
+            }])
+
+            return {
+                code: 200,
+                count : bookings.length,
+                data: bookings,
+                message: "",
+            }
+        })
+        res.json(result)
+    },
+
+    /**
      * updateBookingById
      * @param {import('express').Request} req
      * @param {import('express').Response} res
@@ -118,6 +157,8 @@ const BookingController = {
         })
         res.json(result)
     },
+
+    
 
     /**
      * acceptBookingById
