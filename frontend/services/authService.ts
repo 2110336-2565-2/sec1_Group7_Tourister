@@ -8,6 +8,6 @@ export const verifyToken = async (token: string, role: string = "") => {
     const axios_res = await axios.get(`${appConfig.BACKEND_URL}/auth/verifyToken${role != "" ? '/'+role : ""}`, configs)
     const res = axios_res.data as ApiResponseInterface
     console.log(res)
-    if(isHttpStatusOk(res.code)) return true
-    else return false
+    if(isHttpStatusOk(res.code)) return res.data
+    else return undefined
 }

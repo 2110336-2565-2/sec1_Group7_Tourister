@@ -1,3 +1,5 @@
+import { ApiResponseInterface } from '@/interfaces/ApiResponsetInterface';
+import { UserInterface } from '@/interfaces/UserInterface';
 import { verifyToken } from '@/services/authService';
 import { addHoursToDate } from '@/utils/Utils';
 import Router, { useRouter } from 'next/router'
@@ -13,10 +15,11 @@ interface Props {
 
 export const AuthProvider = ({ role, children }: Props) => {
     const router = useRouter();
-    const [user, setUser] = useState(null)
+    const [user, setUser] = useState<UserInterface | null>(null)
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
+        setLoading(true)
         let interval: string | number | NodeJS.Timeout | undefined;
         const accessToken = localStorage.getItem('accessToken')
         if(accessToken == null){
@@ -26,6 +29,10 @@ export const AuthProvider = ({ role, children }: Props) => {
         }
         verifyToken(accessToken, role ? role : "").then((auth) => {
             if(!auth) ForceLogout()
+            else {
+                const userData = auth as UserInterface
+                setUser(userData)
+            }
         })
 
         interval = setInterval(() => {
@@ -46,7 +53,7 @@ export const AuthProvider = ({ role, children }: Props) => {
             //ShowUnauthorizeError();
             Swal.fire("Error","Please log in", 'error')
         }
-
+        setLoading(false)
         return () => clearInterval(interval);
     }, [])
 
