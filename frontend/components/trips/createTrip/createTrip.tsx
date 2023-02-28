@@ -57,21 +57,26 @@ type FormData = {
 
 const validationSchema = yup.object().shape({
   name: yup.string().required("Please enter your trip name"),
+  price: yup.number().required('Please enter your price'),
+  description: yup.string().required("Please enter your trip description"),
+  province: yup.string().required("Please enter your trip province"),
   startDate: yup.date().required('Please enter your start date'),
   startTime: yup.string().required('Please enter your start time'),
   endDate: yup.date().required('Please enter your end date'),
   endTime: yup.string().required('Please enter your end time'),
+  max_participant: yup.number().required('Please enter max participant(s)'),
   // price: yup.string().required('Please enter your price')
   // .matches(/^[0-9]+$/, "Price must be only digits"),
-  price: yup.number().required('Please enter your price'),
-  max_participant: yup.string().required('Please enter your group size')
-  .matches(/^[0-9]+$/, "Group size must be only digits"),
+  // max_participant: yup.string().required('Please enter your group size')
+  // .matches(/^[0-9]+$/, "Group size must be only digits"),
   // language: yup.string().required('Please enter your trip language'),
-  description: yup.string(),
-  meetLocation: yup.string().required('Please enter your trip start location'),
-  descriptionOfMeetLocation: yup.string(),
-  endLocation: yup.string().required('Please enter your trip end location'),
-  descriptionOfEndLocation: yup.string()
+  language: yup.array().required('Please enter your language'),
+  meetLocation: yup.string().required('Please enter your trip meeting point'),
+  meetProvince: yup.string().required('Please enter your trip meeting point province'),
+  descriptionOfMeetLocation: yup.string().required('Please enter your trip meeting point description'),
+  endLocation: yup.string().required('Please enter your trip drop off location'),
+  endProvince: yup.string().required('Please enter your trip drop off province'),
+  descriptionOfEndLocation: yup.string().required('Please enter your trip drop off location description'),
 });
 
 const createTrip = () => {
@@ -83,6 +88,8 @@ const createTrip = () => {
     date:  string,
     attractions : AttractionInterface[]
   }[]>();
+  const [error,setError] = useState(false)
+  const [next,setNext] = useState(false)
   const [languageCheck,setLanguageCheck] = useState([false,false,false,false,false,false,false,false])
   const router = useRouter();
   const languageMap : {[key:string]:number} = {'Thai':0,'English':1,'Chinese':2,'Japanese':3,'Korean':4,'Spanish':5,'Russian':6,'German':7}
@@ -109,9 +116,18 @@ const createTrip = () => {
     setDays([])
     let date = new Date(getValues("startDate"))
     let end = new Date(getValues("endDate"))
-    if(date > end){
-      return;
-    }
+    let errExist = false;
+    setNext(true)
+    if(date > end || (date===end && getValues("startTime")>getValues("endTime"))){setError(true)}
+    if(date > end || (date===end && getValues("startTime")<getValues("endTime")) ||(getValues("name")===undefined || getValues("name")==="")
+     || getValues("description")===undefined || getValues("description")==="" || getValues("price")===undefined || getValues("price").toString()===""
+     || getValues("province")===undefined || getValues("province")==="" ||getValues("startDate")===undefined || getValues("startTime")===undefined
+     || getValues("startTime")==="" || getValues("endDate")===undefined || getValues("endTime")===undefined || getValues("endTime")===""
+     || getValues("max_participant")===undefined || getValues("max_participant").toString()===""){errExist=true;}
+    if(languageCheck.every((e)=>!e)){errExist=true}
+    trigger(["name","description","price","province","startDate","startTime","endDate","endTime","max_participant"])
+    if(errExist){return;}
+    setError(false)
     setStage(1)
     end.setDate(end.getDate() + 1)
     let k = 0
@@ -137,6 +153,13 @@ const createTrip = () => {
       if(dayTrips&&user?._id){
         console.log({...data,dayTrips:dayTrips,language:lang})
         const response = await updateUserById(user._id,{draft:{...user.draft,[data._id]:{...data,dayTrips:dayTrips,language:lang}}})
+        console.log(response)
+        
+        const res = await getUserById(user._id);
+        localStorage.setItem("user", JSON.stringify(res.data));
+      }else if (user?._id){
+        console.log({...data,language:lang})
+        const response = await updateUserById(user._id,{draft:{...user.draft,[data._id]:{...data,language:lang}}})
         console.log(response)
         
         const res = await getUserById(user._id);
@@ -214,13 +237,11 @@ const createTrip = () => {
     }
     }
   const {
-    register,
-    watch,
     getValues,
     setValue,
     control,
     reset,
-    clearErrors,
+    trigger,
     handleSubmit,
     formState: { errors }
   } = useForm<FormData>({
@@ -301,6 +322,15 @@ const createTrip = () => {
         {stage===0?(
           <Fragment>
             <Header name="Create Trip" handle={()=>{router.push("/trips");}}></Header>
+            <div style={{display:"flex",alignSelf:"center"}}>
+              <div>
+                <label style={{color:COLOR.primary}}>&nbsp;&nbsp;&nbsp;information&nbsp;&nbsp;&nbsp;</label>
+                <div style={{border:`1px solid ${COLOR.primary}`,background:COLOR.primary}}/>
+              </div><div>
+                <label style={{color:COLOR.paleblue}}>&nbsp;&nbsp;&nbsp;Schedule&nbsp;&nbsp;&nbsp;</label>
+                <div style={{border:`1px solid ${COLOR.paleblue}`,background:COLOR.primary}}/>
+              </div>
+            </div>
             <Field> {/* Trip Name */}
               <RequireFormLabel className="AsteriskRequired">Trip Name</RequireFormLabel>
               <FormInputText name="name" control={control} label="Name"/>
@@ -325,6 +355,7 @@ const createTrip = () => {
                 <FormInputDate name="endDate" control={control} label="End Date"/>
                 <FormInputTime name="endTime" control={control} label="End Time"/>
               </div>
+              {error? <p>Please add a matching start and end Date</p> : <Fragment/>}
             </Field><Field>{/* Group Size */}
               <RequireFormLabel className="AsteriskRequired">Group size</RequireFormLabel>
               <FormInputText name="max_participant" control={control} label="Number of participant(s)"/>
@@ -340,6 +371,7 @@ const createTrip = () => {
                   />)
                 )}
               </FormGroup>
+              {languageCheck.every((e)=>!e) && next?<p>Please select at least one language</p> : <Fragment/>}
             </Field>
             {/* <button type="button" onClick={()=>{HandleNext()}}>Next</button> */}
             <PrimaryButton style={{alignSelf:"center"}} type="button" onClick={()=>{HandleNext()}} variant="contained" >Next</PrimaryButton>
@@ -347,6 +379,15 @@ const createTrip = () => {
         ):(
           <Fragment>
             <Header name="Create Trip" handle={()=>HandleBack()}></Header>
+            <div style={{display:"flex",alignSelf:"center"}}>
+              <div>
+                <label style={{color:COLOR.paleblue}}>&nbsp;&nbsp;&nbsp;information&nbsp;&nbsp;&nbsp;</label>
+                <div style={{border:`1px solid ${COLOR.paleblue}`,background:COLOR.primary}}/>
+              </div><div>
+                <label style={{color:COLOR.primary}}>&nbsp;&nbsp;&nbsp;Schedule&nbsp;&nbsp;&nbsp;</label>
+                <div style={{border:`1px solid ${COLOR.primary}`,background:COLOR.primary}}/>
+              </div>
+            </div>
             <RequireFormLabel style={{margin:"0 0 0px 0"}} className="AsteriskRequired">Schedule</RequireFormLabel>
               {/* <FormInputTime name="startTime" control={control} label="" readonly={true}/> */}
               {/* <label style={{padding:"20px 10px"}}>Departure</label> */}
