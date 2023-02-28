@@ -17,6 +17,30 @@ export const PrimaryButton = styled(Button)({
   textTransform: "capitalize",
 });
 
+export const PrimaryButtonwithoutShadow = styled(Button)({
+  background: "#257AFF",
+  border: 0,
+  borderRadius: 12,
+  padding: ".2rem 2rem",
+  color: "white",
+  fontSize: "20px",
+  fontWeight: "600",
+  textTransform: "capitalize",
+});
+
+export const SecondaryButton = styled(Button)({
+  background: "#FFFFFF",
+  borderRadius: 12,
+  borderColor:"#257AFF",
+  borderWidth: 3,
+  borderStyle: "solid",
+  padding: ".2rem 2rem",
+  color: "#257AFF",
+  fontSize: "20px",
+  fontWeight: "600",
+  textTransform: "capitalize",
+});
+
 // fontWeight: 'bold', asterisk: {color: 'red'}
 export const RequireFormLabel = styled(FormLabel)({
   required: true,

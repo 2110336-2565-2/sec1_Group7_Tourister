@@ -123,6 +123,7 @@ const createTrip = () => {
     }
     HandleSaveDraft()
   }
+  const HandleBack = () => {setStage(0)}
   const HandleSaveDraft = async () => {
     const data = getValues();
     const lang = Object.keys(languageMap).map((lang,i)=>{
@@ -286,7 +287,7 @@ const createTrip = () => {
     // <form style={{display:'flex', alignItems: 'center',flexDirection:'column'}}onSubmit={handleSubmit(onSubmit)}>
     // <form style={{display:'flex', alignItems: 'left',flexDirection:'column', padding:"0% 10%"}}onSubmit={handleSubmit(onSubmit)}>
     <Form onSubmit={handleSubmit(onSubmit)}>
-      <div>
+      <div> {/*draft button*/}
       <button style={{float:"right"}} type="button" onClick={()=>{router.push("/trips/createTrip/chooseDraft");}}>Draft</button>
       {/* <button type="button" onClick={async ()=>{
             const response = await updateUserById(user?._id?user?._id:"",{draft:{}})
@@ -354,33 +355,43 @@ const createTrip = () => {
           </Fragment>
         ):(
           <Fragment>
-            <button type="button" onClick={()=>{setStage(0)}}>Back</button>
-            <div>
-              <RequireFormLabel className="AsteriskRequired">Language</RequireFormLabel>
+            <Header name="Create Trip" handle={()=>HandleBack()}></Header>
+            <RequireFormLabel style={{margin:"0 0 0px 0"}} className="AsteriskRequired">Schedule</RequireFormLabel>
               {/* <FormInputTime name="startTime" control={control} label="" readonly={true}/> */}
               {/* <label style={{padding:"20px 10px"}}>Departure</label> */}
               {/* <label>Meeting point</label> */}
-              <label>{`${getValues("startTime")} •  Meeting point`}</label>
-              <label>Location :</label>
-              <FormInputText name="meetLocation" control={control} label="Name of location"/>
-              <label>Province :</label>
+            <Field>
+              <label style={{fontSize:"1.2rem",fontWeight:"900", textShadow:"1px 0 black", letterSpacing:"1px"}}>
+                  {`${getValues("startTime")} •  Meeting point`}</label>
+              <div style={{display:"flex",alignSelf:"center", gap:"1rem"}}>
+              <label style={{marginTop:".5rem"}}>Location&nbsp;:</label>
+              <div style={{marginLeft:"0rem"}}><FormInputText name="meetLocation" control={control} label="Name of location"/></div>
+              </div>
+              <div style={{display:"flex",alignSelf:"center", gap:"1rem"}}>
+              <label style={{marginTop:".5rem"}}>Province&nbsp;:</label>
               <FormInputText name="meetProvince" control={control} label="Name of province"/>
+              </div>
               <FormInputText name="descriptionOfMeetLocation" control={control} label="information"/>
-            </div>
-            {days.map((d)=>(
-              <DayTrip key={d.toString()} date={d} savedAttraction={getAttractionsByDate(d)} handleCB={handleCallback}/>
+            </Field>
+            <label style={{fontSize:"1.2rem",fontWeight:"900", textShadow:"1px 0 black", letterSpacing:"1px"}}>{`Attraction / Activities`}</label>
+            {days.map((d,order)=>(
+              <DayTrip key={d.toString()} date={d} order={order} savedAttraction={getAttractionsByDate(d)} handleCB={handleCallback}/>
             ))}
-            <div>
               {/* <FormInputTime name="endTime" control={control} label="" readonly={true}/> */}
               {/* <label style={{padding:"20px 10px"}}>Return</label> */}
               {/* <label>Drop off</label> */}
-              <label>{`${getValues("endTime")} •  Drop off`}</label>
-              <label>Location :</label>
-              <FormInputText name="endLocation" control={control} label="Name of location"/>
-              <label>Province :</label>
+            <Field>
+            <label style={{fontSize:"1.2rem",fontWeight:"900", textShadow:"1px 0 black", letterSpacing:"1px"}}>
+              {`${getValues("endTime")} •  Drop off`}</label>
+              <div style={{display:"flex",alignSelf:"center", gap:"1rem"}}>
+              <label style={{marginTop:".5rem"}}>Location&nbsp;:</label>
+              <div style={{marginLeft:"0rem"}}><FormInputText name="endLocation" control={control} label="Name of location"/></div>
+              </div><div style={{display:"flex",alignSelf:"center", gap:"1rem"}}>
+              <label style={{marginTop:".5rem"}}>Province&nbsp;:</label>
               <FormInputText name="endProvince" control={control} label="Name of province"/>
+              </div>
               <FormInputText name="descriptionOfEndLocation" control={control} label="information"/>
-            </div>
+            </Field>
             {/* <button type="button" onClick={()=>{HandleSaveDraft()}}>Save Draft</button> 
             <button type="submit">Publish</button> */}
             <div style={{display:"flex",alignSelf:"center", gap:"1rem"}}>

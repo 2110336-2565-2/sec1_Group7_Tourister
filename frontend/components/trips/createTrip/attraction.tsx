@@ -6,6 +6,7 @@ import { Controller,useFormContext,useForm,useFieldArray } from "react-hook-form
 // import * as yup from "yup";
 import { FormInputText } from "@/components/formInput/FormInputText";
 import TextField from "@mui/material/TextField";
+import { PrimaryButtonwithoutShadow,SecondaryButton } from "@/css/styling";
 
 const attraction = ({id,t,l,p,o,handleDelete,handleCallback}:{id:string,t:string,l:string,p:string,o:string,handleDelete:Function,handleCallback:Function}) => {
   const [time,setTime] = useState(t)
@@ -27,48 +28,55 @@ const attraction = ({id,t,l,p,o,handleDelete,handleCallback}:{id:string,t:string
     return time!=="" && location!=="" && province!==""
   }
   return (
-    <div>
+    <Fragment>
       {editing===true ? (
-        <Fragment>
-        {/* <input value={name} onChange={(e)=>setName(e.target.value)}/> */}
-        <TextField value={location} onChange={(e)=>setLocation(e.target.value)} label="Name" variant="outlined" size="small"
-          // helperText={error ? error.message : null}
-          // error={Boolean(error)}
-        />
-        {errorName? <p>Please add a name for the location</p> : <Fragment/>}
-        <TextField value={time} onChange={(e)=>setTime(e.target.value)} type="time" variant="outlined" size="small"
-          // helperText={error ? error.message : null}
-          // error={Boolean(error)}
-        />
-        {errorTime? <p>Please add a time for the location</p> : <Fragment/>}
-        <TextField value={province} onChange={(e)=>setProvince(e.target.value)} label="Province" variant="outlined" size="small"
-          // helperText={error ? error.message : null}
-          // error={Boolean(error)}
-        />
-        {errorProvince? <p>Please add a province for the location</p> : <Fragment/>}
-        <select onChange={(e)=>setOption(e.target.value)}>
-          <option value={option}>{option}</option>
-          {option==="Admission not needed" ? <Fragment></Fragment> : <option value="Admission not needed">Admission not needed</option>}
-          {option==="Admission included" ? <Fragment></Fragment> : <option value="Admission included">Admission included</option>}
-          {option==="Admission not included" ? <Fragment></Fragment> : <option value="Admission not included">Admission not included</option>}
-        </select>
-        <input type="file" onChange={(e)=>{if(!e.target.files)return;setFile(e.target.files[0])}}></input>
-        <button type="button" onClick={()=>{handleDelete(id)}}>delete</button>
-        <button type="button" onClick={()=>{
-          if(valid()) {setEditing(false);handleCallback(id,time,location,province,option,file)}
-        }}>done</button>
-        </Fragment>
+        <div>
+        <div style={{display:"flex",justifyContent:"center"}}>
+          <div style={{width:"24%",marginRight:'1%'}}>
+            <TextField value={time} onChange={(e)=>setTime(e.target.value)} type="time" variant="outlined" size="small"/>
+            {errorTime? <p>Please add a time for the location</p> : <Fragment/>}
+            <input type="file" onChange={(e)=>{if(!e.target.files)return;setFile(e.target.files[0])}}></input>
+          </div>
+          <div style={{width:"74%",marginLeft:'1%'}}>
+            <div style={{display:"flex",alignSelf:"center", gap:"1rem"}}>
+              <label style={{marginTop:".5rem"}}>Location&nbsp;:</label>
+            <TextField value={location} onChange={(e)=>setLocation(e.target.value)} label="Name" variant="outlined" size="small"/>
+            {errorName? <p>Please add a name for the location</p> : <Fragment/>}
+            </div><div style={{display:"flex",alignSelf:"center", gap:"1rem"}}>
+              <label style={{marginTop:".5rem"}}>Province&nbsp;:</label>
+            <TextField value={province} onChange={(e)=>setProvince(e.target.value)} label="Province" variant="outlined" size="small"/>
+            {errorProvince? <p>Please add a province for the location</p> : <Fragment/>}
+            </div>
+            <select onChange={(e)=>setOption(e.target.value)}>
+              <option value={option}>{option}</option>
+              {option==="Admission not needed" ? <Fragment></Fragment> : <option value="Admission not needed">Admission not needed</option>}
+              {option==="Admission included" ? <Fragment></Fragment> : <option value="Admission included">Admission included</option>}
+              {option==="Admission not included" ? <Fragment></Fragment> : <option value="Admission not included">Admission not included</option>}
+            </select>
+            <div style={{display:"flex",alignSelf:"center", gap:"1rem"}}>
+          <SecondaryButton type="button" onClick={()=>{handleDelete(id)}}>delete</SecondaryButton>
+          <PrimaryButtonwithoutShadow type="button" onClick={()=>{
+            if(valid()) {setEditing(false);handleCallback(id,time,location,province,option,file)}
+          }}>done</PrimaryButtonwithoutShadow>
+            </div>
+          </div>
+          </div>
+        </div>
         ) : (
-        <Fragment>
+        <div>
           <button type="button" onClick={()=>{setEditing(true)}}>edit</button>
-          <h4>{time}</h4>
-          <h3>{location}</h3>
-          <h4>{province}</h4>
-          <h4>{option}</h4>
-        </Fragment>
+          <div style={{display:"flex",justifyContent:"center"}}>
+            <div style={{display:"flex",justifyContent:"center",gap:"1rem"}}>
+              <label>{time}</label>
+              <label>{location}</label>
+            </div>
+            <h4>{province}</h4>
+            <h4>{option}</h4>
+          </div>
+        </div>
         )
       }
-    </div>
+    </Fragment>
   );
 };
 

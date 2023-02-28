@@ -5,8 +5,9 @@ import { nanoid } from "nanoid";
 import Attraction from "./attraction";
 import TextField from "@mui/material/TextField";
 import { AttractionInterface } from "@/interfaces/AttractionInterface";
+import { COLOR } from "@/theme/globalTheme";
 
-const dayTrip = ({date,savedAttraction,handleCB}:{date:string,savedAttraction:AttractionInterface[],handleCB:Function}) => {
+const dayTrip = ({date,order,savedAttraction,handleCB}:{date:string,order:number,savedAttraction:AttractionInterface[],handleCB:Function}) => {
   const [stage, setStage ] = useState(0);
   const [attractions,setAttractions] = useState<AttractionInterface[]>(savedAttraction);
 
@@ -40,9 +41,16 @@ const dayTrip = ({date,savedAttraction,handleCB}:{date:string,savedAttraction:At
     setAttractions(updatedAttractions)
     handleCB(date,updatedAttractions)
   }
+  const d = new Date(date)
+  const months = [ "January", "February", "March", "April", "May", "June", 
+  "July", "August", "September", "October", "November", "December" ];
   return (
           <Fragment>
-        <h2>{date.toString()}</h2>
+            <div style={{display:"flex",width:"fit-content",gap:".5rem",border:`0.1rem solid ${COLOR.primary}`,borderRadius:"1.2rem"}}>
+              <div style={{display:"flex",padding:".3rem .6rem",borderRadius:"1rem",background:COLOR.primary}}>
+                <label style={{color:"white"}}>{`Day ${order+1}`}</label></div>
+              <label style={{marginTop:".25rem",paddingRight:"2rem"}}>{`${d.getDay()} ${months[d.getMonth()]} ${d.getFullYear()}`}</label>
+            </div>
         {attractions.map((att)=>(<Attraction key={att.id} id={att.id} t={att.time} l={att.location} p={att.province} o={att.option} handleDelete={handleDelete} handleCallback={handleCallback}/>))}
           <button type="button" onClick= {() => handleAdd()}>Add</button>
           </Fragment>
