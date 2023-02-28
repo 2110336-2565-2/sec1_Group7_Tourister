@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import { nanoid } from "nanoid";
 
 import DayTrip from "./dayTrip";
+import Header from "./header"
 
 import { FormInputText } from "@/components/formInput/FormInputText";
 import { FormInputDate} from "@/components/formInput/FormInputDate";
@@ -27,6 +28,10 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormHelperText from '@mui/material/FormHelperText';
 import Checkbox from '@mui/material/Checkbox';
 import { all } from "axios";
+import { PrimaryButton, RequireFormLabel } from "@/css/styling";
+import { Button } from "@mui/material";
+import { Form, FieldName, Field } from "@/css/layout";
+
 
 type FormData = {
   _id:string
@@ -75,31 +80,18 @@ const createTrip = () => {
   const [days,setDays] =  useState<string[]>([]);
   const [dayTrips,setDayTrips] = useState<{
     date:  string,
-    // attractions : {
-    //   "id": string,
-    //   "time": string,
-    //   "location": string,
-    //   "province": string,
-    //   "option": string,
-    //   "file": File | undefined
-    // }[]
     attractions : AttractionInterface[]
   }[]>();
   const [languageCheck,setLanguageCheck] = useState([false,false,false,false,false,false,false,false])
   const router = useRouter();
   const languageMap : {[key:string]:number} = {'Thai':0,'English':1,'Chinese':2,'Japanese':3,'Korean':4,'Spanish':5,'Russian':6,'German':7}
   
-  let defaultValues = {
-    _id : nanoid(),
-    num_pending : 0,
-  };
+  let defaultValues = { _id : nanoid(),num_pending : 0,};
   useEffect(()=>{
     setUser(JSON.parse(localStorage.getItem("user")||`{}`))
     if(localStorage.getItem("editing")!==null){
     setDraft(JSON.parse(localStorage.getItem("editing")||`{}`))}}
   ,[])
-
-  
   useEffect(()=>{
     reset(draft)
     localStorage.removeItem("editing")
@@ -287,10 +279,15 @@ const createTrip = () => {
   // console.log("draft")
   // console.log(draft)
   // console.log("getValues()")
+  // console.log(getValues())
+  // console.log("languageCheck")
   // console.log(languageCheck)
   return (
-    <form style={{display:'flex', alignItems: 'center',flexDirection:'column'}}onSubmit={handleSubmit(onSubmit)}>
-      <button type="button" onClick={()=>{router.push("/trips/createTrip/chooseDraft");}}>Draft</button>
+    // <form style={{display:'flex', alignItems: 'center',flexDirection:'column'}}onSubmit={handleSubmit(onSubmit)}>
+    // <form style={{display:'flex', alignItems: 'left',flexDirection:'column', padding:"0% 10%"}}onSubmit={handleSubmit(onSubmit)}>
+    <Form onSubmit={handleSubmit(onSubmit)}>
+      <div>
+      <button style={{float:"right"}} type="button" onClick={()=>{router.push("/trips/createTrip/chooseDraft");}}>Draft</button>
       {/* <button type="button" onClick={async ()=>{
             const response = await updateUserById(user?._id?user?._id:"",{draft:{}})
             console.log(response)
@@ -298,55 +295,72 @@ const createTrip = () => {
             const res = await getUserById(user?._id?user?._id:"")
             localStorage.setItem("user", JSON.stringify(res.data));
             }}>delete draft</button> */}
-      {/* <Link href="../register" passHref><button type="button" onClick={handleBackButton}>Back</button></Link> */}
+      </div>
         {stage===0?(
           <Fragment>
-            <label>Trip Name</label>
-            <button type="button" onClick={()=>{router.push("/trips");}}>Back</button>
-            <FormInputText name="name" control={control} label="Name"/>
-            <label>Trip Description</label>
-            <FormInputText name="description" control={control} label="More Information..."/>
-            <label>Price(THB)</label>
-            <FormInputText name="price" control={control} label="Price in THB"/>
-            <label>Pick a province</label>
-            <FormInputText name="province" control={control} label="Pick a province for showing"/>
-            <label>Duration</label>
-            <label>Start</label>
-            <div>
-              <FormInputDate name="startDate" control={control} label="Start Date"/>
-            {/* <div style={{width:"100%", display:"flex", gap:"1rem"}}>
-              <FormInputDateWithMUIX name="startDate" control={control} label="Start Date"/>
-              </div> */}
-              <FormInputTime name="startTime" control={control} label="Start Time"/>
-            </div>
-            <label>End</label>
-            <div>
-              <FormInputDate name="endDate" control={control} label="End Date"/>
-              {/* <FormInputDateWithMUIX name="endDate" control={control} label="End Date"/> */}
-              <FormInputTime name="endTime" control={control} label="End Time"/>
-            </div>
-            <label>Group Size</label>
-            <FormInputText name="max_participant" control={control} label="Number of participant(s)"/>
-            <label>Language</label>
-            <FormGroup>
-              {Object.keys(languageMap).map((lang:string,i)=>(
-                <FormControlLabel
-                  control={
-                    <Checkbox checked={languageCheck[i]} onChange={toggleLanguage} name={lang} />
-                  }
-                  label={lang}
-                />)
-              )}
-            </FormGroup>
-            <button type="button" onClick={()=>{HandleNext()}}>Next</button>
+            {/* <label>Trip Name</label> */}
+            <Header name="Create Trip" handle={()=>{router.push("/trips");}}></Header>
+            {/* <div>
+              <button type="button" onClick={()=>{router.push("/trips");}}>Back</button>
+              <h1>Create Trip</h1>
+            </div> */}
+            <Field> {/* Trip Name */}
+              <RequireFormLabel className="AsteriskRequired">Trip Name</RequireFormLabel>
+              <FormInputText name="name" control={control} label="Name"/>
+            </Field><Field> {/* Description */}
+              <RequireFormLabel className="AsteriskRequired">Trip Description</RequireFormLabel>
+              <FormInputText name="description" control={control} label="More Information..."/>
+            </Field><Field> {/* Price */}
+              <RequireFormLabel className="AsteriskRequired">Price(THB)</RequireFormLabel>
+              <FormInputText name="price" control={control} label="Price in THB"/>
+            </Field><Field> {/* Province */}
+              <RequireFormLabel className="AsteriskRequired">Pick a province</RequireFormLabel>
+              <FormInputText name="province" control={control} label="Pick a province for showing"/>
+            </Field><Field> {/* Duration */}
+              <RequireFormLabel className="AsteriskRequired">Duration</RequireFormLabel>
+              <label style={{padding:"0 0.5rem"}}>{"Start"}</label>
+              {/* <label>{"Start"}</label> */}
+              <div style={{display:"flex",alignSelf:"center", gap:"1rem"}}>
+                <FormInputDate name="startDate" control={control} label="Start Date"/>
+              {/* <div style={{width:"100%", display:"flex", gap:"1rem"}}>
+                <FormInputDateWithMUIX name="startDate" control={control} label="Start Date"/>
+                </div> */}
+                <FormInputTime name="startTime" control={control} label="Start Time"/>
+              </div>
+              <label style={{padding:"0 .5rem"}}>{"End"}</label>
+              <div style={{display:"flex",alignSelf:"center", gap:"1rem"}}>
+                <FormInputDate name="endDate" control={control} label="End Date"/>
+                {/* <FormInputDateWithMUIX name="endDate" control={control} label="End Date"/> */}
+                <FormInputTime name="endTime" control={control} label="End Time"/>
+              </div>
+            </Field><Field>{/* Group Size */}
+              <RequireFormLabel className="AsteriskRequired">Group size</RequireFormLabel>
+              <FormInputText name="max_participant" control={control} label="Number of participant(s)"/>
+            </Field><Field> {/* language */}
+              <RequireFormLabel className="AsteriskRequired">Language(s)</RequireFormLabel>
+              <FormGroup style={{gap:"0px"}}>
+                {Object.keys(languageMap).map((lang:string,i)=>(
+                  <FormControlLabel
+                    control={
+                      <Checkbox checked={languageCheck[i]} onChange={toggleLanguage} name={lang} />
+                    }
+                    label={lang}
+                  />)
+                )}
+              </FormGroup>
+            </Field>
+            {/* <button type="button" onClick={()=>{HandleNext()}}>Next</button> */}
+            <PrimaryButton style={{alignSelf:"center"}} type="button" onClick={()=>{HandleNext()}} variant="contained" >Next</PrimaryButton>
           </Fragment>
         ):(
           <Fragment>
             <button type="button" onClick={()=>{setStage(0)}}>Back</button>
             <div>
-              <FormInputTime name="startTime" control={control} label="" readonly={true}/>
+              <RequireFormLabel className="AsteriskRequired">Language</RequireFormLabel>
+              {/* <FormInputTime name="startTime" control={control} label="" readonly={true}/> */}
               {/* <label style={{padding:"20px 10px"}}>Departure</label> */}
-              <label>Meeting point</label>
+              {/* <label>Meeting point</label> */}
+              <label>{`${getValues("startTime")} •  Meeting point`}</label>
               <label>Location :</label>
               <FormInputText name="meetLocation" control={control} label="Name of location"/>
               <label>Province :</label>
@@ -357,20 +371,26 @@ const createTrip = () => {
               <DayTrip key={d.toString()} date={d} savedAttraction={getAttractionsByDate(d)} handleCB={handleCallback}/>
             ))}
             <div>
-              <FormInputTime name="endTime" control={control} label="" readonly={true}/>
+              {/* <FormInputTime name="endTime" control={control} label="" readonly={true}/> */}
               {/* <label style={{padding:"20px 10px"}}>Return</label> */}
-              <label>Drop off</label>
+              {/* <label>Drop off</label> */}
+              <label>{`${getValues("endTime")} •  Drop off`}</label>
               <label>Location :</label>
               <FormInputText name="endLocation" control={control} label="Name of location"/>
               <label>Province :</label>
               <FormInputText name="endProvince" control={control} label="Name of province"/>
               <FormInputText name="descriptionOfEndLocation" control={control} label="information"/>
             </div>
-            <button type="button" onClick={()=>{HandleSaveDraft()}}>Save Draft</button> 
-            <button type="submit">Publish</button>
+            {/* <button type="button" onClick={()=>{HandleSaveDraft()}}>Save Draft</button> 
+            <button type="submit">Publish</button> */}
+            <div style={{display:"flex",alignSelf:"center", gap:"1rem"}}>
+              <Button style={{width:"10rem"}} type="button" onClick={()=>{HandleSaveDraft()}} variant="outlined">Save Draft</Button>
+              <Button style={{width:"10rem"}} type="submit" variant="contained">Publish</Button>
+            </div>
           </Fragment>
         )}
-      </form>
+      {/* </form> */}
+      </Form>
   );
 };
 
