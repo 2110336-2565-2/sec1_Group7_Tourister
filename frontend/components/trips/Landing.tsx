@@ -4,8 +4,12 @@ import {Button,Tab, Tabs } from "@mui/material";
 import * as React from "react";
 import Box from "@mui/material/Box";
 import { COLOR } from "@/theme/globalTheme";
-import { getAllPrograms } from "@/services/programService";
+import { getAllProgramsFromGuide,getAllPrograms } from "@/services/programService";
 import { ProgramCardForGuide } from "@/components/program/ProgramCardForGuide";
+import  { useContext } from "react";
+import { ProgramInterface } from "../../interfaces/ProgramInterface";
+import Link from 'next/link';
+
 
 interface LinkTabProps {
   label?: string;
@@ -29,14 +33,23 @@ function LinkTab(props: LinkTabProps) {
 const Landing = () => {
   const [selectedTab, setSelectedTab] = React.useState(0);
   const [trips, setTrips] = React.useState([]);
-  const [ongoingTrips, setOngoingTrips] = React.useState([]);
-  const [upcomingTrips, setUpcomingTrips] = React.useState([]);
-  const [completeTrips, setCompleteTrips] = React.useState([]);
+  const [ongoingTrips, setOngoingTrips] = React.useState<ProgramInterface[]>([]);
+  const [upcomingTrips, setUpcomingTrips] = React.useState<ProgramInterface[]>([]);
+  const [completeTrips, setCompleteTrips] = React.useState<ProgramInterface[]>([]);
 
+
+  
   React.useEffect(() => {
+    const guide = JSON.parse(localStorage.getItem('user') || '{}');
+    const guideId = guide._id;
+    //console.log(guideId);
+
     const fetchTripsData = async () => {
-      const response = await getAllPrograms();
-      const programs = response.data;
+
+      //const response = await getAllPrograms();
+      const response = await getAllProgramsFromGuide(guideId);
+
+      const programs = response.data || [];
   
       // get today's date
       const today = new Date();
@@ -49,23 +62,23 @@ const Landing = () => {
         const endDate = new Date(program.endDate);
         return startDate <= today && endDate >= today;
       });
-      console.log("OngoingTrips");
-      console.log(ongoingTrips);
+      //console.log("OngoingTrips");
+      //console.log(ongoingTrips);
 
       const upcomingTrips = programs.filter((program) => {
         const startDate = new Date(program.startDate);
         return startDate > today;
       });
-      console.log("upcomingTrips");
-      console.log(upcomingTrips);
+      //console.log("upcomingTrips");
+      //console.log(upcomingTrips);
       
       
       const completeTrips = programs.filter((program) => {
         const endDate = new Date(program.endDate);
         return endDate < today;
       });
-      console.log("completeTrips");
-      console.log(completeTrips);
+      //console.log("completeTrips");
+      //console.log(completeTrips);
 
       // set the filtered programs to the appropriate state
       setOngoingTrips(ongoingTrips);
@@ -83,21 +96,37 @@ const Landing = () => {
 
 
   const OngoingTrips = () => {
-    return (
+    return(
       <>
-        {ongoingTrips.map((program) => (
-          <ProgramCardForGuide key={program._id} program={program} />
-        ))}
+      {ongoingTrips.length > 0 ? (
+      ongoingTrips.map((program) => (
+        <ProgramCardForGuide key={program._id} program={program} isComplete= {false} />
+      ))
+      ) : (
+        <>
+          <p>You don't have any ongoing trips at the moment. </p>
+          <p>Keep creating and publishing trips for tourists to book and enjoy!</p>
+        </>
+      )}
       </>
-    );
+    )
+    
   };
 
   const UpcomingTrips = () => {
     return (
       <>
-        {upcomingTrips.map((program) => (
-          <ProgramCardForGuide key={program._id} program={program} />
-        ))}
+      {upcomingTrips.length > 0 ? (
+      upcomingTrips.map((program) => (
+        <ProgramCardForGuide key={program._id} program={program} isComplete= {false} />
+      ))
+      ) : (
+        <>
+          <p>No Upcoming Trips</p>
+          <p>Don't worry though - there are always more adventures to be created! </p>
+        </>
+      )}
+
       </>
     );
   };
@@ -105,9 +134,17 @@ const Landing = () => {
   const CompleteTrips = () => {
     return (
       <>
-        {completeTrips.map((program) => (
-          <ProgramCardForGuide key={program._id} program={program} />
-        ))}
+       {completeTrips.length > 0 ? (
+      completeTrips.map((program) => (
+        <ProgramCardForGuide key={program._id} program={program} isComplete= {true} />
+      ))
+      ) : (
+        <>
+          <p>Keep creating amazing trips for tourists.</p>
+          <p>They'll show up in this tab soon!</p>
+        </>
+      )}
+       
       </>
     );
   };
