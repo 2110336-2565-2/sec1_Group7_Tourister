@@ -328,7 +328,7 @@ const createTrip = () => {
                 <div style={{border:`1px solid ${COLOR.primary}`,background:COLOR.primary}}/>
               </div><div>
                 <label style={{color:COLOR.paleblue}}>&nbsp;&nbsp;&nbsp;Schedule&nbsp;&nbsp;&nbsp;</label>
-                <div style={{border:`1px solid ${COLOR.paleblue}`,background:COLOR.primary}}/>
+                <div style={{border:`1px solid ${COLOR.paleblue}`,background:COLOR.paleblue}}/>
               </div>
             </div>
             <Field> {/* Trip Name */}
@@ -382,7 +382,7 @@ const createTrip = () => {
             <div style={{display:"flex",alignSelf:"center"}}>
               <div>
                 <label style={{color:COLOR.paleblue}}>&nbsp;&nbsp;&nbsp;information&nbsp;&nbsp;&nbsp;</label>
-                <div style={{border:`1px solid ${COLOR.paleblue}`,background:COLOR.primary}}/>
+                <div style={{border:`1px solid ${COLOR.paleblue}`,background:COLOR.paleblue}}/>
               </div><div>
                 <label style={{color:COLOR.primary}}>&nbsp;&nbsp;&nbsp;Schedule&nbsp;&nbsp;&nbsp;</label>
                 <div style={{border:`1px solid ${COLOR.primary}`,background:COLOR.primary}}/>
