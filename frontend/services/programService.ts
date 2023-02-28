@@ -3,7 +3,8 @@ import ApiErrorResponse from "@/exceptions/ApiErrorResponse";
 import { ApiResponseInterface } from "@/interfaces/ApiResponsetInterface";
 import { ProgramFilterInterface } from "@/interfaces/filter/ProgramFilterInterface";
 import { ProgramInterface } from "@/interfaces/ProgramInterface";
-import { filterObjectToQueryString, isHttpStatusOk } from "@/utils/Utils";
+import {  isHttpStatusOk } from "@/utils/Utils";
+import { filterObjectToQueryString } from "@/utils/FilterQueryString";
 import axios from "axios";
 
 export const getAllPrograms = async (filter: ProgramFilterInterface | undefined = undefined) => {
@@ -22,6 +23,15 @@ export const getProgramById = async (id: string) => {
     if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined)
     return res;
 }
+
+export const getAllProgramsFromGuide = async (userId: string, filter: ProgramFilterInterface | undefined = undefined) => {
+    const configs = localStorage.getItem("accessToken") != undefined ? { headers: { 'Authorization' : `Bearer ${localStorage.getItem("accessToken")}`} } : {}
+    const query = filter != null ? '?' + filterObjectToQueryString(filter) : ""
+    const axios_res = await axios.get(`${appConfig.BACKEND_URL}/api/program/byGuide/${userId}${query}`, configs)
+    const res = axios_res.data as ApiResponseInterface<ProgramInterface[]>
+    if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined)
+    return res;
+} 
 
 export const createProgram = async (data: ProgramInterface) => {
     const configs = localStorage.getItem("accessToken") != undefined ? { headers: { 'Authorization' : `Bearer ${localStorage.getItem("accessToken")}`} } : {}

@@ -4,6 +4,7 @@ const programController = require('../controllers/ProgramController')
 const { authGuide } = require('../middlewares/auth')
 
 router.get('/program', programController.getAllPrograms)
+router.get('/program/byGuide/:userId', programController.getAllProgramsByUserId)
 router.get('/program/:id', programController.getProgramById)
 router.post('/program', authGuide, programController.createProgram)
 router.put('/program/:id', authGuide, programController.updateProgramById)

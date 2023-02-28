@@ -122,6 +122,42 @@ const ProgramController = {
         })
         res.json(result)
     },
+
+        /**
+     * getAllPrograms
+     * @param {import('express').Request} req
+     * @param {import('express').Response} res
+     * @param {import('express').NextFunction} next
+     */
+    async getAllProgramsByUserId(req, res, next) {
+        const userId = req.params.userId;
+        const filterBody = req.query
+        let filter = []
+        filter.push({ guide: userId })
+        if(filterBody.province != null) filter.push({ province: filterBody.province })
+        if(filterBody.language != null) filter.push({ language: filterBody.language }) 
+        if(filterBody.minPrice != null) filter.push({ price: { $gte: filterBody.minPrice } }) 
+        if(filterBody.maxPrice != null) filter.push({ price: { $lte: filterBody.maxPrice } })
+        if(filterBody.minPeople != null) filter.push({ max_participant: { $gte: filterBody.minPeople } })
+        if(filterBody.maxPeople != null) filter.push({ max_participant: { $lte: filterBody.maxPeople } })
+        if(filterBody.startDate != null) filter.push({ startDate: { $gte: filterBody.startDate} })
+        if(filterBody.endDate != null) filter.push({ endDate: { $lte: filterBody.endDate } })
+
+        const result = await tryCatchMongooseService(async () => {
+            const programs = await Program.find({ $and: filter }).populate({
+                path:'guide',
+                select: 'name surname'
+            })
+
+            return {
+                code: 200,
+                data: programs,
+                message: "",
+            }
+        })
+        res.json(result)
+    },
+    
 }
 
 module.exports = ProgramController
