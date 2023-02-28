@@ -34,18 +34,15 @@ const attraction = ({id,t,l,p,o,handleDelete,handleCallback}:{id:string,t:string
         <div style={{display:"flex",justifyContent:"center"}}>
           <div style={{width:"24%",marginRight:'1%'}}>
             <TextField value={time} onChange={(e)=>setTime(e.target.value)} type="time" variant="outlined" size="small"/>
-            {errorTime? <p>Please add a time for the location</p> : <Fragment/>}
             <input type="file" onChange={(e)=>{if(!e.target.files)return;setFile(e.target.files[0])}}></input>
           </div>
           <div style={{width:"74%",marginLeft:'1%'}}>
             <div style={{display:"flex",alignSelf:"center", gap:"1rem"}}>
               <label style={{marginTop:".5rem"}}>Location&nbsp;:</label>
             <TextField value={location} onChange={(e)=>setLocation(e.target.value)} label="Name" variant="outlined" size="small"/>
-            {errorName? <p>Please add a name for the location</p> : <Fragment/>}
             </div><div style={{display:"flex",alignSelf:"center", gap:"1rem"}}>
               <label style={{marginTop:".5rem"}}>Province&nbsp;:</label>
             <TextField value={province} onChange={(e)=>setProvince(e.target.value)} label="Province" variant="outlined" size="small"/>
-            {errorProvince? <p>Please add a province for the location</p> : <Fragment/>}
             </div>
             <select onChange={(e)=>setOption(e.target.value)}>
               <option value={option}>{option}</option>
@@ -59,6 +56,9 @@ const attraction = ({id,t,l,p,o,handleDelete,handleCallback}:{id:string,t:string
             if(valid()) {setEditing(false);handleCallback(id,time,location,province,option,file)}
           }}>done</PrimaryButtonwithoutShadow>
             </div>
+            {errorName? <p>Please add a name for the location</p> : <Fragment/>}
+            {errorTime? <p>Please add a time for the location</p> : <Fragment/>}
+            {errorProvince? <p>Please add a province for the location</p> : <Fragment/>}
           </div>
           </div>
         </div>

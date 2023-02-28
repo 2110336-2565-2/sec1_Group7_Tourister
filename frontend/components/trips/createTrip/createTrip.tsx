@@ -31,7 +31,8 @@ import { all } from "axios";
 import { PrimaryButton, RequireFormLabel } from "@/css/styling";
 import { Button } from "@mui/material";
 import { Form, FieldName, Field } from "@/css/layout";
-
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import { COLOR } from "@/theme/globalTheme";
 
 type FormData = {
   _id:string
@@ -288,7 +289,7 @@ const createTrip = () => {
     // <form style={{display:'flex', alignItems: 'left',flexDirection:'column', padding:"0% 10%"}}onSubmit={handleSubmit(onSubmit)}>
     <Form onSubmit={handleSubmit(onSubmit)}>
       <div> {/*draft button*/}
-      <button style={{float:"right"}} type="button" onClick={()=>{router.push("/trips/createTrip/chooseDraft");}}>Draft</button>
+      <button style={{alignItems:"center",justifyContent:"center",background:"none",borderColor:"black",borderRadius:"12px",float:"right"}} type="button" onClick={()=>{router.push("/trips/createTrip/chooseDraft");}}><AssignmentIcon/>Draft</button>
       {/* <button type="button" onClick={async ()=>{
             const response = await updateUserById(user?._id?user?._id:"",{draft:{}})
             console.log(response)
@@ -299,12 +300,7 @@ const createTrip = () => {
       </div>
         {stage===0?(
           <Fragment>
-            {/* <label>Trip Name</label> */}
             <Header name="Create Trip" handle={()=>{router.push("/trips");}}></Header>
-            {/* <div>
-              <button type="button" onClick={()=>{router.push("/trips");}}>Back</button>
-              <h1>Create Trip</h1>
-            </div> */}
             <Field> {/* Trip Name */}
               <RequireFormLabel className="AsteriskRequired">Trip Name</RequireFormLabel>
               <FormInputText name="name" control={control} label="Name"/>
@@ -319,19 +315,14 @@ const createTrip = () => {
               <FormInputText name="province" control={control} label="Pick a province for showing"/>
             </Field><Field> {/* Duration */}
               <RequireFormLabel className="AsteriskRequired">Duration</RequireFormLabel>
-              <label style={{padding:"0 0.5rem"}}>{"Start"}</label>
-              {/* <label>{"Start"}</label> */}
+              <label style={{marginLeft:"0.5rem"}}>{"Start"}</label>
               <div style={{display:"flex",alignSelf:"center", gap:"1rem"}}>
                 <FormInputDate name="startDate" control={control} label="Start Date"/>
-              {/* <div style={{width:"100%", display:"flex", gap:"1rem"}}>
-                <FormInputDateWithMUIX name="startDate" control={control} label="Start Date"/>
-                </div> */}
                 <FormInputTime name="startTime" control={control} label="Start Time"/>
               </div>
-              <label style={{padding:"0 .5rem"}}>{"End"}</label>
+              <label style={{marginLeft:".5rem"}}>{"End"}</label>
               <div style={{display:"flex",alignSelf:"center", gap:"1rem"}}>
                 <FormInputDate name="endDate" control={control} label="End Date"/>
-                {/* <FormInputDateWithMUIX name="endDate" control={control} label="End Date"/> */}
                 <FormInputTime name="endTime" control={control} label="End Time"/>
               </div>
             </Field><Field>{/* Group Size */}
