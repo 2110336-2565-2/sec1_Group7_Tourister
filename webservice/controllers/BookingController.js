@@ -104,7 +104,7 @@ const BookingController = {
                 select: 'name surname phoneNumber imageUrl'
             },{
                 path:'program',
-                select: 'name'
+                //select: 'name'
             }])
 
             return {

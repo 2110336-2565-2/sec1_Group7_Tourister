@@ -113,18 +113,6 @@ const ProgramSchema = new mongoose.Schema({
     descriptionOfEndLocation: {
         type: String
     },
-    // pending_participant: {
-    //   type: [mongoose.Schema.Types.ObjectId],
-    //   ref: "User",
-    // },
-    // accepted_participant: {
-    //   type: [mongoose.Schema.Types.ObjectId],
-    //   ref: "User",
-    // },
-    // declined_participant: {
-    //   type: [mongoose.Schema.Types.ObjectId],
-    //   ref: "User",
-    // },
     published : {
         type : Boolean,
         default : true
