@@ -51,8 +51,8 @@ const Landing = () => {
 
       // get today's date
       const today = new Date();
-      console.log(programs);
-      console.log(today);
+      // console.log(programs);
+      // console.log(today);
 
       // filter the programs based on their start and end dates
       const ongoingTrips = programs.filter((program) => {
