@@ -1,6 +1,8 @@
 import { Button } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { FormLabel } from "@mui/material";
+import { Tab } from "@mui/material";
+import { COLOR } from "@/theme/globalTheme";
 
 export const PrimaryButton = styled(Button)({
   background: "#257AFF",
@@ -61,3 +63,12 @@ export const RequireFormLabel = styled(FormLabel)({
   color: "black",
   fontSize: 15,
 });
+
+// NOTE error in animation
+const StyledTab = styled(Tab)(({ theme }) => ({
+  '&.Mui-selected': {
+    borderBottom: `4px solid ${COLOR.primary}`
+  },
+  textTransform: "capitalize",
+  fontWeight: "bold"
+}));

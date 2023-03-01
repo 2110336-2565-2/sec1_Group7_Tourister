@@ -20,6 +20,12 @@ interface LinkTabProps {
 function LinkTab(props: LinkTabProps) {
   return (
     <Tab
+      // sx={{ '&.Mui-selected': { borderBottom: '5px solid ${COLOR.primary}' } }}
+      style={{
+          // borderBottom: `4px solid ${COLOR.primary}`,
+          textTransform: "capitalize",
+          fontWeight: "bold"
+      }}
       component="a"
       onClick={(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         event.preventDefault();
@@ -51,8 +57,8 @@ const Landing = () => {
 
       // get today's date
       const today = new Date();
-      console.log(programs);
-      console.log(today);
+      // console.log(programs);
+      // console.log(today);
 
       // filter the programs based on their start and end dates
       const ongoingTrips = programs.filter((program) => {
@@ -149,21 +155,20 @@ const Landing = () => {
 
   return (
     <>
-      <Box sx={{alignItems : 'center'}}>
+      <Box sx={{ width: "100%"}}>
         <SecondaryButtonWhite 
         href="/trips/createTrip" variant="contained" 
         style={{transform:"translateY(-30px)", margin: "0 auto", display: "flex"}}
         >
           New Trips
         </SecondaryButtonWhite>
-      </Box>
-      <Box sx={{ width: "100%"}}>
         <Tabs
           value={selectedTab}
           onChange={handleChange}
           variant="fullWidth"
           scrollButtons={false}
           aria-label="scrollable prevent tabs example"
+          style={{transform:"translateY(-15px)", margin: "0 auto", display: "flex"}}
         >
           <LinkTab label="Ongoing" href="/trips/ongoing" />
           <LinkTab label="Upcoming" href="/trips/upcoming" />
