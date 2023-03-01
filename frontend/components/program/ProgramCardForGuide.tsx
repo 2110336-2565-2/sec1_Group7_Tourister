@@ -4,8 +4,7 @@ import { ProgramInterface } from "@/interfaces/ProgramInterface";
 import { FC } from "react";
 import { COLOR } from "@/theme/globalTheme";
 import Link from "next/link";
-import styled from "styled-components";
-import { CalendarMonth } from "@mui/icons-material";
+import { CalendarMonth, LocationOn } from "@mui/icons-material";
 
 
 interface IProgramInterface {
@@ -49,22 +48,43 @@ export const ProgramCardForGuide: FC<IProgramInterface> = ({ program, isComplete
       <div
         key={program._id} onClick={handleClick}
         style={{ borderBottom: "2px solid #E0EFF8", padding: "1em 1.5em 0em" }}
-      >
+        >
         <div>
+          <div style={{display: "inline-block", float: "left"}}>
           <img src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/15/33/fb/5c/pattaya.jpg?w=700&h=500&s=1"
             alt="mock-img"
-            style={{ width: '75px', height: '75px' }}
+            style={{ width: '75px', height: '75px', padding: "0px 10px", borderRadius: 12 }}
           />
+          </div>
+          <div style={{display: "inline-block", float: "left", padding: "10px"}}>
+            <table>
+              <tr><td style={{fontWeight: "bold", transform:"translateY(-15px) translateX(10px)"}}>
+                {program.name}
+              </td></tr>
+              <tr><td style={{transform:"translateY(-10px)"}}>
+                <div style={
+                  {backgroundColor: '#E0EFF8', padding: "2px 20px 2px", fontSize: 12, color: 'grey',
+                  border: '1px solid white', borderRadius: 15, textAlign: "center"}
+                }>
+                  <LocationOn style={{color:'grey', fontSize:15, transform:"translateY(2px) translateX(-5px)"}} /> 
+                  {program.province}
+                </div>
+              </td></tr>
+            </table>
+          </div>
         </div>
-        <div>{program.name}</div>
-        <div>{program.province}</div>
-        <div style={{fontWeight: "bold"}}>
+
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <div style={{display: "inline-block"}}>
           <>
           <CalendarMonth style={{color:'#257aff', padding:"0px 10px", transform:"translateY(5px)"}} fontSize="medium" /> 
           {program.startDate} to
           </>
         </div>
-        <div style={{fontWeight: "bold"}}>
+        <div>
           <>
           <CalendarMonth style={{color:'#344CB1', padding:"0px 10px", transform:"translateY(5px)"}} fontSize="medium" /> 
           {program.endDate}
@@ -72,7 +92,6 @@ export const ProgramCardForGuide: FC<IProgramInterface> = ({ program, isComplete
         </div>
         {participants()}
       </div>
-      {/* </Link>   */}
     </>
   );
 }
