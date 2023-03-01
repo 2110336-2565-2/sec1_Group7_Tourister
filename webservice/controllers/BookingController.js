@@ -16,7 +16,7 @@ const BookingController = {
             const bookingId = req.params.id
             const booking = await Booking.findById(bookingId).populate([{
                 path:'user',
-                select: 'name surname phoneNumber imageUrl'
+                select: 'name surname phoneNumber image'
             },{
                 path:'program',
                 select: 'name'
@@ -41,7 +41,7 @@ const BookingController = {
         const result = await tryCatchMongooseService(async () => {
             const bookings = await Booking.find({}).populate([{
                 path:'user',
-                select: 'name surname phoneNumber imageUrl'
+                select: 'name surname phoneNumber image'
             },{
                 path:'program',
                 select: 'name'
@@ -101,7 +101,7 @@ const BookingController = {
         const result = await tryCatchMongooseService(async () => {
             const bookings = await Booking.find({ $and: filter }).populate([{
                 path:'user',
-                select: 'name surname phoneNumber imageUrl'
+                select: 'name surname phoneNumber image'
             },{
                 path:'program',
                 //select: 'name'
@@ -141,7 +141,7 @@ const BookingController = {
         const result = await tryCatchMongooseService(async () => {
             const bookings = await Booking.find({ $and: filter }).populate([{
                 path:'user',
-                select: 'name surname phoneNumber imageUrl'
+                select: 'name surname phoneNumber image'
             }])
 
             return {

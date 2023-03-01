@@ -60,7 +60,7 @@ const ProgramSchema = new mongoose.Schema({
     //             require : true
     //         },
     //         province: String,
-    //         imageUrl: String,
+    //         image: String,
     //         admissionsIncluded : {
     //             type : Boolean,
     //             default: false
@@ -96,12 +96,12 @@ const ProgramSchema = new mongoose.Schema({
                         type : String,
                         require : true
                     },
-                    imageUrl: String,
+                    image: String,
                     // file: File | undefined
                 }, {_id: false})]}
         }, {_id: false})]
     },
-    imageUrl: {
+    image: {
         type: String
     },
     language: {

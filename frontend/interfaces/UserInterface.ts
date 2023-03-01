@@ -10,5 +10,6 @@ export interface UserInterface {
   isGuide?: boolean;
   remainingAmount?: number;
   licenseId?: string;
+  image?: string;
   draft?: {[key:string]:ProgramInterface};
 }

@@ -19,7 +19,7 @@ export interface ProgramInterface {
   guide: UserInterface, //objectId User
   // attractions?: AttractionInterface[];
   dayTrips : {date:string,attractions: AttractionInterface[]}[]
-  imageUrl?: string;
+  image?: string;
   language?: string[];
   endLocation?: string;
   endProvince?: string;
