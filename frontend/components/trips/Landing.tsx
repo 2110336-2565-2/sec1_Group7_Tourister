@@ -10,7 +10,11 @@ import { useContext } from "react";
 import { ProgramInterface } from "../../interfaces/ProgramInterface";
 import Link from 'next/link';
 import { SecondaryButtonWhite } from "@/css/styling";
+import styled from "styled-components";
 
+const UnFoundLabel = styled.p`
+  margin:0.7rem 1rem 0.5rem 1rem;
+`
 
 interface LinkTabProps {
   label?: string;
@@ -103,8 +107,8 @@ const Landing = () => {
           ))
         ) : (
           <>
-            <p>You don't have any ongoing trips at the moment. </p>
-            <p>Keep creating and publishing trips for tourists to book and enjoy!</p>
+            <UnFoundLabel>You don't have any ongoing trips at the moment. </UnFoundLabel>
+            <UnFoundLabel>Keep creating and publishing trips for tourists to book and enjoy!</UnFoundLabel>
           </>
         )}
       </>
@@ -121,8 +125,8 @@ const Landing = () => {
           ))
         ) : (
           <>
-            <p>No Upcoming Trips</p>
-            <p>Don't worry though - there are always more adventures to be created! </p>
+            <UnFoundLabel>No Upcoming Trips</UnFoundLabel>
+            <UnFoundLabel>Don't worry though - there are always more adventures to be created! </UnFoundLabel>
           </>
         )}
 
@@ -139,8 +143,8 @@ const Landing = () => {
           ))
         ) : (
           <>
-            <p>Keep creating amazing trips for tourists.</p>
-            <p>They'll show up in this tab soon!</p>
+            <UnFoundLabel>Keep creating amazing trips for tourists.</UnFoundLabel>
+            <UnFoundLabel>They'll show up in this tab soon!</UnFoundLabel>
           </>
         )}
 
@@ -155,7 +159,7 @@ const Landing = () => {
 
   return (
     <>
-      <Box sx={{ width: "100%"}}>
+      <Box sx={{ width: "100%" }}>
         <SecondaryButtonWhite 
         href="/trips/createTrip" variant="contained" 
         style={{transform:"translateY(-30px)", margin: "0 auto", display: "flex"}}
