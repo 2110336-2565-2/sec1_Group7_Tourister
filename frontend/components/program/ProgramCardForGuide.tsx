@@ -4,7 +4,9 @@ import { ProgramInterface } from "@/interfaces/ProgramInterface";
 import { FC } from "react";
 import { COLOR } from "@/theme/globalTheme";
 import Link from "next/link";
+import styled from "styled-components";
 import { CalendarMonth, LocationOn } from "@mui/icons-material";
+import { format } from "date-fns";
 
 
 interface IProgramInterface {
@@ -41,6 +43,11 @@ export const ProgramCardForGuide: FC<IProgramInterface> = ({ program, isComplete
       );
     }
   }
+
+  const startDateTime = new Date(program.startDate);
+  const endDateTime = new Date(program.endDate);
+  const formattedStartDate = format(startDateTime, "dd MMM yyyy");
+  const formattedEndDate = format(endDateTime, "dd MMM yyyy");
 
   return (
     <>
@@ -81,13 +88,13 @@ export const ProgramCardForGuide: FC<IProgramInterface> = ({ program, isComplete
         <div style={{display: "inline-block"}}>
           <>
           <CalendarMonth style={{color:'#257aff', padding:"0px 10px", transform:"translateY(5px)"}} fontSize="medium" /> 
-          {program.startDate} to
+          {formattedStartDate}, {program.startTime} to 
           </>
         </div>
         <div>
           <>
           <CalendarMonth style={{color:'#344CB1', padding:"0px 10px", transform:"translateY(5px)"}} fontSize="medium" /> 
-          {program.endDate}
+          {formattedEndDate}, {program.endTime}
           </>
         </div>
         {participants()}

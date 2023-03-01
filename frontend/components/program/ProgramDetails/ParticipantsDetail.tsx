@@ -30,7 +30,7 @@ const ParticipantsDetail: FC<ParticipantsDetailProps> = ({ bookings }) => {
                     secondary={
                         <div>
                             <p>{`Tel: ${user.phoneNumber}`}</p>
-                            {booking.request && <p>{`Information: ${booking.request}`}</p>}
+                            {booking.request && <div>{`Information: ${booking.request}`}</div>}
                         </div>
                         
                     } />

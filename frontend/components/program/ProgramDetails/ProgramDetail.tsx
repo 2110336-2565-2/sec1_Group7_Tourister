@@ -9,6 +9,7 @@ import { Accordion, AccordionDetails, AccordionSummary, List, ListItem, ListItem
 import ScheduleDetail from "@/components/program/ProgramDetails/ScheduleDetail";
 import ParticipantsDetail from "@/components/program/ProgramDetails/ParticipantsDetail";
 // import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import { format } from "date-fns";
 
 
 interface IProgramDetailProps {
@@ -28,6 +29,12 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
     return <div>Loading...</div>;
   }
 
+    const startDateTime = new Date(program.startDate);
+    const endDateTime = new Date(program.endDate);
+    const formattedStartDate = format(startDateTime, "dd MMM yyyy");
+    const formattedEndDate = format(endDateTime, "dd MMM yyyy");
+
+
   return (
       <>
         <button style={{border:"0px"}} type="button" onClick={onGoBack}><ChevronLeft/></button>
@@ -36,8 +43,9 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
         <p>Province: {program.province}</p>
         <p>Number of Participants: {program.num_participant}</p>
         <p>Max Participants: {program.max_participant}</p>
-        <p>Start: {program.startDate.toString()}</p>
-        <p>End: {program.endDate.toString()}</p>
+        <p>{`Start ${formattedStartDate}, ${program.startTime}`}</p>
+        <p>{`End ${formattedEndDate}, ${program.endTime}`}</p>
+
         <Accordion>
         <AccordionSummary expandIcon={<ExpandMore />}>
           <h3>Description</h3>
@@ -53,7 +61,7 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
         </AccordionSummary>
         <AccordionDetails>
           {/* render schedule component */}
-          <ScheduleDetail />
+          <ScheduleDetail program={program} dayTrips={program.dayTrips} />
         </AccordionDetails>
       </Accordion>
 
