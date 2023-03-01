@@ -3,10 +3,21 @@
 import { useEffect } from "react";
 import { useState } from "react";
 import Link from "next/link";
-import { getProgramById } from "@/services/programService";
+import {
+  getAllProgramsFromGuide,
+  getProgramById,
+} from "@/services/programService";
 import { getAllBookings } from "@/services/bookingService";
 
 export default function programPending() {
+  const [guideId, setGuideid] = useState("");
+  useEffect(() => {
+    const guide = JSON.parse(localStorage.getItem("user") || "{}");
+    console.log("efwefr");
+    console.log(guide._id);
+    setGuideid(guide._id);
+  }, []);
+
   const [programs, setPrograms] = useState<[ProgramInterface]>([
     {
       _id: "",
@@ -35,9 +46,16 @@ export default function programPending() {
 
   async function fetchData() {
     const response = await getAllBookings();
-    // console.log(response.data);
+    const programOfGuide = await getAllProgramsFromGuide(guideId);
+    let programOfGuideArr: any = [];
+    for (let i = 0; i < programOfGuide.data.length; i++) {
+      programOfGuideArr.push(programOfGuide.data[i]._id);
+    }
     for (let i = 0; i < response.data.length; i++) {
-      if (response.data[i].status === "pending") {
+      if (
+        response.data[i].status === "pending" &&
+        response[i].program._id in programOfGuideArr
+      ) {
         if (response.data[i].program._id in programPendingDict) {
           programPendingDict[response.data[i].program._id].push(
             response.data[i].user._id
@@ -63,12 +81,12 @@ export default function programPending() {
     fetchData();
   }, []);
 
-  // console.log(programs);
+  console.log(programs);
 
   return (
     <div>
       <h1>Request</h1>
-      {programs.length > 0 ? (
+      {programs.length > 1 ? (
         <div>
           {programs.map((program) => (
             <Link

@@ -13,9 +13,13 @@ import { UserCardInterface } from "@/interfaces/UserCardInterface";
 import { getUserById } from "@/services/userService";
 import Link from "next/link";
 import { getProgramById, updateProgramById } from "@/services/programService";
+import { UserInterface } from "@/interfaces/UserInterface";
 
 var programName = "";
 export default function userPending() {
+
+  
+
   const [userCards, setuserCards] = useState<[UserCardInterface]>([
     {
       bookingId: "",
@@ -28,7 +32,7 @@ export default function userPending() {
   ]);
   const router = useRouter();
   const { programId } = router.query;
-  console.log(programId);
+  // console.log(programId);
 
   async function fetchData() {
     var userArr: any = [];
@@ -84,7 +88,7 @@ export default function userPending() {
       const response = await updateProgramById(programid, {
         num_participant: num_participant,
       });
-      // console.log(res);
+      // console.log(response);
     } else if (status === "declined") {
       const res = declineBookingById(bookingId);
       // console.log(res);
@@ -95,7 +99,7 @@ export default function userPending() {
   useEffect(() => {
     fetchData();
   }, []);
-  console.log(programName);
+  // console.log(programName);
 
   return (
     <div>
