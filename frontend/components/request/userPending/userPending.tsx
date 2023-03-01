@@ -12,6 +12,7 @@ import {
 import { UserCardInterface } from "@/interfaces/UserCardInterface";
 import { getUserById } from "@/services/userService";
 import Link from "next/link";
+import { getProgramById, updateProgramById } from "@/services/programService";
 
 var programName = "";
 export default function userPending() {
@@ -75,7 +76,14 @@ export default function userPending() {
 
   const statusChange = async (bookingId: string, status: string) => {
     if (status === "accepted") {
-      const res = acceptBookingById(bookingId);
+      const res = await acceptBookingById(bookingId);
+      const programid = res.data.program;
+
+      const program = await getProgramById(programid);
+      const num_participant = program.data.num_participant + 1;
+      const response = await updateProgramById(programid, {
+        num_participant: num_participant,
+      });
       // console.log(res);
     } else if (status === "declined") {
       const res = declineBookingById(bookingId);
