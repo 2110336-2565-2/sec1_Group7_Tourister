@@ -17,9 +17,6 @@ import { UserInterface } from "@/interfaces/UserInterface";
 
 var programName = "";
 export default function userPending() {
-
-  
-
   const [userCards, setuserCards] = useState<[UserCardInterface]>([
     {
       bookingId: "",
@@ -43,7 +40,7 @@ export default function userPending() {
     // console.log(response.data);
     for (let i = 0; i < response.data.length; i++) {
       if (
-        response.data[i].program._id === programId &&
+        response.data[i].program._id.toString().trim() === programId &&
         response.data[i].status === "pending"
       ) {
         programName = response.data[i].program.name;
@@ -81,14 +78,16 @@ export default function userPending() {
   const statusChange = async (bookingId: string, status: string) => {
     if (status === "accepted") {
       const res = await acceptBookingById(bookingId);
-      const programid = res.data.program;
+      console.log(res.data)
+      const programid = res.data.program._id;
 
       const program = await getProgramById(programid);
       const num_participant = program.data.num_participant + 1;
       const response = await updateProgramById(programid, {
         num_participant: num_participant,
       });
-      // console.log(response);
+      console.log("eeee")
+      console.log(response);
     } else if (status === "declined") {
       const res = declineBookingById(bookingId);
       // console.log(res);
