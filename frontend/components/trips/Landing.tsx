@@ -1,14 +1,15 @@
 "use client";
-import {Button,Tab, Tabs } from "@mui/material";
+import { Button, Tab, Tabs } from "@mui/material";
 // import Button from '@mui/material-next/Button';
 import * as React from "react";
 import Box from "@mui/material/Box";
 import { COLOR } from "@/theme/globalTheme";
-import { getAllProgramsFromGuide,getAllPrograms } from "@/services/programService";
+import { getAllProgramsFromGuide, getAllPrograms } from "@/services/programService";
 import { ProgramCardForGuide } from "@/components/program/ProgramCardForGuide";
-import  { useContext } from "react";
+import { useContext } from "react";
 import { ProgramInterface } from "../../interfaces/ProgramInterface";
 import Link from 'next/link';
+import { SecondaryButtonWhite } from "@/css/styling";
 
 
 interface LinkTabProps {
@@ -29,7 +30,6 @@ function LinkTab(props: LinkTabProps) {
 }
 
 
-
 const Landing = () => {
   const [selectedTab, setSelectedTab] = React.useState(0);
   const [trips, setTrips] = React.useState([]);
@@ -38,7 +38,6 @@ const Landing = () => {
   const [completeTrips, setCompleteTrips] = React.useState<ProgramInterface[]>([]);
 
 
-  
   React.useEffect(() => {
     const guide = JSON.parse(localStorage.getItem('user') || '{}');
     const guideId = guide._id;
@@ -48,14 +47,13 @@ const Landing = () => {
 
       //const response = await getAllPrograms();
       const response = await getAllProgramsFromGuide(guideId);
-
       const programs = response.data || [];
-  
+
       // get today's date
       const today = new Date();
       console.log(programs);
       console.log(today);
-       
+
       // filter the programs based on their start and end dates
       const ongoingTrips = programs.filter((program) => {
         const startDate = new Date(program.startDate);
@@ -71,8 +69,8 @@ const Landing = () => {
       });
       //console.log("upcomingTrips");
       //console.log(upcomingTrips);
-      
-      
+
+
       const completeTrips = programs.filter((program) => {
         const endDate = new Date(program.endDate);
         return endDate < today;
@@ -85,47 +83,42 @@ const Landing = () => {
       setUpcomingTrips(upcomingTrips);
       setCompleteTrips(completeTrips);
     };
-  
-     
- 
+
     fetchTripsData();
   }, []);
 
-     
-   
-
 
   const OngoingTrips = () => {
-    return(
+    return (
       <>
-      {ongoingTrips.length > 0 ? (
-      ongoingTrips.map((program) => (
-        <ProgramCardForGuide key={program._id} program={program} isComplete= {false} />
-      ))
-      ) : (
-        <>
-          <p>You don't have any ongoing trips at the moment. </p>
-          <p>Keep creating and publishing trips for tourists to book and enjoy!</p>
-        </>
-      )}
+        {ongoingTrips.length > 0 ? (
+          ongoingTrips.map((program) => (
+            <ProgramCardForGuide key={program._id} program={program} isComplete={false} />
+          ))
+        ) : (
+          <>
+            <p>You don't have any ongoing trips at the moment. </p>
+            <p>Keep creating and publishing trips for tourists to book and enjoy!</p>
+          </>
+        )}
       </>
     )
-    
+
   };
 
   const UpcomingTrips = () => {
     return (
       <>
-      {upcomingTrips.length > 0 ? (
-      upcomingTrips.map((program) => (
-        <ProgramCardForGuide key={program._id} program={program} isComplete= {false} />
-      ))
-      ) : (
-        <>
-          <p>No Upcoming Trips</p>
-          <p>Don't worry though - there are always more adventures to be created! </p>
-        </>
-      )}
+        {upcomingTrips.length > 0 ? (
+          upcomingTrips.map((program) => (
+            <ProgramCardForGuide key={program._id} program={program} isComplete={false} />
+          ))
+        ) : (
+          <>
+            <p>No Upcoming Trips</p>
+            <p>Don't worry though - there are always more adventures to be created! </p>
+          </>
+        )}
 
       </>
     );
@@ -134,54 +127,37 @@ const Landing = () => {
   const CompleteTrips = () => {
     return (
       <>
-       {completeTrips.length > 0 ? (
-      completeTrips.map((program) => (
-        <ProgramCardForGuide key={program._id} program={program} isComplete= {true} />
-      ))
-      ) : (
-        <>
-          <p>Keep creating amazing trips for tourists.</p>
-          <p>They'll show up in this tab soon!</p>
-        </>
-      )}
-       
+        {completeTrips.length > 0 ? (
+          completeTrips.map((program) => (
+            <ProgramCardForGuide key={program._id} program={program} isComplete={true} />
+          ))
+        ) : (
+          <>
+            <p>Keep creating amazing trips for tourists.</p>
+            <p>They'll show up in this tab soon!</p>
+          </>
+        )}
+
       </>
     );
   };
 
-  
+
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setSelectedTab(newValue);
   };
 
- 
   return (
     <>
-    <Box
-      sx={{
-        width: 1,
-        height: '25%' ,
-        backgroundColor: COLOR.background,
-        borderBottomLeftRadius:18,
-        borderBottomRightRadius:18,
-
-        // '&:hover': {
-        //   backgroundColor: 'primary.main',
-        //   opacity: [0.9, 0.8, 0.7],
-        // },
-        alignItems : 'center',
-        textAlign: 'center',
-      }}
-    >
-        <h5>Hello Guide,</h5>
-        <h4>Name Surname</h4>
-        <Button href="/trips/createTrip" variant="contained" color = 'primary'  >
-            Create Trip
-        </Button>
-    </Box>
-      
-     
-      <Box sx={{ width: "100%" }}>
+      <Box sx={{alignItems : 'center'}}>
+        <SecondaryButtonWhite 
+        href="/trips/createTrip" variant="contained" 
+        style={{transform:"translateY(-30px)", margin: "0 auto", display: "flex"}}
+        >
+          New Trips
+        </SecondaryButtonWhite>
+      </Box>
+      <Box sx={{ width: "100%"}}>
         <Tabs
           value={selectedTab}
           onChange={handleChange}
@@ -189,17 +165,17 @@ const Landing = () => {
           scrollButtons={false}
           aria-label="scrollable prevent tabs example"
         >
-            <LinkTab label="Ongoing" href="/trips/ongoing" />
-            <LinkTab label="Upcoming" href="/trips/upcoming" />
-            <LinkTab label="Complete" href="/trips/successful" />
-          </Tabs>
-          {/* render appropriate list of trips based on selected tab */}
-          {selectedTab === 0 && <OngoingTrips/>}
-          {selectedTab === 1 && <UpcomingTrips/>}
-          {selectedTab === 2 && <CompleteTrips/>}
+          <LinkTab label="Ongoing" href="/trips/ongoing" />
+          <LinkTab label="Upcoming" href="/trips/upcoming" />
+          <LinkTab label="Complete" href="/trips/successful" />
+        </Tabs>
+        {/* render appropriate list of trips based on selected tab */}
+        {selectedTab === 0 && <OngoingTrips />}
+        {selectedTab === 1 && <UpcomingTrips />}
+        {selectedTab === 2 && <CompleteTrips />}
       </Box>
     </>
   );
 };
-export default Landing;
 
+export default Landing;

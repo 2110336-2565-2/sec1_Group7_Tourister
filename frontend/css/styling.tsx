@@ -41,6 +41,20 @@ export const SecondaryButton = styled(Button)({
   textTransform: "capitalize",
 });
 
+export const SecondaryButtonWhite = styled(Button)({
+  background: "#FFFFFF",
+  borderRadius: 5,
+  height: 55,
+  width: 193,
+  borderColor:"#FFFFFF",
+  padding: ".2rem 2rem",
+  color: "#000000",
+  fontFamily: "sans-serif",
+  fontSize: "15px",
+  fontWeight: "900",
+  textTransform: "uppercase",
+});
+
 // fontWeight: 'bold', asterisk: {color: 'red'}
 export const RequireFormLabel = styled(FormLabel)({
   required: true,
