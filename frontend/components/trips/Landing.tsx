@@ -149,10 +149,10 @@ const Landing = () => {
 
   return (
     <>
-      <Box sx={{alignItems : 'center' }}>
+      <Box sx={{alignItems : 'center'}}>
         <SecondaryButtonWhite 
         href="/trips/createTrip" variant="contained" 
-        style={{transform:"translateY(-30px)"}}
+        style={{transform:"translateY(-30px)", margin: "0 auto", display: "flex"}}
         >
           New Trips
         </SecondaryButtonWhite>
