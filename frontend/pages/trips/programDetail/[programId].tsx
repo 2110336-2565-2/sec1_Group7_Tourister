@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
-import ProgramDetail from '@/components/program/ProgramDetail';
+import ProgramDetail from '@/components/program/ProgramDetails/ProgramDetail';
 import NavBar from "@/components/layout/navBar";
 import { AuthProvider } from "@/components/AuthProvider";
 import { getProgramById } from "@/services/programService";
