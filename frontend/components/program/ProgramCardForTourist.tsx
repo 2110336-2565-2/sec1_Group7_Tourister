@@ -1,14 +1,21 @@
 import { ProgramInterface } from "@/interfaces/ProgramInterface";
+import { COLOR } from "@/theme/globalTheme";
+import { EventOutlined, GroupOutlined } from "@mui/icons-material";
+import { CardMedia } from "@mui/material";
+import Image from "next/image";
+import tourist from "../../images/tourist.png";
 import { FC } from "react";
 import styled from "styled-components";
+import { LocationTag } from "./LocationTag";
+import { width } from "@mui/system";
 
 const CardContainer = styled.div`
   display: flex;
   flex-direction: column;
-  border: 1px solid black;
   margin: 0 1.5rem 1rem 1.5rem;
   border-radius: 1rem;
-  padding: 0.5rem;
+  padding: 0.8rem 1.2rem 0.8rem 1.2rem;
+  box-shadow: 2px 3px 7px 0px rgba(0, 0, 0, .3);
 `
 
 interface IProgramInterface {
@@ -16,15 +23,34 @@ interface IProgramInterface {
 }
 
 export const ProgramCardForTourist:FC<IProgramInterface> = ({program}) => {
+  const startDate = new Date(program.startDate)
+  const endDate = new Date(program.endDate)
   return <> 
   <CardContainer>
-    <div style={{alignSelf:"flex-end"}}>{program.num_participant}/{program.max_participant}</div>
-    <h4 style={{margin:"0", wordWrap:"break-word"}}>{program.name}</h4>
-    <div>{program.province}</div>
-    <p style={{margin:"0", wordWrap:"break-word", color:"gray"}}>{program.description}</p>
-    <div style={{display:"flex", flexDirection:"row", }}>
-      <div >{program.guide.name} {program.guide.surname}</div>
-      <div style={{marginLeft:"auto"}}>{program.price}</div>
+    <div style={{ alignSelf:"flex-end", color:"gray", display:"flex", justifyContent:"center", alignItems:"center" }}>
+      <GroupOutlined/>
+      <label style={{ fontSize: "1rem", padding: "0 0.6rem" }}> {program.num_participant}/{program.max_participant} </label>
+    </div>
+    {/* <CardMedia 
+      image= {program.image} // TODO: add program image
+    /> */}
+    <h4 style={{ margin:"0.3rem 0", wordWrap:"break-word" }}>{program.name}</h4>
+    <LocationTag location={program.province} />
+    <label style={{ margin:"0.5rem 0", wordWrap:"break-word", color:"gray", fontSize:"0.8rem" }}>{program.description}</label>
+    <div style={{ display:"flex", flexDirection:"row", justifyContent:"center", alignItems:"center" }}>
+      <Image
+          src={tourist} // TODO: add tourist profile image
+          alt = '' width={22} height={22} 
+      />
+      <label style={{color: "grey", fontSize: "0.7rem", paddingLeft: "0.6rem"}}>{program.guide.name} {program.guide.surname}</label>
+      <div style={{marginLeft:"auto", paddingRight: "0.6rem"}}>THB <label style={{color: COLOR.primary}}>{program.price}</label></div>
+    </div>
+    <hr style={{border: "1px solid", borderColor: COLOR.paleblue, width: "100%"}}/>
+    <div style={{fontSize: "0.8rem", display:"flex", alignItems:"center"}}>
+      <EventOutlined style={{ color: COLOR.primary, width: "1.3rem", height: "1.3rem", padding: "0 0.5rem"}}/>
+      <label>
+        {startDate.toLocaleDateString('en-GB', { year:"numeric", month:"short", day:"numeric" })}{program.startTime == null ? "":" , "}{program.startTime} - {endDate.toLocaleDateString('en-GB', { year:"numeric", month:"short", day:"numeric" })}{program.endTime == null ? "":" , "}{program.endTime}
+      </label>
     </div>
   </CardContainer>
   </>
