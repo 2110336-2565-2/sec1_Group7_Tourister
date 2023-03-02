@@ -26,7 +26,7 @@ const Heading = styled.div`
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  padding: 5rem 2rem 5rem 2rem;
+  padding: 5rem 2.5rem;
   background-color: ${COLOR.background};
   border-radius: 0 0 2rem 2rem;
   color: white;
@@ -59,9 +59,9 @@ export default function Page() {
             width={70} 
             height={70} 
           />
-          <div>
-            <div style={{marginBottom:"0.5rem", fontSize:"1rem"}}>Welcome,</div>
-            <h3 style={{margin:"0", overflowWrap:"break-word", fontSize:"1.5rem"}}>{user?.name} {user?.surname}</h3>
+          <div style={{margin: "auto 0"}}>
+            <div style={{marginBottom:"0.2rem", fontSize:"0.8rem"}}>Welcome,</div>
+            <h3 style={{margin:"0", overflowWrap:"break-word", fontSize:"1.4rem"}}>{user?.name} {user?.surname}</h3>
           </div>
         </Heading>
         <Searching setProgramFilter={setProgramFilter}/>
