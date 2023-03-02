@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, MouseEvent, Fragment } from "react";
+import React, { useEffect, useState, createContext, Fragment } from "react";
 import { Controller,useFormContext,useForm,useFieldArray } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup";
@@ -78,9 +78,10 @@ const validationSchema = yup.object().shape({
   endProvince: yup.string().required('Please enter your trip drop off province'),
   descriptionOfEndLocation: yup.string().required('Please enter your trip drop off location description'),
 });
+export const StageContext = createContext(0)
 
 const createTrip = () => {
-  const [stage, setStage ] = useState(0);
+  const [stage, setStage ] = useState<number>(0); // 0:start 1:next clicked 2:page 2 3:submit clicked
   const [user, setUser] = useState<UserInterface>()
   const [draft, setDraft] = useState<ProgramInterface>()
   const [days,setDays] =  useState<string[]>([]);
@@ -88,8 +89,7 @@ const createTrip = () => {
     date:  string,
     attractions : AttractionInterface[]
   }[]>();
-  const [error,setError] = useState(false)
-  const [next,setNext] = useState(false)
+  const [unmatchedStartAndEndDate,setUnmatchedStartAndEndDate] = useState(false)
   const [languageCheck,setLanguageCheck] = useState([false,false,false,false,false,false,false,false])
   const router = useRouter();
   const languageMap : {[key:string]:number} = {'Thai':0,'English':1,'Chinese':2,'Japanese':3,'Korean':4,'Spanish':5,'Russian':6,'German':7}
@@ -117,8 +117,8 @@ const createTrip = () => {
     let date = new Date(getValues("startDate"))
     let end = new Date(getValues("endDate"))
     let errExist = false;
-    setNext(true)
-    if(date > end || (date===end && getValues("startTime")>getValues("endTime"))){setError(true)}
+    setStage(1)
+    if(date > end || (date===end && getValues("startTime")>getValues("endTime"))){setUnmatchedStartAndEndDate(true)}
     if(date > end || (date===end && getValues("startTime")<getValues("endTime")) ||(getValues("name")===undefined || getValues("name")==="")
      || getValues("description")===undefined || getValues("description")==="" || getValues("price")===undefined || getValues("price").toString()===""
      || getValues("province")===undefined || getValues("province")==="" ||getValues("startDate")===undefined || getValues("startTime")===undefined
@@ -127,8 +127,7 @@ const createTrip = () => {
     if(languageCheck.every((e)=>!e)){errExist=true}
     trigger(["name","description","price","province","startDate","startTime","endDate","endTime","max_participant"])
     if(errExist){return;}
-    setError(false)
-    setStage(1)
+    setUnmatchedStartAndEndDate(false)
     end.setDate(end.getDate() + 1)
     let k = 0
     while(date.toString()!==end.toString()){
@@ -139,6 +138,7 @@ const createTrip = () => {
       if(k>100){break}
     }
     HandleSaveDraft()
+    setStage(2)
   }
   const HandleBack = () => {setStage(0)}
   const HandleSaveDraft = async () => {
@@ -170,8 +170,12 @@ const createTrip = () => {
     }
   }
   const onSubmit = async (data : FormData) => {
+    setStage(3)
     try {
         if(dayTrips&&user){
+          if(days.some((day)=>{
+            return !dayTrips.some((d)=>d.date===day)
+          })){return;}
         const filterDayTrips = dayTrips.filter(function(daytrip){
           if(days.some(day => day.toString()==daytrip["date"].toString()))return true
           return false
@@ -236,6 +240,7 @@ const createTrip = () => {
       console.log(error)
     }
     }
+  const onError = () => {setStage(3)}
   const {
     getValues,
     setValue,
@@ -308,7 +313,7 @@ const createTrip = () => {
   return (
     // <form style={{display:'flex', alignItems: 'center',flexDirection:'column'}}onSubmit={handleSubmit(onSubmit)}>
     // <form style={{display:'flex', alignItems: 'left',flexDirection:'column', padding:"0% 10%"}}onSubmit={handleSubmit(onSubmit)}>
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <Form onSubmit={handleSubmit(onSubmit,onError)}>
       <div> {/*draft button*/}
       <button style={{alignItems:"center",justifyContent:"center",background:"none",borderColor:"black",borderRadius:"12px",float:"right"}} type="button" onClick={()=>{router.push("/trips/createTrip/chooseDraft");}}><AssignmentIcon/>Draft</button>
       {/* <button type="button" onClick={async ()=>{
@@ -319,7 +324,7 @@ const createTrip = () => {
             localStorage.setItem("user", JSON.stringify(res.data));
             }}>delete draft</button> */}
       </div>
-        {stage===0?(
+        {stage<2?(
           <Fragment>
             <Header name="Create Trip" handle={()=>{router.push("/trips");}}></Header>
             <div style={{display:"flex",alignSelf:"center"}}>
@@ -355,7 +360,7 @@ const createTrip = () => {
                 <FormInputDate name="endDate" control={control} label="End Date"/>
                 <FormInputTime name="endTime" control={control} label="End Time"/>
               </div>
-              {error? <p>Please add a matching start and end Date</p> : <Fragment/>}
+              {unmatchedStartAndEndDate? <p>Please add a matching start and end Date</p> : <Fragment/>}
             </Field><Field>{/* Group Size */}
               <RequireFormLabel className="AsteriskRequired">Group size</RequireFormLabel>
               <FormInputText name="max_participant" control={control} label="Number of participant(s)"/>
@@ -371,7 +376,7 @@ const createTrip = () => {
                   />)
                 )}
               </FormGroup>
-              {languageCheck.every((e)=>!e) && next?<p>Please select at least one language</p> : <Fragment/>}
+              {languageCheck.every((e)=>!e) && stage===1?<p>Please select at least one language</p> : <Fragment/>}
             </Field>
             {/* <button type="button" onClick={()=>{HandleNext()}}>Next</button> */}
             <PrimaryButton style={{alignSelf:"center"}} type="button" onClick={()=>{HandleNext()}} variant="contained" >Next</PrimaryButton>
@@ -406,9 +411,11 @@ const createTrip = () => {
               <FormInputText name="descriptionOfMeetLocation" control={control} label="information"/>
             </Field>
             <label style={{fontSize:"1.2rem",fontWeight:"900", textShadow:"1px 0 black", letterSpacing:"1px"}}>{`Attraction / Activities`}</label>
+            <StageContext.Provider value={stage}>
             {days.map((d,order)=>(
               <DayTrip key={d.toString()} date={d} order={order} savedAttraction={getAttractionsByDate(d)} handleCB={handleCallback}/>
             ))}
+            </StageContext.Provider>
               {/* <FormInputTime name="endTime" control={control} label="" readonly={true}/> */}
               {/* <label style={{padding:"20px 10px"}}>Return</label> */}
               {/* <label>Drop off</label> */}
