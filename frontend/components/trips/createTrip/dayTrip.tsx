@@ -30,6 +30,7 @@ const dayTrip = ({date,order,savedAttraction,handleCB}:{date:string,order:number
     const index = attractions.findIndex((attraction)=>attraction.id===id)
     newAttractions.splice(index,1)
     setAttractions(newAttractions)
+    handleCB(date,newAttractions)
   }
   const handleCallback = (id:string, time:string, location:string, province:string, option:string, file:File|undefined) => {
     const updatedAttractions = attractions.map((att) => {
@@ -45,10 +46,6 @@ const dayTrip = ({date,order,savedAttraction,handleCB}:{date:string,order:number
   const d = new Date(date)
   const months = [ "January", "February", "March", "April", "May", "June", 
   "July", "August", "September", "October", "November", "December" ];
-  console.log(stage)
-  console.log(attractions.length)
-  console.log(attractions[0].location)
-  console.log(attractions[0].location==="")
   return (
           <Fragment>
             <div style={{display:"flex",width:"fit-content",gap:".5rem",border:`0.1rem solid ${COLOR.primary}`,borderRadius:"1.2rem"}}>

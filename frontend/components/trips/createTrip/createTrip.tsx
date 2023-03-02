@@ -173,6 +173,9 @@ const createTrip = () => {
     setStage(3)
     try {
         if(dayTrips&&user){
+          if(days.some((day)=>{
+            return !dayTrips.some((d)=>d.date===day)
+          })){return;}
         const filterDayTrips = dayTrips.filter(function(daytrip){
           if(days.some(day => day.toString()==daytrip["date"].toString()))return true
           return false
