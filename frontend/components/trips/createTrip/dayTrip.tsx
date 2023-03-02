@@ -1,14 +1,15 @@
 "use client";
 
-import { useState, MouseEvent, Fragment } from "react";
+import { useState, useContext, Fragment } from "react";
 import { nanoid } from "nanoid";
 import Attraction from "./attraction";
+import { StageContext } from "./createTrip"
 import TextField from "@mui/material/TextField";
 import { AttractionInterface } from "@/interfaces/AttractionInterface";
 import { COLOR } from "@/theme/globalTheme";
 
 const dayTrip = ({date,order,savedAttraction,handleCB}:{date:string,order:number,savedAttraction:AttractionInterface[],handleCB:Function}) => {
-  const [stage, setStage ] = useState(0);
+  const stage = useContext(StageContext)
   const [attractions,setAttractions] = useState<AttractionInterface[]>(savedAttraction);
 
   const handleAdd = ()=>{
@@ -44,6 +45,10 @@ const dayTrip = ({date,order,savedAttraction,handleCB}:{date:string,order:number
   const d = new Date(date)
   const months = [ "January", "February", "March", "April", "May", "June", 
   "July", "August", "September", "October", "November", "December" ];
+  console.log(stage)
+  console.log(attractions.length)
+  console.log(attractions[0].location)
+  console.log(attractions[0].location==="")
   return (
           <Fragment>
             <div style={{display:"flex",width:"fit-content",gap:".5rem",border:`0.1rem solid ${COLOR.primary}`,borderRadius:"1.2rem"}}>
@@ -53,6 +58,11 @@ const dayTrip = ({date,order,savedAttraction,handleCB}:{date:string,order:number
             </div>
         {attractions.map((att)=>(<Attraction key={att.id} id={att.id} t={att.time} l={att.location} p={att.province} o={att.option} handleDelete={handleDelete} handleCallback={handleCallback}/>))}
           <button type="button" onClick= {() => handleAdd()}>Add</button>
+          {stage===3 && attractions.length===1 && attractions[0].location===""?(
+                  <p>Please add at least one location for each date</p>
+                ):(
+                  <Fragment/>
+                )}
           </Fragment>
   );
 };
