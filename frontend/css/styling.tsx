@@ -1,6 +1,8 @@
 import { Button } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { FormLabel } from "@mui/material";
+import { Tab } from "@mui/material";
+import { COLOR } from "@/theme/globalTheme";
 
 export const PrimaryButton = styled(Button)({
   background: "#257AFF",
@@ -41,9 +43,32 @@ export const SecondaryButton = styled(Button)({
   textTransform: "capitalize",
 });
 
+export const SecondaryButtonWhite = styled(Button)({
+  background: "#FFFFFF",
+  borderRadius: 5,
+  height: 55,
+  width: 193,
+  borderColor:"#FFFFFF",
+  padding: ".2rem 2rem",
+  color: "#000000",
+  fontFamily: "sans-serif",
+  fontSize: "15px",
+  fontWeight: "900",
+  textTransform: "uppercase",
+});
+
 // fontWeight: 'bold', asterisk: {color: 'red'}
 export const RequireFormLabel = styled(FormLabel)({
   required: true,
   color: "black",
   fontSize: 15,
 });
+
+// NOTE error in animation
+const StyledTab = styled(Tab)(({ theme }) => ({
+  '&.Mui-selected': {
+    borderBottom: `4px solid ${COLOR.primary}`
+  },
+  textTransform: "capitalize",
+  fontWeight: "bold"
+}));

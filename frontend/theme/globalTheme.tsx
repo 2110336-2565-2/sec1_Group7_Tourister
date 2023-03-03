@@ -3,5 +3,9 @@ export const COLOR = {
   secondary: '#d32f2f',
   background: '#344CB1',
   error: '#d50000',
-  success: '#09843F'
+  success: '#09843F',
+  paleblue: '#E0EFF8',
+  disable:'#BABABA',
+  yellow:'#FFAF13',
+  text:'#767D80',
 }

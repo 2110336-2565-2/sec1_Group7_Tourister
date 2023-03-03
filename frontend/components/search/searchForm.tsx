@@ -22,13 +22,6 @@ import { SearchPopup } from "./SearchPopup";
 
 import { COLOR } from "@/theme/globalTheme";
 
-const SearchText = styled.div`
-  transform: translateY(-30px); 
-  width: 100%;
-  background: white;
-  borderRadius: 5px;
-`
-
 const AdvanceButton = styled(Button)`
   transform: translateY(-20px); 
   align-self: flex-end; 
@@ -74,7 +67,7 @@ const SearchForm = ({setProgramFilter}:{setProgramFilter:any}) => {
       style={{ display: "flex", alignItems: "center", flexDirection: "column", margin:"0 1.5rem 0 1.5rem"}}
       onSubmit={handleSubmit(onSubmit)}
     >
-      <SearchText style={{transform:"translateY(-30px)", width:"100%", background:"white",borderRadius:"5px"}}>
+      <div style={{transform:"translateY(-30px)", width:"100%", background:"white", borderRadius:"5px", boxShadow: "0px 3px 3px 0px rgba(0, 0, 0, .3)"}}>
         <Controller
           name="province"
           control={control}
@@ -95,14 +88,14 @@ const SearchForm = ({setProgramFilter}:{setProgramFilter:any}) => {
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <SearchIcon/>
+                    <SearchIcon style={{ color: COLOR.primary, padding: "0 0.5rem", width: "1.6rem", height: "1.6rem"}}/>
                   </InputAdornment>
                 ),
               }}
             />
           )}
         />
-      </SearchText>
+      </div>
 
       <AdvanceButton 
         startIcon={<TuneIcon/>} 

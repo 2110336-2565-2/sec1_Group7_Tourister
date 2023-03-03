@@ -16,7 +16,7 @@ const BookingController = {
             const bookingId = req.params.id
             const booking = await Booking.findById(bookingId).populate([{
                 path:'user',
-                select: 'name surname phoneNumber imageUrl'
+                select: 'name surname phoneNumber image'
             },{
                 path:'program',
                 select: 'name'
@@ -41,7 +41,7 @@ const BookingController = {
         const result = await tryCatchMongooseService(async () => {
             const bookings = await Booking.find({}).populate([{
                 path:'user',
-                select: 'name surname phoneNumber imageUrl'
+                select: 'name surname phoneNumber image'
             },{
                 path:'program',
                 select: 'name'
@@ -101,10 +101,47 @@ const BookingController = {
         const result = await tryCatchMongooseService(async () => {
             const bookings = await Booking.find({ $and: filter }).populate([{
                 path:'user',
-                select: 'name surname phoneNumber imageUrl'
+                select: 'name surname phoneNumber image'
             },{
                 path:'program',
-                select: 'name'
+                //select: 'name'
+            }])
+
+            return {
+                code: 200,
+                count : bookings.length,
+                data: bookings,
+                message: "",
+            }
+        })
+        res.json(result)
+    },
+
+    /**
+     * getAllBookings
+     * @param {import('express').Request} req
+     * @param {import('express').Response} res
+     * @param {import('express').NextFunction} next
+     */
+    async getAllAcceptedBookingsByProgramId(req, res, next) {
+        const programId = req.params.programId
+        const filterBody = req.query
+        console.log(filterBody)
+        let filter = []
+        filter.push({ program: programId })
+        filter.push({ status: 'accepted' })
+        // if(filterBody.status != null) {
+        //     let statusFilter = []
+        //     filterBody.status.split(" ").forEach((status) => {
+        //         statusFilter.push({ status: status })
+        //     })
+        //     filter.push({ $or: statusFilter })
+        // }
+
+        const result = await tryCatchMongooseService(async () => {
+            const bookings = await Booking.find({ $and: filter }).populate([{
+                path:'user',
+                select: 'name surname phoneNumber image'
             }])
 
             return {

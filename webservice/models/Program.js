@@ -60,7 +60,7 @@ const ProgramSchema = new mongoose.Schema({
     //             require : true
     //         },
     //         province: String,
-    //         imageUrl: String,
+    //         image: String,
     //         admissionsIncluded : {
     //             type : Boolean,
     //             default: false
@@ -96,12 +96,12 @@ const ProgramSchema = new mongoose.Schema({
                         type : String,
                         require : true
                     },
-                    imageUrl: String,
+                    image: String,
                     // file: File | undefined
                 }, {_id: false})]}
         }, {_id: false})]
     },
-    imageUrl: {
+    image: {
         type: String
     },
     language: {
@@ -113,18 +113,6 @@ const ProgramSchema = new mongoose.Schema({
     descriptionOfEndLocation: {
         type: String
     },
-    // pending_participant: {
-    //   type: [mongoose.Schema.Types.ObjectId],
-    //   ref: "User",
-    // },
-    // accepted_participant: {
-    //   type: [mongoose.Schema.Types.ObjectId],
-    //   ref: "User",
-    // },
-    // declined_participant: {
-    //   type: [mongoose.Schema.Types.ObjectId],
-    //   ref: "User",
-    // },
     published : {
         type : Boolean,
         default : true

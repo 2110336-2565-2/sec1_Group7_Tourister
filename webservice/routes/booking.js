@@ -5,6 +5,7 @@ const { authTourist, authUser, authGuide } = require('../middlewares/auth')
 
 router.get('/booking', authUser, bookingController.getAllBookings)
 router.get('/booking/byTourist/:userId', authUser, bookingController.getAllBookingsByUserId)
+router.get('/booking/acceptedInProgram/:programId', authUser, bookingController.getAllAcceptedBookingsByProgramId)
 router.get('/booking/:id', authUser, bookingController.getBookingById)
 router.post('/booking', authTourist, bookingController.createBooking)
 router.delete('/booking/:id', authUser, bookingController.deleteBookingById)

@@ -2,25 +2,13 @@
 
 import React, { useEffect, useState, MouseEvent, Fragment } from "react";
 import { Controller,useFormContext,useForm,useFieldArray } from "react-hook-form";
-import { FormInputText } from "@/components/formInput/FormInputText";
-import { FormInputRadio } from "@/components/formInput/FormInputRadio";
-import { FormInputDate} from "@/components/formInput/FormInputDate";
-import { FormInputTime} from "@/components/formInput/FormInputTime";
 import TextField from "@mui/material/TextField";
 import { useRouter } from "next/router";
 import { UserInterface } from "@/interfaces/UserInterface";
 import { FieldName } from "@/css/layout";
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 
 const chooseDraft = () => {
-  // let user:JSON
-  // let user:UserInterface
-  // if (typeof window !== 'undefined') {
-  //   // console.log('we are running on the client');
-  //   user = JSON.parse(localStorage.getItem("user")||`{}`)
-  // } else {
-  //   // console.log('we are running on the server');
-  //   user = JSON.parse(`{}`)
-  // }
   const router = useRouter();
   const [user, setUser] = useState<UserInterface>()
   useEffect(()=>{
@@ -41,15 +29,16 @@ const chooseDraft = () => {
   const {
     formState: { errors }
   } = useForm<FormData>({});
-  // console.log(user)
   if(!user || !(user.draft)){
     return <Fragment></Fragment>
   }
   const draft : {[key:string]:any}= user.draft;
-  // console.log(draft)
   return (
     <form style={{display:'flex', alignItems: 'center',flexDirection:'column'}}>
-        <button type="button" onClick={()=>{router.push("/trips");}}>Back</button>
+    <div style={{margin:"5rem 0px 2rem 0px"}}>
+        <button style={{margin:".3rem 0px 0px 0px",background:"white",border:"0px",transform:"translate(-2.3rem,.3rem)"}} type="button" onClick={()=>{router.push("/trips");}}><ChevronLeftIcon/></button>
+        <h2 style={{textAlign:"center", fontWeight:"900", textShadow:"1px 0 black", letterSpacing:"1px",margin:"-2rem 0px 0px 0px"}}>Choose Draft</h2>
+    </div>
             <Fragment>
                 {Object.keys(draft).map((keyName, i)=>(
                   <div key={draft[keyName]._id}>

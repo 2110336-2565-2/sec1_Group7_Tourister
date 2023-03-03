@@ -46,7 +46,7 @@ const UserSchema = new mongoose.Schema({
       return this.isGuide;
     },
   },
-  imageURL: {
+  image: {
     type: String,
   },
   draft:{
