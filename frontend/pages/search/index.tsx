@@ -66,7 +66,7 @@ export default function Page() {
         </Heading>
         <Searching setProgramFilter={setProgramFilter}/>
         {programs?.map((program:ProgramInterface)=>{
-          return <ProgramCardForTourist program={program}/>
+          return <ProgramCardForTourist key={program._id} program={program}/>
         })}
       </LocalizationProvider>
     </AuthProvider>

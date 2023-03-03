@@ -22,7 +22,7 @@ export const BookingProgramList = ({bookingFilter}:{bookingFilter:BookingFilterI
 
   return <>
     {bookings?.map(({program})=>{
-      return <ProgramCardForTourist program={program}/>
+      return <ProgramCardForTourist key={program._id} program={program}/>
     })}
   </>
 }
