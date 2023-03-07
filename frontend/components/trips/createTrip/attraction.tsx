@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, MouseEvent, Fragment } from "react";
+import { ChangeEvent, useState, MouseEvent, Fragment } from "react";
 import { Controller,useFormContext,useForm,useFieldArray } from "react-hook-form";
 // import { yupResolver } from "@hookform/resolvers/yup"
 // import * as yup from "yup";
@@ -8,19 +8,35 @@ import { FormInputText } from "@/components/formInput/FormInputText";
 import TextField from "@mui/material/TextField";
 import { PrimaryButtonwithoutShadow,SecondaryButton } from "@/css/styling";
 
-const attraction = ({id,t,l,p,o,handleDelete,handleCallback}:{id:string,t:string,l:string,p:string,o:string,handleDelete:Function,handleCallback:Function}) => {
+const attraction = ({id,t,l,p,o,f,handleDelete,handleCallback}:{id:string,t:string,l:string,p:string,o:string,f:string | null,handleDelete:Function,handleCallback:Function}) => {
   const [time,setTime] = useState(t)
   const [location,setLocation] = useState(l);
   const [province,setProvince] = useState(p)
   const [option,setOption] = useState(o)
-  const [file,setFile] = useState<File | string>();
+  const [file,setFile] = useState<string | null>(f);
   //----------------------------------------------------------
   const [editing, setEditing] = useState(l==="");
   const [errorTime,setErrorTime] = useState(false);
   const [errorName,setErrorName] = useState(false);
   const [errorProvince,setErrorProvince] = useState(false);
   // const [place_imageUrl,setFile] = useState("");
-  
+
+  function handleFileUpload(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    if (!file) {
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const result = event.target?.result;
+      if (typeof result === 'string') {
+        setFile(btoa(result));
+      }
+    };
+    reader.readAsBinaryString(file);
+  }
+
   const valid= ()=>{
     setErrorTime(time==="")
     setErrorName(location==="")
@@ -34,7 +50,16 @@ const attraction = ({id,t,l,p,o,handleDelete,handleCallback}:{id:string,t:string
         <div style={{display:"flex",justifyContent:"center"}}>
           <div style={{width:"24%",marginRight:'1%'}}>
             <TextField value={time} onChange={(e)=>setTime(e.target.value)} type="time" variant="outlined" size="small"/>
-            <input type="file" onChange={(e)=>{if(!e.target.files)return;setFile(e.target.files[0])}}></input>
+            {/* <input type="file" onChange={(e)=>{if(!e.target.files)return;setFile(e.target.files[0])}}></input> */}
+            <div>
+              <input type="file" onChange={handleFileUpload} />
+              {file && (
+                <div>
+                  {/* Base64-encoded file data: */}
+                  <pre>{file}</pre>
+                </div>
+              )}
+            </div>
           </div>
           <div style={{width:"74%",marginLeft:'1%'}}>
             <div style={{display:"flex",alignSelf:"center", gap:"1rem"}}>
@@ -71,7 +96,7 @@ const attraction = ({id,t,l,p,o,handleDelete,handleCallback}:{id:string,t:string
               <label>{location}</label>
             </div>
             <h4>{province}</h4>
-            <h4>{option}</h4>
+            <h4>{option}</h4><img src={`data:image/png;base64,${file}`} alt="Base64 Image" />;
           </div>
         </div>
         )

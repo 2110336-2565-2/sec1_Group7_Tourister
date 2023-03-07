@@ -290,7 +290,7 @@ const createTrip = () => {
       "location": "",
       "province": "",
       "option": "Addmission not needed",
-      "file": undefined
+      "file": null
     }]
   }}
   const toggleLanguage = (event: React.ChangeEvent<HTMLInputElement>) => {
