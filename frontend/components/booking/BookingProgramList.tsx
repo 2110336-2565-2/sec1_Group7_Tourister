@@ -22,9 +22,15 @@ export const BookingProgramList = ({bookingFilter}:{bookingFilter:BookingFilterI
 
   if(isLoading) return <>Loading...</>
 
+  const today = new Date();
+  const upcomingBookings = bookings?.filter(({program})=>{
+    return new Date(program?.endDate).getTime() >= today.getTime();
+  })
+
   return <>
-    {bookings?.map(({program})=>{
-      return <ProgramCardForTourist key={program._id} program={program}/>
+    <br />
+    {upcomingBookings?.map(({program, status})=>{
+      return program && <ProgramCardForTourist key={program._id} program={program} bookingStatus={status}/>
     })}
   </>
 }
