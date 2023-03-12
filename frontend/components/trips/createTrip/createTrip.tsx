@@ -136,34 +136,34 @@ const createTrip = () => {
         console.log(programData)
         const response = await createProgram(programData)
         console.log(response)
-        if(response.code===201){
-          if(user._id&&draft&&user.draft&&draft._id){
-            let Drafts = user.draft
-            // const id = draft._id
-            // const {[id]: _, ...withoutId} = allDraft
-            // let allDraft = (user.draft).map((d)=>{
-            //   if(d._id?.toString()===draft._id?.toString())return null
-            //   return d
-            // }).filter(function(i): i is ProgramInterface {return i!==null})
-            // : {[key:string]: ProgramInterface }
-            const draftarray = Object.keys(user.draft).map((key:string,i)=>{
-              if(draft._id?.toString()===key.toString())return null
-              return Drafts[key];
-            }).filter(function(i) {return i!==null})
-            const allDraft : {[key:string]: ProgramInterface } = {}
-            draftarray.forEach((element,i)=>{
-              const id = element?._id
-              if(id)allDraft[id] = element
-            })
-            console.log(allDraft)
-            const response = await updateUserById(user._id,{draft:allDraft})
-            console.log(response)
+        // if(response.code===201){
+        //   if(user._id&&draft&&user.draft&&draft._id){
+        //     let Drafts = user.draft
+        //     // const id = draft._id
+        //     // const {[id]: _, ...withoutId} = allDraft
+        //     // let allDraft = (user.draft).map((d)=>{
+        //     //   if(d._id?.toString()===draft._id?.toString())return null
+        //     //   return d
+        //     // }).filter(function(i): i is ProgramInterface {return i!==null})
+        //     // : {[key:string]: ProgramInterface }
+        //     const draftarray = Object.keys(user.draft).map((key:string,i)=>{
+        //       if(draft._id?.toString()===key.toString())return null
+        //       return Drafts[key];
+        //     }).filter(function(i) {return i!==null})
+        //     const allDraft : {[key:string]: ProgramInterface } = {}
+        //     draftarray.forEach((element,i)=>{
+        //       const id = element?._id
+        //       if(id)allDraft[id] = element
+        //     })
+        //     console.log(allDraft)
+        //     const response = await updateUserById(user._id,{draft:allDraft})
+        //     console.log(response)
             
-            const res = await getUserById(user._id);
-            localStorage.setItem("user", JSON.stringify(res.data));
-          }
-          router.push("/trips")
-        }
+        //     const res = await getUserById(user._id);
+        //     localStorage.setItem("user", JSON.stringify(res.data));
+        //   }
+        //   router.push("/trips")
+        // }
       }
     } catch (error) {
       console.log(error)

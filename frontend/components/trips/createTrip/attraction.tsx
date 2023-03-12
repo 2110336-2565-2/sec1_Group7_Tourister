@@ -53,12 +53,12 @@ const attraction = ({id,t,l,p,o,f,handleDelete,handleCallback}:{id:string,t:stri
             {/* <input type="file" onChange={(e)=>{if(!e.target.files)return;setFile(e.target.files[0])}}></input> */}
             <div>
               <input type="file" onChange={handleFileUpload} />
-              {file && (
-                <div>
+              {/* {file && (
+                <div> */}
                   {/* Base64-encoded file data: */}
-                  <pre>{file}</pre>
+                  {/* <pre>{file}</pre>
                 </div>
-              )}
+              )} */}
             </div>
           </div>
           <div style={{width:"74%",marginLeft:'1%'}}>
@@ -91,12 +91,13 @@ const attraction = ({id,t,l,p,o,f,handleDelete,handleCallback}:{id:string,t:stri
         <div>
           <button type="button" onClick={()=>{setEditing(true)}}>edit</button>
           <div style={{display:"flex",justifyContent:"center"}}>
+            <img style={{width:"80px",height:"80px"}} src={`data:image/png;base64,${file}`} alt="Base64 Image" />
             <div style={{display:"flex",justifyContent:"center",gap:"1rem"}}>
               <label>{time}</label>
               <label>{location}</label>
+              <h4>{province}</h4>
+              <h4>{option}</h4>
             </div>
-            <h4>{province}</h4>
-            <h4>{option}</h4><img src={`data:image/png;base64,${file}`} alt="Base64 Image" />;
           </div>
         </div>
         )
