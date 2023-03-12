@@ -20,6 +20,8 @@ export const BookingProgramList = ({bookingFilter}:{bookingFilter:BookingFilterI
   const bookings = programResponse?.data;
   console.log(bookings);
 
+  if(isLoading) return <>Loading...</>
+
   return <>
     {bookings?.map(({program})=>{
       return <ProgramCardForTourist key={program._id} program={program}/>
