@@ -102,21 +102,21 @@ const createTrip = () => {
     // const lang : string[] = langwithnull.filter(function(i){return i!==null})
     setValue("language",lang)
     try {
-      if(dayTrips&&user?._id){
-        console.log({...data,dayTrips:dayTrips,language:lang})
-        const response = await updateUserById(user._id,{draft:{...user.draft,[data._id]:{...data,dayTrips:dayTrips,language:lang}}})
-        console.log(response)
+      // if(dayTrips&&user?._id){
+      //   console.log({...data,dayTrips:dayTrips,language:lang})
+      //   const response = await updateUserById(user._id,{draft:{...user.draft,[data._id]:{...data,dayTrips:dayTrips,language:lang}}})
+      //   console.log(response)
         
-        const res = await getUserById(user._id);
-        localStorage.setItem("user", JSON.stringify(res.data));
-      }else if (user?._id){
-        console.log({...data,language:lang})
-        const response = await updateUserById(user._id,{draft:{...user.draft,[data._id]:{...data,language:lang}}})
-        console.log(response)
+      //   const res = await getUserById(user._id);
+      //   localStorage.setItem("user", JSON.stringify(res.data));
+      // }else if (user?._id){
+      //   console.log({...data,language:lang})
+      //   const response = await updateUserById(user._id,{draft:{...user.draft,[data._id]:{...data,language:lang}}})
+      //   console.log(response)
         
-        const res = await getUserById(user._id);
-        localStorage.setItem("user", JSON.stringify(res.data));
-      }
+      //   const res = await getUserById(user._id);
+      //   localStorage.setItem("user", JSON.stringify(res.data));
+      // }
     } catch (error) {
       console.log(error)
     }
