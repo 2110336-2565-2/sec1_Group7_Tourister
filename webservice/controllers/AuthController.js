@@ -22,7 +22,9 @@ const AuthController = {
                 throw new ApiErrorResponse("invalid email or password", 401)
             }
             else {
-                const token = createToken(user.toJSON())
+                const userData = user.toJSON()
+                delete userData.draft
+                const token = createToken(userData)
                 return {
                     code: 200,
                     data: user, 
