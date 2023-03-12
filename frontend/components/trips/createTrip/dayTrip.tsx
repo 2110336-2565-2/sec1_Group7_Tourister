@@ -56,7 +56,7 @@ const dayTrip = ({date,order,savedAttraction,handleCB}:{date:string,order:number
         {attractions.map((att)=>(<Attraction key={att.id} id={att.id} t={att.time} l={att.location} p={att.province} o={att.option} f={att.file} handleDelete={handleDelete} handleCallback={handleCallback}/>))}
           <button type="button" onClick= {() => handleAdd()}>Add</button>
           {stage===3 && attractions.length===1 && attractions[0].location===""?(
-                  <p>Please add at least one location for each date</p>
+                  <p style={{color:"red",fontSize:"0.8rem"}}>Please add at least one location for each date</p>
                 ):(
                   <Fragment/>
                 )}
