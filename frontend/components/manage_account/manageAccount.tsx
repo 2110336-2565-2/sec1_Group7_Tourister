@@ -62,9 +62,9 @@ const manageAccount = () => {
       confirmButtonText: 'Yes',
     });
     if(swal.isConfirmed) {
+      router.push("/login");
       localStorage.removeItem('accessToken')
       localStorage.removeItem('token_expires')
-      router.push("/login");
     }
   }
 

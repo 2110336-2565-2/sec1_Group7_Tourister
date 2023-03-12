@@ -42,7 +42,7 @@ const AuthMiddleware = {
         const token = req.cookies.jwt || req.headers.authorization?.split(' ')[1];
         const user = verifyToken(token)
         if(user && user.isGuide) return next()
-        else return res.json({
+        return res.json({
             code: 403,
             message: "forbidden request",
         })

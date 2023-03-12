@@ -28,10 +28,9 @@ export const AuthProvider = ({ role, children }: Props) => {
             return;
         }
         verifyToken(accessToken, role ? role : "").then((auth) => {
-            if(!auth) ForceLogout()
+            if(auth == null) ForceLogout()
             else {
-                const userData = auth as UserInterface
-                setUser(userData)
+                setUser(auth)
             }
         })
 
@@ -54,6 +53,7 @@ export const AuthProvider = ({ role, children }: Props) => {
             Swal.fire("Error","Please log in", 'error')
         }
         setLoading(false)
+        console.log("auth proivider set user", user)
         return () => clearInterval(interval);
     }, [])
 

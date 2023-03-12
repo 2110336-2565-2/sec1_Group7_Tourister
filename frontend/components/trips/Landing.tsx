@@ -6,11 +6,14 @@ import Box from "@mui/material/Box";
 import { COLOR } from "@/theme/globalTheme";
 import { getAllProgramsFromGuide, getAllPrograms } from "@/services/programService";
 import { ProgramCardForGuide } from "@/components/program/ProgramCardForGuide";
-import { useContext } from "react";
+import { useContext, useEffect} from "react";
 import { ProgramInterface } from "../../interfaces/ProgramInterface";
 import Link from 'next/link';
 import { SecondaryButtonWhite } from "@/css/styling";
 import styled from "styled-components";
+
+import { useAuth } from "@/components/AuthProvider"
+import { AuthContextInterface } from "@/interfaces/AuthContextInterface"
 
 const UnFoundLabel = styled.p`
   margin:0.7rem 1rem 0.5rem 1rem;
@@ -46,9 +49,11 @@ const Landing = () => {
   const [ongoingTrips, setOngoingTrips] = React.useState<ProgramInterface[]>([]);
   const [upcomingTrips, setUpcomingTrips] = React.useState<ProgramInterface[]>([]);
   const [completeTrips, setCompleteTrips] = React.useState<ProgramInterface[]>([]);
-
+  // const authUserData:AuthContextInterface = useAuth()
+  // const userId:string = authUserData.user?._id!
 
   React.useEffect(() => {
+    
     const guide = JSON.parse(localStorage.getItem('user') || '{}');
     const guideId = guide._id;
     //console.log(guideId);

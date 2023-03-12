@@ -23,7 +23,10 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
   bookings=[],
   onGoBack,
 }) => {
-  //console.log(bookings.length);
+
+  console.log("count user");
+  console.log(bookings.length);
+  console.log(program.num_participant);
 
   if (!program) {
     return <div>Loading...</div>;
@@ -41,7 +44,7 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
 
         <h2>{program.name}</h2>
         <p>Province: {program.province}</p>
-        <p>Number of Participants: {program.num_participant}</p>
+        <p>Number of Participants: {bookings.length}</p>
         <p>Max Participants: {program.max_participant}</p>
         <p>{`Start ${formattedStartDate}, ${program.startTime}`}</p>
         <p>{`End ${formattedEndDate}, ${program.endTime}`}</p>

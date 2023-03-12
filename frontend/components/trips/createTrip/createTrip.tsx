@@ -3,81 +3,32 @@
 import React, { useEffect, useState, createContext, Fragment } from "react";
 import { Controller,useFormContext,useForm,useFieldArray } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup"
-import * as yup from "yup";
 import { useRouter } from "next/router";
 import { nanoid } from "nanoid";
 
 import DayTrip from "./dayTrip";
 import Header from "./header"
-
-import { FormInputText } from "@/components/formInput/FormInputText";
-import { FormInputDate} from "@/components/formInput/FormInputDate";
-import { FormInputTime} from "@/components/formInput/FormInputTime";
-import TextField from "@mui/material/TextField";
-import { createProgram,updateProgramById} from "@/services/programService"
-import { getUserById, updateUserById } from "@/services/userService";
+import { FormData, validationSchema, formDatatoProgramInterface} from "./createTripSchema"
 import { ProgramInterface } from "@/interfaces/ProgramInterface";
 import { UserInterface } from "@/interfaces/UserInterface";
 import { AttractionInterface } from "@/interfaces/AttractionInterface";
-import { FormInputDateWithMUIX } from "@/components/formInput/FormInputDateWithMUIX";
-import Box from '@mui/material/Box';
-import FormLabel from '@mui/material/FormLabel';
-import FormControl from '@mui/material/FormControl';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
+import { createProgram,updateProgramById} from "@/services/programService"
+import { getUserById, updateUserById } from "@/services/userService";
+
+import { COLOR } from "@/theme/globalTheme";
+import { FormInputText } from "@/components/formInput/FormInputText";
+import { FormInputDate } from "@/components/formInput/FormInputDate";
+import { FormInputTime } from "@/components/formInput/FormInputTime";
+import { PrimaryButton, RequireFormLabel } from "@/css/styling";
+import { Form, FieldName, Field } from "@/css/layout";
+import { Button } from "@mui/material";
+import TextField from "@mui/material/TextField";
 import FormHelperText from '@mui/material/FormHelperText';
 import Checkbox from '@mui/material/Checkbox';
-import { all } from "axios";
-import { PrimaryButton, RequireFormLabel } from "@/css/styling";
-import { Button } from "@mui/material";
-import { Form, FieldName, Field } from "@/css/layout";
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import AssignmentIcon from '@mui/icons-material/Assignment';
-import { COLOR } from "@/theme/globalTheme";
 
-type FormData = {
-  _id:string
-  name: string;
-  description: string;
-  price: number;
-  province: string;
-  startDate: Date;
-  startTime: string;
-  endDate: Date;
-  endTime: string;
-  max_participant: number;
-  language: string[];
-  meetLocation: string;
-  meetProvince: string;
-  descriptionOfMeetLocation: string;
-  endLocation: string;
-  endProvince: string;
-  descriptionOfEndLocation: string;
-  num_pending: number;
-}
-
-const validationSchema = yup.object().shape({
-  name: yup.string().required("Please enter your trip name"),
-  price: yup.number().required('Please enter your price'),
-  description: yup.string().required("Please enter your trip description"),
-  province: yup.string().required("Please enter your trip province"),
-  startDate: yup.date().required('Please enter your start date'),
-  startTime: yup.string().required('Please enter your start time'),
-  endDate: yup.date().required('Please enter your end date'),
-  endTime: yup.string().required('Please enter your end time'),
-  max_participant: yup.number().required('Please enter max participant(s)'),
-  // price: yup.string().required('Please enter your price')
-  // .matches(/^[0-9]+$/, "Price must be only digits"),
-  // max_participant: yup.string().required('Please enter your group size')
-  // .matches(/^[0-9]+$/, "Group size must be only digits"),
-  // language: yup.string().required('Please enter your trip language'),
-  language: yup.array().required('Please enter your language'),
-  meetLocation: yup.string().required('Please enter your trip meeting point'),
-  meetProvince: yup.string().required('Please enter your trip meeting point province'),
-  descriptionOfMeetLocation: yup.string().required('Please enter your trip meeting point description'),
-  endLocation: yup.string().required('Please enter your trip drop off location'),
-  endProvince: yup.string().required('Please enter your trip drop off province'),
-  descriptionOfEndLocation: yup.string().required('Please enter your trip drop off location description'),
-});
 export const StageContext = createContext(0)
 
 const createTrip = () => {
@@ -125,7 +76,8 @@ const createTrip = () => {
      || getValues("startTime")==="" || getValues("endDate")===undefined || getValues("endTime")===undefined || getValues("endTime")===""
      || getValues("max_participant")===undefined || getValues("max_participant").toString()===""){errExist=true;}
     if(languageCheck.every((e)=>!e)){errExist=true}
-    trigger(["name","description","price","province","startDate","startTime","endDate","endTime","max_participant"])
+    const x = trigger(["name","description","price","province","startDate","startTime","endDate","endTime","max_participant"])
+    console.log(x)
     if(errExist){return;}
     setUnmatchedStartAndEndDate(false)
     end.setDate(end.getDate() + 1)
@@ -150,21 +102,21 @@ const createTrip = () => {
     // const lang : string[] = langwithnull.filter(function(i){return i!==null})
     setValue("language",lang)
     try {
-      if(dayTrips&&user?._id){
-        console.log({...data,dayTrips:dayTrips,language:lang})
-        const response = await updateUserById(user._id,{draft:{...user.draft,[data._id]:{...data,dayTrips:dayTrips,language:lang}}})
-        console.log(response)
+      // if(dayTrips&&user?._id){
+      //   console.log({...data,dayTrips:dayTrips,language:lang})
+      //   const response = await updateUserById(user._id,{draft:{...user.draft,[data._id]:{...data,dayTrips:dayTrips,language:lang}}})
+      //   console.log(response)
         
-        const res = await getUserById(user._id);
-        localStorage.setItem("user", JSON.stringify(res.data));
-      }else if (user?._id){
-        console.log({...data,language:lang})
-        const response = await updateUserById(user._id,{draft:{...user.draft,[data._id]:{...data,language:lang}}})
-        console.log(response)
+      //   const res = await getUserById(user._id);
+      //   localStorage.setItem("user", JSON.stringify(res.data));
+      // }else if (user?._id){
+      //   console.log({...data,language:lang})
+      //   const response = await updateUserById(user._id,{draft:{...user.draft,[data._id]:{...data,language:lang}}})
+      //   console.log(response)
         
-        const res = await getUserById(user._id);
-        localStorage.setItem("user", JSON.stringify(res.data));
-      }
+      //   const res = await getUserById(user._id);
+      //   localStorage.setItem("user", JSON.stringify(res.data));
+      // }
     } catch (error) {
       console.log(error)
     }
@@ -180,61 +132,38 @@ const createTrip = () => {
           if(days.some(day => day.toString()==daytrip["date"].toString()))return true
           return false
         })
-        let programData : ProgramInterface = {
-          name: data.name,
-          price: data.price,
-          startDate: data.startDate,
-          endDate: data.endDate,
-          startTime: data.startTime,
-          endTime: data.endTime,
-          province: data.province,
-          max_participant: data.max_participant,
-          num_participant: 0,
-          descriptionOfMeetLocation: data.descriptionOfMeetLocation,
-          guide: user,
-          dayTrips : filterDayTrips,
-          language: data.language,
-          descriptionOfEndLocation: data.descriptionOfEndLocation,
-          num_pending: 0,
-        }
-        if(data.description){programData = {...programData,description: data.description}}
-        if(data.meetLocation){programData = {...programData,meetLocation: data.meetLocation}}
-        if(data.meetProvince){programData = {...programData,meetProvince: data.meetProvince}}
-        if(data.endLocation){programData = {...programData,endLocation: data.endLocation}}
-        if(data.endProvince){programData = {...programData,endProvince: data.endProvince}}
+        let programData : ProgramInterface = formDatatoProgramInterface(data,user,filterDayTrips)
         console.log(programData)
         const response = await createProgram(programData)
-        // const response = await axios.post(API_URL,programData)
-        // const response = await createProgram({...data,dayTrips:dayTrips,guide:user})
         console.log(response)
-        if(response.code===201){
-          if(user._id&&draft&&user.draft&&draft._id){
-            let Drafts = user.draft
-            // const id = draft._id
-            // const {[id]: _, ...withoutId} = allDraft
-            // let allDraft = (user.draft).map((d)=>{
-            //   if(d._id?.toString()===draft._id?.toString())return null
-            //   return d
-            // }).filter(function(i): i is ProgramInterface {return i!==null})
-            // : {[key:string]: ProgramInterface }
-            const draftarray = Object.keys(user.draft).map((key:string,i)=>{
-              if(draft._id?.toString()===key.toString())return null
-              return Drafts[key];
-            }).filter(function(i) {return i!==null})
-            const allDraft : {[key:string]: ProgramInterface } = {}
-            draftarray.forEach((element,i)=>{
-              const id = element?._id
-              if(id)allDraft[id] = element
-            })
-            console.log(allDraft)
-            const response = await updateUserById(user._id,{draft:allDraft})
-            console.log(response)
+        // if(response.code===201){
+        //   if(user._id&&draft&&user.draft&&draft._id){
+        //     let Drafts = user.draft
+        //     // const id = draft._id
+        //     // const {[id]: _, ...withoutId} = allDraft
+        //     // let allDraft = (user.draft).map((d)=>{
+        //     //   if(d._id?.toString()===draft._id?.toString())return null
+        //     //   return d
+        //     // }).filter(function(i): i is ProgramInterface {return i!==null})
+        //     // : {[key:string]: ProgramInterface }
+        //     const draftarray = Object.keys(user.draft).map((key:string,i)=>{
+        //       if(draft._id?.toString()===key.toString())return null
+        //       return Drafts[key];
+        //     }).filter(function(i) {return i!==null})
+        //     const allDraft : {[key:string]: ProgramInterface } = {}
+        //     draftarray.forEach((element,i)=>{
+        //       const id = element?._id
+        //       if(id)allDraft[id] = element
+        //     })
+        //     console.log(allDraft)
+        //     const response = await updateUserById(user._id,{draft:allDraft})
+        //     console.log(response)
             
-            const res = await getUserById(user._id);
-            localStorage.setItem("user", JSON.stringify(res.data));
-          }
-          // router.push("/trips")
-        }
+        //     const res = await getUserById(user._id);
+        //     localStorage.setItem("user", JSON.stringify(res.data));
+        //   }
+        //   router.push("/trips")
+        // }
       }
     } catch (error) {
       console.log(error)
@@ -290,7 +219,7 @@ const createTrip = () => {
       "location": "",
       "province": "",
       "option": "Addmission not needed",
-      "file": undefined
+      "file": null
     }]
   }}
   const toggleLanguage = (event: React.ChangeEvent<HTMLInputElement>) => {

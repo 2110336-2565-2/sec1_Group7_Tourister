@@ -3,6 +3,7 @@ const ApiErrorResponse = require('../exception/ApiErrorResponse')
 const Program = require("../models/Program")
 const { tryCatchMongooseService } = require('../utils/utils')
 const bcrypt = require('bcrypt')
+const { queryObjToProgramFilter } = require('../utils/queryToMongooseFilter')
 
 const ProgramController = {
     /**
@@ -36,18 +37,10 @@ const ProgramController = {
      */
     async getAllPrograms(req, res, next) {
         const filterBody = req.query
-        let filter = []
-        if(filterBody.province != null) filter.push({ province: filterBody.province })
-        if(filterBody.language != null) filter.push({ language: filterBody.language }) 
-        if(filterBody.minPrice != null) filter.push({ price: { $gte: filterBody.minPrice } }) 
-        if(filterBody.maxPrice != null) filter.push({ price: { $lte: filterBody.maxPrice } })
-        if(filterBody.minPeople != null) filter.push({ max_participant: { $gte: filterBody.minPeople } })
-        if(filterBody.maxPeople != null) filter.push({ max_participant: { $lte: filterBody.maxPeople } })
-        if(filterBody.startDate != null) filter.push({ startDate: { $gte: filterBody.startDate} })
-        if(filterBody.endDate != null) filter.push({ endDate: { $lte: filterBody.endDate } })
+        const { filter, sorter } = queryObjToProgramFilter(filterBody)
 
         const result = await tryCatchMongooseService(async () => {
-            const programs = await Program.find({ $and: filter }).populate({
+            const programs = await Program.find({ $and: filter }).sort(sorter).populate({
                 path:'guide',
                 select: 'name surname'
             })
@@ -132,19 +125,12 @@ const ProgramController = {
     async getAllProgramsByUserId(req, res, next) {
         const userId = req.params.userId;
         const filterBody = req.query
-        let filter = []
+        let { filter, sorter } = queryObjToProgramFilter(filterBody)
         filter.push({ guide: userId })
-        if(filterBody.province != null) filter.push({ province: filterBody.province })
-        if(filterBody.language != null) filter.push({ language: filterBody.language }) 
-        if(filterBody.minPrice != null) filter.push({ price: { $gte: filterBody.minPrice } }) 
-        if(filterBody.maxPrice != null) filter.push({ price: { $lte: filterBody.maxPrice } })
-        if(filterBody.minPeople != null) filter.push({ max_participant: { $gte: filterBody.minPeople } })
-        if(filterBody.maxPeople != null) filter.push({ max_participant: { $lte: filterBody.maxPeople } })
-        if(filterBody.startDate != null) filter.push({ startDate: { $gte: filterBody.startDate} })
-        if(filterBody.endDate != null) filter.push({ endDate: { $lte: filterBody.endDate } })
+        
 
         const result = await tryCatchMongooseService(async () => {
-            const programs = await Program.find({ $and: filter }).populate({
+            const programs = await Program.find({ $and: filter }).sort(sorter).populate({
                 path:'guide',
                 select: 'name surname'
             })
