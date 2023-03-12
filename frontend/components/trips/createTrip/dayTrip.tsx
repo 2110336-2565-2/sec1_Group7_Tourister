@@ -19,7 +19,7 @@ const dayTrip = ({date,order,savedAttraction,handleCB}:{date:string,order:number
       "location": "",
       "option": "Admission not needed",
       "province": "",
-      "file": undefined
+      "file": null
     }
     const newAttractions = [...attractions, newAttraction]
     // setAttractions(attractions => [...attractions, newAttraction])
@@ -32,7 +32,7 @@ const dayTrip = ({date,order,savedAttraction,handleCB}:{date:string,order:number
     setAttractions(newAttractions)
     handleCB(date,newAttractions)
   }
-  const handleCallback = (id:string, time:string, location:string, province:string, option:string, file:File|undefined) => {
+  const handleCallback = (id:string, time:string, location:string, province:string, option:string, file:string|null) => {
     const updatedAttractions = attractions.map((att) => {
       if(att.id===id){
         const updatedAtt = {...att,id,time,location,province,option,file}
@@ -53,7 +53,7 @@ const dayTrip = ({date,order,savedAttraction,handleCB}:{date:string,order:number
                 <label style={{color:"white"}}>{`Day ${order+1}`}</label></div>
               <label style={{marginTop:".25rem",paddingRight:"2rem"}}>{`${d.getDay()} ${months[d.getMonth()]} ${d.getFullYear()}`}</label>
             </div>
-        {attractions.map((att)=>(<Attraction key={att.id} id={att.id} t={att.time} l={att.location} p={att.province} o={att.option} handleDelete={handleDelete} handleCallback={handleCallback}/>))}
+        {attractions.map((att)=>(<Attraction key={att.id} id={att.id} t={att.time} l={att.location} p={att.province} o={att.option} f={att.file} handleDelete={handleDelete} handleCallback={handleCallback}/>))}
           <button type="button" onClick= {() => handleAdd()}>Add</button>
           {stage===3 && attractions.length===1 && attractions[0].location===""?(
                   <p>Please add at least one location for each date</p>

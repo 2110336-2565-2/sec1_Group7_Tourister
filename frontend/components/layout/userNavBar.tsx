@@ -35,7 +35,7 @@ export default function userNavBar() {
             label="Booking" 
             value="/booking" 
             icon={<ConfirmationNumberOutlinedIcon fontSize="large"/>} 
-            onClick={()=>onLink("/search")}
+            onClick={()=>onLink("/booking")}
             />
           <BottomNavigationAction 
             label="Notication" 

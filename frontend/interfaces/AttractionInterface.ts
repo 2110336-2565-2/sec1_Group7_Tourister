@@ -5,7 +5,7 @@ export interface AttractionInterface {
     province: string,
     option: string,
     image?: string,
-    file?: File | undefined | string,
+    file: null | string,
     // admissionsIncluded : Boolean,
     // visitDate : Date,
     // name: string,
