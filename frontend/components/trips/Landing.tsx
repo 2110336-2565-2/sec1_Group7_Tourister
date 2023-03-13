@@ -65,22 +65,23 @@ const Landing = () => {
       const programs = response.data || [];
 
       // get today's date
-      const today = new Date();
+      const todayWithoutTime = new Date();
+      todayWithoutTime.setHours(0, 0, 0, 0);        
       // console.log(programs);
-      // console.log(today);
+      // console.log(todayWithoutTime);
 
       // filter the programs based on their start and end dates
       const ongoingTrips = programs.filter((program) => {
         const startDate = new Date(program.startDate);
         const endDate = new Date(program.endDate);
-        return startDate <= today && endDate >= today;
+        return startDate <= todayWithoutTime && endDate >= todayWithoutTime;
       });
       //console.log("OngoingTrips");
       //console.log(ongoingTrips);
 
       const upcomingTrips = programs.filter((program) => {
         const startDate = new Date(program.startDate);
-        return startDate > today;
+        return startDate > todayWithoutTime;
       });
       //console.log("upcomingTrips");
       //console.log(upcomingTrips);
@@ -88,7 +89,7 @@ const Landing = () => {
 
       const completeTrips = programs.filter((program) => {
         const endDate = new Date(program.endDate);
-        return endDate < today;
+        return endDate < todayWithoutTime;
       });
       //console.log("completeTrips");
       //console.log(completeTrips);
