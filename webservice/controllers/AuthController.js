@@ -24,6 +24,8 @@ const AuthController = {
             else {
                 const userData = user.toJSON()
                 delete userData.draft
+                delete userData.password
+                delete userData.image
                 const token = createToken(userData)
                 return {
                     code: 200,
@@ -43,6 +45,7 @@ const AuthController = {
                 sameSite: 'strict', // Prevent cross-site request forgery (CSRF) attacks
             });
         }
+        console.log("login result", result)
         res.json(result)
     },
 
