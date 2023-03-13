@@ -7,8 +7,13 @@ import { Controller,useFormContext,useForm,useFieldArray } from "react-hook-form
 import { FormInputText } from "@/components/formInput/FormInputText";
 import TextField from "@mui/material/TextField";
 import { PrimaryButtonwithoutShadow,SecondaryButton } from "@/css/styling";
+import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
+import LocalOfferIcon from '@mui/icons-material/LocalOffer';
+import { LocationOnOutlined } from "@mui/icons-material";
+import { Chip } from "@mui/material";
+import { COLOR } from "@/theme/globalTheme";
 
-const attraction = ({id,t,l,p,o,f,handleDelete,handleCallback}:{id:string,t:string,l:string,p:string,o:string,f:string | null,handleDelete:Function,handleCallback:Function}) => {
+const attraction = ({id,t,l,p,o,f=null,handleDelete,handleCallback}:{id:string,t:string,l:string,p:string,o:string,f:string | null,handleDelete:Function,handleCallback:Function}) => {
   const [time,setTime] = useState(t)
   const [location,setLocation] = useState(l);
   const [province,setProvince] = useState(p)
@@ -19,6 +24,7 @@ const attraction = ({id,t,l,p,o,f,handleDelete,handleCallback}:{id:string,t:stri
   const [errorTime,setErrorTime] = useState(false);
   const [errorName,setErrorName] = useState(false);
   const [errorProvince,setErrorProvince] = useState(false);
+  const [errorFile,setErrorFile] = useState(false);
   // const [place_imageUrl,setFile] = useState("");
 
   function handleFileUpload(event: ChangeEvent<HTMLInputElement>) {
@@ -41,7 +47,8 @@ const attraction = ({id,t,l,p,o,f,handleDelete,handleCallback}:{id:string,t:stri
     setErrorTime(time==="")
     setErrorName(location==="")
     setErrorProvince(province==="")
-    return time!=="" && location!=="" && province!==""
+    setErrorFile(file===null)
+    return time!=="" && location!=="" && province!=="" && file!==null
   }
   return (
     <Fragment>
@@ -50,15 +57,8 @@ const attraction = ({id,t,l,p,o,f,handleDelete,handleCallback}:{id:string,t:stri
         <div style={{display:"flex",justifyContent:"center"}}>
           <div style={{width:"24%",marginRight:'1%'}}>
             <TextField value={time} onChange={(e)=>setTime(e.target.value)} type="time" variant="outlined" size="small"/>
-            {/* <input type="file" onChange={(e)=>{if(!e.target.files)return;setFile(e.target.files[0])}}></input> */}
             <div>
               <input type="file" onChange={handleFileUpload} />
-              {/* {file && (
-                <div> */}
-                  {/* Base64-encoded file data: */}
-                  {/* <pre>{file}</pre>
-                </div>
-              )} */}
             </div>
           </div>
           <div style={{width:"74%",marginLeft:'1%'}}>
@@ -84,22 +84,86 @@ const attraction = ({id,t,l,p,o,f,handleDelete,handleCallback}:{id:string,t:stri
             {errorName? <p>Please add a name for the location</p> : <Fragment/>}
             {errorTime? <p>Please add a time for the location</p> : <Fragment/>}
             {errorProvince? <p>Please add a province for the location</p> : <Fragment/>}
+            {errorFile? <p>Please add an image for the location</p> : <Fragment/>}
           </div>
           </div>
         </div>
         ) : (
-        <div>
-          <button type="button" onClick={()=>{setEditing(true)}}>edit</button>
-          <div style={{display:"flex",justifyContent:"center"}}>
-            <img style={{width:"80px",height:"80px"}} src={`data:image/png;base64,${file}`} alt="Base64 Image" />
-            <div style={{display:"flex",justifyContent:"center",gap:"1rem"}}>
-              <label>{time}</label>
-              <label>{location}</label>
-              <h4>{province}</h4>
-              <h4>{option}</h4>
-            </div>
-          </div>
+      <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center", borderBottom: `2px solid ${COLOR.paleblue}`, padding: "1em 1em 0.25em 0.25em " }}>
+      <button style={{alignSelf:"flex-end",marginBottom:"-1rem"}}type="button" onClick={()=>{setEditing(true)}}><DriveFileRenameOutlineIcon/></button>
+        <div style={{ display: "inline-block", float: "left" }}>
+          <img
+            src={`data:image/png;base64,${file}`}
+            alt="mock-img"
+            style={{
+              width: "75px",
+              height: "75px",
+              padding: "0px 0px",
+              marginLeft:"-1rem",
+              alignSelf:"flex-start",
+              borderRadius: 12,
+            }}
+          />
         </div>
+        <div
+          style={{ display: "inline-block", float: "left", padding: "10px" }}
+        >
+          <table>
+            <tbody>
+              <tr>
+                <td style={{ fontWeight: "bold", transform: "translateY(-15px) translateX(10px)",}}>
+                <div style={{display:"flex",justifyContent:"center",gap:"1rem"}}>
+                  <label>{time}</label>
+                  <label>{location}</label>
+                </div>
+                </td>
+              </tr>
+              <tr>
+                <td style={{ transform: "translateY(-10px)" }}>
+                  <Chip
+                    icon={<LocationOnOutlined />}
+                    size="small"
+                    sx={{
+                      backgroundColor: COLOR.paleblue,
+                      color: COLOR.text,
+                      borderRadius: 10,
+                      margin: "2px 8px",
+                      padding: "2px 8px",
+
+                      "& .MuiChip-icon": {
+                        width: "15px",
+                        height: "15px",
+                      },
+                    }}
+                    label={province}
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td style={{ transform: "translateY(-10px)" }}>
+                  <Chip
+                    icon={<LocalOfferIcon />}
+                    size="small"
+                    sx={{
+                      backgroundColor: COLOR.paleblue,
+                      color: COLOR.text,
+                      borderRadius: 10,
+                      margin: "2px 8px",
+                      padding: "2px 8px",
+
+                      "& .MuiChip-icon": {
+                        width: "15px",
+                        height: "15px",
+                      },
+                    }}
+                    label={option}
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+    </div>
         )
       }
     </Fragment>

@@ -1,24 +1,28 @@
 import Box from "@mui/material/Box";
-import { useRouter } from "next/router";
+import { NextRouter, useRouter } from "next/router";
 import { ProgramInterface } from "@/interfaces/ProgramInterface";
-import { FC } from "react";
+import { FC, Fragment } from "react";
 import { COLOR } from "@/theme/globalTheme";
 import Link from "next/link";
 import styled from "styled-components";
 import { CalendarMonth, LocationOnOutlined } from "@mui/icons-material";
 import { format } from "date-fns";
 import { Chip } from "@mui/material";
-
+import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
 
 interface IProgramInterface {
   program: ProgramInterface;
   isComplete: boolean;
+  isDraft?: boolean;
+  handleFunction?: () => void;
 }
 
 
 export const ProgramCardForGuide: FC<IProgramInterface> = ({
   program,
   isComplete,
+  isDraft=false,
+  handleFunction,
 }) => {
   const router = useRouter();
 
@@ -27,6 +31,9 @@ export const ProgramCardForGuide: FC<IProgramInterface> = ({
   };
 
   const participants = () => {
+    if (isDraft){
+      return <Fragment/>
+    }
     if (isComplete) {
       return (
         <>
@@ -81,10 +88,11 @@ export const ProgramCardForGuide: FC<IProgramInterface> = ({
       {/* <Link key={program._id} href={`/trips/programDetail/${program._id}`}> */}
       <div
         key={program._id}
-        onClick={handleClick}
+        onClick={isDraft?()=>{}:handleClick}
         style={{ borderBottom: `2px solid ${COLOR.paleblue}`, padding: "1em 1em 0.25em 0.25em " }}
       >
         <div>
+          {isDraft? (<button type="button" onClick={handleFunction}><DriveFileRenameOutlineIcon/></button>):(<Fragment/>)}
           <div style={{ display: "inline-block", float: "left" }}>
             <img
               src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/15/33/fb/5c/pattaya.jpg?w=700&h=500&s=1"

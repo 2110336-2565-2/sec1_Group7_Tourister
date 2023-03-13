@@ -43,7 +43,6 @@ const ProgramSchema = new mongoose.Schema({
     },
     meetLocation: {
         type: String,
-        required: [true, 'Please add meeting location']
     },
     descriptionOfMeetLocation: {
         type: String
@@ -53,25 +52,6 @@ const ProgramSchema = new mongoose.Schema({
         ref: 'User',
         required: [true, 'Please add a guide']
     },
-    // attractions: {
-    //     type: [new mongoose.Schema({ 
-    //         location: {
-    //             type : String,
-    //             require : true
-    //         },
-    //         province: String,
-    //         image: String,
-    //         admissionsIncluded : {
-    //             type : Boolean,
-    //             default: false
-    //         },
-    //         visitDate : Date,
-    //         //id: String,
-    //         //name: String,
-    //         //option: String,
-    //         // file: Buffer,
-    //     }, {_id: false})]
-    // },
     dayTrips: {
         type: [new mongoose.Schema({ 
             date: {
@@ -108,6 +88,12 @@ const ProgramSchema = new mongoose.Schema({
         type: [String]
     },
     endLocation: {
+        type: String
+    },
+    meetProvince: {
+        type: String
+    },
+    endProvince: {
         type: String
     },
     descriptionOfEndLocation: {

@@ -51,7 +51,7 @@ const dayTrip = ({date,order,savedAttraction,handleCB}:{date:string,order:number
             <div style={{display:"flex",width:"fit-content",gap:".5rem",border:`0.1rem solid ${COLOR.primary}`,borderRadius:"1.2rem"}}>
               <div style={{display:"flex",padding:".3rem .6rem",borderRadius:"1rem",background:COLOR.primary}}>
                 <label style={{color:"white"}}>{`Day ${order+1}`}</label></div>
-              <label style={{marginTop:".25rem",paddingRight:"2rem"}}>{`${d.getDay()} ${months[d.getMonth()]} ${d.getFullYear()}`}</label>
+              <label style={{marginTop:".25rem",paddingRight:"2rem"}}>{`${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`}</label>
             </div>
         {attractions.map((att)=>(<Attraction key={att.id} id={att.id} t={att.time} l={att.location} p={att.province} o={att.option} f={att.file} handleDelete={handleDelete} handleCallback={handleCallback}/>))}
           <button type="button" onClick= {() => handleAdd()}>Add</button>
