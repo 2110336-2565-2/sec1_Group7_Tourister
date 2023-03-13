@@ -58,6 +58,7 @@ const Landing = () => {
     const guideId = guide._id;
     //console.log(guideId);
 
+    
     const fetchTripsData = async () => {
 
       //const response = await getAllPrograms();
