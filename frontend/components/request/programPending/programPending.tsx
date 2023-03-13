@@ -10,6 +10,10 @@ import {
 import { getAllBookings } from "@/services/bookingService";
 import { UserInterface } from "@/interfaces/UserInterface";
 import { ProgramInterface } from "@/interfaces/ProgramInterface";
+import { ProgramCardForGuide } from "@/components/program/ProgramCardForGuide";
+import { CalendarMonth, LocationOnOutlined } from "@mui/icons-material";
+import { COLOR } from "@/theme/globalTheme";
+import { Chip } from "@mui/material";
 
 export default function programPending() {
   // const [guideId, setGuideid] = useState<String>("0");
@@ -113,10 +117,26 @@ export default function programPending() {
 
   console.log(programs);
 
-
+  const startDateTime = new Date(programs.startDate);
+  const endDateTime = new Date(programs.endDate);
+  const formattedStartDate = startDateTime.toLocaleDateString("en-GB", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+  const formattedEndDate = endDateTime.toLocaleDateString("en-GB", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
   return (
-    <div>
-      <h1>Request</h1>
+    <div
+      style={{
+        borderBottom: `2px solid ${COLOR.paleblue}`,
+        padding: "1em 1em 0.25em 0.25em ",
+      }}
+    >
+      <div style={{textAlign: "center", color: "black", margin: "0", paddingTop: "20px", fontSize:"35px"}}>Request</div >
       {programs.length > 0 ? (
         <div>
           {programs.map((program) => (
@@ -124,18 +144,151 @@ export default function programPending() {
               href={`/request/userPending/${program._id}`}
               key={program._id}
             >
+              <div style={{ display: "inline-block", float: "left" }}>
+                {program.dayTrips && program.dayTrips[0] ? (
+                  <img
+                    src={`data:image/jpeg;base64,${program.dayTrips[0].attractions[0].file}`}
+                    alt="first-img-of-trip"
+                    style={{
+                      width: "75px",
+                      height: "75px",
+                      padding: "0px 10px",
+                      borderRadius: 12,
+                    }}
+                  />
+                ) : (
+                  <img
+                    src={
+                      "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/15/33/fb/5c/pattaya.jpg?w=700&h=500&s=1"
+                    }
+                    alt="first-img-of-trip"
+                    style={{
+                      width: "75px",
+                      height: "75px",
+                      padding: "0px 10px",
+                      borderRadius: 12,
+                    }}
+                  />
+                )}
+              </div>
               <div key={program._id}>
                 <ul>
-                  <li>{program.name}</li>
-                  <li>
-                    {program.startDate} to {program.endDate}
-                  </li>
-                  <li>
-                    {program.num_participant} / {program.max_participant}
-                  </li>
-                  <h4>{program.num_pending} more request(s)</h4>
+                  <div
+                    style={{
+                      display: "inline-block",
+                      float: "left",
+                      padding: "10px",
+                    }}
+                  >
+                    <table>
+                      <tbody>
+                        <tr>
+                          <td
+                            style={{
+                              fontWeight: "bold",
+                              transform: "translateY(-15px) translateX(10px)",
+                            }}
+                          >
+                            {program.name}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style={{ transform: "translateY(-10px)" }}>
+                            <Chip
+                              icon={<LocationOnOutlined />}
+                              size="small"
+                              sx={{
+                                backgroundColor: COLOR.paleblue,
+                                color: COLOR.text,
+                                borderRadius: 10,
+                                margin: "2px 8px",
+                                padding: "2px 8px",
+
+                                "& .MuiChip-icon": {
+                                  width: "15px",
+                                  height: "15px",
+                                },
+                              }}
+                              label={program.province}
+                            />
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <br></br>
+                  <br></br>
+                  <br></br>
+                  <br></br>
+
+                  <div style={{ display: "inline-block" }}>
+                    <>
+                      <CalendarMonth
+                        style={{
+                          color: COLOR.primary,
+                          padding: "0px 10px",
+                          transform: "translateY(5px)",
+                        }}
+                        fontSize="medium"
+                      />
+                      {new Date(program.startDate).toLocaleDateString("en-GB", {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                      })}{" "}
+                      , {program.startTime} to
+                    </>
+                  </div>
+                  <div>
+                    <>
+                      <CalendarMonth
+                        style={{
+                          color: COLOR.background,
+                          padding: "0px 10px",
+                          transform: "translateY(5px)",
+                        }}
+                        fontSize="medium"
+                      />
+                      {new Date(program.endDate).toLocaleDateString("en-GB", {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                      })}
+                      , {program.endTime}
+                    </>
+                  </div>
+                  <div
+                    style={{
+                      color: COLOR.primary,
+                      transform: "translateY(-45px)",
+                      margin: "0 18em",
+                      display: "flex",
+                    }}
+                  >
+                    <div
+                      style={{
+                        backgroundColor: "transparent",
+                        padding: "8px 16px 8px",
+                        fontWeight: "bold",
+                        border: "1px solid grey",
+                        borderRadius: 10,
+                        textAlign: "center",
+                      }}
+                    >
+                      {program.num_participant}/{program.max_participant}
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      color: COLOR.success,
+                      textAlign: "right",
+                      fontWeight: "bold",
+                      transform: "translateX(-800px) translateY(-20px)",
+                    }}
+                  >
+                    {program.num_pending} more request(s)
+                  </div>
                 </ul>
-                <div>---------------------------</div>
               </div>
             </Link>
           ))}

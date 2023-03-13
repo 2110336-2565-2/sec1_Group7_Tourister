@@ -80,8 +80,10 @@ export const ProgramCardForGuide: FC<IProgramInterface> = ({
 
   const startDateTime = new Date(program.startDate);
   const endDateTime = new Date(program.endDate);
-  const formattedStartDate = format(startDateTime, "dd MMM yyyy");
-  const formattedEndDate = format(endDateTime, "dd MMM yyyy");
+  // const formattedStartDate = format(startDateTime, "dd MMM yyyy");
+  // const formattedEndDate = format(endDateTime, "dd MMM yyyy");
+  const formattedStartDate = startDateTime.toLocaleDateString('en-GB', { year:"numeric", month:"short", day:"numeric" });
+  const formattedEndDate = endDateTime.toLocaleDateString('en-GB', { year:"numeric", month:"short", day:"numeric" });
 
   return (
     <>
