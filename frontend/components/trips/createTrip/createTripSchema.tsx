@@ -42,14 +42,15 @@ export const validationSchema = yup.object().shape({
   language: yup.array().required('Please enter your language'),
   meetLocation: yup.string().required('Please enter your trip meeting point'),
   meetProvince: yup.string().required('Please enter your trip meeting point province'),
-  descriptionOfMeetLocation: yup.string().required('Please enter your trip meeting point description'),
+  descriptionOfMeetLocation: yup.string(),
   endLocation: yup.string().required('Please enter your trip drop off location'),
   endProvince: yup.string().required('Please enter your trip drop off province'),
-  descriptionOfEndLocation: yup.string().required('Please enter your trip drop off location description'),
+  descriptionOfEndLocation: yup.string(),
 });
 
 export function formDatatoProgramInterface(data: FormData, user: UserInterface, filterDayTrips: {date: string; attractions: AttractionInterface[];}[]) {
   let programData : ProgramInterface = {
+    _id: data._id,
     name: data.name,
     price: data.price,
     startDate: data.startDate,
@@ -65,6 +66,7 @@ export function formDatatoProgramInterface(data: FormData, user: UserInterface, 
     language: data.language,
     descriptionOfEndLocation: data.descriptionOfEndLocation,
     num_pending: 0,
+    published: true,
   }
   if(data.description){programData = {...programData,description: data.description}}
   if(data.meetLocation){programData = {...programData,meetLocation: data.meetLocation}}

@@ -12,7 +12,7 @@ import { FormData, validationSchema, formDatatoProgramInterface} from "./createT
 import { ProgramInterface } from "@/interfaces/ProgramInterface";
 import { UserInterface } from "@/interfaces/UserInterface";
 import { AttractionInterface } from "@/interfaces/AttractionInterface";
-import { createProgram,updateProgramById} from "@/services/programService"
+import { createProgram,getProgramById,updateProgramById} from "@/services/programService"
 import { getUserById, updateUserById } from "@/services/userService";
 
 import { COLOR } from "@/theme/globalTheme";
@@ -28,6 +28,7 @@ import Checkbox from '@mui/material/Checkbox';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import AssignmentIcon from '@mui/icons-material/Assignment';
+import { isHttpStatusOk } from "@/utils/Utils";
 
 export const StageContext = createContext(0)
 
@@ -45,11 +46,17 @@ const createTrip = () => {
   const router = useRouter();
   const languageMap : {[key:string]:number} = {'Thai':0,'English':1,'Chinese':2,'Japanese':3,'Korean':4,'Spanish':5,'Russian':6,'German':7}
   
-  let defaultValues = { _id : nanoid(),num_pending : 0,};
+  let defaultValues = { _id : nanoid(24),num_pending : 0,};
+  // let defaultValues = { num_pending : 0,};
   useEffect(()=>{
     setUser(JSON.parse(localStorage.getItem("user")||`{}`))
     if(localStorage.getItem("editing")!==null){
-    setDraft(JSON.parse(localStorage.getItem("editing")||`{}`))}}
+      const fetch = async () => {
+        const res = await getProgramById(localStorage.getItem("editing")||``)
+        if(res){setDraft(res.data)}
+      }
+      fetch();
+  }}
   ,[])
   useEffect(()=>{
     reset(draft)
@@ -67,6 +74,8 @@ const createTrip = () => {
     setDays([])
     let date = new Date(getValues("startDate"))
     let end = new Date(getValues("endDate"))
+    console.log(date.toString())
+    console.log(end.toString())
     let errExist = false;
     setStage(1)
     if(date > end || (date===end && getValues("startTime")>getValues("endTime"))){setUnmatchedStartAndEndDate(true)}
@@ -76,19 +85,20 @@ const createTrip = () => {
      || getValues("startTime")==="" || getValues("endDate")===undefined || getValues("endTime")===undefined || getValues("endTime")===""
      || getValues("max_participant")===undefined || getValues("max_participant").toString()===""){errExist=true;}
     if(languageCheck.every((e)=>!e)){errExist=true}
-    const x = trigger(["name","description","price","province","startDate","startTime","endDate","endTime","max_participant"])
-    console.log(x)
+    trigger(["name","description","price","province","startDate","startTime","endDate","endTime","max_participant"])
     if(errExist){return;}
     setUnmatchedStartAndEndDate(false)
     end.setDate(end.getDate() + 1)
     let k = 0
     while(date.toString()!==end.toString()){
       const i = date.toString()
+      console.log(i)
       setDays(days => [...days,i])
       date.setDate(date.getDate() + 1);
       k = k+1
       if(k>100){break}
     }
+    console.log(days)
     HandleSaveDraft()
     setStage(2)
   }
@@ -102,21 +112,24 @@ const createTrip = () => {
     // const lang : string[] = langwithnull.filter(function(i){return i!==null})
     setValue("language",lang)
     try {
-      // if(dayTrips&&user?._id){
-      //   console.log({...data,dayTrips:dayTrips,language:lang})
-      //   const response = await updateUserById(user._id,{draft:{...user.draft,[data._id]:{...data,dayTrips:dayTrips,language:lang}}})
-      //   console.log(response)
-        
-      //   const res = await getUserById(user._id);
-      //   localStorage.setItem("user", JSON.stringify(res.data));
-      // }else if (user?._id){
-      //   console.log({...data,language:lang})
-      //   const response = await updateUserById(user._id,{draft:{...user.draft,[data._id]:{...data,language:lang}}})
-      //   console.log(response)
-        
-      //   const res = await getUserById(user._id);
-      //   localStorage.setItem("user", JSON.stringify(res.data));
-      // }
+      let programData : ProgramInterface = {...data,language:lang,guide:user,published:false};
+      if(dayTrips&&user?._id){
+        programData = {...programData,dayTrips:dayTrips}
+      }
+      console.log(programData)
+      const saveDraft = async ()=>{
+        const res = await getProgramById(data._id)
+        if(isHttpStatusOk(res.code)){
+          const response = await updateProgramById(programData._id,programData);
+          if(isHttpStatusOk(response.code) && response.data?._id){setValue("_id",response.data?._id)}
+          console.log(response)
+        }else{
+          const response = await createProgram(programData);
+          if(isHttpStatusOk(response.code) && response.data?._id){setValue("_id",response.data?._id)}
+          console.log(response)
+        }
+      }
+      saveDraft();
     } catch (error) {
       console.log(error)
     }
@@ -134,36 +147,28 @@ const createTrip = () => {
         })
         let programData : ProgramInterface = formDatatoProgramInterface(data,user,filterDayTrips)
         console.log(programData)
-        const response = await createProgram(programData)
+        const response = await updateProgramById(data._id,programData)
         console.log(response)
-        // if(response.code===201){
-        //   if(user._id&&draft&&user.draft&&draft._id){
-        //     let Drafts = user.draft
-        //     // const id = draft._id
-        //     // const {[id]: _, ...withoutId} = allDraft
-        //     // let allDraft = (user.draft).map((d)=>{
-        //     //   if(d._id?.toString()===draft._id?.toString())return null
-        //     //   return d
-        //     // }).filter(function(i): i is ProgramInterface {return i!==null})
-        //     // : {[key:string]: ProgramInterface }
-        //     const draftarray = Object.keys(user.draft).map((key:string,i)=>{
-        //       if(draft._id?.toString()===key.toString())return null
-        //       return Drafts[key];
-        //     }).filter(function(i) {return i!==null})
-        //     const allDraft : {[key:string]: ProgramInterface } = {}
-        //     draftarray.forEach((element,i)=>{
-        //       const id = element?._id
-        //       if(id)allDraft[id] = element
-        //     })
-        //     console.log(allDraft)
-        //     const response = await updateUserById(user._id,{draft:allDraft})
-        //     console.log(response)
+        if(response.code===204){
+          // if(user._id&&draft&&user.draft&&draft._id){
+          //   let Drafts = user.draft
+          //   // const id = draft._id
+          //   // const {[id]: _, ...withoutId} = allDraft
+          //   // let allDraft = (user.draft).map((d)=>{
+          //   //   if(d._id?.toString()===draft._id?.toString())return null
+          //   //   return d
+          //   // }).filter(function(i): i is ProgramInterface {return i!==null})
+          //   // : {[key:string]: ProgramInterface }
+          //   const draftarray = Object.keys(user.draft).map((key:string,i)=>{
+          //     if(draft._id?.toString()===key.toString())return null
+          //     return Drafts[key];
+          //   }).filter(function(i) {return i!==null})
             
-        //     const res = await getUserById(user._id);
-        //     localStorage.setItem("user", JSON.stringify(res.data));
-        //   }
-        //   router.push("/trips")
-        // }
+          //   const res = await getUserById(user._id);
+          //   localStorage.setItem("user", JSON.stringify(res.data));
+          // }
+          router.push("/trips")
+        }
       }
     } catch (error) {
       console.log(error)
@@ -218,7 +223,7 @@ const createTrip = () => {
       "time": "",
       "location": "",
       "province": "",
-      "option": "Addmission not needed",
+      "option": "Admission not needed",
       "file": null
     }]
   }}
@@ -245,13 +250,6 @@ const createTrip = () => {
     <Form onSubmit={handleSubmit(onSubmit,onError)}>
       <div> {/*draft button*/}
       <button style={{alignItems:"center",justifyContent:"center",background:"none",borderColor:"black",borderRadius:"12px",float:"right"}} type="button" onClick={()=>{router.push("/trips/createTrip/chooseDraft");}}><AssignmentIcon/>Draft</button>
-      {/* <button type="button" onClick={async ()=>{
-            const response = await updateUserById(user?._id?user?._id:"",{draft:{}})
-            console.log(response)
-            
-            const res = await getUserById(user?._id?user?._id:"")
-            localStorage.setItem("user", JSON.stringify(res.data));
-            }}>delete draft</button> */}
       </div>
         {stage<2?(
           <Fragment>
