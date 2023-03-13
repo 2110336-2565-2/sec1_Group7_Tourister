@@ -35,7 +35,7 @@ export const StageContext = createContext(0)
 const createTrip = () => {
   const [stage, setStage ] = useState<number>(0); // 0:start 1:next clicked 2:page 2 3:submit clicked
   const [user, setUser] = useState<UserInterface>()
-  const [draft, setDraft] = useState<ProgramInterface>()
+  const [draft, setDraft] = useState<ProgramInterface>({})
   const [days,setDays] =  useState<string[]>([]);
   const [dayTrips,setDayTrips] = useState<{
     date:  string,
@@ -118,8 +118,8 @@ const createTrip = () => {
       }
       console.log(programData)
       const saveDraft = async ()=>{
-        const res = await getProgramById(data._id)
-        if(isHttpStatusOk(res.code)){
+        // const res = await getProgramById(data._id)
+        if(draft._id){
           const response = await updateProgramById(programData._id,programData);
           if(isHttpStatusOk(response.code) && response.data?._id){setValue("_id",response.data?._id)}
           console.log(response)
@@ -127,6 +127,7 @@ const createTrip = () => {
           const response = await createProgram(programData);
           if(isHttpStatusOk(response.code) && response.data?._id){setValue("_id",response.data?._id)}
           console.log(response)
+          setDraft(response.data)
         }
       }
       saveDraft();
@@ -238,7 +239,7 @@ const createTrip = () => {
   return (
     // <form style={{display:'flex', alignItems: 'center',flexDirection:'column'}}onSubmit={handleSubmit(onSubmit)}>
     // <form style={{display:'flex', alignItems: 'left',flexDirection:'column', padding:"0% 10%"}}onSubmit={handleSubmit(onSubmit)}>
-    <Form onSubmit={handleSubmit(onSubmit,onError)}>
+    <Form style={{paddingLeft:"3.5rem",paddingRight:"3.5rem"}}onSubmit={handleSubmit(onSubmit,onError)}>
       <div> {/*draft button*/}
       <button style={{display:"flex",width:"5rem",height:"2.25rem",fontWeight:"800",color:COLOR.primary,alignItems:"center",justifyContent:"center",background:"none",borderColor:COLOR.primary,borderRadius:"12px",float:"right"}} type="button" onClick={()=>{router.push("/trips/createTrip/chooseDraft");}}><AssignmentIcon/>Draft</button>
       </div>
