@@ -48,6 +48,17 @@ export const getAllBookingsAcceptedInProgram = async (programId: string, filter:
     return res;
 }
 
+export const getAllBookingsInProgram = async (programId: string, filter: BookingFilterInterface | undefined = undefined) => {
+    const configs = localStorage.getItem("accessToken") != undefined ? { headers: { 'Authorization' : `Bearer ${localStorage.getItem("accessToken")}`} } : {}
+    const query = filter != null ? '?' + filterObjectToQueryString(filter) : ""
+    const axios_res = await axios.get(`${appConfig.BACKEND_URL}/api/booking/inProgram/${programId}${query}`, configs)
+    
+    const res = axios_res.data as ApiResponseInterface<BookingInterface[]>
+    if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined)
+    // console.log(res)
+    return res;
+}
+
 export const createBooking = async (data: BookingInterface) => {
     const configs = localStorage.getItem("accessToken") != undefined ? { headers: { 'Authorization' : `Bearer ${localStorage.getItem("accessToken")}`} } : {}
     const axios_res = await axios.post(`${appConfig.BACKEND_URL}/api/booking`, data, configs) 
