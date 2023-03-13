@@ -27,6 +27,7 @@ export default function userPending() {
       phoneNumber: "",
     },
   ]);
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const router = useRouter();
   const { programId } = router.query;
   // console.log(programId);
