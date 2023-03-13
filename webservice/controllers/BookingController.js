@@ -81,7 +81,7 @@ const BookingController = {
 
             const payload = req.body
             payload.program = programId
-            payload.user = user.id
+            payload.user = user._id
             const booking = new Booking(payload);
             await booking.save()
             console.log(booking)

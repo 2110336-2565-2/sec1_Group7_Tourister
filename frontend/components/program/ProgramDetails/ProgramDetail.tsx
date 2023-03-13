@@ -6,8 +6,9 @@ import { useQuery } from "@tanstack/react-query";
 import * as React from "react";
 import { useState } from "react";
 import { UserCardInterface } from "@/interfaces/UserCardInterface";
-import { BookingInterface } from "@/interfaces/BookingInterface";
-import { getAllBookingsInProgram } from "@/services/bookingService";
+import { BookingInterface, BookingStatusInterface } from "@/interfaces/BookingInterface";
+import { getAllBookingsInProgram, createBooking } from "@/services/bookingService";
+
 import {
   ExpandMore,
   ChevronLeft,
@@ -45,40 +46,74 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
   onGoBack,
 }) => {
   const authUserData:AuthContextInterface = useAuth()
-  const isGuide:boolean = authUserData.user?.isGuide!
-  const userId:string = authUserData.user?._id!
-  const programId = program._id!
-  var isPending = false;
-
-  const { data:pendingBookingResponse, refetch, isLoading, isError, error } = useQuery({
-    queryKey: ['pendingTouristForProgram', programId],
-    queryFn: ()=>{
-      if(!programId)return null;
-      return getAllBookingsInProgram(programId, {status:"pending"})
-    }
-  })
-
-  console.log(pendingBookingResponse?.data)
-
-  // console.log("count user by num participant: ", program.num_participant);
-  // console.log("program");
-  // console.log(program);
 
   if (!program) {
     return <div>Loading...</div>;
   }
+
+  const user = authUserData.user
+  const isGuide:boolean = user?.isGuide!
+  const userId:string = user?._id!
+  const programId = program._id!
+
+  const { data:bookingResponse, refetch} = useQuery({
+    queryKey: ['pendingTouristForProgram', programId],
+    queryFn: ()=>{
+      if(!programId)return null;
+      return getAllBookingsInProgram(programId, {status:["pending","accepted"]})
+    }
+  })
+
+  console.log(bookingResponse?.data)
+
+  const touristBookingStatus = (bookingResponse?.data!.find((booking)=>booking.user?._id===userId))?.status
+  console.log(touristBookingStatus)
 
   const startDateTime = new Date(program.startDate);
   const endDateTime = new Date(program.endDate);
   const formattedStartDate = format(startDateTime, "dd MMM yyyy");
   const formattedEndDate = format(endDateTime, "dd MMM yyyy");
 
+  const generateButton = (status:BookingStatusInterface|undefined) => {
+    switch(status){
+      case "accepted":
+        return <Button 
+          variant="contained" 
+          sx={{
+            width:"100%",
+            fontSize:"1.3rem",
+            backgroundColor:COLOR.success,
+            "&.Mui-disabled": {
+              backgroundColor: COLOR.success,
+              color: "white"
+            }
+          }} 
+          disabled
+          >
+            Accepted!
+          </Button>
+      case "pending":
+        return <Button variant="contained" sx={{width:"100%",fontSize:"1.3rem",color:COLOR.disable}} disabled>Pending...</Button>;
+      default:
+        return <Button variant="contained" sx={{width:"100%",fontSize:"1.3rem"}} onClick={handleBookingClick}>Booking</Button>;
+    }
+  }
+
+  const handleBookingClick = async () => {
+    try {
+      const res = await createBooking({user:user, program:program}, programId);
+      refetch();
+    } catch(err) {
+      console.log(err)
+    }
+  }
+
   return (
     <>
       <button style={{ border: "0px" }} type="button" onClick={onGoBack}>
         <ChevronLeft />
       </button>
-    <ImageSlider dayTrips={program.dayTrips!}/>
+      <ImageSlider dayTrips={program.dayTrips!}/>
 
       {/*----------program description----------- */}
       <div style={{padding: "10px 0px"}}>
@@ -119,7 +154,6 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
 
       </div>
 
-
       <Accordion>
         <AccordionSummary expandIcon={<ExpandMore />}>
           <h3>Description</h3>
@@ -153,9 +187,7 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
         !isGuide && 
         <div style={{display:"flex", justifyContent:"center", alignItems:"center",margin:"1em"}}>
           {
-            pendingBookingResponse?.data!.some(({user})=>user._id===userId) 
-            ? <Button variant="contained" sx={{width:"100%",fontSize:"1.3rem",color:COLOR.disable}} disabled>Pending</Button>
-            : <Button variant="contained" sx={{width:"100%",fontSize:"1.3rem"}} >Booking</Button>
+            generateButton(touristBookingStatus)
           }
         </div>
       }
