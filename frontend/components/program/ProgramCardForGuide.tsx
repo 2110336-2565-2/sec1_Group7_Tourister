@@ -87,8 +87,8 @@ export const ProgramCardForGuide: FC<IProgramInterface> = ({
         <div>
           <div style={{ display: "inline-block", float: "left" }}>
             <img
-              src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/15/33/fb/5c/pattaya.jpg?w=700&h=500&s=1"
-              alt="mock-img"
+                src={`data:image/jpeg;base64,${program.dayTrips[0].attractions[0].file}`}
+                alt="first-img-of-trip"
               style={{
                 width: "75px",
                 height: "75px",

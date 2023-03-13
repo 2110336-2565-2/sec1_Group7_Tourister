@@ -25,10 +25,19 @@ const ScheduleDetail: FC<IScheduleDetailProps> = ({ program, dayTrips }) => {
             <ul>
               {attractions.map((attraction, index) => (
                 <li key={index}>
-                   <p>{attraction.time}</p>
+                  <p>{attraction.time}</p>
                   <h4>{attraction.location}</h4>
                   <p>{attraction.province}</p>
-                  <img src={attraction.image} alt={attraction.location} />
+                  <img
+                    style={{
+                      width: "75px",
+                      height: "75px",
+                      padding: "0px 10px",
+                      borderRadius: 12,
+                    }}
+                    src={`data:image/jpeg;base64,${attraction.file}`}
+                    alt={attraction.location}
+                  />
                 </li>
               ))}
             </ul>
