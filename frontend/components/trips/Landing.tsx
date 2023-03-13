@@ -198,6 +198,7 @@ const Landing = () => {
               Keep creating amazing trips for tourists.
             </UnFoundLabel>
             <UnFoundLabel>They'll show up in this tab soon!</UnFoundLabel>
+          
             </>
             )}
           </>
@@ -205,7 +206,6 @@ const Landing = () => {
       </>
     );
   };
-
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setSelectedTab(newValue);
   };
