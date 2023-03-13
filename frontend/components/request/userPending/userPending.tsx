@@ -87,15 +87,15 @@ export default function userPending() {
     if (status === "accepted") {
       const res = await acceptBookingById(bookingId);
       console.log(res.data);
-      const programid = res.data.program._id;
+      // const programid = res.data.program._id;
 
-      const program = await getProgramById(programid);
-      const num_participant = program.data.num_participant + 1;
-      const response = await updateProgramById(programid, {
-        num_participant: num_participant,
-      });
-      console.log("eeee");
-      console.log(response);
+      // const program = await getProgramById(programid);
+      // const num_participant = program.data.num_participant + 1;
+      // const response = await updateProgramById(programid, {
+      //   num_participant: num_participant,
+      // });
+      // console.log("eeee");
+      // console.log(response);
     } else if (status === "declined") {
       const res = declineBookingById(bookingId);
       // console.log(res);
