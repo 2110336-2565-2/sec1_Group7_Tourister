@@ -5,10 +5,10 @@ import { AuthProvider } from "@/components/AuthProvider";
 export default function requestPage() {
   return (
     <AuthProvider role="guide">
-    <>
-      <NavBar />
-      <Page />
-    </>
+      <>
+        <NavBar />
+        <Page />
+      </>
     </AuthProvider>
   );
 }

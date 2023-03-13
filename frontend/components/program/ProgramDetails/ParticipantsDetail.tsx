@@ -4,6 +4,7 @@ import { List, ListItem, ListItemAvatar, Avatar, ListItemText } from "@mui/mater
 
 interface ParticipantsDetailProps {
   bookings: BookingInterface[];
+
 }
 
 const ParticipantsDetail: FC<ParticipantsDetailProps> = ({ bookings }) => {

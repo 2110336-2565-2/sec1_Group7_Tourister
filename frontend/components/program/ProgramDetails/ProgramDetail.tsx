@@ -120,18 +120,16 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
           <ScheduleDetail program={program} dayTrips={program.dayTrips} />
         </AccordionDetails>
       </Accordion>
-
-      <Accordion>
+      {isGuide&&
+        <Accordion>
         <AccordionSummary expandIcon={<ExpandMore />}>
           <h3>Participants</h3>
         </AccordionSummary>
-        {
-          isGuide && 
-          <AccordionDetails>
-            <ParticipantsDetail bookings={bookings} />
-          </AccordionDetails>
-        }
+        <AccordionDetails>
+          <ParticipantsDetail bookings={bookings} />
+        </AccordionDetails>
       </Accordion>
+  }
     </>
   );
 };
