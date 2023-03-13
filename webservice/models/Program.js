@@ -96,7 +96,7 @@ const ProgramSchema = new mongoose.Schema({
                         type : String,
                         require : true
                     },
-                    image: String,
+                    file: String,
                     // file: File | undefined
                 }, {_id: false})]}
         }, {_id: false})]

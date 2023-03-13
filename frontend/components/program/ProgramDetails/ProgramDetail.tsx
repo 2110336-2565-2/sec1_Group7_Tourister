@@ -32,12 +32,14 @@ interface IProgramDetailProps {
   program: ProgramInterface;
   bookings?: BookingInterface[];
   onGoBack: () => void;
+  isGuide: boolean;
 }
 
 const ProgramDetail: FC<IProgramDetailProps> = ({
   program,
   bookings = [],
   onGoBack,
+  isGuide = true,
 }) => {
   //console.log(bookings.length);
   console.log("count user by num participant: ", program.num_participant);
@@ -58,7 +60,7 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
       <button style={{ border: "0px" }} type="button" onClick={onGoBack}>
         <ChevronLeft />
       </button>
-    <ImageSlider/>
+    <ImageSlider dayTrips={program.dayTrips}/>
 
       {/*----------program description----------- */}
       <div style={{padding: "10px 0px"}}>
@@ -123,9 +125,12 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
         <AccordionSummary expandIcon={<ExpandMore />}>
           <h3>Participants</h3>
         </AccordionSummary>
-        <AccordionDetails>
-          <ParticipantsDetail bookings={bookings} />
-        </AccordionDetails>
+        {
+          isGuide && 
+          <AccordionDetails>
+            <ParticipantsDetail bookings={bookings} />
+          </AccordionDetails>
+        }
       </Accordion>
     </>
   );
