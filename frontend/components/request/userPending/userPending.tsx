@@ -37,7 +37,15 @@ export default function userPending() {
     var bookingIdArr: any = [];
     var usercards: any = [];
     const response = await getAllBookings();
-    // console.log(response.data);
+    const bookings = response.data || [];
+    console.log("eeee");
+    console.log(response.data);
+    const pending = bookings.filter((booking) => {
+      const status = booking.status;
+      return status == "pending";
+    });
+    console.log(pending);
+
     for (let i = 0; i < response.data.length; i++) {
       if (
         response.data[i].program._id.toString().trim() === programId &&
@@ -78,7 +86,7 @@ export default function userPending() {
   const statusChange = async (bookingId: string, status: string) => {
     if (status === "accepted") {
       const res = await acceptBookingById(bookingId);
-      console.log(res.data)
+      console.log(res.data);
       const programid = res.data.program._id;
 
       const program = await getProgramById(programid);
@@ -86,7 +94,7 @@ export default function userPending() {
       const response = await updateProgramById(programid, {
         num_participant: num_participant,
       });
-      console.log("eeee")
+      console.log("eeee");
       console.log(response);
     } else if (status === "declined") {
       const res = declineBookingById(bookingId);
@@ -98,7 +106,7 @@ export default function userPending() {
   useEffect(() => {
     fetchData();
   }, []);
-  // console.log(programName);
+  console.log(userCards);
 
   return (
     <div>

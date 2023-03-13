@@ -1,4 +1,4 @@
-import ProgramPending from "@/components/request/programPending/programPending";
+import ProgramPending2 from "@/components/request/programPending/programPending";
 import NavBar from "@/components/layout/navBar";
 import { AuthProvider } from "@/components/AuthProvider";
 
@@ -7,8 +7,8 @@ export default function Page() {
   <AuthProvider role="guide">
   <>
     <NavBar/>
-    <h1>Tourister</h1>
-    <ProgramPending/>
+    {/* <h1>Tourister</h1> */}
+    <ProgramPending2/>
   </>
   </AuthProvider>
   );
