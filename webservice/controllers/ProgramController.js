@@ -116,7 +116,8 @@ const ProgramController = {
         res.json(result)
     },
 
-        /**
+    
+                /**
      * getAllPrograms
      * @param {import('express').Request} req
      * @param {import('express').Response} res
@@ -143,7 +144,94 @@ const ProgramController = {
         })
         res.json(result)
     },
+
+            /**
+     * getAllPrograms
+     * @param {import('express').Request} req
+     * @param {import('express').Response} res
+     * @param {import('express').NextFunction} next
+     */
+    async getAllPublishedProgramsByUserId(req, res, next) {
+        const userId = req.params.userId;
+        const filterBody = req.query
+        let { filter, sorter } = queryObjToProgramFilter(filterBody)
+        filter.push({ guide: userId, published: true})
+        
+
+        const result = await tryCatchMongooseService(async () => {
+            const programs = await Program.find({ $and: filter }).sort(sorter).populate({
+                path:'guide',
+                select: 'name surname'
+            })
+
+            return {
+                code: 200,
+                data: programs,
+                message: "",
+            }
+        })
+        res.json(result)
+    },
+            /**
+     * getAllPrograms
+     * @param {import('express').Request} req
+     * @param {import('express').Response} res
+     * @param {import('express').NextFunction} next
+     */
+        async getAllDraftProgramsByUserId(req, res, next) {
+            const userId = req.params.userId;
+            const filterBody = req.query
+            let { filter, sorter } = queryObjToProgramFilter(filterBody)
+            filter.push({ guide: userId , published: false})
+            
+    
+            const result = await tryCatchMongooseService(async () => {
+                const programs = await Program.find({ $and: filter }).sort(sorter).populate({
+                    path:'guide',
+                    select: 'name surname'
+                })
+    
+                return {
+                    code: 200,
+                    data: programs,
+                    message: "",
+                }
+            })
+            res.json(result)
+        },
+
+        /**
+     * getAllPrograms
+     * @param {import('express').Request} req
+     * @param {import('express').Response} res
+     * @param {import('express').NextFunction} next
+     */
+    async getAllPublishedPrograms(req, res, next) {
+        const filterBody = req.query
+        let { filter, sorter } = queryObjToProgramFilter(filterBody)
+        filter.push({published: true})
+
+        const result = await tryCatchMongooseService(async () => {
+            const programs = await Program.find({ $and: filter }).sort(sorter).populate({
+                path:'guide',
+                select: 'name surname'
+            })
+
+            return {
+                code: 200,
+                data: programs,
+                message: "",
+            }
+        })
+        res.json(result)
+    },
     
 }
+
+
+
+
+
+
 
 module.exports = ProgramController
