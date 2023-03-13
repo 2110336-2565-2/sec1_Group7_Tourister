@@ -16,11 +16,14 @@ import {
   Padding
 } from "@mui/icons-material";
 
-import {Accordion,AccordionDetails,AccordionSummary,Chip,colors,autocompleteClasses,} from "@mui/material";
+import {Accordion,AccordionDetails,AccordionSummary,Chip,colors,autocompleteClasses,Button} from "@mui/material";
 import ImageSlider from "@/components/program/ProgramDetails/ImageSlider";
 import ScheduleDetail from "@/components/program/ProgramDetails/ScheduleDetail";
 import ParticipantsDetail from "@/components/program/ProgramDetails/ParticipantsDetail";
 import { format } from "date-fns";
+
+import { useAuth } from "@/components/AuthProvider";
+import { AuthContextInterface } from "@/interfaces/AuthContextInterface";
 
 const iconStyle = {
   color: COLOR.disable,
@@ -32,19 +35,23 @@ interface IProgramDetailProps {
   program: ProgramInterface;
   bookings?: BookingInterface[];
   onGoBack: () => void;
-  isGuide: boolean;
+  // isGuide?: boolean;
 }
 
 const ProgramDetail: FC<IProgramDetailProps> = ({
   program,
   bookings = [],
   onGoBack,
-  isGuide = true,
+  // isGuide = true,
 }) => {
+  const authUserData:AuthContextInterface = useAuth()
+  const isGuide:boolean = authUserData.user?.isGuide!
   //console.log(bookings.length);
   console.log("count user by num participant: ", program.num_participant);
   console.log("program");
   console.log(program);
+
+  console.log(bookings)
 
   if (!program) {
     return <div>Loading...</div>;
@@ -132,6 +139,13 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
           </AccordionDetails>
         }
       </Accordion>
+
+      {
+        !isGuide && 
+        <div style={{display:"flex", justifyContent:"center", alignItems:"center",margin:"1em"}}>
+          <Button variant="contained" sx={{width:"100%",fontSize:"1.3rem"}} >Booking</Button>
+        </div>
+      }
     </>
   );
 };
