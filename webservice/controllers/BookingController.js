@@ -73,6 +73,12 @@ const BookingController = {
             if(!user) throw new Error("unauthorized")
             if(!programId) throw new Error("programId is required")
 
+            const dupeBookingByUserId = await Booking.findOne({ user: user.id, program: programId })
+            if(dupeBookingByUserId) return {
+                code: 400,
+                message: "you already booked this program",
+            }
+
             const payload = req.body
             payload.program = programId
             payload.user = user.id
