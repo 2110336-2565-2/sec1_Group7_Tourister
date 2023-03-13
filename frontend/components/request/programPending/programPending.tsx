@@ -136,7 +136,7 @@ export default function programPending() {
         padding: "1em 1em 0.25em 0.25em ",
       }}
     >
-      <h1>Request</h1>
+      <div style={{textAlign: "center", color: "black", margin: "0", paddingTop: "20px", fontSize:"35px"}}>Request</div >
       {programs.length > 0 ? (
         <div>
           {programs.map((program) => (
