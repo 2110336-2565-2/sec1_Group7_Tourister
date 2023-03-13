@@ -56,7 +56,7 @@ const LoginForm = () => {
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
       <Title style={{ alignSelf: "center" }}>LOG IN</Title>
-      <Field>
+      {/* <Field>
         <FieldName>Choose Account Type</FieldName>
         <FormInputAccountType
           name="accountType"
@@ -67,7 +67,7 @@ const LoginForm = () => {
             { label: "guide", value: "guide" },
           ]}
         />
-      </Field>
+      </Field> */}
       <Field>
         <FieldName>Email</FieldName>
         <FormInputMail name="email" control={control} label="Email" />

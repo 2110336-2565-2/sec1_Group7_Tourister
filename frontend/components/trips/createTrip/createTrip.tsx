@@ -235,21 +235,12 @@ const createTrip = () => {
     setLanguageCheck(toggled)
     console.log(toggled)
   }
-  // console.log("-------------------------------------------")
-  // console.log("user")
-  // console.log(user)
-  // console.log("draft")
-  // console.log(draft)
-  // console.log("getValues()")
-  // console.log(getValues())
-  // console.log("languageCheck")
-  // console.log(languageCheck)
   return (
     // <form style={{display:'flex', alignItems: 'center',flexDirection:'column'}}onSubmit={handleSubmit(onSubmit)}>
     // <form style={{display:'flex', alignItems: 'left',flexDirection:'column', padding:"0% 10%"}}onSubmit={handleSubmit(onSubmit)}>
     <Form onSubmit={handleSubmit(onSubmit,onError)}>
       <div> {/*draft button*/}
-      <button style={{alignItems:"center",justifyContent:"center",background:"none",borderColor:"black",borderRadius:"12px",float:"right"}} type="button" onClick={()=>{router.push("/trips/createTrip/chooseDraft");}}><AssignmentIcon/>Draft</button>
+      <button style={{display:"flex",width:"5rem",height:"2.25rem",fontWeight:"800",color:COLOR.primary,alignItems:"center",justifyContent:"center",background:"none",borderColor:COLOR.primary,borderRadius:"12px",float:"right"}} type="button" onClick={()=>{router.push("/trips/createTrip/chooseDraft");}}><AssignmentIcon/>Draft</button>
       </div>
         {stage<2?(
           <Fragment>

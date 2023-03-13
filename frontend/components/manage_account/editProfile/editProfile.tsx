@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, MouseEvent, Fragment } from "react";
+import { useState, MouseEvent, Fragment, ChangeEvent } from "react";
 import Link from 'next/link';
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup"
@@ -24,6 +24,7 @@ type FormData = {
   email: string;
   phoneNumber: string;
   licenseId?: string;
+  image?: string;
 }
 type accountType = 'tourist' | 'guide';
 const validationSchema = yup.object().shape({
@@ -55,6 +56,23 @@ const editProfile = () => {
     phoneNumber: user.phoneNumber,
     licenseId: user.licenseId,
     email: user.email,
+    image: user.image,
+  }
+  
+  function handleFileUpload(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    if (!file) {
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const result = event.target?.result;
+      if (typeof result === 'string') {
+        setValue("image",(btoa(result)));
+      }
+    };
+    reader.readAsBinaryString(file);
   }
   const onSubmit = async (data : FormData) => {
     console.log(data);
@@ -69,6 +87,8 @@ const editProfile = () => {
   const {
     register,
     control,
+    setValue,
+    getValues,
     handleSubmit,
     formState: { errors }
   } = useForm<FormData>({
@@ -91,6 +111,19 @@ const editProfile = () => {
       </div>
       <div style={{width:"6rem",height:"6rem",backgroundColor:COLOR.primary,marginBottom:"2rem"}}>
         {/* TODO: ICON */}
+          <img
+            src={`data:image/png;base64,${getValues("image")}`}
+            alt="mock-img"
+            style={{
+              width: "75px",
+              height: "75px",
+              padding: "0px 0px",
+              marginLeft:"-1rem",
+              alignSelf:"flex-start",
+              borderRadius: 12,
+            }}
+          />
+        <input type="file" onChange={handleFileUpload} />
       </div>
       <div style={{display:"grid",width:"80%",justifyContent:"center"}}>
         <FieldName style={{alignSelf:"flex-start",marginTop:"1rem",marginBottom:"0.5rem"}}>Name</FieldName>
