@@ -21,6 +21,7 @@ import {
 
 import {Accordion,AccordionDetails,AccordionSummary,Chip,colors,autocompleteClasses,Button} from "@mui/material";
 import ImageSlider from "@/components/program/ProgramDetails/ImageSlider";
+
 import ScheduleDetail from "@/components/program/ProgramDetails/ScheduleDetail";
 import ParticipantsDetail from "@/components/program/ProgramDetails/ParticipantsDetail";
 import { format } from "date-fns";
@@ -114,6 +115,7 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
         <ChevronLeft />
       </button>
       <ImageSlider dayTrips={program.dayTrips!}/>
+
 
       {/*----------program description----------- */}
       <div style={{padding: "10px 0px"}}>
