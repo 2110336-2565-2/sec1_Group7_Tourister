@@ -58,7 +58,7 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
       <button style={{ border: "0px" }} type="button" onClick={onGoBack}>
         <ChevronLeft />
       </button>
-    <ImageSlider/>
+    <ImageSlider dayTrips={program.dayTrips}/>
 
       {/*----------program description----------- */}
       <div style={{padding: "10px 0px"}}>
