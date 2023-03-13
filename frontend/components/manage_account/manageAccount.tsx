@@ -9,6 +9,7 @@ import NavigateNextOutlinedIcon from "@mui/icons-material/NavigateNextOutlined";
 import { UserInterface } from "@/interfaces/UserInterface";
 import Router, { useRouter } from 'next/router'
 import Swal from 'sweetalert2'
+import { Avatar } from "@mui/material";
 
 type AccountType = "tourist" | "guide";
 
@@ -76,7 +77,7 @@ const manageAccount = () => {
     >
       <ProfileBox style={{ backgroundColor: COLOR.primary }}>
         <div style={{width:"100%",height:"5.5rem",display:"flex",flexDirection:"row",justifyContent:"flex-start",alignItems:"center",alignSelf:"flex-start",marginTop:"0.3rem",paddingLeft:"15%"}}>
-          <div style={{backgroundColor:"white",width:"3.4rem",height:"3.4rem",borderRadius:"1.7rem",marginTop:0,marginBottom:0}}></div>
+        <Avatar style={{width:"3.4rem",height:"3.4rem"}}src={`data:image/png;base64,${user?.image}`} />
           <div style={{display:"flex",flexDirection:"column",justifyContent:"flex-start",padding:"1rem"}}>
             <h5 style={{color:"white",marginTop:"0.5rem",marginBottom:0}}>{`hello ${accountType}`}</h5>
             <h3 style={{color:"white",marginTop:0,marginBottom:0,fontWeight:"bolder"}}>{`${user.name} ${user.surname}`}</h3>
