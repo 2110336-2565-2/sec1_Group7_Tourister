@@ -35,14 +35,12 @@ interface IProgramDetailProps {
   program: ProgramInterface;
   bookings?: BookingInterface[];
   onGoBack: () => void;
-  // isGuide?: boolean;
 }
 
 const ProgramDetail: FC<IProgramDetailProps> = ({
   program,
   bookings = [],
   onGoBack,
-  // isGuide = true,
 }) => {
   const authUserData:AuthContextInterface = useAuth()
   const isGuide:boolean = authUserData.user?.isGuide!
@@ -50,8 +48,6 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
   console.log("count user by num participant: ", program.num_participant);
   console.log("program");
   console.log(program);
-
-  console.log(bookings)
 
   if (!program) {
     return <div>Loading...</div>;
@@ -127,19 +123,17 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
           <ScheduleDetail program={program} dayTrips={program.dayTrips} />
         </AccordionDetails>
       </Accordion>
-
-      <Accordion>
+      {
+        isGuide &&
+        <Accordion>
         <AccordionSummary expandIcon={<ExpandMore />}>
           <h3>Participants</h3>
         </AccordionSummary>
-        {
-          isGuide && 
-          <AccordionDetails>
-            <ParticipantsDetail bookings={bookings} />
-          </AccordionDetails>
-        }
-      </Accordion>
-
+        <AccordionDetails>
+          <ParticipantsDetail bookings={bookings} />
+        </AccordionDetails>
+        </Accordion>
+      }
       {
         !isGuide && 
         <div style={{display:"flex", justifyContent:"center", alignItems:"center",margin:"1em"}}>

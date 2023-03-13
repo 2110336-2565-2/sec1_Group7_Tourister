@@ -58,10 +58,11 @@ const Landing = () => {
     const guideId = guide._id;
     //console.log(guideId);
 
+    
     const fetchTripsData = async () => {
 
       //const response = await getAllPrograms();
-      const response = await getAllProgramsFromGuide(guideId);
+      const response = await getAllProgramsFromGuide(guideId,{sortBy:"date"});
       const programs = response.data || [];
 
       // get today's date
