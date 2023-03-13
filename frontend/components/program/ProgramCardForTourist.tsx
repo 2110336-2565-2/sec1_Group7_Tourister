@@ -1,14 +1,14 @@
+import { useRouter } from "next/router";
+
 import { ProgramInterface } from "@/interfaces/ProgramInterface";
+import { BookingStatusInterface } from "@/interfaces/BookingInterface";
+
 import { COLOR } from "@/theme/globalTheme";
 import { EventOutlined, GroupOutlined } from "@mui/icons-material";
 import { CardMedia } from "@mui/material";
-import Image from "next/image";
-import tourist from "../../images/tourist.png";
-import { FC } from "react";
 import styled from "styled-components";
+
 import { LocationTag } from "./LocationTag";
-import { width } from "@mui/system";
-import { BookingStatusInterface } from "@/interfaces/BookingInterface";
 
 const CardContainer = styled.div`
   display: flex;
@@ -41,7 +41,14 @@ export const ProgramCardForTourist = ({program, bookingStatus}:IProgramInterface
   const startDate = new Date(program.startDate)
   const endDate = new Date(program.endDate)
 
+  const router = useRouter();
+
+  const handleClick = () => {
+    router.push(`/trips/programDetail/${program._id}`);
+  };
+
   return <> 
+  <div onClick={handleClick}>
   <CardContainer>
     <div style={{ alignSelf:"flex-end", color:"gray", display:"flex", justifyContent:"center", alignItems:"center", marginBottom: "0.5rem"}}>
       <GroupOutlined/>
@@ -50,7 +57,7 @@ export const ProgramCardForTourist = ({program, bookingStatus}:IProgramInterface
     <CardMedia 
       image= {/* program.image ||*/ "https://t3.ftcdn.net/jpg/01/32/94/50/240_F_132945016_nfxSTTLLFGlgxb35E7kTn09oQ3bvZqeD.jpg"} // TODO: add program image
       style={{ height: "40vw", width: "100%", objectFit: "cover", borderRadius: "15px"}}
-    />
+      />
     <h4 style={{ margin:"0.3rem 0", wordWrap:"break-word" }}>{program.name}</h4>
     <LocationTag location={program.province} />
     <label style={{ margin:"0.5rem 0", wordWrap:"break-word", color:"gray", fontSize:"0.8rem" }}>{program.description}</label>
@@ -58,17 +65,17 @@ export const ProgramCardForTourist = ({program, bookingStatus}:IProgramInterface
       <CardMedia 
         image= {/* {guide image here} || */ "https://cdn-icons-png.flaticon.com/512/7723/7723210.png"} // TODO: add guide profile image
         style={{ height: "22px", width: "22px"}}
-      />
+        />
       <label style={{color: "grey", fontSize: "0.7rem", paddingLeft: "0.6rem"}}>{program.guide.name} {program.guide.surname}</label>
       {
         bookingStatus
         ? ( 
           renderBookingStatus(bookingStatus, endDate)
-        )
-        : (
-        <div style={{marginLeft:"auto", paddingRight: "0.6rem"}}>THB <label style={{color: COLOR.primary}}>{program.price}</label></div>
-        )
-      }
+          )
+          : (
+            <div style={{marginLeft:"auto", paddingRight: "0.6rem"}}>THB <label style={{color: COLOR.primary}}>{program.price}</label></div>
+            )
+          }
     </div>
     <hr style={{border: "1px solid", borderColor: COLOR.paleblue, width: "100%"}}/>
     <div style={{fontSize: "0.8rem", display:"flex", alignItems:"center"}}>
@@ -78,5 +85,6 @@ export const ProgramCardForTourist = ({program, bookingStatus}:IProgramInterface
       </label>
     </div>
   </CardContainer>
+  </div>
   </>
 }

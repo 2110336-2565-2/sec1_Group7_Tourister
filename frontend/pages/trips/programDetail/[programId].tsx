@@ -55,7 +55,7 @@ export default function ProgramDetailPage() {
 
 
   return (
-    <AuthProvider role="guide">
+    <AuthProvider>
       <>
         <NavBar />
         {loading ? (

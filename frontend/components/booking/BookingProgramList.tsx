@@ -8,7 +8,7 @@ import { AuthContextInterface } from "@/interfaces/AuthContextInterface"
 import { getAllBookingsFromTourist } from "@/services/bookingService"
 import { BookingFilterInterface } from "@/interfaces/filter/BookingFilterInterface"
 
-export const BookingProgramList = ({bookingFilter,history=false}:{bookingFilter:BookingFilterInterface,history:boolean}) => {
+export const BookingProgramList = ({bookingFilter,history=false}:{bookingFilter:BookingFilterInterface,history?:boolean}) => {
   const authUserData:AuthContextInterface = useAuth()
   const userId:string = authUserData.user?._id!
 
