@@ -78,7 +78,7 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
       <button style={{ border: "0px" }} type="button" onClick={onGoBack}>
         <ChevronLeft />
       </button>
-    <ImageSlider dayTrips={program.dayTrips}/>
+    <ImageSlider dayTrips={program.dayTrips!}/>
 
       {/*----------program description----------- */}
       <div style={{padding: "10px 0px"}}>
@@ -135,7 +135,7 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
         </AccordionSummary>
         <AccordionDetails>
           {/* render schedule component */}
-          <ScheduleDetail program={program} dayTrips={program.dayTrips} />
+          <ScheduleDetail program={program} dayTrips={program.dayTrips!} />
         </AccordionDetails>
       </Accordion>
       {
