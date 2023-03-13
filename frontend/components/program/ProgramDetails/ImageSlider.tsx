@@ -4,6 +4,7 @@ import { useRef, useState, useEffect, FC } from 'react';
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 import { ProgramInterface } from "@/interfaces/ProgramInterface";
 import { AttractionInterface } from "@/interfaces/AttractionInterface";
+import attraction from '@/components/trips/createTrip/attraction';
 
 
 interface IImageSliderProbs {
@@ -46,10 +47,19 @@ const ImageSliderButton = styled(IconButton)`
 `;
 
 
-const ImageSlider: FC<IImageSliderProbs> = ({dayTrips }) => {
+const ImageSlider: FC<IImageSliderProbs> = ({dayTrips}) => {
+
     const imageSliderRef = useRef<HTMLDivElement>(null);
     const [scrollLeft, setScrollLeft] = useState(0);
-  
+    const allImages: string[] = [];
+
+    dayTrips.forEach((dayTrip:any) => {
+      dayTrip.attractions.forEach((attraction:any) => {
+          allImages.push(attraction.file); // assuming picture is the name of the property that stores the base64 string of the picture
+      });
+    });
+    console.log("Show how image store");
+    console.log(allImages);
     useEffect(() => {
         const handleResize = () => {
           if (imageSliderRef.current) {
@@ -84,11 +94,10 @@ const ImageSlider: FC<IImageSliderProbs> = ({dayTrips }) => {
         <ChevronRight />
       </ImageSliderButton>
       
-      <Box sx={{ display: 'flex', overflowX: 'auto', scrollbarWidth: 'none', '::-webkit-scrollbar': { display: 'none' } }}>
-        <ImageSliderImage src="https://www.planetware.com/photos-large/THA/thailand-railay-beach.jpg" aspectRatio={1.5}/>
-        <ImageSliderImage src="https://www.planetware.com/wpimages/2019/10/thailand-top-attractions-waterfalls-erawan-national-park.jpg" aspectRatio={1.5} />
-        <ImageSliderImage src="https://www.planetware.com/wpimages/2022/06/thailand-best-places-to-visit-koh-samui-beaches-swing-1.jpg" aspectRatio={1.5} />
-        <ImageSliderImage src="https://www.planetware.com/photos-large/THA/thailand-koh-phi-phi.jpg" aspectRatio={1.5} />
+            <Box sx={{ display: 'flex', overflowX: 'auto', scrollbarWidth: 'none', '::-webkit-scrollbar': { display: 'none' } }}>
+            {allImages.map((image, index) => (
+          <ImageSliderImage key={index} src={`data:image/jpeg;base64,${image}`} aspectRatio={1.5} />
+        ))}
       </Box>
     </ImageSliderContainer>
   );
