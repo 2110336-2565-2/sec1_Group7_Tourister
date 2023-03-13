@@ -3,6 +3,7 @@ const ApiErrorResponse = require('../exception/ApiErrorResponse')
 const Booking = require("../models/Booking")
 const { tryCatchMongooseService } = require('../utils/utils')
 const bcrypt = require('bcrypt')
+const Program = require('../models/Program')
 
 const BookingController = {
     /**
@@ -207,7 +208,9 @@ const BookingController = {
         const result = await tryCatchMongooseService(async () => {
             const bookingId = req.params.id
             await Booking.findByIdAndUpdate(bookingId, { $set: {status:"accepted"} })
+            
             const updatedBooking = await Booking.findById(bookingId)
+            await Program.findByIdAndUpdate(updatedBooking.program, { $inc: { num_participant: 1 } })
             return {
                 code: 204,
                 data: updatedBooking,
