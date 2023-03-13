@@ -21,6 +21,7 @@ const BackButton = styled(Button)`
 export default function Page(){
   return (
     <AuthProvider role="tourist">
+      <>
         <div style={{display:"flex", flexDirection:"row", alignItems:"center",justifyContent:"space-between"}}>
           <div style={{marginLeft:"1rem"}}>
             <Link href="/booking" passHref>
@@ -34,7 +35,8 @@ export default function Page(){
           <h1 style={{textAlign:"center"}}>Booking History</h1>
           <div style={{marginRight:"3rem"}}></div>
         </div>
-      <BookingProgramList bookingFilter={{status:["accepted","declined"]}} history={true}/>
+        <BookingProgramList bookingFilter={{status:["accepted","declined"]}} history={true}/>
+      </>
     </AuthProvider>
   )
 }

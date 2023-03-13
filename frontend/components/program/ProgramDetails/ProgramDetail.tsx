@@ -1,11 +1,13 @@
 import { ProgramInterface } from "@/interfaces/ProgramInterface";
 import { FC } from "react";
 import { COLOR } from "@/theme/globalTheme";
+import { useQuery } from "@tanstack/react-query";
 
 import * as React from "react";
 import { useState } from "react";
 import { UserCardInterface } from "@/interfaces/UserCardInterface";
 import { BookingInterface } from "@/interfaces/BookingInterface";
+import { getAllBookingsInProgram } from "@/services/bookingService";
 import {
   ExpandMore,
   ChevronLeft,
@@ -44,10 +46,23 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
 }) => {
   const authUserData:AuthContextInterface = useAuth()
   const isGuide:boolean = authUserData.user?.isGuide!
-  //console.log(bookings.length);
-  console.log("count user by num participant: ", program.num_participant);
-  console.log("program");
-  console.log(program);
+  const userId:string = authUserData.user?._id!
+  const programId = program._id!
+  var isPending = false;
+
+  const { data:pendingBookingResponse, refetch, isLoading, isError, error } = useQuery({
+    queryKey: ['pendingTouristForProgram', programId],
+    queryFn: ()=>{
+      if(!programId)return null;
+      return getAllBookingsInProgram(programId, {status:"pending"})
+    }
+  })
+
+  console.log(pendingBookingResponse?.data)
+
+  // console.log("count user by num participant: ", program.num_participant);
+  // console.log("program");
+  // console.log(program);
 
   if (!program) {
     return <div>Loading...</div>;
@@ -137,7 +152,11 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
       {
         !isGuide && 
         <div style={{display:"flex", justifyContent:"center", alignItems:"center",margin:"1em"}}>
-          <Button variant="contained" sx={{width:"100%",fontSize:"1.3rem"}} >Booking</Button>
+          {
+            pendingBookingResponse?.data!.some(({user})=>user._id===userId) 
+            ? <Button variant="contained" sx={{width:"100%",fontSize:"1.3rem",color:COLOR.disable}} disabled>Pending</Button>
+            : <Button variant="contained" sx={{width:"100%",fontSize:"1.3rem"}} >Booking</Button>
+          }
         </div>
       }
     </>
