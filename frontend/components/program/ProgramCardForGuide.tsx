@@ -5,13 +5,16 @@ import { FC } from "react";
 import { COLOR } from "@/theme/globalTheme";
 import Link from "next/link";
 import styled from "styled-components";
-import { CalendarMonth, LocationOn } from "@mui/icons-material";
+import { CalendarMonth, LocationOnOutlined } from "@mui/icons-material";
 import { format } from "date-fns";
+import { Chip } from "@mui/material";
+
 
 interface IProgramInterface {
   program: ProgramInterface;
   isComplete: boolean;
 }
+
 
 export const ProgramCardForGuide: FC<IProgramInterface> = ({
   program,
@@ -79,13 +82,13 @@ export const ProgramCardForGuide: FC<IProgramInterface> = ({
       <div
         key={program._id}
         onClick={handleClick}
-        style={{ borderBottom: "2px solid #E0EFF8", padding: "1em 1.5em 0em" }}
+        style={{ borderBottom: `2px solid ${COLOR.paleblue}`, padding: "1em 1em 0.25em 0.25em " }}
       >
         <div>
           <div style={{ display: "inline-block", float: "left" }}>
             <img
-              src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/15/33/fb/5c/pattaya.jpg?w=700&h=500&s=1"
-              alt="mock-img"
+                src={`data:image/jpeg;base64,${program.dayTrips[0].attractions[0].file}`}
+                alt="first-img-of-trip"
               style={{
                 width: "75px",
                 height: "75px",
@@ -99,40 +102,37 @@ export const ProgramCardForGuide: FC<IProgramInterface> = ({
           >
             <table>
               <tbody>
-              <tr>
-                <td
-                  style={{
-                    fontWeight: "bold",
-                    transform: "translateY(-15px) translateX(10px)",
-                  }}
-                >
-                  {program.name}
-                </td>
-              </tr>
-              <tr>
-                <td style={{ transform: "translateY(-10px)" }}>
-                  <div
+                <tr>
+                  <td
                     style={{
-                      backgroundColor: "#E0EFF8",
-                      padding: "2px 20px 2px",
-                      fontSize: 12,
-                      color: "grey",
-                      border: "1px solid white",
-                      borderRadius: 15,
-                      textAlign: "center",
+                      fontWeight: "bold",
+                      transform: "translateY(-15px) translateX(10px)",
                     }}
                   >
-                    <LocationOn
-                      style={{
-                        color: "grey",
-                        fontSize: 15,
-                        transform: "translateY(2px) translateX(-5px)",
+                    {program.name}
+                  </td>
+                </tr>
+                <tr>
+                  <td style={{ transform: "translateY(-10px)" }}>
+                    <Chip
+                      icon={<LocationOnOutlined />}
+                      size="small"
+                      sx={{
+                        backgroundColor: COLOR.paleblue,
+                        color: COLOR.text,
+                        borderRadius: 10,
+                        margin: "2px 8px",
+                        padding: "2px 8px",
+
+                        "& .MuiChip-icon": {
+                          width: "15px",
+                          height: "15px",
+                        },
                       }}
+                      label={program.province}
                     />
-                    {program.province}
-                  </div>
-                </td>
-              </tr>
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -146,7 +146,7 @@ export const ProgramCardForGuide: FC<IProgramInterface> = ({
           <>
             <CalendarMonth
               style={{
-                color: "#257aff",
+                color: COLOR.primary,
                 padding: "0px 10px",
                 transform: "translateY(5px)",
               }}
@@ -159,7 +159,7 @@ export const ProgramCardForGuide: FC<IProgramInterface> = ({
           <>
             <CalendarMonth
               style={{
-                color: "#344CB1",
+                color: COLOR.background,
                 padding: "0px 10px",
                 transform: "translateY(5px)",
               }}
