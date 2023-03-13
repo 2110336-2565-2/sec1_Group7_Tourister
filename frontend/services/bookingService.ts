@@ -59,9 +59,9 @@ export const getAllBookingsInProgram = async (programId: string, filter: Booking
     return res;
 }
 
-export const createBooking = async (data: BookingInterface) => {
+export const createBooking = async (data: BookingInterface, programId: string = "") => {
     const configs = localStorage.getItem("accessToken") != undefined ? { headers: { 'Authorization' : `Bearer ${localStorage.getItem("accessToken")}`} } : {}
-    const axios_res = await axios.post(`${appConfig.BACKEND_URL}/api/booking`, data, configs) 
+    const axios_res = await axios.post(`${appConfig.BACKEND_URL}/api/booking/${programId}`, data, configs) 
     const res = axios_res.data as ApiResponseInterface<BookingInterface>
     if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined)
     return res;

@@ -9,6 +9,7 @@ router.get('/booking/acceptedInProgram/:programId', authUser, bookingController.
 router.get('/booking/inProgram/:programId', authUser, bookingController.getAllBookingsByProgramId)
 router.get('/booking/:id', authUser, bookingController.getBookingById)
 router.post('/booking', authTourist, bookingController.createBooking)
+router.post('/booking/:programId', authTourist, bookingController.createBooking)
 router.delete('/booking/:id', authUser, bookingController.deleteBookingById)
 
 

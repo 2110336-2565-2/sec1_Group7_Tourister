@@ -4,6 +4,7 @@ const Booking = require("../models/Booking")
 const { tryCatchMongooseService } = require('../utils/utils')
 const bcrypt = require('bcrypt')
 const Program = require('../models/Program')
+const { verifyToken } = require('../services/jwtService')
 
 const BookingController = {
     /**
@@ -66,7 +67,15 @@ const BookingController = {
      */
     async createBooking(req, res, next) {
         const result = await tryCatchMongooseService(async () => {
+            const token = req.headers.authorization.split(" ")[1] || req.cookies.jwt
+            const programId = req.params.programId
+            const user = verifyToken(token)
+            if(!user) throw new Error("unauthorized")
+            if(!programId) throw new Error("programId is required")
+
             const payload = req.body
+            payload.program = programId
+            payload.user = user.id
             const booking = new Booking(payload);
             await booking.save()
             console.log(booking)
@@ -279,6 +288,7 @@ const BookingController = {
         }) 
         res.json(result)
     },
+
 }
 
 module.exports = BookingController
