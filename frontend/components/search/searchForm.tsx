@@ -161,6 +161,8 @@ const SearchForm = ({setProgramFilter}:{setProgramFilter:any}) => {
           ]}
         />
 
+        <br />
+
         <div style={{display:"flex",alignSelf:"center", gap:"1rem"}}>
           <Button style={{width:"10rem"}} onClick={resetForm} variant="outlined">Reset</Button>
           <Button style={{width:"10rem"}} type="submit" variant="contained">Apply</Button>

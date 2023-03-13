@@ -16,6 +16,7 @@ const ScheduleDetail: FC<IScheduleDetailProps> = ({ program, dayTrips }) => {
         const attractions = day.attractions;
         const DateTime = new Date(day.date);
         const formattedtDate = format(DateTime, "dd MMM yyyy");
+        console.log(attractions);
 
         return (
           <div key={index}>

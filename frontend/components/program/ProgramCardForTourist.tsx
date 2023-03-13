@@ -8,6 +8,7 @@ import { FC } from "react";
 import styled from "styled-components";
 import { LocationTag } from "./LocationTag";
 import { width } from "@mui/system";
+import { BookingStatusInterface } from "@/interfaces/BookingInterface";
 
 const CardContainer = styled.div`
   display: flex;
@@ -20,11 +21,26 @@ const CardContainer = styled.div`
 
 interface IProgramInterface {
   program: ProgramInterface,
+  bookingStatus?: BookingStatusInterface,
+}
+function renderBookingStatus(bookingStatus:BookingStatusInterface, endDate:Date){
+  switch(bookingStatus){
+    case "accepted":
+      if(endDate.getTime() < new Date().getTime()){
+        return <div style={{marginLeft:"auto", paddingRight: "0.6rem"}}><label style={{color: COLOR.success}}>Completed</label></div>
+      }
+      return <div style={{marginLeft:"auto", paddingRight: "0.6rem"}}><label style={{color: COLOR.primary}}>Accepted</label></div>
+    case "pending":
+      return <div style={{marginLeft:"auto", paddingRight: "0.6rem"}}><label style={{color: COLOR.yellow}}>Pending</label></div>
+    case "declined":
+      return <div style={{marginLeft:"auto", paddingRight: "0.6rem"}}><label style={{color: COLOR.secondary}}>Declined</label></div>
+  }
 }
 
-export const ProgramCardForTourist:FC<IProgramInterface> = ({program}) => {
+export const ProgramCardForTourist = ({program, bookingStatus}:IProgramInterface) => {
   const startDate = new Date(program.startDate)
   const endDate = new Date(program.endDate)
+
   return <> 
   <CardContainer>
     <div style={{ alignSelf:"flex-end", color:"gray", display:"flex", justifyContent:"center", alignItems:"center", marginBottom: "0.5rem"}}>
@@ -32,7 +48,7 @@ export const ProgramCardForTourist:FC<IProgramInterface> = ({program}) => {
       <label style={{ fontSize: "1rem", padding: "0 0.6rem" }}> {program.num_participant}/{program.max_participant} </label>
     </div>
     <CardMedia 
-      image= {program.image || "https://t3.ftcdn.net/jpg/01/32/94/50/240_F_132945016_nfxSTTLLFGlgxb35E7kTn09oQ3bvZqeD.jpg"} // TODO: add program image
+      image= {/* program.image ||*/ "https://t3.ftcdn.net/jpg/01/32/94/50/240_F_132945016_nfxSTTLLFGlgxb35E7kTn09oQ3bvZqeD.jpg"} // TODO: add program image
       style={{ height: "40vw", width: "100%", objectFit: "cover", borderRadius: "15px"}}
     />
     <h4 style={{ margin:"0.3rem 0", wordWrap:"break-word" }}>{program.name}</h4>
@@ -44,7 +60,15 @@ export const ProgramCardForTourist:FC<IProgramInterface> = ({program}) => {
         style={{ height: "22px", width: "22px"}}
       />
       <label style={{color: "grey", fontSize: "0.7rem", paddingLeft: "0.6rem"}}>{program.guide.name} {program.guide.surname}</label>
-      <div style={{marginLeft:"auto", paddingRight: "0.6rem"}}>THB <label style={{color: COLOR.primary}}>{program.price}</label></div>
+      {
+        bookingStatus
+        ? ( 
+          renderBookingStatus(bookingStatus, endDate)
+        )
+        : (
+        <div style={{marginLeft:"auto", paddingRight: "0.6rem"}}>THB <label style={{color: COLOR.primary}}>{program.price}</label></div>
+        )
+      }
     </div>
     <hr style={{border: "1px solid", borderColor: COLOR.paleblue, width: "100%"}}/>
     <div style={{fontSize: "0.8rem", display:"flex", alignItems:"center"}}>
