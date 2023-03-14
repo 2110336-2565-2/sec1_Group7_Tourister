@@ -7,6 +7,7 @@ import { getProgramById } from "@/services/programService";
 import { getAllBookingsAcceptedInProgram } from "@/services/bookingService";
 import { ProgramInterface } from '@/interfaces/ProgramInterface';
 import { BookingInterface } from '@/interfaces/BookingInterface';
+import { CircularProgress, Stack } from '@mui/material';
 
 
 export default function ProgramDetailPage() {
@@ -59,7 +60,9 @@ export default function ProgramDetailPage() {
       <>
         <NavBar />
         {loading ? (
-          <div>Loading...</div>
+          <>
+          <div style={{ alignItems: "center", display: "flex", justifyContent: "center", height: "90vh", width: "100vw" }}><CircularProgress/></div>
+          </>
         ) : program ? (
           <ProgramDetail
             program={program}

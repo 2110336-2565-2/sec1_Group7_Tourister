@@ -8,7 +8,7 @@ interface ParticipantsDetailProps {
 }
 
 const ParticipantsDetail: FC<ParticipantsDetailProps> = ({ bookings }) => {
-    // console.log(bookings);
+    console.log(bookings);
     if (bookings.length === 0) {
       return <div>There are no participants at the moment.</div>;
     }
@@ -21,18 +21,18 @@ const ParticipantsDetail: FC<ParticipantsDetailProps> = ({ bookings }) => {
             {typeof user !== "string" && (
               <>
                 <ListItemAvatar>
-                  <Avatar src={`${user.image}`} />
+                    <Avatar src={`data:image/png;base64,${user?.image}`} />
                 </ListItemAvatar>
                 <ListItemText 
                     primary={
                         <div>
-                            {`${user.name} ${user.surname}`}
+                            {`${user?.name} ${user?.surname}`}
 
                         </div>
                         } 
                     secondary={
                         <div>
-                            <div>{`Tel: ${user.phoneNumber}`}</div>
+                            <div>{`Tel: ${user?.phoneNumber}`}</div>
                             {booking.request && <div>{`Information: ${booking.request}`}</div>}
                         </div>
                         

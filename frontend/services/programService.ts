@@ -21,6 +21,7 @@ export const getProgramById = async (id: string) => {
     const axios_res = await axios.get(`${appConfig.BACKEND_URL}/api/program/${id}`,configs)
     const res = axios_res.data as ApiResponseInterface<ProgramInterface>
     if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined)
+    // console.log(res)
     return res;
 }
 

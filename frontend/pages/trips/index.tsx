@@ -7,6 +7,11 @@ import { COLOR } from "@/theme/globalTheme";
 import styled from "styled-components";
 import Image from 'next/image';
 import guide from "@/images/guide.png";
+import { Avatar } from "@mui/material";
+import { UserInterface } from "@/interfaces/UserInterface";
+import { useEffect, useState, useReducer } from "react";
+
+
 
 
 const Heading = styled.div`
@@ -20,29 +25,26 @@ const Heading = styled.div`
 `
 
 export default function Page() {
-  // const [guide, setGuide] = useState<GuideInterface | null>(null)
+  const [user, setUser] = useState<UserInterface | null>(null)
 
-  // useEffect(()=>{
-  //   setGuide(JSON.parse(localStorage.getItem('guide')||""));
-  // },[])
+  useEffect(()=>{
+    setUser(JSON.parse(localStorage.getItem('user')||""));
+  },[])
 
   return (
     <AuthProvider role="guide">
     <>
       <NavBar/>
       <Heading>
-        <Image 
-          style={{ marginRight: "1rem" }}
-          alt = "guide" 
-          src={guide} 
-          width={70} 
-          height={70} 
+        <Avatar 
+          style={{ marginRight: "1rem" ,width:"70px",height:"70px"}}
+          src={`data:image/png;base64,${user?.image}`}
         />
         <div>
           <div style={{marginBottom:"0.5rem", fontSize:"1rem"}}>Hello Guide,</div>
 
           {/* <h3 style={{margin:"0", overflowWrap:"break-word", fontSize:"1.5rem"}}>{guide?.name} {guide?.surname}</h3> */}
-          <h3 style={{margin:"0", overflowWrap:"break-word", fontSize:"1.5rem"}}>Name Surname</h3>
+          <h3 style={{margin:"0", overflowWrap:"break-word", fontSize:"1.5rem"}}>{user?.name} {user?.surname}</h3>
         </div>
       </Heading>
       <Landing/>

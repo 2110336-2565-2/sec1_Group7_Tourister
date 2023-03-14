@@ -12,6 +12,7 @@ import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import { LocationOnOutlined } from "@mui/icons-material";
 import { Chip } from "@mui/material";
 import { COLOR } from "@/theme/globalTheme";
+import ControlPointIcon from '@mui/icons-material/ControlPoint';
 
 const attraction = ({id,t,l,p,o,f=null,handleDelete,handleCallback}:{id:string,t:string,l:string,p:string,o:string,f:string | null,handleDelete:Function,handleCallback:Function}) => {
   const [time,setTime] = useState(t)
@@ -19,6 +20,7 @@ const attraction = ({id,t,l,p,o,f=null,handleDelete,handleCallback}:{id:string,t
   const [province,setProvince] = useState(p)
   const [option,setOption] = useState(o)
   const [file,setFile] = useState<string | null>(f);
+  const [image,setImage] = useState<File | null>(null);
   //----------------------------------------------------------
   const [editing, setEditing] = useState(l==="");
   const [errorTime,setErrorTime] = useState(false);
@@ -32,7 +34,7 @@ const attraction = ({id,t,l,p,o,f=null,handleDelete,handleCallback}:{id:string,t
     if (!file) {
       return;
     }
-
+    setImage(file)
     const reader = new FileReader();
     reader.onload = (event) => {
       const result = event.target?.result;
@@ -54,20 +56,45 @@ const attraction = ({id,t,l,p,o,f=null,handleDelete,handleCallback}:{id:string,t
     <Fragment>
       {editing===true ? (
         <div>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
         <div style={{display:"flex",justifyContent:"center"}}>
-          <div style={{width:"24%",marginRight:'1%'}}>
+          <div style={{width:"40%",marginRight:'0%'}}>
             <TextField value={time} onChange={(e)=>setTime(e.target.value)} type="time" variant="outlined" size="small"/>
             <div>
-              <input type="file" onChange={handleFileUpload} />
+                <input type="file" onChange={handleFileUpload} />
+                {/* {image===null?( */}
+                {/* // ):(
+                //       <div className={"img_preview_wrap"}>
+                //     <img src="" id="imagePreview" alt="Preview Image" style={{width:"80%",height:"100%",alignSelf:"center "}} className={"hide"} /> 
+                //     </div> 
+                    // <div>
+                    //   <img src={image} style={{width:"80%",height:"100%",alignSelf:"center "}} className={"hide"}/>
+                    // </div>
+                  // )} */}
+              {/* <div style={{}} className={"file_input_wrap"}>
+                <input type="file" style={{display:"none"}} name={"imageUpload"} id={"imageUpload"} onChange={handleFileUpload} />
+                {/* {image===null?( */}
+                {/* <label htmlFor={"imageUpload"} style={{width:"80%",height:"100%",display:"inline-block",paddingTop:"1rem",color:"#555555",paddingBottom:"1rem",marginTop:"1rem",border:"1px dashed #555555",fontSize:"0.8rem",textAlign:"center",verticalAlign:"middle",cursor:"pointer",boxShadow:"2px 2px 10px #eee",borderRadius:"4px"}}>
+                  <ControlPointIcon style={{color:"#555555"}}/><br/>Upload</label> */}
+                {/* // ):(
+                //       <div className={"img_preview_wrap"}>
+                //     <img src="" id="imagePreview" alt="Preview Image" style={{width:"80%",height:"100%",alignSelf:"center "}} className={"hide"} /> 
+                //     </div> 
+                    // <div>
+                    //   <img src={image} style={{width:"80%",height:"100%",alignSelf:"center "}} className={"hide"}/>
+                    // </div>
+                  // )} */}
+              {/* </div> */} 
+              {/* <label>{image?image.name:"No Image Selected"}</label> */}
             </div>
           </div>
-          <div style={{width:"74%",marginLeft:'1%'}}>
+          <div style={{width:"60%",marginLeft:'0%'}}>
             <div style={{display:"flex",alignSelf:"center", gap:"1rem"}}>
               <label style={{marginTop:".5rem"}}>Location&nbsp;:</label>
-            <TextField value={location} onChange={(e)=>setLocation(e.target.value)} label="Name" variant="outlined" size="small"/>
+            <TextField style={{width:"5rem",}} value={location} onChange={(e)=>setLocation(e.target.value)} label="Name" variant="outlined" size="small"/>
             </div><div style={{display:"flex",alignSelf:"center", gap:"1rem"}}>
               <label style={{marginTop:".5rem"}}>Province&nbsp;:</label>
-            <TextField value={province} onChange={(e)=>setProvince(e.target.value)} label="Province" variant="outlined" size="small"/>
+            <TextField style={{width:"5rem",}} value={province} onChange={(e)=>setProvince(e.target.value)} label="Province" variant="outlined" size="small"/>
             </div>
             <select onChange={(e)=>setOption(e.target.value)}>
               <option value={option}>{option}</option>
