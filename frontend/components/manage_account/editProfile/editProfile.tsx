@@ -109,7 +109,7 @@ const editProfile = () => {
         </Link>
         <h3 style={{width:"60%",textAlign:"center",fontSize:"1.5rem"}}>Profile</h3>
       </div>
-      <div style={{width:"6rem",height:"6rem",backgroundColor:COLOR.primary,marginBottom:"2rem"}}>
+      <div style={{width:"6rem",height:"6rem",marginBottom:"2rem"}}>
         {/* TODO: ICON */}
           <img
             src={`data:image/png;base64,${getValues("image")}`}
@@ -118,7 +118,6 @@ const editProfile = () => {
               width: "75px",
               height: "75px",
               padding: "0px 0px",
-              marginLeft:"-1rem",
               alignSelf:"flex-start",
               borderRadius: 12,
             }}
