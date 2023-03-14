@@ -136,7 +136,17 @@ export default function programPending() {
         padding: "1em 1em 0.25em 0.25em ",
       }}
     >
-      <div style={{textAlign: "center", color: "black", margin: "0", paddingTop: "20px", fontSize:"35px"}}>Request</div >
+      <div
+        style={{
+          textAlign: "center",
+          color: "black",
+          margin: "0",
+          paddingTop: "20px",
+          fontSize: "35px",
+        }}
+      >
+        Request
+      </div>
       {programs.length > 0 ? (
         <div>
           {programs.map((program) => (
@@ -283,7 +293,7 @@ export default function programPending() {
                       color: COLOR.success,
                       textAlign: "right",
                       fontWeight: "bold",
-                      transform: "translateX(-800px) translateY(-20px)",
+                      transform: "translateX(-30px) translateY(-20px)",
                     }}
                   >
                     {program.num_pending} more request(s)

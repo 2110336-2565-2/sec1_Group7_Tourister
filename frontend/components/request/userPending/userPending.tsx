@@ -14,6 +14,8 @@ import { getUserById } from "@/services/userService";
 import Link from "next/link";
 import { getProgramById, updateProgramById } from "@/services/programService";
 import { UserInterface } from "@/interfaces/UserInterface";
+import { COLOR } from "@/theme/globalTheme";
+
 
 var programName = "";
 export default function userPending() {
@@ -110,7 +112,12 @@ export default function userPending() {
   console.log(userCards);
 
   return (
-    <div>
+    <div
+      style={{
+        borderBottom: `2px solid ${COLOR.paleblue}`,
+        padding: "1em 1em 0.25em 0.25em ",
+      }}
+    >
       <nav
         style={{
           display: "flex",
