@@ -66,6 +66,7 @@ export default function Page() {
         </Heading>
         <Searching setProgramFilter={setProgramFilter}/>
         {programs?.map((program:ProgramInterface)=>{
+          if(new Date(program?.endDate).getTime() < new Date().getTime())return;
           return <ProgramCardForTourist key={program._id} program={program}/>
         })}
       </LocalizationProvider>
