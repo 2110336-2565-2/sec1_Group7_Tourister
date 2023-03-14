@@ -118,7 +118,7 @@ const editProfile = () => {
               width: "75px",
               height: "75px",
               padding: "0px 0px",
-              alignSelf:"flex-start",
+              alignSelf:"center",
               borderRadius: 12,
             }}
           />
