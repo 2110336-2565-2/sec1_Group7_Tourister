@@ -27,8 +27,8 @@ export const BookingProgramList = ({bookingFilter,history=false}:{bookingFilter:
 
   const today = new Date();
   const upcomingBookings = bookings?.filter(({program})=>{
-    if(history) return true;
-    return new Date(program?.endDate).getTime() >= today.getTime();
+    if(history) return new Date(program?.endDate!).getTime() < today.getTime();
+    return new Date(program?.endDate!).getTime() >= today.getTime();
   })
 
   if((upcomingBookings?.length)===0){
