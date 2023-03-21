@@ -143,6 +143,7 @@ export default function programPending() {
           margin: "0",
           paddingTop: "20px",
           fontSize: "35px",
+          fontWeight: "bold",
         }}
       >
         Request

@@ -15,7 +15,7 @@ import Link from "next/link";
 import { getProgramById, updateProgramById } from "@/services/programService";
 import { UserInterface } from "@/interfaces/UserInterface";
 import { COLOR } from "@/theme/globalTheme";
-
+import { UserPendingCardForGuide } from "@/components/program/UserPendingCardForGuide";
 
 var programName = "";
 export default function userPending() {
@@ -142,13 +142,18 @@ export default function userPending() {
         <div>
           {userCards.map((user: any) => (
             <div key={user.userId}>
-              <div>
+              <UserPendingCardForGuide
+                key={user._id}
+                user={user}
+                isComplete={false}
+              />
+              {/* <div>
                 {user.name} {user.surname}
               </div>
               <div>Tel: {user.phoneNumber}</div>
-              <div>Request: </div>
+              <div>Request: </div> */}
               <div>{user.request}</div>
-              <Button
+              {/* <Button
                 type="button"
                 variant="outlined"
                 onClick={() => statusChange(user.bookingId, "declined")}
@@ -162,7 +167,7 @@ export default function userPending() {
               >
                 ACCEPT
               </Button>
-              <p>---------------------------------------------------------</p>
+              <p>---------------------------------------------------------</p> */}
             </div>
           ))}
         </div>
