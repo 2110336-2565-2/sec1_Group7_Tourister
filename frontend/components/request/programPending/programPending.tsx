@@ -131,6 +131,7 @@ export default function programPending() {
   });
 
   return (
+    <>
     <div
       style={{
         borderBottom: `2px solid ${COLOR.paleblue}`,
@@ -143,9 +144,9 @@ export default function programPending() {
           color: "black",
           margin: "0",
           paddingTop: "35px",
-          paddingBottom: "15px",
-          // fontFamily: "sans-serif",
-          fontSize: "35px",
+          paddingBottom: "20px",
+          fontFamily: "sans-serif",
+          fontSize: "30px",
           fontWeight: "900",
           textTransform: "uppercase",
         }}
@@ -158,8 +159,9 @@ export default function programPending() {
             <Link
               href={`/request/userPending/${program._id}`}
               key={program._id}
+              style={{ textDecoration: "none" }}
             >
-              <div style={{ display: "inline-block", float: "left" }}>
+              <div style={{ display: "inline-block", float: "left", textDecoration: 'none' }}>
                 {program.dayTrips && program.dayTrips[0] ? (
                   <img
                     src={`data:image/jpeg;base64,${program.dayTrips[0].attractions[0].file}`}
@@ -232,10 +234,6 @@ export default function programPending() {
                       </tbody>
                     </table>
                   </div>
-                  <br></br>
-                  <br></br>
-                  <br></br>
-                  <br></br>
 
                   <div style={{ display: "inline-block", color:"black", transform:"translateX(-40px)" }}>
                     <>
@@ -334,5 +332,6 @@ export default function programPending() {
         </div>
       )}
     </div>
+    </>
   );
-}
+};
