@@ -129,11 +129,12 @@ export default function programPending() {
     month: "short",
     day: "numeric",
   });
+
   return (
     <div
       style={{
         borderBottom: `2px solid ${COLOR.paleblue}`,
-        padding: "1em 1em 0.25em 0.25em ",
+        padding: "1em 1em 0.25em 1em ",
       }}
     >
       <div
@@ -141,12 +142,15 @@ export default function programPending() {
           textAlign: "center",
           color: "black",
           margin: "0",
-          paddingTop: "20px",
+          paddingTop: "35px",
+          paddingBottom: "15px",
+          // fontFamily: "sans-serif",
           fontSize: "35px",
-          fontWeight: "bold",
+          fontWeight: "900",
+          textTransform: "uppercase",
         }}
       >
-        Request
+        request
       </div>
       {programs.length > 0 ? (
         <div>
@@ -186,6 +190,7 @@ export default function programPending() {
                 <ul>
                   <div
                     style={{
+                      color: "black",
                       display: "inline-block",
                       float: "left",
                       padding: "10px",
@@ -232,7 +237,7 @@ export default function programPending() {
                   <br></br>
                   <br></br>
 
-                  <div style={{ display: "inline-block" }}>
+                  <div style={{ display: "inline-block", color:"black", transform:"translateX(-40px)" }}>
                     <>
                       <CalendarMonth
                         style={{
@@ -250,7 +255,7 @@ export default function programPending() {
                       , {program.startTime} to
                     </>
                   </div>
-                  <div>
+                  <div style={{ display: "inline-block", color:"black", transform:"translateX(-40px)" }}>
                     <>
                       <CalendarMonth
                         style={{
@@ -270,20 +275,26 @@ export default function programPending() {
                   </div>
                   <div
                     style={{
-                      color: COLOR.primary,
-                      transform: "translateY(-45px)",
-                      margin: "0 18em",
+                      // color: COLOR.primary,
+                      transform: "translateY(-50px)",
+                      margin: "0 16em",
                       display: "flex",
+                      textDecoration: "none",
+                      textDecorationLine: "none",
                     }}
                   >
                     <div
                       style={{
+                        color: COLOR.primary,
                         backgroundColor: "transparent",
-                        padding: "8px 16px 8px",
+                        padding: "10px 24px 10px",
                         fontWeight: "bold",
                         border: "1px solid grey",
                         borderRadius: 10,
                         textAlign: "center",
+                        // textDecoration: "none",
+                        // textDecorationLine: "none",
+                        letterSpacing: "1.5px"
                       }}
                     >
                       {program.num_participant}/{program.max_participant}
@@ -291,10 +302,17 @@ export default function programPending() {
                   </div>
                   <div
                     style={{
-                      color: COLOR.success,
+                      width: "150px",
+                      margin: "0 10em",
+                      color: "black",
+                      padding: "7px 24px 7px",
+                      backgroundColor: COLOR.yellow,
+                      borderRadius: "10px 0 0 0",
                       textAlign: "right",
                       fontWeight: "bold",
-                      transform: "translateX(-30px) translateY(-20px)",
+                      transform: "translateY(-25px)",
+                      // textDecoration: "none",
+                      // textDecorationLine: "none",
                     }}
                   >
                     {program.num_pending} more request(s)
@@ -305,7 +323,12 @@ export default function programPending() {
           ))}
         </div>
       ) : (
-        <div>
+        <div
+          style={{
+            // color: "grey",
+            textAlign: "center",
+          }}
+        >
           No requests yet! Keep checking back for new opportunities, or create
           new trip to attract interested tourists.
         </div>

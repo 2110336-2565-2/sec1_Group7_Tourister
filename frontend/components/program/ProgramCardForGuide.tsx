@@ -68,6 +68,7 @@ export const ProgramCardForGuide: FC<IProgramInterface> = ({
                 border: "1px solid grey",
                 borderRadius: 10,
                 textAlign: "center",
+                letterSpacing: "1.5px"
               }}
             >
               {program.num_participant}/{program.max_participant}
@@ -91,7 +92,7 @@ export const ProgramCardForGuide: FC<IProgramInterface> = ({
       <div
         key={program._id}
         onClick={isDraft?()=>{}:handleClick}
-        style={{ borderBottom: `2px solid ${COLOR.paleblue}`, padding: "1em 1em 0.25em 0.25em " }}
+        style={{ borderBottom: `2px solid ${COLOR.paleblue}`, padding: "1em 1em 0.25em 1em " }}
       >
         <div>
           {isDraft? (<button type="button" onClick={handleFunction}><DriveFileRenameOutlineIcon/></button>):(<Fragment/>)}
