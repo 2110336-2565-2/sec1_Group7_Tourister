@@ -134,7 +134,7 @@ export default function programPending() {
     <>
     <div
       style={{
-        borderBottom: `2px solid ${COLOR.paleblue}`,
+        // borderBottom: `2px solid ${COLOR.paleblue}`,
         padding: "1em 1em 0.25em 1em ",
       }}
     >
@@ -170,6 +170,7 @@ export default function programPending() {
                       width: "75px",
                       height: "75px",
                       padding: "0px 10px",
+                      paddingTop: "20px",
                       borderRadius: 12,
                     }}
                   />
@@ -183,12 +184,21 @@ export default function programPending() {
                       width: "75px",
                       height: "75px",
                       padding: "0px 10px",
+                      paddingTop: "20px",
                       borderRadius: 12,
                     }}
                   />
                 )}
               </div>
-              <div key={program._id}>
+              <div 
+                key={program._id} 
+                style={{
+                  height: "220px",
+                  // border: `10px solid ${COLOR.paleblue}`,
+                  borderBottom: `2px solid ${COLOR.paleblue}`, 
+                  paddingTop: "10px" 
+                }}
+              >
                 <ul>
                   <div
                     style={{
