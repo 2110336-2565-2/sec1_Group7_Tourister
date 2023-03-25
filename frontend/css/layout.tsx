@@ -29,3 +29,7 @@ export const Field = styled.div`
 export const FieldName = styled.label`
   font-size: 1em;
 `;
+
+export const UnFoundLabel = styled.p`
+  margin: 0.7rem 1rem 0.5rem 1rem;
+`;

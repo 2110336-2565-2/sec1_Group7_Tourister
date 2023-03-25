@@ -16,6 +16,7 @@ import { getProgramById, updateProgramById } from "@/services/programService";
 import { UserInterface } from "@/interfaces/UserInterface";
 import { COLOR } from "@/theme/globalTheme";
 import { UserPendingCardForGuide } from "@/components/program/UserPendingCardForGuide";
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 
 var programName = "";
 export default function userPending() {
@@ -113,18 +114,26 @@ export default function userPending() {
 
   return (
     <div
-      style={{
-        borderBottom: `2px solid ${COLOR.paleblue}`,
-        padding: "1em 1em 0.25em 0.25em ",
-      }}
+    style={{
+      // borderBottom: `2px solid ${COLOR.paleblue}`,
+      padding: "1em 1em 0.25em 0.25em ",
+    }}
     >
+    {/* {userCards.length > 0 ? ( */}
       <nav
         style={{
           display: "flex",
         }}
       >
-        <Link href="/request" passHref>
-          <button type="button">Back</button>
+        <Link 
+          href="/request" passHref
+          style={{ transform: "translateX(60px) translateY(43px)" }}
+        >
+          {/* <button type="button">Back</button> */}
+          <button 
+            style={{margin:".3rem 0px 0px 0px",background:"white",border:"0px",transform:"translate(-2.3rem,.3rem)"}} 
+            type="button"><ChevronLeftIcon/>
+          </button>
         </Link>
         <h2
           style={{
@@ -132,12 +141,26 @@ export default function userPending() {
             textAlign: "center",
             margin: "auto",
             alignSelf: "center",
+            paddingBottom: "30px",
+            paddingTop: "45px",
+            fontWeight: "bold",
+            // transform: "translateX(20px)"
           }}
         >
           {programName}
         </h2>
-        <div> All ({userCards.length})</div>
+        {/* <div> All ({userCards.length})</div> */}
+        
+
+        <div
+          style={{
+            transform: "translateX(-50px) translateY(90px)"
+          }}
+          > 
+        All({userCards.length})
+        </div>
       </nav>
+      <hr style={{border: "1px solid", borderColor: COLOR.paleblue, width: "100%"}}/>
       {userCards.length > 0 ? (
         <div>
           {userCards.map((user: any) => (
@@ -152,7 +175,7 @@ export default function userPending() {
               </div>
               <div>Tel: {user.phoneNumber}</div>
               <div>Request: </div> */}
-              <div>{user.request}</div>
+              {/* <div>{user.request}</div> */}
               {/* <Button
                 type="button"
                 variant="outlined"
@@ -172,7 +195,13 @@ export default function userPending() {
           ))}
         </div>
       ) : (
-        <div>
+        <div
+          style={{
+            margin: "auto",
+            color: "grey",
+            textAlign: "center"
+          }}
+        >
           Looks like there are no more requests for this trip. Please return to
           the Request page
         </div>

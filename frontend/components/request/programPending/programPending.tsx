@@ -333,8 +333,9 @@ export default function programPending() {
       ) : (
         <div
           style={{
-            // color: "grey",
-            textAlign: "center",
+            margin: "auto",
+            color: "grey",
+            textAlign: "center"
           }}
         >
           No requests yet! Keep checking back for new opportunities, or create

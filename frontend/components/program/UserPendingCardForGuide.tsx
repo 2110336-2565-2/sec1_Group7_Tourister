@@ -34,8 +34,12 @@ export const UserPendingCardForGuide: FC<IProgramInterface> = ({
       <div
         key={user._id}
         style={{
-          borderBottom: `2px solid ${COLOR.paleblue}`,
-          padding: "1em 1em 0.25em 0.25em ",
+          height: "150px",
+          // margin: "0",
+          // paddingTop: "20px",
+          // paddingBottom: "20px",
+          borderBottom: `1px solid grey`,
+          padding: "2em 1em 0.25em 2em ",
         }}
       >
         <div>
@@ -80,11 +84,18 @@ export const UserPendingCardForGuide: FC<IProgramInterface> = ({
                     Tel: {user.phoneNumber}
                   </td>
                 </tr>
+                {/* <div>Request</div> */}
                 <div>{user.request}</div>
                 <Button
                   type="button"
                   variant="outlined"
                   onClick={() => statusChange(user.bookingId, "declined")}
+                  style={{ 
+                    // alignSelf: "center",
+                    transform: "translateX(-10px)", 
+                    borderRadius: "10px", borderColor: COLOR.background,
+                    margin: "4px 10px", color: COLOR.background, 
+                  }}
                 >
                   DECLINED
                 </Button>
@@ -92,6 +103,11 @@ export const UserPendingCardForGuide: FC<IProgramInterface> = ({
                   type="button"
                   variant="contained"
                   onClick={() => statusChange(user.bookingId, "accepted")}
+                  style={{ 
+                    // alignSelf: "center",
+                    transform: "translateX(-10px)", 
+                    borderRadius: "10px", margin: "4px 10px" 
+                  }}
                 >
                   ACCEPT
                 </Button>
