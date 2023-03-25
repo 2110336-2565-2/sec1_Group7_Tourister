@@ -19,7 +19,7 @@ import {
   Padding
 } from "@mui/icons-material";
 
-import {Accordion,AccordionDetails,AccordionSummary,Chip,colors,autocompleteClasses,Button} from "@mui/material";
+import {Accordion,AccordionDetails,AccordionSummary,Chip,colors,autocompleteClasses,Button, CircularProgress, Stack} from "@mui/material";
 import ImageSlider from "@/components/program/ProgramDetails/ImageSlider";
 
 import ScheduleDetail from "@/components/program/ProgramDetails/ScheduleDetail";
@@ -49,8 +49,15 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
   const authUserData:AuthContextInterface = useAuth()
 
   if (!program) {
-    return <div>Loading...</div>;
+    return(
+    <>
+    <Stack alignItems="center">
+      <CircularProgress />
+    </Stack>
+    </>
+    ) ;
   }
+
 
   const user = authUserData.user
   const isGuide:boolean = user?.isGuide!
