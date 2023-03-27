@@ -192,6 +192,8 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
             TODO : Meeting point
             <div>{program.startTime}</div>
             <div>{program.meetLocation}</div>
+            <div>{program.descriptionOfMeetLocation}</div>
+
             <Chip
                     icon={<LocationOnOutlined />}
                     size="small"
@@ -228,6 +230,7 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
             TODO : Return point
             <div>{program.endTime}</div>
             <div>{program.endLocation}</div>
+            <div>{program.descriptionOfEndLocation}</div>
             <Chip
                     icon={<LocationOnOutlined />}
                     size="small"
