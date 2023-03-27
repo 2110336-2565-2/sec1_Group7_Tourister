@@ -189,10 +189,9 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
           </div>
 
           <div style={{width:"100%",background:"red"}}>
-            TODO : Meeting point
             <div>{program.startTime}</div>
             <div>{program.meetLocation}</div>
-            <div>{program.descriptionOfMeetLocation}</div>
+            {(program.descriptionOfMeetLocation)&&(<div>{program.descriptionOfMeetLocation}</div>)}
 
             <Chip
                     icon={<LocationOnOutlined />}
@@ -227,11 +226,10 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
             <h3 style={{paddingLeft:"2.5%"}}>Return Point</h3>
           </div>
           <div style={{width:"100%",background:"red"}}>
-            TODO : Return point
             <div>{program.endTime}</div>
             <div>{program.endLocation}</div>
-            <div>{program.descriptionOfEndLocation}</div>
-            <Chip
+            {(program.descriptionOfEndLocation)&&(<div>{program.descriptionOfEndLocation}</div>)}
+                        <Chip
                     icon={<LocationOnOutlined />}
                     size="small"
                     sx={{
