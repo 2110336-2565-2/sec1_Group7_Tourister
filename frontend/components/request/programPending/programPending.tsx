@@ -13,7 +13,18 @@ import { ProgramInterface } from "@/interfaces/ProgramInterface";
 import { ProgramCardForGuide } from "@/components/program/ProgramCardForGuide";
 import { CalendarMonth, LocationOnOutlined } from "@mui/icons-material";
 import { COLOR } from "@/theme/globalTheme";
-import { Chip } from "@mui/material";
+// import { Chip } from "@mui/material";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Chip,
+  colors,
+  autocompleteClasses,
+  Button,
+  CircularProgress,
+  Stack,
+} from "@mui/material";
 
 export default function programPending() {
   // const [guideId, setGuideid] = useState<String>("0");
@@ -31,26 +42,26 @@ export default function programPending() {
   // console.log(guideId)
   const guideId = guide._id;
   const [programs, setPrograms] = useState<[ProgramInterface]>([
-    {
-      _id: "",
-      name: "",
-      description: "",
-      price: 0,
-      startDate: Date,
-      endDate: Date,
-      province: "",
-      max_participant: 0,
-      num_participant: 0,
-      meetLocation: "",
-      descriptionOfMeetLocation: "",
-      attractions: [],
-      language: [],
-      endLocation: "",
-      descriptionOfEndLocation: "",
-      published: true,
-      status: "",
-      num_pending: 0,
-    },
+    // {
+    //   _id: "",
+    //   name: "",
+    //   description: "",
+    //   price: 0,
+    //   startDate: Date,
+    //   endDate: Date,
+    //   province: "",
+    //   max_participant: 0,
+    //   num_participant: 0,
+    //   meetLocation: "",
+    //   descriptionOfMeetLocation: "",
+    //   attractions: [],
+    //   language: [],
+    //   endLocation: "",
+    //   descriptionOfEndLocation: "",
+    //   published: true,
+    //   status: "",
+    //   num_pending: 0,
+    // },
   ]);
 
   var programArr: any = [];
@@ -129,13 +140,21 @@ export default function programPending() {
     month: "short",
     day: "numeric",
   });
+  if (programs.length === 0) {
+    return (
+      <>
+        <Stack alignItems="center">
+          <CircularProgress />
+        </Stack>
+      </>
+    );
+  }
 
   return (
-    <>
     <div
       style={{
-        // borderBottom: `2px solid ${COLOR.paleblue}`,
-        padding: "1em 1em 0.25em 1em ",
+        borderBottom: `2px solid ${COLOR.paleblue}`,
+        padding: "1em 1em 0.25em 0.25em ",
       }}
     >
       <div
@@ -143,15 +162,12 @@ export default function programPending() {
           textAlign: "center",
           color: "black",
           margin: "0",
-          paddingTop: "35px",
-          paddingBottom: "20px",
-          fontFamily: "sans-serif",
-          fontSize: "30px",
-          fontWeight: "900",
-          textTransform: "uppercase",
+          paddingTop: "20px",
+          fontSize: "35px",
+          fontWeight: "bold",
         }}
       >
-        request
+        Request
       </div>
       {programs.length > 0 ? (
         <div>
@@ -159,9 +175,8 @@ export default function programPending() {
             <Link
               href={`/request/userPending/${program._id}`}
               key={program._id}
-              style={{ textDecoration: "none" }}
             >
-              <div style={{ display: "inline-block", float: "left", textDecoration: 'none' }}>
+              <div style={{ display: "inline-block", float: "left" }}>
                 {program.dayTrips && program.dayTrips[0] ? (
                   <img
                     src={`data:image/jpeg;base64,${program.dayTrips[0].attractions[0].file}`}
@@ -170,7 +185,6 @@ export default function programPending() {
                       width: "75px",
                       height: "75px",
                       padding: "0px 10px",
-                      paddingTop: "20px",
                       borderRadius: 12,
                     }}
                   />
@@ -184,25 +198,15 @@ export default function programPending() {
                       width: "75px",
                       height: "75px",
                       padding: "0px 10px",
-                      paddingTop: "20px",
                       borderRadius: 12,
                     }}
                   />
                 )}
               </div>
-              <div 
-                key={program._id} 
-                style={{
-                  height: "220px",
-                  // border: `10px solid ${COLOR.paleblue}`,
-                  borderBottom: `2px solid ${COLOR.paleblue}`, 
-                  paddingTop: "10px" 
-                }}
-              >
+              <div key={program._id}>
                 <ul>
                   <div
                     style={{
-                      color: "black",
                       display: "inline-block",
                       float: "left",
                       padding: "10px",
@@ -244,8 +248,12 @@ export default function programPending() {
                       </tbody>
                     </table>
                   </div>
+                  <br></br>
+                  <br></br>
+                  <br></br>
+                  <br></br>
 
-                  <div style={{ display: "inline-block", color:"black", transform:"translateX(-40px)" }}>
+                  <div style={{ display: "inline-block" }}>
                     <>
                       <CalendarMonth
                         style={{
@@ -263,7 +271,7 @@ export default function programPending() {
                       , {program.startTime} to
                     </>
                   </div>
-                  <div style={{ display: "inline-block", color:"black", transform:"translateX(-40px)" }}>
+                  <div>
                     <>
                       <CalendarMonth
                         style={{
@@ -283,26 +291,20 @@ export default function programPending() {
                   </div>
                   <div
                     style={{
-                      // color: COLOR.primary,
-                      transform: "translateY(-50px)",
-                      margin: "0 16em",
+                      color: COLOR.primary,
+                      transform: "translateY(-45px)",
+                      margin: "0 18em",
                       display: "flex",
-                      textDecoration: "none",
-                      textDecorationLine: "none",
                     }}
                   >
                     <div
                       style={{
-                        color: COLOR.primary,
                         backgroundColor: "transparent",
-                        padding: "10px 24px 10px",
+                        padding: "8px 16px 8px",
                         fontWeight: "bold",
                         border: "1px solid grey",
                         borderRadius: 10,
                         textAlign: "center",
-                        // textDecoration: "none",
-                        // textDecorationLine: "none",
-                        letterSpacing: "1.5px"
                       }}
                     >
                       {program.num_participant}/{program.max_participant}
@@ -310,17 +312,10 @@ export default function programPending() {
                   </div>
                   <div
                     style={{
-                      width: "150px",
-                      margin: "0 10em",
-                      color: "black",
-                      padding: "7px 24px 7px",
-                      backgroundColor: COLOR.yellow,
-                      borderRadius: "10px 0 0 0",
+                      color: COLOR.success,
                       textAlign: "right",
                       fontWeight: "bold",
-                      transform: "translateY(-25px)",
-                      // textDecoration: "none",
-                      // textDecorationLine: "none",
+                      transform: "translateX(-30px) translateY(-20px)",
                     }}
                   >
                     {program.num_pending} more request(s)
@@ -331,18 +326,11 @@ export default function programPending() {
           ))}
         </div>
       ) : (
-        <div
-          style={{
-            margin: "auto",
-            color: "grey",
-            textAlign: "center"
-          }}
-        >
+        <div>
           No requests yet! Keep checking back for new opportunities, or create
           new trip to attract interested tourists.
         </div>
       )}
     </div>
-    </>
   );
-};
+}
