@@ -18,6 +18,7 @@ import {
   LanguageOutlined,
   Padding
 } from "@mui/icons-material";
+import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
 
 import {Accordion,AccordionDetails,AccordionSummary,Chip,colors,autocompleteClasses,Button, CircularProgress, Stack} from "@mui/material";
 import ImageSlider from "@/components/program/ProgramDetails/ImageSlider";
@@ -176,10 +177,35 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
         <AccordionSummary expandIcon={<ExpandMore />}>
           <h3>Schedule</h3>
         </AccordionSummary>
-        <AccordionDetails>
+
+        <AccordionDetails style={{marginTop:"-1.5rem",paddingLeft:"7.5%"}}>
           {/* render schedule component */}
+
+          { /* Meeting point */}
+          <div style={{display:"flex",flexDirection:"row",justifyContent:"flex-start",alignItems:"center"}}>
+            <LocationOnOutlined style={{padding:"0.5rem",width:"1.5rem",height:"1.5rem",borderRadius:"50%",backgroundColor:COLOR.primary,color:"white"}}/>
+            <h3 style={{paddingLeft:"2.5%"}}>Meeting Point</h3>
+          </div>
+          <div style={{width:"100%",background:"red"}}>TODO : Meeting point</div>
+
+          { /* Attraction and activities*/}
+          <div style={{display:"flex",flexDirection:"row",justifyContent:"flex-start",alignItems:"center"}}>
+            <MapOutlinedIcon style={{padding:"0.5rem",width:"1.5rem",height:"1.5rem",borderRadius:"50%",backgroundColor:"lightcyan",color:"dimgray"}}/>
+            <h3 style={{paddingLeft:"2.5%"}}>Attractions / Activities</h3>
+          </div>
+
+          { /* Schedule details */}
           <ScheduleDetail program={program} dayTrips={program.dayTrips!} />
+
+          { /* Return point */}
+          <div style={{display:"flex",flexDirection:"row",justifyContent:"flex-start",alignItems:"center"}}>
+            <LocationOnOutlined style={{padding:"0.5rem",width:"1.5rem",height:"1.5rem",borderRadius:"50%",backgroundColor:COLOR.primary,color:"white"}}/>
+            <h3 style={{paddingLeft:"2.5%"}}>Return Point</h3>
+          </div>
+          <div style={{width:"100%",background:"red"}}>TODO : Return point</div>
+
         </AccordionDetails>
+
       </Accordion>
       {
         isGuide &&

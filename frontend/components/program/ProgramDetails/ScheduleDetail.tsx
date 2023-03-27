@@ -23,49 +23,71 @@ const ScheduleDetail: FC<IScheduleDetailProps> = ({ program, dayTrips }) => {
 
         return (
           <div key={index}>
+
+            { /* Day N*/}
             <div
               style={{
                 display: "flex",
                 width: "fit-content",
                 gap: ".5rem",
                 border: `0.1rem solid ${COLOR.primary}`,
-                borderRadius: "1.2rem",
+                borderRadius: "0.75rem",
+                marginBottom: "1.5rem"
               }}
             >
-              {/* Day */}
               <div
                 style={{
                   display: "flex",
-                  padding: ".3rem .6rem",
-                  borderRadius: "1rem",
+                  padding: ".3rem .9rem",
+                  borderRadius: "0.6rem",
                   background: COLOR.primary,
                 }}
               >
                 <label style={{ color: "white" }}>{`Day ${index + 1}`}</label>
               </div>
-              <label style={{ marginTop: ".25rem", paddingRight: "2rem" }}>
-                {formattedtDate}
-              </label>
+
+              <div style={{display:"flex",alignSelf:"center"}}>
+                <label style={{paddingInline:`0.9rem 2rem`}}>
+                  {formattedtDate}
+                </label>
+              </div>
             </div>
+
             {/* Each attraction */}
             {attractions.map((attraction, index) => (
               <div
-                style={{ display: "flex", alignItems: "center" }}
+                style={{ display: "flex",justifyContent:"flex-start",alignItems: "flex-start" , flexDirection:"row", gap:"1.25rem",paddingLeft:"7.5%",marginBottom:"1.75rem"}}
                 key={index}
               >
-                <div style={{ marginRight: "10px" }}>
-                <div>{attraction.time}</div>
-                  <img
-                    style={{
-                      width: "75px",
-                      height: "75px",
-                      padding: "0px 10px",
-                      borderRadius: 12,
-                    }}
-                    src={`data:image/jpeg;base64,${attraction.file}`}
-                    alt={attraction.location}
-                  />
+          
+                <div style={{display:"flex",flexDirection:"column",alignItems:"center"}}>
+                  <div style={{alignSelf:"center"}}>{attraction.time}</div>
+                    <img
+                      style={{
+                        width: "4.75rem",
+                        height: "4.75rem",
+                        borderRadius: "0.5rem",
+                      }}
+                      src={`data:image/jpeg;base64,${attraction.file}`}
+                      alt={attraction.location}
+                    />
                 </div>
+
+                {/* <div style={{ marginRight: "10px" }}>
+                  <div>{attraction.time}</div>
+                    <img
+                      style={{
+                        width: "75px",
+                        height: "75px",
+                        padding: "0px 10px",
+                        borderRadius: 12,
+                      }}
+                      src={`data:image/jpeg;base64,${attraction.file}`}
+                      alt={attraction.location}
+                    />
+                </div> */}
+
+
                 <div>
                   <div>{attraction.location}</div>
                   <Chip
@@ -75,7 +97,7 @@ const ScheduleDetail: FC<IScheduleDetailProps> = ({ program, dayTrips }) => {
                       backgroundColor: COLOR.paleblue,
                       color: COLOR.text,
                       borderRadius: 10,
-                      margin: "2px 8px",
+                      margin: "2px 0px",
                       padding: "2px 8px",
                       "& .MuiChip-icon": {
                         width: "15px",
@@ -93,7 +115,7 @@ const ScheduleDetail: FC<IScheduleDetailProps> = ({ program, dayTrips }) => {
                       backgroundColor: "transparent",
                       color: COLOR.text,
                       borderRadius: 10,
-                      margin: "2px 8px",
+                      margin: "2px 0px",
                       padding: "2px 8px",
                       "& .MuiChip-icon": {
                         width: "15px",
@@ -111,7 +133,7 @@ const ScheduleDetail: FC<IScheduleDetailProps> = ({ program, dayTrips }) => {
                       backgroundColor: "transparent",
                       color: COLOR.text,
                       borderRadius: 10,
-                      margin: "2px 8px",
+                      margin: "2px 0px",
                       padding: "2px 8px",
                       "& .MuiChip-icon": {
                         width: "15px",
@@ -130,7 +152,7 @@ const ScheduleDetail: FC<IScheduleDetailProps> = ({ program, dayTrips }) => {
                       backgroundColor: "transparent",
                       color: COLOR.text,
                       borderRadius: 10,
-                      margin: "2px 8px",
+                      margin: "2px 0px",
                       padding: "2px 8px",
                       "& .MuiChip-icon": {
                         width: "15px",
@@ -143,8 +165,6 @@ const ScheduleDetail: FC<IScheduleDetailProps> = ({ program, dayTrips }) => {
                 </div>
               </div>
             ))}
-
-         
           </div>
         );
       })}
