@@ -72,7 +72,8 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
       return getAllBookingsInProgram(programId, {status:["pending","accepted"]})
     }
   })
-
+  console.log('program')
+  console.log(program)
   console.log(bookingResponse?.data)
 
   const touristBookingStatus = (bookingResponse?.data!.find((booking)=>booking.user?._id===userId))?.status
@@ -186,7 +187,28 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
             <LocationOnOutlined style={{padding:"0.5rem",width:"1.5rem",height:"1.5rem",borderRadius:"50%",backgroundColor:COLOR.primary,color:"white"}}/>
             <h3 style={{paddingLeft:"2.5%"}}>Meeting Point</h3>
           </div>
-          <div style={{width:"100%",background:"red"}}>TODO : Meeting point</div>
+
+          <div style={{width:"100%",background:"red"}}>
+            TODO : Meeting point
+            <div>{program.startTime}</div>
+            <div>{program.meetLocation}</div>
+            <Chip
+                    icon={<LocationOnOutlined />}
+                    size="small"
+                    sx={{
+                      backgroundColor: COLOR.paleblue,
+                      color: COLOR.text,
+                      borderRadius: 10,
+                      margin: "2px 0px",
+                      padding: "2px 8px",
+                      "& .MuiChip-icon": {
+                        width: "15px",
+                        height: "15px",
+                      },
+                    }}
+                    label={program.meetProvince}
+                  />
+          </div>
 
           { /* Attraction and activities*/}
           <div style={{display:"flex",flexDirection:"row",justifyContent:"flex-start",alignItems:"center"}}>
@@ -202,7 +224,27 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
             <LocationOnOutlined style={{padding:"0.5rem",width:"1.5rem",height:"1.5rem",borderRadius:"50%",backgroundColor:COLOR.primary,color:"white"}}/>
             <h3 style={{paddingLeft:"2.5%"}}>Return Point</h3>
           </div>
-          <div style={{width:"100%",background:"red"}}>TODO : Return point</div>
+          <div style={{width:"100%",background:"red"}}>
+            TODO : Return point
+            <div>{program.endTime}</div>
+            <div>{program.endLocation}</div>
+            <Chip
+                    icon={<LocationOnOutlined />}
+                    size="small"
+                    sx={{
+                      backgroundColor: COLOR.paleblue,
+                      color: COLOR.text,
+                      borderRadius: 10,
+                      margin: "2px 0px",
+                      padding: "2px 8px",
+                      "& .MuiChip-icon": {
+                        width: "15px",
+                        height: "15px",
+                      },
+                    }}
+                    label={program.endProvince}
+                  />
+          </div>
 
         </AccordionDetails>
 
