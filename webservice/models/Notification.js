@@ -10,7 +10,7 @@ const NotificationSchema = new mongoose.Schema({
     },
     type :{
         type : String,
-        enum : ['request','accrequest','trip','coin'],
+        enum : ['newrequest','accrequest','nexttrip','endtrip','coin'],
         required : [true, 'Please add a notification type']
     },
     title: {
@@ -19,6 +19,10 @@ const NotificationSchema = new mongoose.Schema({
     },
     message: {
         type: String
+    },
+    notifyTime : {
+        type : Date,
+        default : Date.now()
     },
     isRead : {
         type : Boolean,
