@@ -119,66 +119,55 @@ export default function userPending() {
   return (
     <div
       style={{
-        // borderBottom: `2px solid ${COLOR.paleblue}`,
-        padding: "1em 1em 0.25em 0.25em ",
-        // border: `1px solid grey`,
-        // display: "block",
-        // width: "100%",
-        // height: "100%",
-        // paddingRight: "30px"
+        padding: "1em 0em 0.25em 0em",
+        // border: "2px solid"
       }}
     >
-      {/* {userCards.length > 0 ? ( */}
-      {/* <div> */}
-        <nav
+      <nav
+        style={{
+          display: "flex",
+        }}
+      >
+        <Link
+          href="/request"
+          passHref
+          style={{ transform: "translateX(70px) translateY(40px)" }}
+        >
+          <button
+            style={{
+              margin: ".3rem 0px 0px 0px",
+              background: "white",
+              border: "0px",
+              transform: "translate(-2.3rem,.3rem)",
+            }}
+            type="button"
+          >
+            <ChevronLeftIcon />
+          </button>
+        </Link>
+        <h2
           style={{
-            display: "flex",
+            alignItems: "center",
+            textAlign: "center",
+            margin: "auto",
+            alignSelf: "center",
+            paddingBottom: "45px",
+            paddingTop: "45px",
+            fontWeight: "bold",
           }}
         >
-          <Link
-            href="/request"
-            passHref
-            style={{ transform: "translateX(70px) translateY(40px)" }}
-          >
-            {/* <button type="button">Back</button> */}
-            <button
-              style={{
-                margin: ".3rem 0px 0px 0px",
-                background: "white",
-                border: "0px",
-                transform: "translate(-2.3rem,.3rem)",
-              }}
-              type="button"
-            >
-              <ChevronLeftIcon />
-            </button>
-          </Link>
-          <h2
-            style={{
-              alignItems: "center",
-              textAlign: "center",
-              margin: "auto",
-              alignSelf: "center",
-              paddingBottom: "45px",
-              paddingTop: "45px",
-              fontWeight: "bold",
-              // transform: "translateX(20px)"
-            }}
-          >
-            {programName}
-          </h2>
+          {programName}
+        </h2>
 
-          <div
-            style={{
-              transform: "translateX(-50px) translateY(90px)",
-            }}
-          >
-            All({userCards.length})
-          </div>
-        </nav>
+        <div
+          style={{
+            transform: "translateX(-50px) translateY(90px)",
+          }}
+        >
+          All({userCards.length})
+        </div>
+      </nav>
 
-
-        {/* <hr style={{ border: "1px solid", borderColor: COLOR.paleblue, width: "100%", margin: 0 }} /> */}
         <hr 
           style={{
             margin: 0,
@@ -193,12 +182,12 @@ export default function userPending() {
                 key={user.userId}
                 style={{
                   display: "block",
-                  // height: "auto",
                   overflow: "auto",
                   width: "100%",
                   borderBottom: `1px solid grey`,
-                  // border: `10px solid grey`,
-                  padding: "2em 1em 0.25em 2em ",
+
+                  // padding: "2em 1em 0.25em 2em ",
+                  padding: "2em 0em 0.25em 0em ",
                 }}
               >
                 {isDraft ? (
@@ -208,7 +197,7 @@ export default function userPending() {
                 ) : (
                   <Fragment />
                 )}
-                <div style={{ display: "inline-block", float: "left" }}>
+                <div style={{ display: "inline-block", float: "left", transform: "translateX(25px)" }}>
                   <Image
                     style={{ marginLeft: "auto", marginRight: "auto" }}
                     // alt={singleOption.label}
@@ -225,90 +214,79 @@ export default function userPending() {
                       padding: "10px",
                     }}
                   >
-                    {/* <table>
-                      <tbody> */}
-                        <tr>
-                          <td
-                            style={{
-                              fontWeight: "bold",
-                              transform: "translateY(-15px) translateX(10px)",
-                            }}
-                          >
-                            {user.name} {user.surname}
-                          </td>
-                        </tr>
-                        <tr>
-                          <td
-                            style={{
-                              fontWeight: "lighter",
-                              transform: "translateY(-15px) translateX(10px)",
-                            }}
-                          >
-                            Tel: {user.phoneNumber}
-                          </td>
-                        </tr>
-                        {/* <div>Request</div> */}
-                        
-                        {/* <br /> */}
-                        <div 
-                          style={{
-                            // border: "2px solid",
-                            overflow: "auto",
-                            margin: "10px 0px 2px 0px",
-                            paddingLeft: "10px",
-                            transform: "translateY(-10px) translateX(-60px)",
-                          }}
-                        >
-                          {user.request}
-                        </div>
-                        
-                        {/* <br /> */}
-                        <Button
-                          type="button"
-                          variant="outlined"
-                          onClick={() =>
-                            statusChange(user.bookingId, "declined")
-                          }
-                          style={{
-                            // alignSelf: "center",
-                            display: "inline-block",
-                            height: 35,
-                            width: 100,
-                            fontSize: "15px",
-                            fontWeight: "bold",
-                            borderRadius: "10px",
-                            borderColor: COLOR.background,
-                            margin: "4px 10px",
-                            marginBottom: "10px",
-                            color: COLOR.background,
-                          }}
-                        >
-                          DECLINED
-                        </Button>
-                        <Button
-                          type="button"
-                          variant="contained"
-                          onClick={() =>
-                            statusChange(user.bookingId, "accepted")
-                          }
-                          style={{
-                            // alignSelf: "center",
-                            // fontWeight: "bold",
-                            // transform: "translateX(-10px)",
-                            display: "inline-block",
-                            height: 35,
-                            width: 100,
-                            fontSize: "15px",
-                            borderRadius: "10px",
-                            margin: "4px 10px",
-                            marginBottom: "10px",
-                            // padding: "5px 16px 5px 16px"
-                          }}
-                        >
-                          ACCEPT
-                        </Button>
-                      {/* </tbody>
-                    </table> */}
+                    <tr>
+                      <td
+                        style={{
+                          fontWeight: "bold",
+                          transform: "translateY(-15px) translateX(35px)",
+                        }}
+                      >
+                        {user.name} {user.surname}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        style={{
+                          fontWeight: "lighter",
+                          transform: "translateY(-15px) translateX(35px)",
+                        }}
+                      >
+                        Tel: {user.phoneNumber}
+                      </td>
+                    </tr>
+                    
+                    <div 
+                      style={{
+                        overflow: "auto",
+                        margin: "10px 0px 2px 0px",
+                        paddingLeft: "10px",
+                        transform: "translateY(-10px) translateX(-40px)",
+                      }}
+                    >
+                      {user.request}
+                    </div>
+                    
+                    <Button
+                      type="button"
+                      variant="outlined"
+                      onClick={() =>
+                        statusChange(user.bookingId, "declined")
+                      }
+                      style={{
+                        display: "inline-block",
+                        height: 35,
+                        width: 100,
+                        fontSize: "15px",
+                        fontWeight: "bold",
+                        borderRadius: "10px",
+                        borderColor: COLOR.background,
+                        margin: "4px 10px",
+                        marginBottom: "10px",
+                        color: COLOR.background,
+                        transform: "translateX(25px)"
+                      }}
+                    >
+                      DECLINED
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="contained"
+                      onClick={() =>
+                        statusChange(user.bookingId, "accepted")
+                      }
+                      style={{
+                        display: "inline-block",
+                        height: 35,
+                        width: 100,
+                        fontSize: "15px",
+                        borderRadius: "10px",
+                        margin: "4px 10px",
+                        marginBottom: "10px",
+                        transform: "translateX(25px)"
+                      }}
+                    >
+                      ACCEPT
+                    </Button>
                   </div>
                 </div>
 
@@ -330,10 +308,7 @@ export default function userPending() {
             Looks like there are no more requests for this trip. Please return
             to the Request page
           </div>
-          // </div>
         )}
-      {/* </div> */}
-      {/* ); */}
     </div>
   );
 }
