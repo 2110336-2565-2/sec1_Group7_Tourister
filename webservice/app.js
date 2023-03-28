@@ -5,6 +5,7 @@ const logger = require('morgan')
 const mongoose = require('mongoose')
 const dbConfig = require('./configs/database')
 const MyLogger = require('./middlewares/myLogger')
+const { StartUpdateUsersBalanceEveryMidnight } = require('./services/user/balanceUpdateService')
 
 const apiRoute = require('./routes/api')
 const authRoute = require('./routes/auth')
@@ -53,6 +54,7 @@ const mongo_uri = dbConfig.MONGODB_URI;
 mongoose.Promise = global.Promise;
 mongoose.connect(mongo_uri, { useNewUrlParser : true}, () => {
      console.log("database connection established!\nuri: ", mongo_uri)
+     StartUpdateUsersBalanceEveryMidnight();
     }, (e) => {
         console.log("database connection error: ", e)
     });
