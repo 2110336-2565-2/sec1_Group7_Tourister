@@ -121,10 +121,15 @@ export default function userPending() {
       style={{
         // borderBottom: `2px solid ${COLOR.paleblue}`,
         padding: "1em 1em 0.25em 0.25em ",
+        // border: `1px solid grey`,
+        // display: "block",
+        // width: "100%",
+        // height: "100%",
+        // paddingRight: "30px"
       }}
     >
       {/* {userCards.length > 0 ? ( */}
-      <div>
+      {/* <div> */}
         <nav
           style={{
             display: "flex",
@@ -133,7 +138,7 @@ export default function userPending() {
           <Link
             href="/request"
             passHref
-            style={{ transform: "translateX(60px) translateY(43px)" }}
+            style={{ transform: "translateX(70px) translateY(40px)" }}
           >
             {/* <button type="button">Back</button> */}
             <button
@@ -165,25 +170,37 @@ export default function userPending() {
 
           <div
             style={{
-              transform: "translateX(-50px) translateY(50px)",
+              transform: "translateX(-50px) translateY(90px)",
             }}
           >
             All({userCards.length})
           </div>
         </nav>
-      </div>
-      <hr
-        style={{
-          border: "1px solid",
-          borderColor: COLOR.paleblue,
-          width: "100%",
-        }}
-      />
-      <div>
+
+
+        {/* <hr style={{ border: "1px solid", borderColor: COLOR.paleblue, width: "100%", margin: 0 }} /> */}
+        <hr 
+          style={{
+            margin: 0,
+            borderTop: `2px solid ${COLOR.paleblue}`,
+          }}
+        />
+
         {userCards.length > 0 ? (
           <div>
             {userCards.map((user: any) => (
-              <div key={user.userId}>
+              <div 
+                key={user.userId}
+                style={{
+                  display: "block",
+                  // height: "auto",
+                  overflow: "auto",
+                  width: "100%",
+                  borderBottom: `1px solid grey`,
+                  // border: `10px solid grey`,
+                  padding: "2em 1em 0.25em 2em ",
+                }}
+              >
                 {isDraft ? (
                   <button type="button">
                     <DriveFileRenameOutlineIcon />
@@ -208,8 +225,8 @@ export default function userPending() {
                       padding: "10px",
                     }}
                   >
-                    <table>
-                      <tbody>
+                    {/* <table>
+                      <tbody> */}
                         <tr>
                           <td
                             style={{
@@ -231,7 +248,21 @@ export default function userPending() {
                           </td>
                         </tr>
                         {/* <div>Request</div> */}
-                        <div>{user.request}</div>
+                        
+                        {/* <br /> */}
+                        <div 
+                          style={{
+                            // border: "2px solid",
+                            overflow: "auto",
+                            margin: "10px 0px 2px 0px",
+                            paddingLeft: "10px",
+                            transform: "translateY(-10px) translateX(-60px)",
+                          }}
+                        >
+                          {user.request}
+                        </div>
+                        
+                        {/* <br /> */}
                         <Button
                           type="button"
                           variant="outlined"
@@ -240,10 +271,15 @@ export default function userPending() {
                           }
                           style={{
                             // alignSelf: "center",
-                            transform: "translateX(-10px)",
+                            display: "inline-block",
+                            height: 35,
+                            width: 100,
+                            fontSize: "15px",
+                            fontWeight: "bold",
                             borderRadius: "10px",
                             borderColor: COLOR.background,
                             margin: "4px 10px",
+                            marginBottom: "10px",
                             color: COLOR.background,
                           }}
                         >
@@ -257,15 +293,22 @@ export default function userPending() {
                           }
                           style={{
                             // alignSelf: "center",
-                            transform: "translateX(-10px)",
+                            // fontWeight: "bold",
+                            // transform: "translateX(-10px)",
+                            display: "inline-block",
+                            height: 35,
+                            width: 100,
+                            fontSize: "15px",
                             borderRadius: "10px",
                             margin: "4px 10px",
+                            marginBottom: "10px",
+                            // padding: "5px 16px 5px 16px"
                           }}
                         >
                           ACCEPT
                         </Button>
-                      </tbody>
-                    </table>
+                      {/* </tbody>
+                    </table> */}
                   </div>
                 </div>
 
@@ -289,7 +332,7 @@ export default function userPending() {
           </div>
           // </div>
         )}
-      </div>
+      {/* </div> */}
       {/* ); */}
     </div>
   );
