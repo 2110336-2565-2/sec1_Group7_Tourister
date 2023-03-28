@@ -4,6 +4,7 @@ const Booking = require("../models/Booking")
 const { tryCatchMongooseService } = require('../utils/utils')
 const bcrypt = require('bcrypt')
 const Program = require('../models/Program')
+const Notification = require('../models/Notification')
 const { verifyToken } = require('../services/jwtService')
 
 const BookingController = {
@@ -85,6 +86,20 @@ const BookingController = {
             const booking = new Booking(payload);
             await booking.save()
             console.log(booking)
+
+            //Nofify guide
+            const program = await Program.findById(programId)
+
+            const notification = new Notification({
+                user : program.guide,
+                type : "newrequest",
+                title : "New Booking Request",
+                message : `${user.name} ${user.surname} requested to join ${program.name}`
+
+            });
+            await notification.save()
+            console.log(notification)
+
             return {
                 code: 201,
                 data: booking, 
