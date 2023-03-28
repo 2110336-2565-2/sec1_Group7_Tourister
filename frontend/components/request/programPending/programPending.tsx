@@ -215,7 +215,7 @@ export default function programPending() {
               <div 
                 key={program._id}
                 style={{
-                  height: "215px",
+                  height: "220px",
                   width: "100%",
                   // border: `10px solid ${COLOR.paleblue}`,
                   borderBottom: `2px solid ${COLOR.paleblue}`, 
@@ -311,7 +311,7 @@ export default function programPending() {
                   <div
                     style={{
                       // color: COLOR.primary,
-                      transform: "translateY(-50px) translateX(-20px)",
+                      transform: "translateY(-50px) translateX(-5px)",
                       margin: "0 16em",
                       display: "flex",
                       // textDecoration: "none",
@@ -345,7 +345,7 @@ export default function programPending() {
                       borderRadius: "10px 0 0 0",
                       textAlign: "right",
                       fontWeight: "bold",
-                      transform: "translateY(-25px) translateX(5px)",
+                      transform: "translateY(-25px) translateX(17px)",
                       // textDecoration: "none",
                       // textDecorationLine: "none",
                     }}
