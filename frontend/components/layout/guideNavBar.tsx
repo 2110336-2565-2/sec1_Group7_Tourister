@@ -47,7 +47,7 @@ export default function GuideNavBar() {
           label="Notication"
           value="/notification"
           icon={<NotificationsNoneOutlinedIcon fontSize="large" />}
-          onClick={() => onLink("/trips")}
+          onClick={() => onLink("/notification")}
         />
         <BottomNavigationAction
           label="Account"

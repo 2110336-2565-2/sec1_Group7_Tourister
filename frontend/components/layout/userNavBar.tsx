@@ -41,7 +41,7 @@ export default function userNavBar() {
             label="Notication" 
             value="/notification" 
             icon={<NotificationsNoneOutlinedIcon fontSize="large"/>} 
-            onClick={()=>onLink("/search")}
+            onClick={()=>onLink("/notification")}
           />
           <BottomNavigationAction 
             label="Account" 
