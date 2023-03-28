@@ -6,6 +6,7 @@ const bcrypt = require('bcrypt')
 const Program = require('../models/Program')
 const Notification = require('../models/Notification')
 const { verifyToken } = require('../services/jwtService')
+const User = require('../models/User')
 
 const BookingController = {
     /**
@@ -79,6 +80,15 @@ const BookingController = {
                 code: 400,
                 message: "you already booked this program",
             }
+            const balance = (await User.findById(user.id)).remainingAmount
+            const program = await Program.findById(programId)
+            if(balance < program.price) return {
+                code: 400,
+                message: "you don't have enough balance",
+            }
+            else {
+                await User.findByIdAndUpdate(user.id, { remainingAmount: balance - program.price })
+            }
 
             const payload = req.body
             payload.program = programId
@@ -88,7 +98,6 @@ const BookingController = {
             console.log(booking)
 
             //Nofify guide
-            const program = await Program.findById(programId)
 
             const notification = new Notification({
                 user : program.guide,
@@ -257,6 +266,9 @@ const BookingController = {
             const bookingId = req.params.id
             const booking = await Booking.findByIdAndDelete(bookingId)
 
+            const program = await Program.findById(booking.program)
+            await User.findByIdAndUpdate(program.guide, { $inc: { num_booking: -1, remainingAmount: program.price } })
+            
             return {
                 code: 200,
                 data: booking,
@@ -301,6 +313,10 @@ const BookingController = {
             const bookingId = req.params.id
             await Booking.findByIdAndUpdate(bookingId, { $set: {status:"declined"} })
             const updatedBooking = await Booking.findById(bookingId)
+            
+            const program = await Program.findById(updatedBooking.program)
+            await User.findByIdAndUpdate(updatedBooking.user, { $inc: { num_booking: -1, remainingAmount: program.price } })
+
             return {
                 code: 204,
                 data: updatedBooking,
