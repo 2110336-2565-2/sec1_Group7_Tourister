@@ -153,8 +153,9 @@ export default function programPending() {
   return (
     <div
       style={{
-        borderBottom: `2px solid ${COLOR.paleblue}`,
-        padding: "1em 1em 0.25em 0.25em ",
+        // borderBottom: `2px solid ${COLOR.paleblue}`,
+        padding: "1em 0em 0.25em 0em ",
+        // padding: "2em 1em 0.25em 2em ",
       }}
     >
       <div
@@ -162,9 +163,12 @@ export default function programPending() {
           textAlign: "center",
           color: "black",
           margin: "0",
-          paddingTop: "20px",
-          fontSize: "35px",
-          fontWeight: "bold",
+          paddingTop: "35px",
+          paddingBottom: "20px",
+          fontFamily: "sans-serif",
+          fontSize: "30px",
+          fontWeight: "900",
+          textTransform: "uppercase",
         }}
       >
         Request
@@ -175,6 +179,7 @@ export default function programPending() {
             <Link
               href={`/request/userPending/${program._id}`}
               key={program._id}
+              style={{ textDecoration: "none" }}
             >
               <div style={{ display: "inline-block", float: "left" }}>
                 {program.dayTrips && program.dayTrips[0] ? (
@@ -185,7 +190,9 @@ export default function programPending() {
                       width: "75px",
                       height: "75px",
                       padding: "0px 10px",
+                      paddingTop: "20px",
                       borderRadius: 12,
+                      transform: "translateX(20px)"
                     }}
                   />
                 ) : (
@@ -198,15 +205,27 @@ export default function programPending() {
                       width: "75px",
                       height: "75px",
                       padding: "0px 10px",
+                      paddingTop: "20px",
                       borderRadius: 12,
+                      transform: "translateX(20px)"
                     }}
                   />
                 )}
               </div>
-              <div key={program._id}>
+              <div 
+                key={program._id}
+                style={{
+                  height: "215px",
+                  width: "100%",
+                  // border: `10px solid ${COLOR.paleblue}`,
+                  borderBottom: `2px solid ${COLOR.paleblue}`, 
+                  paddingTop: "10px",
+                }}
+              >
                 <ul>
                   <div
                     style={{
+                      color: "black",
                       display: "inline-block",
                       float: "left",
                       padding: "10px",
@@ -218,14 +237,14 @@ export default function programPending() {
                           <td
                             style={{
                               fontWeight: "bold",
-                              transform: "translateY(-15px) translateX(10px)",
+                              transform: "translateY(-15px) translateX(30px)",
                             }}
                           >
                             {program.name}
                           </td>
                         </tr>
                         <tr>
-                          <td style={{ transform: "translateY(-10px)" }}>
+                          <td style={{ transform: "translateY(-10px) translateX(20px)" }}>
                             <Chip
                               icon={<LocationOnOutlined />}
                               size="small"
@@ -249,11 +268,11 @@ export default function programPending() {
                     </table>
                   </div>
                   <br></br>
+                  {/* <br></br>
                   <br></br>
-                  <br></br>
-                  <br></br>
+                  <br></br> */}
 
-                  <div style={{ display: "inline-block" }}>
+                  <div style={{ display: "inline-block", color:"black", transform:"translateX(-20px)" }}>
                     <>
                       <CalendarMonth
                         style={{
@@ -271,7 +290,7 @@ export default function programPending() {
                       , {program.startTime} to
                     </>
                   </div>
-                  <div>
+                  <div style={{ display: "inline-block", color:"black", transform:"translateX(-20px)" }}>
                     <>
                       <CalendarMonth
                         style={{
@@ -291,20 +310,26 @@ export default function programPending() {
                   </div>
                   <div
                     style={{
-                      color: COLOR.primary,
-                      transform: "translateY(-45px)",
-                      margin: "0 18em",
+                      // color: COLOR.primary,
+                      transform: "translateY(-50px) translateX(-20px)",
+                      margin: "0 16em",
                       display: "flex",
+                      // textDecoration: "none",
+                      // textDecorationLine: "none",
                     }}
                   >
                     <div
                       style={{
+                        color: COLOR.primary,
                         backgroundColor: "transparent",
-                        padding: "8px 16px 8px",
+                        padding: "10px 24px 10px",
                         fontWeight: "bold",
                         border: "1px solid grey",
                         borderRadius: 10,
                         textAlign: "center",
+                        // textDecoration: "none",
+                        // textDecorationLine: "none",
+                        letterSpacing: "1.5px"
                       }}
                     >
                       {program.num_participant}/{program.max_participant}
@@ -312,10 +337,17 @@ export default function programPending() {
                   </div>
                   <div
                     style={{
-                      color: COLOR.success,
+                      width: "150px",
+                      margin: "0 10em",
+                      color: "black",
+                      padding: "7px 24px 7px",
+                      backgroundColor: COLOR.yellow,
+                      borderRadius: "10px 0 0 0",
                       textAlign: "right",
                       fontWeight: "bold",
-                      transform: "translateX(-30px) translateY(-20px)",
+                      transform: "translateY(-25px) translateX(5px)",
+                      // textDecoration: "none",
+                      // textDecorationLine: "none",
                     }}
                   >
                     {program.num_pending} more request(s)
@@ -326,7 +358,13 @@ export default function programPending() {
           ))}
         </div>
       ) : (
-        <div>
+        <div
+          style={{
+            margin: "auto",
+            color: "grey",
+            textAlign: "center"
+          }}
+        >
           No requests yet! Keep checking back for new opportunities, or create
           new trip to attract interested tourists.
         </div>
