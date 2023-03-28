@@ -24,14 +24,14 @@ import tourist from "../../../images/tourist.png";
 var programName = "";
 export default function userPending() {
   const [userCards, setuserCards] = useState<[UserCardInterface]>([
-    {
-      bookingId: "",
-      userId: "",
-      name: "",
-      surname: "",
-      request: "",
-      phoneNumber: "",
-    },
+    // {
+    //   bookingId: "",
+    //   userId: "",
+    //   name: "",
+    //   surname: "",
+    //   request: "",
+    //   phoneNumber: "",
+    // },
   ]);
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const router = useRouter();
