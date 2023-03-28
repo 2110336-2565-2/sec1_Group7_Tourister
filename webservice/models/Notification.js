@@ -22,7 +22,7 @@ const NotificationSchema = new mongoose.Schema({
     },
     notifyTime : {
         type : Date,
-        default : Date.now()
+        default : Date.now
     },
     isRead : {
         type : Boolean,
