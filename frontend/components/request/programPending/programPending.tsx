@@ -140,7 +140,7 @@ export default function programPending() {
     month: "short",
     day: "numeric",
   });
-  if (programs.length === 0) {
+  if (programs.length <= 0) {
     return (
       <>
         <Stack alignItems="center">
