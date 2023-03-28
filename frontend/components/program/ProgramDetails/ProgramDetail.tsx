@@ -186,7 +186,7 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
           gap: "0.2rem",
           paddingInline: "5%",
           marginTop: "1rem",
-          marginBottom: "1rem",
+          marginBottom: "1.5rem",
         }}
       >
         <div style={{ fontSize: "1.5rem", marginBottom: "0.7rem" }}>
@@ -395,8 +395,8 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
           </AccordionSummary>
           <AccordionDetails
             style={{
-              marginTop: "-1.5rem",
-              paddingBottom: "3rem",
+              marginTop: "-2.5rem",
+              marginBottom: "0rem",
               color: COLOR.text,
             }}
           >
