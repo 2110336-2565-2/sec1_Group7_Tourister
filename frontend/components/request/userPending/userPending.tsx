@@ -1,14 +1,16 @@
 "use client";
 
-import { useEffect } from "react";
+import { Fragment, useEffect } from "react";
 import { useState } from "react";
-import { Button } from "@mui/material";
+import { Button, CircularProgress, Stack } from "@mui/material";
 import { useRouter } from "next/router";
 import {
   acceptBookingById,
   declineBookingById,
   getAllBookings,
 } from "@/services/bookingService";
+import Image from "next/image";
+import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import { UserCardInterface } from "@/interfaces/UserCardInterface";
 import { getUserById } from "@/services/userService";
 import Link from "next/link";
@@ -16,7 +18,8 @@ import { getProgramById, updateProgramById } from "@/services/programService";
 import { UserInterface } from "@/interfaces/UserInterface";
 import { COLOR } from "@/theme/globalTheme";
 import { UserPendingCardForGuide } from "@/components/program/UserPendingCardForGuide";
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import tourist from "../../../images/tourist.png";
 
 var programName = "";
 export default function userPending() {
@@ -34,7 +37,7 @@ export default function userPending() {
   const router = useRouter();
   const { programId } = router.query;
   // console.log(programId);
-
+  var isDraft = false;
   async function fetchData() {
     var userArr: any = [];
     var requestArr: any = [];
@@ -91,15 +94,6 @@ export default function userPending() {
     if (status === "accepted") {
       const res = await acceptBookingById(bookingId);
       console.log(res.data);
-      // const programid = res.data.program._id;
-
-      // const program = await getProgramById(programid);
-      // const num_participant = program.data.num_participant + 1;
-      // const response = await updateProgramById(programid, {
-      //   num_participant: num_participant,
-      // });
-      // console.log("eeee");
-      // console.log(response);
     } else if (status === "declined") {
       const res = declineBookingById(bookingId);
       // console.log(res);
@@ -112,100 +106,191 @@ export default function userPending() {
   }, []);
   console.log(userCards);
 
+  // if (userCards.length <= 0) {
+  //   return (
+  //     <>
+  //       <Stack alignItems="center">
+  //         <CircularProgress />
+  //       </Stack>
+  //     </>
+  //   );
+  // }
+
   return (
     <div
-    style={{
-      // borderBottom: `2px solid ${COLOR.paleblue}`,
-      padding: "1em 1em 0.25em 0.25em ",
-    }}
+      style={{
+        // borderBottom: `2px solid ${COLOR.paleblue}`,
+        padding: "1em 1em 0.25em 0.25em ",
+      }}
     >
-    {/* {userCards.length > 0 ? ( */}
-      <nav
-        style={{
-          display: "flex",
-        }}
-      >
-        <Link 
-          href="/request" passHref
-          style={{ transform: "translateX(60px) translateY(43px)" }}
-        >
-          {/* <button type="button">Back</button> */}
-          <button 
-            style={{margin:".3rem 0px 0px 0px",background:"white",border:"0px",transform:"translate(-2.3rem,.3rem)"}} 
-            type="button"><ChevronLeftIcon/>
-          </button>
-        </Link>
-        <h2
+      {/* {userCards.length > 0 ? ( */}
+      <div>
+        <nav
           style={{
-            alignItems: "center",
-            textAlign: "center",
-            margin: "auto",
-            alignSelf: "center",
-            paddingBottom: "30px",
-            paddingTop: "45px",
-            fontWeight: "bold",
-            // transform: "translateX(20px)"
+            display: "flex",
           }}
         >
-          {programName}
-        </h2>
-        {/* <div> All ({userCards.length})</div> */}
-        
+          <Link
+            href="/request"
+            passHref
+            style={{ transform: "translateX(60px) translateY(43px)" }}
+          >
+            {/* <button type="button">Back</button> */}
+            <button
+              style={{
+                margin: ".3rem 0px 0px 0px",
+                background: "white",
+                border: "0px",
+                transform: "translate(-2.3rem,.3rem)",
+              }}
+              type="button"
+            >
+              <ChevronLeftIcon />
+            </button>
+          </Link>
+          <h2
+            style={{
+              alignItems: "center",
+              textAlign: "center",
+              margin: "auto",
+              alignSelf: "center",
+              paddingBottom: "45px",
+              paddingTop: "45px",
+              fontWeight: "bold",
+              // transform: "translateX(20px)"
+            }}
+          >
+            {programName}
+          </h2>
 
-        <div
-          style={{
-            transform: "translateX(-50px) translateY(90px)"
-          }}
-          > 
-        All({userCards.length})
-        </div>
-      </nav>
-      <hr style={{border: "1px solid", borderColor: COLOR.paleblue, width: "100%"}}/>
-      {userCards.length > 0 ? (
-        <div>
-          {userCards.map((user: any) => (
-            <div key={user.userId}>
-              <UserPendingCardForGuide
-                key={user._id}
-                user={user}
-                isComplete={false}
-              />
-              {/* <div>
-                {user.name} {user.surname}
+          <div
+            style={{
+              transform: "translateX(-50px) translateY(50px)",
+            }}
+          >
+            All({userCards.length})
+          </div>
+        </nav>
+      </div>
+      <hr
+        style={{
+          border: "1px solid",
+          borderColor: COLOR.paleblue,
+          width: "100%",
+        }}
+      />
+      <div>
+        {userCards.length > 0 ? (
+          <div>
+            {userCards.map((user: any) => (
+              <div key={user.userId}>
+                {isDraft ? (
+                  <button type="button">
+                    <DriveFileRenameOutlineIcon />
+                  </button>
+                ) : (
+                  <Fragment />
+                )}
+                <div style={{ display: "inline-block", float: "left" }}>
+                  <Image
+                    style={{ marginLeft: "auto", marginRight: "auto" }}
+                    // alt={singleOption.label}
+                    src={tourist}
+                    width={50}
+                    height={50}
+                  />
+                </div>
+                <div>
+                  <div
+                    style={{
+                      display: "inline-block",
+                      float: "left",
+                      padding: "10px",
+                    }}
+                  >
+                    <table>
+                      <tbody>
+                        <tr>
+                          <td
+                            style={{
+                              fontWeight: "bold",
+                              transform: "translateY(-15px) translateX(10px)",
+                            }}
+                          >
+                            {user.name} {user.surname}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td
+                            style={{
+                              fontWeight: "lighter",
+                              transform: "translateY(-15px) translateX(10px)",
+                            }}
+                          >
+                            Tel: {user.phoneNumber}
+                          </td>
+                        </tr>
+                        {/* <div>Request</div> */}
+                        <div>{user.request}</div>
+                        <Button
+                          type="button"
+                          variant="outlined"
+                          onClick={() =>
+                            statusChange(user.bookingId, "declined")
+                          }
+                          style={{
+                            // alignSelf: "center",
+                            transform: "translateX(-10px)",
+                            borderRadius: "10px",
+                            borderColor: COLOR.background,
+                            margin: "4px 10px",
+                            color: COLOR.background,
+                          }}
+                        >
+                          DECLINED
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="contained"
+                          onClick={() =>
+                            statusChange(user.bookingId, "accepted")
+                          }
+                          style={{
+                            // alignSelf: "center",
+                            transform: "translateX(-10px)",
+                            borderRadius: "10px",
+                            margin: "4px 10px",
+                          }}
+                        >
+                          ACCEPT
+                        </Button>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <br></br>
+                <br></br>
+                <br></br>
+                <br></br>
               </div>
-              <div>Tel: {user.phoneNumber}</div>
-              <div>Request: </div> */}
-              {/* <div>{user.request}</div> */}
-              {/* <Button
-                type="button"
-                variant="outlined"
-                onClick={() => statusChange(user.bookingId, "declined")}
-              >
-                DECLINED
-              </Button>
-              <Button
-                type="button"
-                variant="contained"
-                onClick={() => statusChange(user.bookingId, "accepted")}
-              >
-                ACCEPT
-              </Button>
-              <p>---------------------------------------------------------</p> */}
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div
-          style={{
-            margin: "auto",
-            color: "grey",
-            textAlign: "center"
-          }}
-        >
-          Looks like there are no more requests for this trip. Please return to
-          the Request page
-        </div>
-      )}
+            ))}
+          </div>
+        ) : (
+          <div
+            style={{
+              margin: "auto",
+              color: "grey",
+              textAlign: "center",
+            }}
+          >
+            Looks like there are no more requests for this trip. Please return
+            to the Request page
+          </div>
+          // </div>
+        )}
+      </div>
+      {/* ); */}
     </div>
   );
 }
