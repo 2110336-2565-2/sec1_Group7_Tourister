@@ -120,61 +120,63 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
 
   return (
     <>
-      <button style={{ border: "0px" }} type="button" onClick={onGoBack}>
-        <ChevronLeft />
+      { /* Back button*/ }
+      <button style={{ padding:`0.5rem 1rem`,backgroundColor:"transparent",border: "0px" }} type="button" onClick={onGoBack}>
+        <ChevronLeft style={{fontSize:"1.5rem",color:"gray"}}/>
       </button>
+
+      { /* Location Slideshow */ }
       <ImageSlider dayTrips={program.dayTrips!}/>
 
-
       {/*----------program description----------- */}
-      <div style={{padding: "10px 0px"}}>
-      <h2>{program.name}</h2>
-      <Chip
-        icon={<LocationOnOutlined />}
-        size="small"
-        sx={{
-          backgroundColor: COLOR.paleblue,
-          color: COLOR.text,
-          borderRadius: 10,
-          margin: "2px 8px",
-          padding: "2px 8px",
+      <div style={{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"flex-start",gap:"0.2rem",paddingInline:"5%",marginTop:"1rem",marginBottom:"1rem"}}>
+        <div style={{fontSize:"1.5rem",marginBottom:"0.7rem"}}>{program.name}</div>
+        <Chip
+          icon={<LocationOnOutlined />}
+          size="small"
+          sx={{
+            backgroundColor: COLOR.paleblue,
+            color: COLOR.text,
+            borderRadius: 10,
+            // margin: "2px 2px",
+            padding: "2px 8px",
 
-          "& .MuiChip-icon": {
-            width: "15px",
-            height: "15px"
-          },
-        }}
-        label={program.province}
-      />
-     
-      <div>
-        <CalendarMonth style={{...iconStyle, color: COLOR.primary }}fontSize="medium"/>
-        {`${formattedStartDate}, ${program.startTime}`} -{" "}
-        {`${formattedEndDate}, ${program.endTime}`}{" "}
+            "& .MuiChip-icon": {
+              width: "15px",
+              height: "15px"
+            },
+          }}
+          label={program.province}
+        />
+      
+        <div>
+          <CalendarMonth style={{...iconStyle, color: COLOR.primary }}fontSize="medium"/>
+          {`${formattedStartDate}, ${program.startTime}`} -{" "}
+          {`${formattedEndDate}, ${program.endTime}`}{" "}
+        </div>
+
+        <div style={{color:COLOR.text}}>
+            <PeopleAltOutlined  style={{...iconStyle}} fontSize="medium"/> 
+            {bookings.length} / {program.max_participant} 
+        </div>
+
+        <div style={{color:COLOR.text}}>
+            <LanguageOutlined  style={{...iconStyle}} fontSize="medium"/> 
+          {program.language?.join("/")}
+        </div>
       </div>
 
-      <div>
-          <PeopleAltOutlined  style={{...iconStyle}} fontSize="medium"/> 
-          {bookings.length} / {program.max_participant} 
-      </div>
-
-      <div>
-          <LanguageOutlined  style={{...iconStyle}} fontSize="medium"/> 
-        {program.language?.join("/")}
-      </div>
-
-      </div>
-
-      <Accordion>
+      <Accordion style={{paddingInline:"2.5%"}}>
         <AccordionSummary expandIcon={<ExpandMore />}>
           <h3>Description</h3>
         </AccordionSummary>
-        <AccordionDetails>
+        <AccordionDetails style={{marginTop:"-3rem",color:COLOR.text}}>
           <p>{program.description}</p>
         </AccordionDetails>
       </Accordion>
 
-      <Accordion>
+      {/*----------program schedule----------- */}
+      <Accordion style={{paddingInline:"2.5%"}}>
         <AccordionSummary expandIcon={<ExpandMore />}>
           <h3>Schedule</h3>
         </AccordionSummary>
@@ -185,14 +187,11 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
           { /* Meeting point */}
           <div style={{display:"flex",flexDirection:"row",justifyContent:"flex-start",alignItems:"center"}}>
             <LocationOnOutlined style={{padding:"0.5rem",width:"1.5rem",height:"1.5rem",borderRadius:"50%",backgroundColor:COLOR.primary,color:"white"}}/>
+            <h3 style={{paddingLeft:"2.5%"}}>{program.startTime}</h3>
             <h3 style={{paddingLeft:"2.5%"}}>Meeting Point</h3>
           </div>
-
-          <div style={{width:"100%",background:"red"}}>
-            <div>{program.startTime}</div>
+          <div style={{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"flex-start",paddingLeft:"15%",marginTop:"-0.5rem",marginBottom:"0.5rem"}}>
             <div>{program.meetLocation}</div>
-            {(program.descriptionOfMeetLocation)&&(<div>{program.descriptionOfMeetLocation}</div>)}
-
             <Chip
                     icon={<LocationOnOutlined />}
                     size="small"
@@ -200,7 +199,7 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
                       backgroundColor: COLOR.paleblue,
                       color: COLOR.text,
                       borderRadius: 10,
-                      margin: "2px 0px",
+                      margin: "3px 0px",
                       padding: "2px 8px",
                       "& .MuiChip-icon": {
                         width: "15px",
@@ -209,6 +208,7 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
                     }}
                     label={program.meetProvince}
                   />
+            {(program.descriptionOfMeetLocation)&&(<div style={{fontSize:"0.85rem",color:COLOR.text}}>{program.descriptionOfMeetLocation}</div>)}
           </div>
 
           { /* Attraction and activities*/}
@@ -223,20 +223,19 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
           { /* Return point */}
           <div style={{display:"flex",flexDirection:"row",justifyContent:"flex-start",alignItems:"center"}}>
             <LocationOnOutlined style={{padding:"0.5rem",width:"1.5rem",height:"1.5rem",borderRadius:"50%",backgroundColor:COLOR.primary,color:"white"}}/>
+            <h3 style={{paddingLeft:"2.5%"}}>{program.endTime}</h3>
             <h3 style={{paddingLeft:"2.5%"}}>Return Point</h3>
           </div>
-          <div style={{width:"100%",background:"red"}}>
-            <div>{program.endTime}</div>
+          <div style={{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"flex-start",paddingLeft:"15%",marginTop:"-0.5rem",marginBottom:"0.5rem"}}>
             <div>{program.endLocation}</div>
-            {(program.descriptionOfEndLocation)&&(<div>{program.descriptionOfEndLocation}</div>)}
-                        <Chip
+            <Chip
                     icon={<LocationOnOutlined />}
                     size="small"
                     sx={{
                       backgroundColor: COLOR.paleblue,
                       color: COLOR.text,
                       borderRadius: 10,
-                      margin: "2px 0px",
+                      margin: "3px 0px",
                       padding: "2px 8px",
                       "& .MuiChip-icon": {
                         width: "15px",
@@ -245,6 +244,7 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
                     }}
                     label={program.endProvince}
                   />
+            {(program.descriptionOfEndLocation)&&(<div style={{fontSize:"0.85rem",color:COLOR.text}}>{program.descriptionOfEndLocation}</div>)}
           </div>
 
         </AccordionDetails>
@@ -252,13 +252,13 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
       </Accordion>
       {
         isGuide &&
-        <Accordion>
-        <AccordionSummary expandIcon={<ExpandMore />}>
-          <h3>Participants</h3>
-        </AccordionSummary>
-        <AccordionDetails>
-          <ParticipantsDetail bookings={bookings} />
-        </AccordionDetails>
+        <Accordion style={{paddingInline:"2.5%"}}>
+          <AccordionSummary expandIcon={<ExpandMore />}>
+            <h3>Participants</h3>
+          </AccordionSummary>
+          <AccordionDetails style={{marginTop:"-1.5rem",paddingBottom:"3rem",color:COLOR.text}}>
+            <ParticipantsDetail bookings={bookings} />
+          </AccordionDetails>
         </Accordion>
       }
       {

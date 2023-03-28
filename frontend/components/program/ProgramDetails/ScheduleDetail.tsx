@@ -59,7 +59,7 @@ const ScheduleDetail: FC<IScheduleDetailProps> = ({ program, dayTrips }) => {
                 style={{ display: "flex",justifyContent:"flex-start",alignItems: "flex-start" , flexDirection:"row", gap:"1.25rem",paddingLeft:"7.5%",marginBottom:"1.75rem"}}
                 key={index}
               >
-          
+                { /* Picture box */}  
                 <div style={{display:"flex",flexDirection:"column",alignItems:"center"}}>
                   <div style={{alignSelf:"center"}}>{attraction.time}</div>
                     <img
@@ -87,7 +87,7 @@ const ScheduleDetail: FC<IScheduleDetailProps> = ({ program, dayTrips }) => {
                     />
                 </div> */}
 
-
+                { /* Attraction info box */} 
                 <div>
                   <div>{attraction.location}</div>
                   <Chip
