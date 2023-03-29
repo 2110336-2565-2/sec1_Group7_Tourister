@@ -27,8 +27,15 @@ import FormHelperText from '@mui/material/FormHelperText';
 import Checkbox from '@mui/material/Checkbox';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import AssignmentIcon from '@mui/icons-material/Assignment';
 import { isHttpStatusOk } from "@/utils/Utils";
+import { FormInputMultilineText } from "@/components/formInput/FormInputMultilineText";
+import { Timeline } from "@mui/lab";
+import TimelineItem from "@mui/lab/TimelineItem";
+import TimelineSeparator from "@mui/lab/TimelineSeparator";
+import TimelineDot from "@mui/lab/TimelineDot";
+import TimelineConnector from "@mui/lab/TimelineConnector";
+import TimelineContent from "@mui/lab/TimelineContent";
+import { AssignmentOutlined, LocationOnOutlined, MapOutlined } from "@mui/icons-material";
 
 export const StageContext = createContext(0)
 
@@ -239,9 +246,9 @@ const createTrip = () => {
   return (
     // <form style={{display:'flex', alignItems: 'center',flexDirection:'column'}}onSubmit={handleSubmit(onSubmit)}>
     // <form style={{display:'flex', alignItems: 'left',flexDirection:'column', padding:"0% 10%"}}onSubmit={handleSubmit(onSubmit)}>
-    <Form style={{paddingLeft:"3.5rem",paddingRight:"3.5rem"}}onSubmit={handleSubmit(onSubmit,onError)}>
+    <Form style={{paddingLeft:"2.5rem",paddingRight:"2.5rem"}}onSubmit={handleSubmit(onSubmit,onError)}>
       <div> {/*draft button*/}
-      <button style={{display:"flex",width:"5rem",height:"2.25rem",fontWeight:"800",color:COLOR.primary,alignItems:"center",justifyContent:"center",background:"none",borderColor:COLOR.primary,borderRadius:"12px",float:"right"}} type="button" onClick={()=>{router.push("/trips/createTrip/chooseDraft");}}><AssignmentIcon/>Draft</button>
+      <button style={{display:"flex",width:"5rem",height:"2rem",fontWeight:"600",color:COLOR.primary,alignItems:"center",justifyContent:"center",background:"none",borderColor:COLOR.primary,borderRadius:"12px",float:"right"}} type="button" onClick={()=>{router.push("/trips/createTrip/chooseDraft");}}><AssignmentOutlined style={{ width: "1.1rem", height: "1.1rem" }}/>&nbsp;Drafts</button>
       </div>
         {stage<2?(
           <Fragment>
@@ -260,7 +267,7 @@ const createTrip = () => {
               <FormInputText name="name" control={control} label="Name"/>
             </Field><Field> {/* Description */}
               <RequireFormLabel className="AsteriskRequired">Trip Description</RequireFormLabel>
-              <FormInputText name="description" control={control} label="More Information..."/>
+              <FormInputMultilineText name="description" control={control} label="More Information..."/>
             </Field><Field> {/* Price */}
               <RequireFormLabel className="AsteriskRequired">Price(THB)</RequireFormLabel>
               <FormInputText name="price" control={control} label="Price in THB"/>
@@ -270,12 +277,12 @@ const createTrip = () => {
             </Field><Field> {/* Duration */}
               <RequireFormLabel className="AsteriskRequired">Duration</RequireFormLabel>
               <label style={{marginLeft:"0.5rem"}}>{"Start"}</label>
-              <div style={{display:"flex",alignSelf:"center", gap:"1rem"}}>
+              <div style={{display:"flex",alignSelf:"center", gap:"0.6rem"}}>
                 <FormInputDate name="startDate" control={control} label="Start Date"/>
                 <FormInputTime name="startTime" control={control} label="Start Time"/>
               </div>
               <label style={{marginLeft:".5rem"}}>{"End"}</label>
-              <div style={{display:"flex",alignSelf:"center", gap:"1rem"}}>
+              <div style={{display:"flex",alignSelf:"center", gap:"0.6rem"}}>
                 <FormInputDate name="endDate" control={control} label="End Date"/>
                 <FormInputTime name="endTime" control={control} label="End Time"/>
               </div>
@@ -312,11 +319,85 @@ const createTrip = () => {
                 <div style={{border:`1px solid ${COLOR.primary}`,background:COLOR.primary}}/>
               </div>
             </div>
-            <RequireFormLabel style={{margin:"0 0 0px 0"}} className="AsteriskRequired">Schedule</RequireFormLabel>
+            <RequireFormLabel style={{margin:"0 0 0 13px"}} className="AsteriskRequired">Schedule</RequireFormLabel>
               {/* <FormInputTime name="startTime" control={control} label="" readonly={true}/> */}
               {/* <label style={{padding:"20px 10px"}}>Departure</label> */}
               {/* <label>Meeting point</label> */}
-            <Field>
+            <Timeline
+              style={{margin:"0", padding:"0"}}
+              sx={{
+                "& .MuiTimelineItem-root:before": {
+                  padding: 0,
+                  margin: 0,
+                  flex: 0
+                }
+              }}
+            >
+              <TimelineItem>
+                <TimelineSeparator>
+                  <TimelineDot color="primary" style={{marginTop: "0"}}>
+                    <LocationOnOutlined style={{ width: "1.5rem", height: "1.5rem" }}/>
+                  </TimelineDot>
+                  <TimelineConnector/>
+                </TimelineSeparator>
+                <TimelineContent style={{paddingRight: "0"}}>
+                  <Field>
+                    <label style={{fontSize:"1rem", fontWeight:"900", textShadow:"0.1px 0 black", letterSpacing:"1px"}}>
+                      {getValues("startTime")} &nbsp;&nbsp;•&nbsp;&nbsp; Meeting point
+                    </label>
+                    <div style={{fontSize:"14px", display:"flex",alignSelf:"center", gap:"0.4rem"}}>
+                      <label style={{marginTop:".6rem"}}>Location&nbsp;:</label>
+                      <FormInputText name="meetLocation" control={control} label="Name of location"/>
+                    </div>
+                    <div style={{fontSize:"14px", display:"flex",alignSelf:"center", gap:"0.4rem"}}>
+                      <label style={{marginTop:".6rem"}}>Province&nbsp;:</label>
+                      <FormInputText name="meetProvince" control={control} label="Name of province"/>
+                    </div>
+                    <FormInputText name="descriptionOfMeetLocation" control={control} label="Information"/>
+                  </Field>
+                </TimelineContent>
+              </TimelineItem>
+              <TimelineItem>
+                <TimelineSeparator>
+                  <TimelineDot style={{backgroundColor: COLOR.mint, color: "grey"}}>
+                    <MapOutlined style={{ width: "1.5rem", height: "1.5rem" }}/>
+                  </TimelineDot>
+                  <TimelineConnector />
+                </TimelineSeparator>
+                <TimelineContent style={{padding: "17px 0 6px 5px"}}>
+                  <label style={{paddingLeft: "11px", fontSize:"1rem",fontWeight:"900", textShadow:"0.1px 0 black", letterSpacing:"1px"}}>Attraction / Activities</label>
+                  <StageContext.Provider value={stage}>
+                    {days.map((d,order)=>(
+                      <DayTrip key={d.toString()} date={d} order={order} savedAttraction={getAttractionsByDate(d)} handleCB={handleCallback}/>
+                    ))}
+                  </StageContext.Provider>
+                </TimelineContent>
+              </TimelineItem>
+              <TimelineItem>
+                <TimelineSeparator>
+                  <TimelineDot color="primary">
+                    <LocationOnOutlined style={{ width: "1.5rem", height: "1.5rem" }}/>
+                  </TimelineDot>
+                </TimelineSeparator>
+                <TimelineContent style={{paddingRight: "0"}}>
+                  <Field>
+                    <label style={{marginTop:"11.5px", fontSize:"1rem", fontWeight:"900", textShadow:"0.1px 0 black", letterSpacing:"1px"}}>
+                      {getValues("endTime")} &nbsp;&nbsp;•&nbsp;&nbsp; Drop off
+                    </label>
+                    <div style={{fontSize:"14px", display:"flex",alignSelf:"center", gap:"0.4rem"}}>
+                      <label style={{marginTop:".6rem"}}>Location&nbsp;:</label>
+                      <FormInputText name="endLocation" control={control} label="Name of location"/>
+                    </div>
+                    <div style={{fontSize:"14px", display:"flex",alignSelf:"center", gap:"0.4rem"}}>
+                      <label style={{marginTop:".6rem"}}>Province&nbsp;:</label>
+                      <FormInputText name="endProvince" control={control} label="Name of province"/>
+                    </div>
+                    <FormInputText name="descriptionOfEndLocation" control={control} label="information"/>
+                  </Field>
+                </TimelineContent>
+              </TimelineItem>
+            </Timeline>
+            {/* <Field>
               <label style={{fontSize:"1.2rem",fontWeight:"900", textShadow:"1px 0 black", letterSpacing:"1px"}}>
                   {`${getValues("startTime")} •  Meeting point`}</label>
               <div style={{display:"flex",alignSelf:"center", gap:"1rem"}}>
@@ -328,17 +409,17 @@ const createTrip = () => {
               <FormInputText name="meetProvince" control={control} label="Name of province"/>
               </div>
               <FormInputText name="descriptionOfMeetLocation" control={control} label="information"/>
-            </Field>
-            <label style={{fontSize:"1.2rem",fontWeight:"900", textShadow:"1px 0 black", letterSpacing:"1px"}}>{`Attraction / Activities`}</label>
+            </Field> */}
+            {/* <label style={{fontSize:"1.2rem",fontWeight:"900", textShadow:"1px 0 black", letterSpacing:"1px"}}>{`Attraction / Activities`}</label>
             <StageContext.Provider value={stage}>
             {days.map((d,order)=>(
               <DayTrip key={d.toString()} date={d} order={order} savedAttraction={getAttractionsByDate(d)} handleCB={handleCallback}/>
             ))}
-            </StageContext.Provider>
+            </StageContext.Provider> */}
               {/* <FormInputTime name="endTime" control={control} label="" readonly={true}/> */}
               {/* <label style={{padding:"20px 10px"}}>Return</label> */}
               {/* <label>Drop off</label> */}
-            <Field>
+            {/* <Field>
             <label style={{fontSize:"1.2rem",fontWeight:"900", textShadow:"1px 0 black", letterSpacing:"1px"}}>
               {`${getValues("endTime")} •  Drop off`}</label>
               <div style={{display:"flex",alignSelf:"center", gap:"1rem"}}>
@@ -349,7 +430,7 @@ const createTrip = () => {
               <FormInputText name="endProvince" control={control} label="Name of province"/>
               </div>
               <FormInputText name="descriptionOfEndLocation" control={control} label="information"/>
-            </Field>
+            </Field> */}
             {/* <button type="button" onClick={()=>{HandleSaveDraft()}}>Save Draft</button> 
             <button type="submit">Publish</button> */}
             <div style={{display:"flex",alignSelf:"center", gap:"1rem"}}>
