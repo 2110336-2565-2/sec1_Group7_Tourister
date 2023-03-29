@@ -69,11 +69,18 @@ const editProfile = () => {
     }
 
     const reader = new FileReader();
-    reader.onload = (event) => {
+    reader.onload = async (event) => {
       const result = event.target?.result;
       if (typeof result === 'string') {
         setValue("image",(btoa(result)));
         setPreviewImg((btoa(result)))
+        if (user._id != null) console.log(await updateUserById(user._id, {image:btoa(result)}));
+    
+        if (user._id) {
+          const response = await getUserById(user._id);
+          console.log(response.data);
+          localStorage.setItem("user", JSON.stringify(response.data));
+        }
       }
     };
     reader.readAsBinaryString(file);
