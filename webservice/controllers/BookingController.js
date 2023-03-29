@@ -87,7 +87,7 @@ const BookingController = {
                 message: "you don't have enough balance",
             }
             else {
-                await User.findByIdAndUpdate(user.id, { remainingAmount: balance - program.price })
+                await User.findByIdAndUpdate(user._id, { remainingAmount: balance - program.price })
             }
 
             const payload = req.body
@@ -268,7 +268,7 @@ const BookingController = {
 
             const program = await Program.findById(booking.program)
             await User.findByIdAndUpdate(program.guide, { $inc: { num_booking: -1, remainingAmount: program.price } })
-            
+
             return {
                 code: 200,
                 data: booking,
