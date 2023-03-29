@@ -48,10 +48,15 @@ const dayTrip = ({date,order,savedAttraction,handleCB}:{date:string,order:number
   "July", "August", "September", "October", "November", "December" ];
   return (
           <Fragment>
-            <div style={{display:"flex",width:"fit-content",gap:".5rem",border:`0.1rem solid ${COLOR.primary}`,borderRadius:"1.2rem"}}>
-              <div style={{display:"flex",padding:".3rem .6rem",borderRadius:"1rem",background:COLOR.primary}}>
-                <label style={{color:"white"}}>{`Day ${order+1}`}</label></div>
-              <label style={{marginTop:".25rem",paddingRight:"2rem"}}>{`${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`}</label>
+            <div style={{borderTop:"11px solid white", margin:"7px 0 18px 0", width:"100%", transform: "translateX(-42px)"}}>
+            <div style={{display:"flex", width:"fit-content", borderRadius:"8px", WebkitBoxShadow: `inset 0px 0px 0px 1px ${COLOR.primary}`}}>
+              <div style={{display:"flex", padding:"4px 14px", borderRadius:"8px", background:COLOR.primary}}>
+                <label style={{fontSize:"13px", color:"white"}}>{`Day ${order+1}`}</label>
+              </div>
+              <label style={{fontSize:"13px", padding:"4px 14px"}}>
+                {d.toLocaleDateString('en-GB', { year:"numeric", month:"short", day:"numeric" })}
+              </label>
+            </div>
             </div>
         {attractions.map((att)=>(<Attraction key={att.id} id={att.id} t={att.time} l={att.location} p={att.province} o={att.option} f={att.file} handleDelete={handleDelete} handleCallback={handleCallback}/>))}
           <button type="button" onClick= {() => handleAdd()}>Add</button>
