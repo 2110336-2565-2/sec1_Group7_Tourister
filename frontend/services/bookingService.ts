@@ -13,7 +13,7 @@ export const getAllBookings = async () => {
     const axios_res = await axios.get(`${appConfig.BACKEND_URL}/api/booking`, configs)
     
     const res = axios_res.data as ApiResponseInterface<BookingInterface[]>
-    if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined)
+    if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined, res.tag ?? "")
     // console.log(res)
     return res;
 } 
@@ -22,7 +22,7 @@ export const getBookingById = async (id: string) => {
     const configs = localStorage.getItem("accessToken") != undefined ? { headers: { 'Authorization' : `Bearer ${localStorage.getItem("accessToken")}`} } : {}
     const axios_res = await axios.get(`${appConfig.BACKEND_URL}/api/booking/${id}`, configs)
     const res = axios_res.data as ApiResponseInterface<BookingInterface>
-    if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined)
+    if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined, res.tag ?? "")
     return res;
 }
 
@@ -32,7 +32,7 @@ export const getAllBookingsFromTourist = async (userId: string, filter: BookingF
     const axios_res = await axios.get(`${appConfig.BACKEND_URL}/api/booking/byTourist/${userId}${query}`, configs)
     
     const res = axios_res.data as ApiResponseInterface<BookingInterface[]>
-    if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined)
+    if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined, res.tag ?? "")
     // console.log(res)
     return res;
 }
@@ -43,7 +43,7 @@ export const getAllBookingsAcceptedInProgram = async (programId: string, filter:
     const axios_res = await axios.get(`${appConfig.BACKEND_URL}/api/booking/acceptedInProgram/${programId}${query}`, configs)
     
     const res = axios_res.data as ApiResponseInterface<BookingInterface[]>
-    if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined)
+    if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined, res.tag ?? "")
     // console.log(res)
     return res;
 }
@@ -54,7 +54,7 @@ export const getAllBookingsInProgram = async (programId: string, filter: Booking
     const axios_res = await axios.get(`${appConfig.BACKEND_URL}/api/booking/inProgram/${programId}${query}`, configs)
     
     const res = axios_res.data as ApiResponseInterface<BookingInterface[]>
-    if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined)
+    if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined, res.tag ?? "")
     // console.log(res)
     return res;
 }
@@ -63,7 +63,7 @@ export const createBooking = async (data: BookingInterface, programId: string = 
     const configs = localStorage.getItem("accessToken") != undefined ? { headers: { 'Authorization' : `Bearer ${localStorage.getItem("accessToken")}`} } : {}
     const axios_res = await axios.post(`${appConfig.BACKEND_URL}/api/booking/${programId}`, data, configs) 
     const res = axios_res.data as ApiResponseInterface<BookingInterface>
-    if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined)
+    if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined, res.tag ?? "")
     return res;
 }
 
@@ -71,7 +71,7 @@ export const deleteBookingById = async (id: string) => {
     const configs = localStorage.getItem("accessToken") != undefined ? { headers: { 'Authorization' : `Bearer ${localStorage.getItem("accessToken")}`} } : {}
     const axios_res = await axios.delete(`${appConfig.BACKEND_URL}/api/booking/${id}`, configs)
     const res = axios_res.data as ApiResponseInterface<BookingInterface>
-    if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined)
+    if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined, res.tag ?? "")
     return res;
 }
 
@@ -79,7 +79,7 @@ export const acceptBookingById = async (id: string) => {
     const configs = localStorage.getItem("accessToken") != undefined ? { headers: { 'Authorization' : `Bearer ${localStorage.getItem("accessToken")}`} } : {}
     const axios_res = await axios.post(`${appConfig.BACKEND_URL}/api/booking/accept/${id}`,{},  configs)
     const res = axios_res.data as ApiResponseInterface<BookingInterface>
-    if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined)
+    if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined, res.tag ?? "")
     return res;
 }
 
@@ -87,6 +87,6 @@ export const declineBookingById = async (id: string) => {
     const configs = localStorage.getItem("accessToken") != undefined ? { headers: { 'Authorization' : `Bearer ${localStorage.getItem("accessToken")}`} } : {}
     const axios_res = await axios.post(`${appConfig.BACKEND_URL}/api/booking/decline/${id}`,{}, configs)
     const res = axios_res.data as ApiResponseInterface<BookingInterface>
-    if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined)
+    if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined, res.tag ?? "")
     return res;
 }

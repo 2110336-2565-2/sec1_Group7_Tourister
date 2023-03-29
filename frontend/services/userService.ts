@@ -15,7 +15,8 @@ export const getAllUsers = async () => {
     throw new ApiErrorResponse(
       res.message ?? "",
       res.code,
-      res.errors ?? undefined
+      res.errors ?? undefined,
+      res.tag ?? ""
     );
   return res;
 };
@@ -28,7 +29,8 @@ export const getUserById = async (id: string) => {
     throw new ApiErrorResponse(
       res.message ?? "",
       res.code,
-      res.errors ?? undefined
+      res.errors ?? undefined,
+      res.tag ?? ""
     );
   return res;
 };
@@ -40,7 +42,8 @@ export const createUser = async (data: UserInterface) => {
     throw new ApiErrorResponse(
       res.message ?? "",
       res.code,
-      res.errors ?? undefined
+      res.errors ?? undefined,
+      res.tag ?? ""
     );
   return res;
 };
@@ -52,7 +55,8 @@ export const registerUser = async (data: UserInterface) => {
     throw new ApiErrorResponse(
       res.message ?? "",
       res.code,
-      res.errors ?? undefined
+      res.errors ?? undefined,
+      res.tag ?? ""
     );
   return res;
 };
@@ -69,7 +73,8 @@ export const updateUserById = async (id: string, data: any) => {
     throw new ApiErrorResponse(
       res.message ?? "",
       res.code,
-      res.errors ?? undefined
+      res.errors ?? undefined,
+      res.tag ?? ""
     );
   return res;
 };
@@ -85,7 +90,8 @@ export const deleteUserById = async (id: string) => {
     throw new ApiErrorResponse(
       res.message ?? "",
       res.code,
-      res.errors ?? undefined
+      res.errors ?? undefined,
+      res.tag ?? ""
     );
   return res;
 };
@@ -103,7 +109,8 @@ export const userLogin = async (email: string, password: string) => {
         throw new ApiErrorResponse(
             res.message ?? "",
             res.code,
-            res.errors ?? undefined
+            res.errors ?? undefined,
+            res.tag ?? ""
         );
     else {
         const cookieOptions = {

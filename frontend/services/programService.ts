@@ -12,7 +12,7 @@ export const getAllPrograms = async (filter: ProgramFilterInterface | undefined 
     const query = filter != null ? '?' + filterObjectToQueryString(filter) : ""
     const axios_res = await axios.get(`${appConfig.BACKEND_URL}/api/program/published${query}`, configs)
     const res = axios_res.data as ApiResponseInterface<ProgramInterface[]>
-    if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined)
+    if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined, res.tag ?? "")
     return res;
 } 
 
@@ -20,7 +20,7 @@ export const getProgramById = async (id: string) => {
     const configs = localStorage.getItem("accessToken") != undefined ? { headers: { 'Authorization' : `Bearer ${localStorage.getItem("accessToken")}`} } : {}
     const axios_res = await axios.get(`${appConfig.BACKEND_URL}/api/program/${id}`,configs)
     const res = axios_res.data as ApiResponseInterface<ProgramInterface>
-    if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined)
+    if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined, res.tag ?? "")
     // console.log(res)
     return res;
 }
@@ -30,7 +30,7 @@ export const getAllProgramsFromGuide = async (userId: string, filter: ProgramFil
     const query = filter != null ? '?' + filterObjectToQueryString(filter) : ""
     const axios_res = await axios.get(`${appConfig.BACKEND_URL}/api/program/byGuide/${userId}${query}`, configs)
     const res = axios_res.data as ApiResponseInterface<ProgramInterface[]>
-    if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined)
+    if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined, res.tag ?? "")
     return res;
 } 
 
@@ -39,7 +39,7 @@ export const getAllDarftProgramsFromGuide = async (userId: string, filter: Progr
     const query = filter != null ? '?' + filterObjectToQueryString(filter) : ""
     const axios_res = await axios.get(`${appConfig.BACKEND_URL}/api/program/draftByGuide/${userId}${query}`, configs)
     const res = axios_res.data as ApiResponseInterface<ProgramInterface[]>
-    if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined)
+    if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined, res.tag ?? "")
     return res;
 } 
 
@@ -47,7 +47,7 @@ export const createProgram = async (data: ProgramInterface) => {
     const configs = localStorage.getItem("accessToken") != undefined ? { headers: { 'Authorization' : `Bearer ${localStorage.getItem("accessToken")}`} } : {}
     const axios_res = await axios.post(`${appConfig.BACKEND_URL}/api/program`, data, configs) 
     const res = axios_res.data as ApiResponseInterface<ProgramInterface>
-    if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined)
+    if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined, res.tag ?? "")
     return res;
 }
 
@@ -55,7 +55,7 @@ export const updateProgramById = async (id: string, data: any) => {
     const configs = localStorage.getItem("accessToken") != undefined ? { headers: { 'Authorization' : `Bearer ${localStorage.getItem("accessToken")}`} } : {}
     const axios_res = await axios.put(`${appConfig.BACKEND_URL}/api/program/${id}`, data, configs) 
     const res = axios_res.data as ApiResponseInterface<ProgramInterface>
-    if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined)
+    if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined, res.tag ?? "")
     return res;
 }
 
@@ -63,6 +63,6 @@ export const deleteProgramById = async (id: string) => {
     const configs = localStorage.getItem("accessToken") != undefined ? { headers: { 'Authorization' : `Bearer ${localStorage.getItem("accessToken")}`} } : {}
     const axios_res = await axios.delete(`${appConfig.BACKEND_URL}/api/program/${id}`, configs)
     const res = axios_res.data as ApiResponseInterface<ProgramInterface>
-    if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined)
+    if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined, res.tag ?? "")
     return res;
 }
