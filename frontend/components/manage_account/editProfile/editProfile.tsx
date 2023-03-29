@@ -17,6 +17,7 @@ import NavigateBeforeOutlinedIcon from "@mui/icons-material/NavigateBeforeOutlin
 import { FieldName } from "@/css/layout";
 
 import AddPhotoAlternateRoundedIcon from "@mui/icons-material/AddPhotoAlternateRounded";
+import { Avatar } from "@mui/material";
 
 const API_URL = "http://localhost:2000/api/program";
 type FormData = {
@@ -44,9 +45,9 @@ const validationSchema = yup.object().shape({
 });
 
 const editProfile = () => {
-  let user:UserInterface
-  const [previewImg,setPreviewImg] = useState<string>();
-  if (typeof window !== 'undefined') {
+  let user: UserInterface;
+  const [previewImg, setPreviewImg] = useState<string>();
+  if (typeof window !== "undefined") {
     // console.log('we are running on the client');
     user = JSON.parse(localStorage.getItem("user") || `{}`);
   } else {
@@ -71,11 +72,12 @@ const editProfile = () => {
     const reader = new FileReader();
     reader.onload = async (event) => {
       const result = event.target?.result;
-      if (typeof result === 'string') {
-        setValue("image",(btoa(result)));
-        setPreviewImg((btoa(result)))
-        if (user._id != null) console.log(await updateUserById(user._id, {image:btoa(result)}));
-    
+      if (typeof result === "string") {
+        setValue("image", btoa(result));
+        setPreviewImg(btoa(result));
+        if (user._id != null)
+          console.log(await updateUserById(user._id, { image: btoa(result) }));
+
         if (user._id) {
           const response = await getUserById(user._id);
           console.log(response.data);
@@ -158,7 +160,18 @@ const editProfile = () => {
           alignItems: "center",
         }}
       >
-        <img
+        <Avatar
+          style={{
+            width: "7rem",
+            height: "7rem",
+            borderRadius: "50%",
+            zIndex: 1,
+            boxShadow: `0.1rem 0.1rem 1rem 0.2rem rgba(0,0,0,0.25)`,
+          }}
+          src={`data:image/png;base64,${getValues("image")}`}
+          alt="mock-img"
+        />
+        {/* <img
           src={`data:image/png;base64,${getValues("image")}`}
           alt="mock-img"
           style={{
@@ -167,7 +180,7 @@ const editProfile = () => {
             padding: "0px 0px",
             borderRadius: "50%",
           }}
-        />
+        /> */}
         {/* <input type="file" onChange={handleFileUpload} /> */}
         <input
           type="file"
@@ -184,6 +197,7 @@ const editProfile = () => {
             background: "transparent",
             borderRadius: "50%",
             marginTop: "-1.75rem",
+            zIndex: 10,
           }}
           htmlFor="upload-button"
         >
