@@ -43,6 +43,7 @@ const validationSchema = yup.object().shape({
 
 const editProfile = () => {
   let user:UserInterface
+  const [previewImg,setPreviewImg] = useState<string>();
   if (typeof window !== 'undefined') {
     // console.log('we are running on the client');
     user = JSON.parse(localStorage.getItem("user")||`{}`)
@@ -70,6 +71,7 @@ const editProfile = () => {
       const result = event.target?.result;
       if (typeof result === 'string') {
         setValue("image",(btoa(result)));
+        setPreviewImg((btoa(result)))
       }
     };
     reader.readAsBinaryString(file);
