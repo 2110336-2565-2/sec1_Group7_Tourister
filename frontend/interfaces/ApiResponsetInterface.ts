@@ -5,6 +5,7 @@ export interface ApiResponseInterface<T = unknown | undefined> {
     message?: string;
     data?: T;
     errors?: string;
+    tag?: string;
 }
 
 export interface ApiLoginResponseInterface extends ApiResponseInterface {
@@ -13,4 +14,5 @@ export interface ApiLoginResponseInterface extends ApiResponseInterface {
     data?: UserInterface;
     token?: string;
     errors?: string;
+    tag?: string;
 }

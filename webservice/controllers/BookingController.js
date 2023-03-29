@@ -76,16 +76,11 @@ const BookingController = {
             if(!programId) throw new Error("programId is required")
 
             const dupeBookingByUserId = await Booking.findOne({ user: user.id, program: programId })
-            if(dupeBookingByUserId) return {
-                code: 400,
-                message: "you already booked this program",
-            }
+            if(dupeBookingByUserId) throw new ApiErrorResponse("you already booked this program", 400, "duplicate-booking")
+            
             const balance = (await User.findById(user._id)).remainingAmount
             const program = await Program.findById(programId)
-            if(balance < program.price) return {
-                code: 400,
-                message: "you don't have enough balance",
-            }
+            if(balance < program.price) throw new ApiErrorResponse("not enough balance", 400, "insufficient-balance")
             else {
                 await User.findByIdAndUpdate(user._id, { remainingAmount: balance - program.price })
             }

@@ -28,6 +28,7 @@ const tryCatchMongooseService = async (callback, catchCallback = undefined, fina
         return {
             code: e.code,
             message: e.message,
+            tag: e.tag,
             errors: e.stack
         }
       }
