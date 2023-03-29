@@ -80,7 +80,7 @@ const BookingController = {
                 code: 400,
                 message: "you already booked this program",
             }
-            const balance = (await User.findById(user.id)).remainingAmount
+            const balance = (await User.findById(user._id)).remainingAmount
             const program = await Program.findById(programId)
             if(balance < program.price) return {
                 code: 400,
