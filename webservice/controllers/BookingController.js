@@ -1,14 +1,15 @@
-const express = require('express')
-const ApiErrorResponse = require('../exception/ApiErrorResponse')
-const Booking = require("../models/Booking")
-const { tryCatchMongooseService } = require('../utils/utils')
-const bcrypt = require('bcrypt')
-const Program = require('../models/Program')
-const Notification = require('../models/Notification')
-const { verifyToken } = require('../services/jwtService')
-const User = require('../models/User')
+const express = require("express");
+const ApiErrorResponse = require("../exception/ApiErrorResponse");
+const Booking = require("../models/Booking");
+const { tryCatchMongooseService } = require("../utils/utils");
+const bcrypt = require("bcrypt");
+const Program = require("../models/Program");
+const Notification = require("../models/Notification");
+const { verifyToken } = require("../services/jwtService");
+const User = require("../models/User");
 
 const BookingController = {
+
     /**
      * getBookingById
      * @param {import('express').Request} req
@@ -227,100 +228,107 @@ const BookingController = {
                 }
             })
             res.json(result)
-        },
+  },
 
-    /**
-     * updateBookingById
-     * @param {import('express').Request} req
-     * @param {import('express').Response} res
-     * @param {import('express').NextFunction} next
-     */
-    async updateBookingById(req, res, next) {
-        const result = await tryCatchMongooseService(async () => {
-            const bookingId = req.params.id
-            const payload = req.body
-            await Booking.findByIdAndUpdate(bookingId, { $set: payload })
-            const updatedBooking = await Booking.findById(bookingId)
-            return {
-                code: 204,
-                data: updatedBooking,
-                message: "booking updated"
-            }
-        }) 
-        res.json(result)
-    },
+  /**
+   * updateBookingById
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
+   * @param {import('express').NextFunction} next
+   */
+  async updateBookingById(req, res, next) {
+    const result = await tryCatchMongooseService(async () => {
+      const bookingId = req.params.id;
+      const payload = req.body;
+      await Booking.findByIdAndUpdate(bookingId, { $set: payload });
+      const updatedBooking = await Booking.findById(bookingId);
+      return {
+        code: 204,
+        data: updatedBooking,
+        message: "booking updated",
+      };
+    });
+    res.json(result);
+  },
 
-    /**
-     * deleteBookingById
-     * @param {import('express').Request} req
-     * @param {import('express').Response} res
-     * @param {import('express').NextFunction} next
-     */
-    async deleteBookingById(req, res, next) {
-        const result = await tryCatchMongooseService (async () => {
-            const bookingId = req.params.id
-            const booking = await Booking.findByIdAndDelete(bookingId)
+  /**
+   * deleteBookingById
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
+   * @param {import('express').NextFunction} next
+   */
+  async deleteBookingById(req, res, next) {
+    const result = await tryCatchMongooseService(async () => {
+      const bookingId = req.params.id;
+      const booking = await Booking.findByIdAndDelete(bookingId);
 
-            const program = await Program.findById(booking.program)
-            await User.findByIdAndUpdate(program.guide, { $inc: { num_booking: -1, remainingAmount: program.price } })
+      const program = await Program.findById(booking.program);
+      await User.findByIdAndUpdate(program.guide, {
+        $inc: { num_booking: -1, remainingAmount: program.price },
+      });
 
-            return {
-                code: 200,
-                data: booking,
-                message: "booking deleted",
-            }
-        })
-        res.json(result)
-    },
+      return {
+        code: 200,
+        data: booking,
+        message: "booking deleted",
+      };
+    });
+    res.json(result);
+  },
 
-    
+  /**
+   * acceptBookingById
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
+   * @param {import('express').NextFunction} next
+   */
+  async acceptBookingById(req, res, next) {
+    const result = await tryCatchMongooseService(async () => {
+      const bookingId = req.params.id;
+      await Booking.findByIdAndUpdate(bookingId, {
+        $set: { status: "accepted" },
+      });
 
-    /**
-     * acceptBookingById
-     * @param {import('express').Request} req
-     * @param {import('express').Response} res
-     * @param {import('express').NextFunction} next
-     */
-     async acceptBookingById(req, res, next) {
-        const result = await tryCatchMongooseService(async () => {
-            const bookingId = req.params.id
-            await Booking.findByIdAndUpdate(bookingId, { $set: {status:"accepted"} })
-            
-            const updatedBooking = await Booking.findById(bookingId)
-            await Program.findByIdAndUpdate(updatedBooking.program, { $inc: { num_participant: 1 } })
-            return {
-                code: 204,
-                data: updatedBooking,
-                message: "booking accepted"
-            }
-        }) 
-        res.json(result)
-    },
+      const updatedBooking = await Booking.findById(bookingId);
+      await Program.findByIdAndUpdate(updatedBooking.program, {
+        $inc: { num_participant: 1 },
+      });
+      return {
+        code: 204,
+        data: updatedBooking,
+        message: "booking accepted",
+      };
+    });
+    res.json(result);
+  },
 
-    /**
-     * declineBookingById
-     * @param {import('express').Request} req
-     * @param {import('express').Response} res
-     * @param {import('express').NextFunction} next
-     */
-     async declineBookingById(req, res, next) {
-        const result = await tryCatchMongooseService(async () => {
-            const bookingId = req.params.id
-            await Booking.findByIdAndUpdate(bookingId, { $set: {status:"declined"} })
-            const updatedBooking = await Booking.findById(bookingId)
-            
-            const program = await Program.findById(updatedBooking.program)
-            await User.findByIdAndUpdate(updatedBooking.user, { $inc: { num_booking: -1, remainingAmount: program.price } })
+  /**
+   * declineBookingById
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
+   * @param {import('express').NextFunction} next
+   */
+  async declineBookingById(req, res, next) {
+    const result = await tryCatchMongooseService(async () => {
+      const bookingId = req.params.id;
+      await Booking.findByIdAndUpdate(bookingId, {
+        $set: { status: "declined" },
+      });
+      const updatedBooking = await Booking.findById(bookingId);
 
-            return {
-                code: 204,
-                data: updatedBooking,
-                message: "booking declined"
-            }
-        }) 
-        res.json(result)
-    },
+      const program = await Program.findById(updatedBooking.program);
+      await User.findByIdAndUpdate(updatedBooking.user, {
+        $inc: { num_booking: -1, remainingAmount: program.price },
+      });
 
-}
+      return {
+        code: 204,
+        data: updatedBooking,
+        message: "booking declined",
+      };
+    });
+    res.json(result);
+  },
+};
 
-module.exports = BookingController
+module.exports = BookingController;
