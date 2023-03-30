@@ -268,9 +268,9 @@ export default function programPending() {
                     </table>
                   </div>
                   <br></br>
-                  {/* <br></br>
                   <br></br>
-                  <br></br> */}
+                  <br></br>
+                  <br></br>
 
                   <div style={{ display: "inline-block", color:"black", transform:"translateX(-20px)" }}>
                     <>
@@ -290,6 +290,7 @@ export default function programPending() {
                       , {program.startTime} to
                     </>
                   </div>
+
                   <div style={{ display: "inline-block", color:"black", transform:"translateX(-20px)" }}>
                     <>
                       <CalendarMonth
@@ -345,7 +346,7 @@ export default function programPending() {
                       borderRadius: "10px 0 0 0",
                       textAlign: "right",
                       fontWeight: "bold",
-                      transform: "translateY(-25px) translateX(17px)",
+                      transform: "translateY(-35px) translateX(17px)",
                       // textDecoration: "none",
                       // textDecorationLine: "none",
                     }}
