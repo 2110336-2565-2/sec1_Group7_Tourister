@@ -1,5 +1,7 @@
 import { useQuery } from "@tanstack/react-query"
 
+import { CircularProgress } from "@mui/material"
+
 import { ProgramCardForTourist } from "../program/ProgramCardForTourist"
 
 import { useAuth } from "@/components/AuthProvider"
@@ -19,11 +21,16 @@ export const BookingProgramList = ({bookingFilter,history=false}:{bookingFilter:
       return getAllBookingsFromTourist(userId, bookingFilter)
     }
   })
+  
+  if(isLoading) return (
+    <div style={{display:"flex", justifyContent:"center"}}>
+      <CircularProgress/>
+    </div>
+  )
 
   const bookings = programResponse?.data;
   console.log(bookings);
 
-  if(isLoading) return <>Loading...</>
 
   const today = new Date();
   const upcomingBookings = bookings?.filter(({program})=>{

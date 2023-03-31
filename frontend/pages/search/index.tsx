@@ -1,4 +1,4 @@
-import { Avatar, TextField } from "@mui/material";
+import { Avatar, TextField, CircularProgress } from "@mui/material";
 import { useEffect, useState, useReducer } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
@@ -69,10 +69,16 @@ export default function Page() {
           </div>
         </Heading>
         <Searching setProgramFilter={setProgramFilter}/>
-        {programs?.map((program:ProgramInterface)=>{
-          if(new Date(program?.endDate).getTime() < new Date().getTime())return;
-          return <ProgramCardForTourist key={program._id} program={program}/>
-        })}
+        {
+          isLoading 
+          ? <div style={{display:"flex", justifyContent:"center"}}>
+              <CircularProgress/>
+            </div>
+          : programs?.map((program:ProgramInterface)=>{
+            if(new Date(program?.endDate).getTime() < new Date().getTime())return;
+            return <ProgramCardForTourist key={program._id} program={program}/>
+            })
+        }
       </LocalizationProvider>
     </AuthProvider>
   );
