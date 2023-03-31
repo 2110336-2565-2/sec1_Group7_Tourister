@@ -4,7 +4,7 @@ import { UserInterface } from "@/interfaces/UserInterface";
 import { AttractionInterface } from "@/interfaces/AttractionInterface";
 
 export type FormData = {
-  _id:string
+  _id?:string
   name: string;
   description: string;
   price: number;

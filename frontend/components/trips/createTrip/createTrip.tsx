@@ -38,6 +38,7 @@ import TimelineDot from "@mui/lab/TimelineDot";
 import TimelineConnector from "@mui/lab/TimelineConnector";
 import TimelineContent from "@mui/lab/TimelineContent";
 import { AssignmentOutlined, LocationOnOutlined, MapOutlined } from "@mui/icons-material";
+import _ from "lodash";
 
 export const StageContext = createContext(0)
 
@@ -87,14 +88,18 @@ const createTrip = () => {
     let end = new Date(getValues("endDate"))
     console.log(date.toString())
     console.log(end.toString())
-    let errExist = false;
+    let errExist = true;
     setStage(1)
+    console.log(typeof(Number(getValues("price"))))
+    console.log(Number(getValues("price")))
+    console.log(Number.isNaN(Number(getValues("price"))))
     if(date > end || (date===end && getValues("startTime")>getValues("endTime"))){setUnmatchedStartAndEndDate(true)}
     if(date > end || (date===end && getValues("startTime")<getValues("endTime")) ||(getValues("name")===undefined || getValues("name")==="")
      || getValues("description")===undefined || getValues("description")==="" || getValues("price")===undefined || getValues("price").toString()===""
      || getValues("province")===undefined || getValues("province")==="" ||getValues("startDate")===undefined || getValues("startTime")===undefined
      || getValues("startTime")==="" || getValues("endDate")===undefined || getValues("endTime")===undefined || getValues("endTime")===""
-     || getValues("max_participant")===undefined || getValues("max_participant").toString()===""){errExist=true;}
+     || getValues("max_participant")===undefined || getValues("max_participant").toString()===""
+     || Number.isNaN(Number(getValues("price"))) || Number.isNaN(Number(getValues("max_participant")))){errExist=true;}
     if(languageCheck.every((e)=>!e)){errExist=true}
     trigger(["name","description","price","province","startDate","startTime","endDate","endTime","max_participant"])
     if(errExist){return;}
@@ -130,14 +135,15 @@ const createTrip = () => {
       console.log(programData)
       const saveDraft = async ()=>{
         // const res = await getProgramById(data._id)
-        if(draft._id){
+        if(draft?._id && programData._id){
           const response = await updateProgramById(programData._id,programData);
           if(isHttpStatusOk(response.code) && response.data?._id){setValue("_id",response.data?._id)}
           console.log(response)
         }else{
-          const response = await createProgram(programData);
-          if(isHttpStatusOk(response.code) && response.data?._id){setValue("_id",response.data?._id)}
+          const data = _.omit(programData,'_id');
+          const response = await createProgram({...data,guide:user});
           console.log(response)
+          if(isHttpStatusOk(response.code) && response.data?._id){setValue("_id",response.data?._id)}
           if(response.data)setDraft(response.data)
         }
       }
@@ -159,27 +165,29 @@ const createTrip = () => {
         })
         let programData : ProgramInterface = formDatatoProgramInterface(data,user,filterDayTrips)
         console.log(programData)
-        const response = await updateProgramById(data._id,programData)
-        console.log(response)
-        if(response.code===204){
-          // if(user._id&&draft&&user.draft&&draft._id){
-          //   let Drafts = user.draft
-          //   // const id = draft._id
-          //   // const {[id]: _, ...withoutId} = allDraft
-          //   // let allDraft = (user.draft).map((d)=>{
-          //   //   if(d._id?.toString()===draft._id?.toString())return null
-          //   //   return d
-          //   // }).filter(function(i): i is ProgramInterface {return i!==null})
-          //   // : {[key:string]: ProgramInterface }
-          //   const draftarray = Object.keys(user.draft).map((key:string,i)=>{
-          //     if(draft._id?.toString()===key.toString())return null
-          //     return Drafts[key];
-          //   }).filter(function(i) {return i!==null})
-            
-          //   const res = await getUserById(user._id);
-          //   localStorage.setItem("user", JSON.stringify(res.data));
-          // }
-          router.push("/trips")
+        if(data._id){
+          const response = await updateProgramById(data._id,programData)
+          console.log(response)
+          if(response.code===204){
+            // if(user._id&&draft&&user.draft&&draft._id){
+            //   let Drafts = user.draft
+            //   // const id = draft._id
+            //   // const {[id]: _, ...withoutId} = allDraft
+            //   // let allDraft = (user.draft).map((d)=>{
+            //   //   if(d._id?.toString()===draft._id?.toString())return null
+            //   //   return d
+            //   // }).filter(function(i): i is ProgramInterface {return i!==null})
+            //   // : {[key:string]: ProgramInterface }
+            //   const draftarray = Object.keys(user.draft).map((key:string,i)=>{
+            //     if(draft._id?.toString()===key.toString())return null
+            //     return Drafts[key];
+            //   }).filter(function(i) {return i!==null})
+              
+            //   const res = await getUserById(user._id);
+            //   localStorage.setItem("user", JSON.stringify(res.data));
+            // }
+            router.push("/trips")
+          }
         }
       }
     } catch (error) {

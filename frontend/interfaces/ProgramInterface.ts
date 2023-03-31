@@ -2,7 +2,7 @@ import { UserInterface } from "./UserInterface";
 import { AttractionInterface } from "./AttractionInterface";
 
 export interface ProgramInterface {
-  _id: string;
+  _id?: string;
   name: string;
   description?: string;
   price: number;
