@@ -86,14 +86,14 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
 
   console.log("program");
   console.log(program);
-
+  
   const touristBookingStatus = bookings.find(
     (booking) => booking.user?._id === userId
   )?.status;
   console.log(touristBookingStatus);
 
   const acceptedBookings = bookings.filter((booking)=>{
-    booking.status === "accepted"
+    return booking.status === "accepted"
   })
 
   const startDateTime = new Date(program.startDate);
