@@ -56,11 +56,13 @@ const chooseDraft = () => {
       <button style={{margin:".3rem 0px 0px 0px",background:"white",border:"0px",transform:"translate(-2.3rem,.3rem)"}} type="button" onClick={()=>{router.push("/trips");}}><ChevronLeftIcon/></button>
       <h2 style={{textAlign:"center", fontWeight:"900", textShadow:"1px 0 black", letterSpacing:"1px",margin:"-2rem 0px 0px 0px"}}>Choose Draft</h2>
     </div>
+    <div style={{display:"grid", width:"100%"}}>
     {drafts.map((draft)=>(
-      <div key={draft._id} style={{width:"100%", display:'flex', alignItems: 'center',flexDirection:'column'}}>
+      <div key={draft._id} style={{padding:"10px 20px"}}>
         <ProgramCardForGuide program={draft} isComplete={false} isDraft={true} handleFunction={()=>{handleEdit(draft)}}/>
       </div>
     ))}
+    </div>
     </form>
   );
 };
