@@ -40,7 +40,6 @@ const Button = styled.button`
 `;
 
 const manageAccount = () => {
-  const [isRerouting, setIsRerouting] = useState(false)
   const router = useRouter();
 
   const authUserData:AuthContextInterface = useAuth();
@@ -67,10 +66,7 @@ const manageAccount = () => {
       confirmButtonText: "Yes",
     });
     if (swal.isConfirmed) {
-      setIsRerouting(true)
-      if(!isRerouting){
-        router.push("./login");
-      }
+      await Router.push("/login");
       localStorage.removeItem("accessToken");
       localStorage.removeItem("token_expires");
     }
@@ -183,7 +179,7 @@ const manageAccount = () => {
         </Button>
       </Link>
       <Link href="" style={{ width: "100%", textDecoration: "none" }} passHref>
-        <Button onClick={() => handleLogout()}>
+        <Button onClick={handleLogout}>
           <LogoutOutlinedIcon style={{ width: "20%", color: "gray" }} />
           <h3
             style={{
