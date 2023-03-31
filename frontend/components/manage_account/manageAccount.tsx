@@ -40,6 +40,7 @@ const Button = styled.button`
 `;
 
 const manageAccount = () => {
+  const [isRerouting, setIsRerouting] = useState(false)
   const router = useRouter();
 
   const authUserData:AuthContextInterface = useAuth();
@@ -50,19 +51,7 @@ const manageAccount = () => {
       <CircularProgress/>
     </div>
   )
-  // let user: UserInterface;
-  // if (typeof window !== "undefined") {
-  //   // console.log('we are running on the client');
-  //   user = JSON.parse(
-  //     localStorage.getItem("user") ||
-  //       `{"name":"Name","surname":"Surname","remainingAmount":0,"isGuide":"true"}`
-  //   );
-  // } else {
-  //   // console.log('we are running on the server');
-  //   user = JSON.parse(
-  //     `{"name":"Name","surname":"Surname","remainingAmount":0,"isGuide":"true"}`
-  //   );
-  // }
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   };
@@ -78,7 +67,10 @@ const manageAccount = () => {
       confirmButtonText: "Yes",
     });
     if (swal.isConfirmed) {
-      router.push("./login");
+      setIsRerouting(true)
+      if(!isRerouting){
+        router.push("./login");
+      }
       localStorage.removeItem("accessToken");
       localStorage.removeItem("token_expires");
     }
