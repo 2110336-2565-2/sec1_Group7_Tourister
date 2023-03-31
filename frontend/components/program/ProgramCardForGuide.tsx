@@ -5,7 +5,7 @@ import { FC, Fragment } from "react";
 import { COLOR } from "@/theme/globalTheme";
 import Link from "next/link";
 import styled from "styled-components";
-import { CalendarMonth, LocationOnOutlined } from "@mui/icons-material";
+import { BorderColorOutlined, CalendarMonth, LocationOnOutlined } from "@mui/icons-material";
 import { format } from "date-fns";
 import { Chip } from "@mui/material";
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
@@ -100,7 +100,18 @@ export const ProgramCardForGuide: FC<IProgramInterface> = ({
         }}
       >
         <div>
-          {isDraft? (<button type="button" onClick={handleFunction}><DriveFileRenameOutlineIcon/></button>):(<Fragment/>)}
+          {isDraft? (
+            // <button type="button" onClick={handleFunction}><DriveFileRenameOutlineIcon/></button>
+            <button 
+              style={{
+                width:"25px", height:"25px", margin:"0 0 5px auto", float:"right",
+                borderWidth:"1px", borderColor:"lightgrey", borderRadius:"50%", 
+                color:"grey", display:"flex", justifyContent:"center", alignItems:"center"
+              }}
+              type="button" onClick={handleFunction}>
+                <BorderColorOutlined style={{width:"15px", height:"15px"}}/>
+            </button>
+          ):(<Fragment/>)}
           <div style={{ display: "inline-block", float: "left" }}>
             {program.dayTrips && program.dayTrips[0]?(
             <img

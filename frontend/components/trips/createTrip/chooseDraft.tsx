@@ -10,18 +10,24 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { ProgramCardForGuide } from "@/components/program/ProgramCardForGuide";
 import { getAllDarftProgramsFromGuide, getAllProgramsFromGuide } from "@/services/programService";
 import { ProgramInterface } from "@/interfaces/ProgramInterface";
+import { useAuth } from "@/components/AuthProvider"
+import { AuthContextInterface } from "@/interfaces/AuthContextInterface"
 
 const chooseDraft = () => {
   const router = useRouter();
-  const [user, setUser] = useState<UserInterface>()
   const [drafts, setDrafts] = useState<ProgramInterface[]>([])
-  useEffect(()=>{
-    if (typeof window !== 'undefined') {
-      setUser(JSON.parse(localStorage.getItem("user")||`{}`))
-    } else {
-      setUser(JSON.parse(`{}`))
-    }
-  },[])
+  const authUserData: AuthContextInterface = useAuth();
+  const user = authUserData.user
+  console.log(authUserData)
+  console.log(user)
+  // const [user, setUser] = useState<UserInterface>()
+  // useEffect(()=>{
+  //   if (typeof window !== 'undefined') {
+  //     setUser(JSON.parse(localStorage.getItem("user")||`{}`))
+  //   } else {
+  //     setUser(JSON.parse(`{}`))
+  //   }
+  // },[])
 
   useEffect(()=>{
     if(user){
@@ -39,9 +45,9 @@ const chooseDraft = () => {
   const {
     formState: { errors }
   } = useForm<FormData>({});
-  if(!user || !(user.draft)){
-    return <Fragment></Fragment>
-  }
+  // if(!user || !(user.draft)){
+  //   return <Fragment></Fragment>
+  // }
   console.log(drafts)
   // const draft : {[key:string]:any}= user.draft;
   return (
@@ -50,11 +56,13 @@ const chooseDraft = () => {
       <button style={{margin:".3rem 0px 0px 0px",background:"white",border:"0px",transform:"translate(-2.3rem,.3rem)"}} type="button" onClick={()=>{router.push("/trips");}}><ChevronLeftIcon/></button>
       <h2 style={{textAlign:"center", fontWeight:"900", textShadow:"1px 0 black", letterSpacing:"1px",margin:"-2rem 0px 0px 0px"}}>Choose Draft</h2>
     </div>
+    <div style={{display:"grid", width:"100%"}}>
     {drafts.map((draft)=>(
-      <div key={draft._id} style={{width:"100%", display:'flex', alignItems: 'center',flexDirection:'column'}}>
+      <div key={draft._id} style={{padding:"10px 20px"}}>
         <ProgramCardForGuide program={draft} isComplete={false} isDraft={true} handleFunction={()=>{handleEdit(draft)}}/>
       </div>
     ))}
+    </div>
     </form>
   );
 };

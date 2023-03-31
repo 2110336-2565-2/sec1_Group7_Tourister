@@ -7,8 +7,8 @@ import SwapHorizOutlinedIcon from "@mui/icons-material/SwapHorizOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import NavigateNextOutlinedIcon from "@mui/icons-material/NavigateNextOutlined";
 import { UserInterface } from "@/interfaces/UserInterface";
-import Router, { useRouter } from 'next/router'
-import Swal from 'sweetalert2'
+import Router, { useRouter } from "next/router";
+import Swal from "sweetalert2";
 import { Avatar } from "@mui/material";
 
 type AccountType = "tourist" | "guide";
@@ -40,13 +40,18 @@ const Button = styled.button`
 const manageAccount = () => {
   const router = useRouter();
 
-  let user:UserInterface
-  if (typeof window !== 'undefined') {
+  let user: UserInterface;
+  if (typeof window !== "undefined") {
     // console.log('we are running on the client');
-    user = JSON.parse(localStorage.getItem("user")||`{"name":"Name","surname":"Surname","remainingAmount":0,"isGuide":"true"}`)
+    user = JSON.parse(
+      localStorage.getItem("user") ||
+        `{"name":"Name","surname":"Surname","remainingAmount":0,"isGuide":"true"}`
+    );
   } else {
     // console.log('we are running on the server');
-    user = JSON.parse(`{"name":"Name","surname":"Surname","remainingAmount":0,"isGuide":"true"}`)
+    user = JSON.parse(
+      `{"name":"Name","surname":"Surname","remainingAmount":0,"isGuide":"true"}`
+    );
   }
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -54,20 +59,20 @@ const manageAccount = () => {
 
   const handleLogout = async () => {
     const swal = await Swal.fire({
-      title: '',
-      text: 'Are you sure you want to log out ?',
-      icon: 'warning',
+      title: "",
+      text: "Are you sure you want to log out ?",
+      icon: "warning",
       showCancelButton: true,
       focusCancel: true,
-      cancelButtonText: 'Cancel',
-      confirmButtonText: 'Yes',
+      cancelButtonText: "Cancel",
+      confirmButtonText: "Yes",
     });
-    if(swal.isConfirmed) {
+    if (swal.isConfirmed) {
       router.push("/login");
-      localStorage.removeItem('accessToken')
-      localStorage.removeItem('token_expires')
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("token_expires");
     }
-  }
+  };
 
   const accountType = user.isGuide ? "Guide" : "Tourist";
   return (
@@ -76,17 +81,61 @@ const manageAccount = () => {
       onSubmit={handleSubmit}
     >
       <ProfileBox style={{ backgroundColor: COLOR.primary }}>
-        <div style={{width:"100%",height:"5.5rem",display:"flex",flexDirection:"row",justifyContent:"flex-start",alignItems:"center",alignSelf:"flex-start",marginTop:"0.3rem",paddingLeft:"15%"}}>
-        <Avatar style={{width:"3.4rem",height:"3.4rem"}}src={`data:image/png;base64,${user?.image}`} />
-          <div style={{display:"flex",flexDirection:"column",justifyContent:"flex-start",padding:"1rem"}}>
-            <h5 style={{color:"white",marginTop:"0.5rem",marginBottom:0}}>{`hello ${accountType}`}</h5>
-            <h3 style={{color:"white",marginTop:0,marginBottom:0,fontWeight:"bolder"}}>{`${user.name} ${user.surname}`}</h3>
+        <div
+          style={{
+            width: "100%",
+            height: "5.5rem",
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "flex-start",
+            alignItems: "center",
+            alignSelf: "flex-start",
+            marginTop: "0.3rem",
+            paddingLeft: "15%",
+          }}
+        >
+          <Avatar
+            style={{ width: "3.4rem", height: "3.4rem" }}
+            src={`data:image/png;base64,${user?.image}`}
+          />
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "flex-start",
+              padding: "1rem",
+            }}
+          >
+            <h5
+              style={{ color: "white", marginTop: "0.5rem", marginBottom: 0 }}
+            >{`hello ${accountType}`}</h5>
+            <h3
+              style={{
+                color: "white",
+                marginTop: 0,
+                marginBottom: 0,
+                fontWeight: "bolder",
+              }}
+            >{`${user.name} ${user.surname}`}</h3>
           </div>
         </div>
-        <div style={{width:"70%",height:"0.07rem",backgroundColor:"white"}}/>
-        <div style={{width:"100%",height:"4.43rem",alignSelf:"flex-start",paddingLeft:"15%"}}>
-          <h5 style={{color:"white",marginTop:"0.8rem",marginBottom:0}}>Total</h5>
-          <h2 style={{color:"white",marginTop:0,marginBottom:0}}>{`THB ${user.remainingAmount}`}</h2>
+        <div
+          style={{ width: "70%", height: "0.07rem", backgroundColor: "white" }}
+        />
+        <div
+          style={{
+            width: "100%",
+            height: "4.43rem",
+            alignSelf: "flex-start",
+            paddingLeft: "15%",
+          }}
+        >
+          <h5 style={{ color: "white", marginTop: "0.8rem", marginBottom: 0 }}>
+            Total
+          </h5>
+          <h2
+            style={{ color: "white", marginTop: 0, marginBottom: 0 }}
+          >{`THB ${user.remainingAmount}`}</h2>
         </div>
       </ProfileBox>
       <Link

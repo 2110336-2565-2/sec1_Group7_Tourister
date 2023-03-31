@@ -8,4 +8,5 @@ export const COLOR = {
   disable:'#BABABA',
   yellow:'#FFAF13',
   text:'#767D80',
+  mint:'#B4FFED'
 }

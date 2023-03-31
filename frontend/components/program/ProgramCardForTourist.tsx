@@ -5,7 +5,7 @@ import { BookingStatusInterface } from "@/interfaces/BookingInterface";
 
 import { COLOR } from "@/theme/globalTheme";
 import { EventOutlined, GroupOutlined } from "@mui/icons-material";
-import { CardMedia } from "@mui/material";
+import { Avatar, CardMedia } from "@mui/material";
 import styled from "styled-components";
 
 import { LocationTag } from "./LocationTag";
@@ -55,18 +55,18 @@ export const ProgramCardForTourist = ({program, bookingStatus}:IProgramInterface
       <label style={{ fontSize: "1rem", padding: "0 0.6rem" }}> {program.num_participant}/{program.max_participant} </label>
     </div>
     <CardMedia 
-      image= {/* program.image ||*/ "https://t3.ftcdn.net/jpg/01/32/94/50/240_F_132945016_nfxSTTLLFGlgxb35E7kTn09oQ3bvZqeD.jpg"} // TODO: add program image
+      image= {program.dayTrips && program.dayTrips[0]?(`data:image/jpeg;base64,${program.dayTrips[0].attractions[0].file}`):("https://t3.ftcdn.net/jpg/01/32/94/50/240_F_132945016_nfxSTTLLFGlgxb35E7kTn09oQ3bvZqeD.jpg")}
       style={{ height: "40vw", width: "100%", objectFit: "cover", borderRadius: "15px"}}
-      />
+    />
     <h4 style={{ margin:"0.3rem 0", wordWrap:"break-word" }}>{program.name}</h4>
     <LocationTag location={program.province} />
     <label style={{ margin:"0.5rem 0", wordWrap:"break-word", color:"gray", fontSize:"0.8rem" }}>{program.description}</label>
     <div style={{ display:"flex", flexDirection:"row", justifyContent:"center", alignItems:"center" }}>
-      <CardMedia 
-        image= {/* {guide image here} || */ "https://cdn-icons-png.flaticon.com/512/7723/7723210.png"} // TODO: add guide profile image
-        style={{ height: "22px", width: "22px"}}
-        />
-      <label style={{color: "grey", fontSize: "0.7rem", paddingLeft: "0.6rem"}}>{program.guide.name} {program.guide.surname}</label>
+      <Avatar 
+        style={{ width:"22px",height:"22px"}}
+        src={program.guide?.image?(`data:image/png;base64,${program.guide?.image}`):("https://cdn-icons-png.flaticon.com/512/7723/7723210.png")}
+      />
+      <label style={{color: "grey", fontSize: "0.7rem", paddingLeft: "0.6rem"}}>{program.guide?.name} {program.guide?.surname}</label>
       {
         bookingStatus
         ? ( 
