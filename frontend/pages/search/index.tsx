@@ -1,4 +1,4 @@
-import { TextField } from "@mui/material";
+import { Avatar, TextField } from "@mui/material";
 import { useEffect, useState, useReducer } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
@@ -52,13 +52,17 @@ export default function Page() {
       <LocalizationProvider dateAdapter={AdapterMoment}>
         <NavBar/>
         <Heading>
-          <Image 
+          <Avatar 
+            style={{ marginRight: "1rem" ,width:"70px",height:"70px"}}
+            src={`data:image/png;base64,${user?.image}`}
+          />
+          {/* <Image 
             style={{ marginRight: "1rem" }}
             alt = "tourist" 
             src={tourist} 
             width={70} 
             height={70} 
-          />
+          /> */}
           <div style={{margin: "auto 0"}}>
             <div style={{marginBottom:"0.2rem", fontSize:"0.8rem"}}>Welcome,</div>
             <h3 style={{margin:"0", overflowWrap:"break-word", fontSize:"1.4rem"}}>{user?.name} {user?.surname}</h3>
