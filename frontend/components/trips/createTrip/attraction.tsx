@@ -6,7 +6,7 @@ import { Controller,useFormContext,useForm,useFieldArray } from "react-hook-form
 // import * as yup from "yup";
 import { FormInputText } from "@/components/formInput/FormInputText";
 import TextField from "@mui/material/TextField";
-import { PrimaryButtonwithoutShadow,SecondaryButton, SmallTextField } from "@/css/styling";
+import { PrimaryButtonwithoutShadow,SecondaryButton } from "@/css/styling";
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import { AddCircleOutlineOutlined, BorderColorOutlined, LabelOffOutlined, LocationOnOutlined, LoyaltyOutlined } from "@mui/icons-material";
@@ -23,6 +23,7 @@ const attraction = ({id,t,l,p,o,f=null,handleDelete,handleCallback}:{id:string,t
   const [image,setImage] = useState<File | null>(null);
   //----------------------------------------------------------
   const [editing, setEditing] = useState(l==="");
+  const [errorInvalidTime,setErrorInvalidTime] = useState(false);
   const [errorTime,setErrorTime] = useState(false);
   const [errorName,setErrorName] = useState(false);
   const [errorProvince,setErrorProvince] = useState(false);
@@ -85,8 +86,8 @@ const attraction = ({id,t,l,p,o,f=null,handleDelete,handleCallback}:{id:string,t
                     {/* <input type="file" onChange={handleFileUpload} /> */}
                     <input
                       type="file"
-                      id="upload-button"
-                      style={{ display: "none" }}
+                      // id="upload-button"
+                      // style={{ display: "none" }}
                       onChange={handleFileUpload}
                     />
                     {image===null?(
@@ -209,7 +210,16 @@ const attraction = ({id,t,l,p,o,f=null,handleDelete,handleCallback}:{id:string,t
                 <div style={{display:"flex",alignSelf:"center", justifyContent: "flex-end", gap:"10px", height:"25px", margin:"10px 0"}}>
               <SecondaryButton style={{borderWidth:"1px", borderRadius:"5px", fontSize:"12px", width:"70px"}} type="button" onClick={()=>{handleDelete(id)}}>DELETE</SecondaryButton>
               <PrimaryButtonwithoutShadow style={{borderWidth:"1px", borderRadius:"5px", fontSize:"12px", width:"70px"}} type="button" onClick={()=>{
-                if(valid()) {setEditing(false);handleCallback(id,time,location,province,option,file)}
+                if(valid()) {
+                  if(handleCallback(id,time,location,province,option,file)){
+                    // console.log("true")
+                    setErrorInvalidTime(false)
+                    setEditing(false);
+                  }else{
+                    setErrorInvalidTime(true)
+                    // console.log("false")
+                  }
+                }
               }}>DONE</PrimaryButtonwithoutShadow>
                 </div>
               </div>
@@ -217,6 +227,7 @@ const attraction = ({id,t,l,p,o,f=null,handleDelete,handleCallback}:{id:string,t
             <div style={{fontSize:"14px"}}>
               {errorName? <label>* Please add a name for the location<br/></label> : <Fragment/>}
               {errorTime? <label>* Please add a time for the location<br/></label> : <Fragment/>}
+              {errorInvalidTime? <label>* Please add a time which matches other location<br/></label> : <Fragment/>}
               {errorProvince? <label>* Please add a province for the location<br/></label> : <Fragment/>}
               {errorFile? <label>* Please add an image for the location<br/></label> : <Fragment/>}
             </div>

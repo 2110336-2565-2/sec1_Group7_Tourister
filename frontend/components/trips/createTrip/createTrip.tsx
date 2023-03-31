@@ -44,7 +44,7 @@ export const StageContext = createContext(0)
 
 const createTrip = () => {
   const [stage, setStage ] = useState<number>(0); // 0:start 1:next clicked 2:page 2 3:submit clicked
-  const [user, setUser] = useState<UserInterface>()
+  // const [user, setUser] = useState<UserInterface>()
   const [draft, setDraft] = useState<ProgramInterface>()
   const [days,setDays] =  useState<string[]>([]);
   const [dayTrips,setDayTrips] = useState<{
@@ -61,7 +61,7 @@ const createTrip = () => {
   const authUserData: AuthContextInterface = useAuth();
   useEffect(()=>{
     // setUser(JSON.parse(localStorage.getItem("user")||`{}`))
-    setUser(authUserData.user)
+    // setUser(authUserData.user)
     if(localStorage.getItem("editing")!==null){
       const fetch = async () => {
         const res = await getProgramById(localStorage.getItem("editing")||``)
@@ -83,24 +83,30 @@ const createTrip = () => {
     }
   },[draft])
   const HandleNext = () => {
+    setUnmatchedStartAndEndDate(false)
     setDays([])
     let date = new Date(getValues("startDate"))
     let end = new Date(getValues("endDate"))
-    console.log(date.toString())
-    console.log(end.toString())
+    // console.log(date.toString())
+    // console.log(end.toString())
     let errExist = false;
     setStage(1)
-    console.log(typeof(Number(getValues("price"))))
-    console.log(Number(getValues("price")))
-    console.log(Number.isNaN(Number(getValues("price"))))
-    if(date > end || (date===end && getValues("startTime")>getValues("endTime"))){setUnmatchedStartAndEndDate(true)}
-    if(date > end || (date===end && getValues("startTime")<getValues("endTime")) ||(getValues("name")===undefined || getValues("name")==="")
+    if(date > end ||(getValues("name")===undefined || getValues("name")==="")
      || getValues("description")===undefined || getValues("description")==="" || getValues("price")===undefined || getValues("price").toString()===""
      || getValues("province")===undefined || getValues("province")==="" ||getValues("startDate")===undefined || getValues("startTime")===undefined
      || getValues("startTime")==="" || getValues("endDate")===undefined || getValues("endTime")===undefined || getValues("endTime")===""
-     || getValues("max_participant")===undefined || getValues("max_participant").toString()===""
+     || getValues("max_participant")===undefined || getValues("max_participant").toString()==="" || languageCheck.every((e)=>!e)
      || Number.isNaN(Number(getValues("price"))) || Number.isNaN(Number(getValues("max_participant")))){errExist=true;}
-    if(languageCheck.every((e)=>!e)){errExist=true}
+    // if(languageCheck.every((e)=>!e)){errExist=true}
+    if(date > end){console.log("case1");setUnmatchedStartAndEndDate(true)}
+    if(date===end && getValues("startTime")!==undefined && getValues("endTime")!==undefined &&
+      getValues("startTime")!=="" && getValues("endTime")!==""){
+      const sTime = getValues("startTime").split(":")
+      const eTime = getValues("endTime").split(":")
+      if(Number(sTime[0]) > Number(eTime[0]) || (Number(sTime[0])===Number(eTime[0]) && Number(sTime[1])>Number(eTime[1]))){
+        console.log("case2")
+        setUnmatchedStartAndEndDate(true);errExist=true;}
+    }
     trigger(["name","description","price","province","startDate","startTime","endDate","endTime","max_participant"])
     if(errExist){return;}
     setUnmatchedStartAndEndDate(false)
@@ -108,13 +114,13 @@ const createTrip = () => {
     let k = 0
     while(date.toString()!==end.toString()){
       const i = date.toString()
-      console.log(i)
+      // console.log(i)
       setDays(days => [...days,i])
       date.setDate(date.getDate() + 1);
       k = k+1
       if(k>100){break}
     }
-    console.log(days)
+    // console.log(days)
     HandleSaveDraft()
     setStage(2)
   }
@@ -128,20 +134,23 @@ const createTrip = () => {
     // const lang : string[] = langwithnull.filter(function(i){return i!==null})
     setValue("language",lang)
     try {
-      let programData : ProgramInterface = {...data,language:lang,guide:user,published:false};
-      if(dayTrips&&user?._id){
+      let programData : ProgramInterface = {...data,language:lang,guide:authUserData.user,published:false};
+      if(dayTrips&&authUserData.user?._id){
         programData = {...programData,dayTrips:dayTrips}
       }
-      console.log(programData)
+      // console.log(programData)
       const saveDraft = async ()=>{
         // const res = await getProgramById(data._id)
+        // console.log(draft)
         if(draft?._id && programData._id){
+          console.log("has draft")
           const response = await updateProgramById(programData._id,programData);
           if(isHttpStatusOk(response.code) && response.data?._id){setValue("_id",response.data?._id)}
           console.log(response)
         }else{
+          console.log("no draft")
           const data = _.omit(programData,'_id');
-          const response = await createProgram({...data,guide:user});
+          const response = await createProgram({...data,guide:authUserData.user});
           console.log(response)
           if(isHttpStatusOk(response.code) && response.data?._id){setValue("_id",response.data?._id)}
           if(response.data)setDraft(response.data)
@@ -155,16 +164,22 @@ const createTrip = () => {
   const onSubmit = async (data : FormData) => {
     setStage(3)
     try {
-        if(dayTrips&&user){
+        if(dayTrips&&authUserData.user){
           if(days.some((day)=>{
-            return !dayTrips.some((d)=>d.date===day)
+            return !dayTrips.some((d)=>{
+              const dayI = new Date(d.date)
+              return dayI.toString()===day
+            })
           })){return;}
         const filterDayTrips = dayTrips.filter(function(daytrip){
-          if(days.some(day => day.toString()==daytrip["date"].toString()))return true
+          const dayI = new Date(daytrip["date"])
+          // console.log(dayI.toString())
+          if(days.some(day => day.toString()==dayI.toString()))return true
           return false
         })
-        let programData : ProgramInterface = formDatatoProgramInterface(data,user,filterDayTrips)
-        console.log(programData)
+        let programData : ProgramInterface = formDatatoProgramInterface(data,authUserData.user,filterDayTrips)
+        // console.log(data._id)
+        // console.log(programData)
         if(data._id){
           const response = await updateProgramById(data._id,programData)
           console.log(response)
@@ -186,7 +201,7 @@ const createTrip = () => {
             //   const res = await getUserById(user._id);
             //   localStorage.setItem("user", JSON.stringify(res.data));
             // }
-            router.push("/trips")
+            // router.push("/trips")
           }
         }
       }
@@ -236,7 +251,8 @@ const createTrip = () => {
   const getAttractionsByDate = (d:string) => {
     if(dayTrips){
     for(let i=0;i<dayTrips.length;i=i+1){
-      if(dayTrips[i].date===d)return dayTrips[i].attractions
+      const datei = new Date(dayTrips[i].date)
+      if(datei.toString()===d)return dayTrips[i].attractions
     }
     return [{
       "id": nanoid(),
@@ -298,7 +314,7 @@ const createTrip = () => {
                 <FormInputDate name="endDate" control={control} label="End Date"/>
                 <FormInputTime name="endTime" control={control} label="End Time"/>
               </div>
-              {unmatchedStartAndEndDate? <p>Please add a matching start and end Date</p> : <Fragment/>}
+              {unmatchedStartAndEndDate? <p>Please add a matching start and end Date Time</p> : <Fragment/>}
             </Field><Field>{/* Group Size */}
               <RequireFormLabel className="AsteriskRequired">Group size</RequireFormLabel>
               <FormInputText name="max_participant" control={control} label="Number of participant(s)"/>
