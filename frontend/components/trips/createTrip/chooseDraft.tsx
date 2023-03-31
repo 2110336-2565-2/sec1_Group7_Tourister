@@ -10,18 +10,24 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { ProgramCardForGuide } from "@/components/program/ProgramCardForGuide";
 import { getAllDarftProgramsFromGuide, getAllProgramsFromGuide } from "@/services/programService";
 import { ProgramInterface } from "@/interfaces/ProgramInterface";
+import { useAuth } from "@/components/AuthProvider"
+import { AuthContextInterface } from "@/interfaces/AuthContextInterface"
 
 const chooseDraft = () => {
   const router = useRouter();
-  const [user, setUser] = useState<UserInterface>()
   const [drafts, setDrafts] = useState<ProgramInterface[]>([])
-  useEffect(()=>{
-    if (typeof window !== 'undefined') {
-      setUser(JSON.parse(localStorage.getItem("user")||`{}`))
-    } else {
-      setUser(JSON.parse(`{}`))
-    }
-  },[])
+  const authUserData: AuthContextInterface = useAuth();
+  const user = authUserData.user
+  console.log(authUserData)
+  console.log(user)
+  // const [user, setUser] = useState<UserInterface>()
+  // useEffect(()=>{
+  //   if (typeof window !== 'undefined') {
+  //     setUser(JSON.parse(localStorage.getItem("user")||`{}`))
+  //   } else {
+  //     setUser(JSON.parse(`{}`))
+  //   }
+  // },[])
 
   useEffect(()=>{
     if(user){
@@ -39,9 +45,9 @@ const chooseDraft = () => {
   const {
     formState: { errors }
   } = useForm<FormData>({});
-  if(!user || !(user.draft)){
-    return <Fragment></Fragment>
-  }
+  // if(!user || !(user.draft)){
+  //   return <Fragment></Fragment>
+  // }
   console.log(drafts)
   // const draft : {[key:string]:any}= user.draft;
   return (

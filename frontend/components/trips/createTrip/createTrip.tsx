@@ -14,6 +14,8 @@ import { UserInterface } from "@/interfaces/UserInterface";
 import { AttractionInterface } from "@/interfaces/AttractionInterface";
 import { createProgram,getProgramById,updateProgramById} from "@/services/programService"
 import { getUserById, updateUserById } from "@/services/userService";
+import { useAuth } from "@/components/AuthProvider"
+import { AuthContextInterface } from "@/interfaces/AuthContextInterface"
 
 import { COLOR } from "@/theme/globalTheme";
 import { FormInputText } from "@/components/formInput/FormInputText";
@@ -42,7 +44,7 @@ export const StageContext = createContext(0)
 const createTrip = () => {
   const [stage, setStage ] = useState<number>(0); // 0:start 1:next clicked 2:page 2 3:submit clicked
   const [user, setUser] = useState<UserInterface>()
-  const [draft, setDraft] = useState<ProgramInterface>({})
+  const [draft, setDraft] = useState<ProgramInterface>()
   const [days,setDays] =  useState<string[]>([]);
   const [dayTrips,setDayTrips] = useState<{
     date:  string,
@@ -55,12 +57,14 @@ const createTrip = () => {
   
   let defaultValues = { _id : nanoid(24),num_pending : 0,};
   // let defaultValues = { num_pending : 0,};
+  const authUserData: AuthContextInterface = useAuth();
   useEffect(()=>{
-    setUser(JSON.parse(localStorage.getItem("user")||`{}`))
+    // setUser(JSON.parse(localStorage.getItem("user")||`{}`))
+    setUser(authUserData.user)
     if(localStorage.getItem("editing")!==null){
       const fetch = async () => {
         const res = await getProgramById(localStorage.getItem("editing")||``)
-        if(res){setDraft(res.data)}
+        if(res.data){setDraft(res.data)}
       }
       fetch();
   }}
@@ -134,7 +138,7 @@ const createTrip = () => {
           const response = await createProgram(programData);
           if(isHttpStatusOk(response.code) && response.data?._id){setValue("_id",response.data?._id)}
           console.log(response)
-          setDraft(response.data)
+          if(response.data)setDraft(response.data)
         }
       }
       saveDraft();
