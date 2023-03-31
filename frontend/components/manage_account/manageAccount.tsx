@@ -7,9 +7,11 @@ import SwapHorizOutlinedIcon from "@mui/icons-material/SwapHorizOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import NavigateNextOutlinedIcon from "@mui/icons-material/NavigateNextOutlined";
 import { UserInterface } from "@/interfaces/UserInterface";
+import { useAuth } from "../AuthProvider";
+import { AuthContextInterface } from "@/interfaces/AuthContextInterface";
 import Router, { useRouter } from "next/router";
 import Swal from "sweetalert2";
-import { Avatar } from "@mui/material";
+import { Avatar, CircularProgress } from "@mui/material";
 
 type AccountType = "tourist" | "guide";
 
@@ -40,19 +42,27 @@ const Button = styled.button`
 const manageAccount = () => {
   const router = useRouter();
 
-  let user: UserInterface;
-  if (typeof window !== "undefined") {
-    // console.log('we are running on the client');
-    user = JSON.parse(
-      localStorage.getItem("user") ||
-        `{"name":"Name","surname":"Surname","remainingAmount":0,"isGuide":"true"}`
-    );
-  } else {
-    // console.log('we are running on the server');
-    user = JSON.parse(
-      `{"name":"Name","surname":"Surname","remainingAmount":0,"isGuide":"true"}`
-    );
-  }
+  const authUserData:AuthContextInterface = useAuth();
+  const user:UserInterface|undefined = authUserData.user;
+
+  if(!user) return (
+    <div style={{display:"flex", alignItems:"center"}}>
+      <CircularProgress/>
+    </div>
+  )
+  // let user: UserInterface;
+  // if (typeof window !== "undefined") {
+  //   // console.log('we are running on the client');
+  //   user = JSON.parse(
+  //     localStorage.getItem("user") ||
+  //       `{"name":"Name","surname":"Surname","remainingAmount":0,"isGuide":"true"}`
+  //   );
+  // } else {
+  //   // console.log('we are running on the server');
+  //   user = JSON.parse(
+  //     `{"name":"Name","surname":"Surname","remainingAmount":0,"isGuide":"true"}`
+  //   );
+  // }
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   };
@@ -68,7 +78,7 @@ const manageAccount = () => {
       confirmButtonText: "Yes",
     });
     if (swal.isConfirmed) {
-      router.push("/login");
+      router.push("./login");
       localStorage.removeItem("accessToken");
       localStorage.removeItem("token_expires");
     }
