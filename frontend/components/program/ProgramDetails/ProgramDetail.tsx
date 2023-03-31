@@ -2,10 +2,12 @@ import { ProgramInterface } from "@/interfaces/ProgramInterface";
 import { FC } from "react";
 import { COLOR } from "@/theme/globalTheme";
 import { useQuery } from "@tanstack/react-query";
+import { RefetchOptions, RefetchQueryFilters, QueryObserverResult} from "@tanstack/react-query";
 
 import * as React from "react";
 import { useState } from "react";
 import { UserCardInterface } from "@/interfaces/UserCardInterface";
+import { ApiResponseInterface } from "@/interfaces/ApiResponsetInterface";
 import {
   BookingInterface,
   BookingStatusInterface,
@@ -56,12 +58,14 @@ interface IProgramDetailProps {
   program: ProgramInterface;
   bookings?: BookingInterface[];
   onGoBack: () => void;
+  refetchBooking: <TPageData>(options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined) => Promise<QueryObserverResult<ApiResponseInterface<BookingInterface[]> | null, unknown>>
 }
 
 const ProgramDetail: FC<IProgramDetailProps> = ({
   program,
   bookings = [],
   onGoBack,
+  refetchBooking
 }) => {
   const authUserData: AuthContextInterface = useAuth();
 
@@ -80,23 +84,17 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
   const userId: string = user?._id!;
   const programId = program._id!;
 
-  const { data: bookingResponse, refetch } = useQuery({
-    queryKey: ["pendingTouristForProgram", programId],
-    queryFn: () => {
-      if (!programId) return null;
-      return getAllBookingsInProgram(programId, {
-        status: ["pending", "accepted"],
-      });
-    },
-  });
   console.log("program");
   console.log(program);
-  console.log(bookingResponse?.data);
 
-  const touristBookingStatus = bookingResponse?.data!.find(
+  const touristBookingStatus = bookings.find(
     (booking) => booking.user?._id === userId
   )?.status;
   console.log(touristBookingStatus);
+
+  const acceptedBookings = bookings.filter((booking)=>{
+    booking.status === "accepted"
+  })
 
   const startDateTime = new Date(program.startDate);
   const endDateTime = new Date(program.endDate);
@@ -152,7 +150,7 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
         { user: user, program: program },
         programId
       );
-      refetch();
+      refetchBooking();
     } catch (err) {
       console.log(err);
     }
@@ -400,7 +398,7 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
               color: COLOR.text,
             }}
           >
-            <ParticipantsDetail bookings={bookings} />
+            <ParticipantsDetail bookings={acceptedBookings} />
           </AccordionDetails>
         </Accordion>
       )}

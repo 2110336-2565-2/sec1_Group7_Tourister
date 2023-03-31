@@ -4,7 +4,11 @@ import ProgramDetail from '@/components/program/ProgramDetails/ProgramDetail';
 import NavBar from "@/components/layout/navBar";
 import { AuthProvider } from "@/components/AuthProvider";
 import { getProgramById } from "@/services/programService";
-import { getAllBookingsAcceptedInProgram } from "@/services/bookingService";
+
+import { useQuery } from '@tanstack/react-query';
+import { getAllBookingsInProgram, getAllBookingsAcceptedInProgram } from "@/services/bookingService";
+
+
 import { ProgramInterface } from '@/interfaces/ProgramInterface';
 import { BookingInterface } from '@/interfaces/BookingInterface';
 import { CircularProgress, Stack } from '@mui/material';
@@ -14,52 +18,36 @@ export default function ProgramDetailPage() {
   const router = useRouter();
   const { programId } = router.query;
 
-  const [program, setProgram] = useState<ProgramInterface | undefined>(undefined);
-  const [bookings, setBookings] = useState<BookingInterface[] | undefined>(undefined);
+  // const [program, setProgram] = useState<ProgramInterface | undefined>(undefined);
+  // const [bookings, setBookings] = useState<BookingInterface[] | undefined>(undefined);
 
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const fetchProgramDetailData = async () => {
-      setLoading(true);
-      try {
-        const response = await getProgramById(programId as string);
-        const program = response.data ;
-        if(program!=null){
-          setProgram(program);
-        }else{
+  const { data: bookingResponse, refetch:refetchBooking, isLoading: isLoadingBooking} = useQuery({
+    queryKey: ["pendingTouristForProgram", programId],
+    queryFn: () => {
+      if (!programId) return null;
+      return getAllBookingsInProgram(programId as string, {
+        status: ["pending", "accepted"],
+      });
+    },
+  });
+  const bookings = bookingResponse?.data;
 
-        }
-      } catch (error) {
-        console.log(error);
-    } finally {
-        setLoading(false);
-      }
-    };
-
-    const fetchTouristData = async () => {
-      const response = await getAllBookingsAcceptedInProgram(programId as string);
-      const bookings = response.data || [];
-      //console.log("booking");
-      //console.log(bookings);
-      setBookings(bookings);
-    };
-     
-    if (programId) {
-      fetchProgramDetailData();
-      fetchTouristData();
-
-    }
-  }, [programId]);
-
-  
-
+  const { data: programResponse, refetch:refetchProgram, isLoading: isLoadingProgram} = useQuery({
+    queryKey: ["pendingProgramDetailData", programId],
+    queryFn: () => {
+      if (!programId) return null;
+      return getProgramById(programId as string);
+    },
+  });
+  const program = programResponse?.data;
 
   return (
     <AuthProvider>
       <>
         <NavBar />
-        {loading ? (
+        {isLoadingBooking || isLoadingProgram ? (
           <>
           <div style={{ alignItems: "center", display: "flex", justifyContent: "center", height: "90vh", width: "100vw" }}><CircularProgress/></div>
           </>
@@ -68,6 +56,7 @@ export default function ProgramDetailPage() {
             program={program}
             bookings = {bookings}
             onGoBack={() => router.back()}
+            refetchBooking={refetchBooking}
           />
         ) : (
           <div>No program found</div>
