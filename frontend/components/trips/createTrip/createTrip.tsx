@@ -88,7 +88,7 @@ const createTrip = () => {
     let end = new Date(getValues("endDate"))
     console.log(date.toString())
     console.log(end.toString())
-    let errExist = true;
+    let errExist = false;
     setStage(1)
     console.log(typeof(Number(getValues("price"))))
     console.log(Number(getValues("price")))
