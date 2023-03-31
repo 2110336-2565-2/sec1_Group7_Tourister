@@ -40,8 +40,8 @@ export default function programPending() {
   // console.log(guide._id);
   // setGuideid(guide._id);
   // console.log(guideId)
-  const guideId = guide._id;
-  const [programs, setPrograms] = useState<[ProgramInterface]>([
+  const guideId = guide._id!;
+  const [programs, setPrograms] = useState<ProgramInterface[]>([
     // {
     //   _id: "",
     //   name: "",
@@ -140,7 +140,7 @@ export default function programPending() {
     month: "short",
     day: "numeric",
   });
-  if (programs.length <= 0) {
+  if (programs.length < 0) {
     return (
       <>
         <Stack alignItems="center">
