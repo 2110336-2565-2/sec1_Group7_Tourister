@@ -6,8 +6,8 @@ import { AuthContextInterface } from "@/interfaces/AuthContextInterface"
 import { getAllNotificationsFromUser} from "@/services/notificationService"
 import { NotificationInterface } from "@/interfaces/NotificationInterface";
 import React from "react"
-import {ConfirmationNumberOutlined, Paid,InsertInvitation} from '@mui/icons-material';
-
+import {ConfirmationNumber, Paid,InsertInvitation} from '@mui/icons-material';
+import { COLOR } from "@/theme/globalTheme";
 
 export const NotificationList = () => {
     const authUserData:AuthContextInterface = useAuth()
@@ -47,58 +47,59 @@ export const NotificationList = () => {
     }
   
     return (
-        <>
-        <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
-
-        {noti?.map((notiDetail) => {     
-            let icon;
-            if (notiDetail.type === "coin") {
-              icon = <Paid />;
-            } else if (notiDetail.type === "newrequest") {
-              icon = <ConfirmationNumberOutlined />;
-            } else if (notiDetail.type === "upcoming trip") {
-              icon = <InsertInvitation />;
-            } else {
-              icon = <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />;
-            }       
-            return(
-                <>
-                <ListItem alignItems="flex-start"  key={notiDetail._id}>
-                <ListItemAvatar>
-                {icon}
-
-                    </ListItemAvatar>
-                <ListItemText
-                    primary={notiDetail.title}
-                    secondary={
-                        notiDetail.message
-                        // <React.Fragment>
-                        // <Typography
-                        //     sx={{ display: 'inline' }}
-                        //     component="span"
-                        //     variant="body2"
-                        //     color="text.primary"
-                        // >
-                        //     Ali Connors
-                        // </Typography>
-                        // {" — I'll be in your neighborhood doing errands this…"}
-                        // </React.Fragment>
-                    }
-                />
-                </ListItem>
-                <Divider variant="inset" component="li" />
-
-          </>
-        );
-      })}
-    </List>
+      <>
+      <List sx={{ width: '100%' }}>
+      {noti?.map((notiDetail) => {     
+          let icon;
+          let avatarStyle;
+          if (notiDetail.type === "coin") {
+            icon = <Paid />;
+            avatarStyle = { backgroundColor: "#4CAF50" };
+          } else if (notiDetail.type === "newrequest") {
+            icon = <ConfirmationNumber />;
+            avatarStyle = { backgroundColor: "#2196F3" };
+          } else if (notiDetail.type === "upcoming trip") {
+            icon = <InsertInvitation />;
+            avatarStyle = { backgroundColor: "#FFEB3B" };
+          } else {
+            icon = <Avatar alt="Remy Sharp" />;
+            avatarStyle = {};
+          }
+          
+          return(
+              <>
+              <ListItem alignItems="flex-start" sx={{borderBottom: '1px solid #ddd', backgroundColor: notiDetail.isRead ? 'inherit' : '#E3FCF8'}} key={notiDetail._id}>
+              <ListItemAvatar>
+                <Avatar style={{ ...avatarStyle, color: "#fff" }} variant="circular">
+                  {icon}
+                </Avatar>
+               </ListItemAvatar>
+              <ListItemText
+                  primary={notiDetail.title}
+                  secondary={
+                      notiDetail.message
+                      // <React.Fragment>
+                      // <Typography
+                      //     sx={{ display: 'inline' }}
+                      //     component="span"
+                      //     variant="body2"
+                      //     color="text.primary"
+                      // >
+                      //     Ali Connors
+                      // </Typography>
+                      // {" — I'll be in your neighborhood doing errands this…"}
+                      // </React.Fragment>
+                  }
+              />
+              </ListItem>
+        </>
+      );
+    })}
+  </List>
 
       </>
     );
     
-    {/*       
-      {upcomingBookings?.map(({program, status})=>{
-        return program && <ProgramCardForTourist key={program._id} program={program} bookingStatus={status}/>
-      })} */}
+    
     
   }
