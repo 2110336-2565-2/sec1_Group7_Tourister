@@ -9,225 +9,262 @@ const { verifyToken } = require("../services/jwtService");
 const User = require("../models/User");
 
 const BookingController = {
+  /**
+   * getBookingById
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
+   * @param {import('express').NextFunction} next
+   */
+  async getBookingById(req, res, next) {
+    const result = await tryCatchMongooseService(async () => {
+      const bookingId = req.params.id;
+      const booking = await Booking.findById(bookingId).populate([
+        {
+          path: "user",
+          select: "name surname phoneNumber image",
+        },
+        {
+          path: "program",
+          select: "name",
+        },
+      ]);
 
-    /**
-     * getBookingById
-     * @param {import('express').Request} req
-     * @param {import('express').Response} res
-     * @param {import('express').NextFunction} next
-     */
-    async getBookingById(req, res, next) {
-        const result = await tryCatchMongooseService( async () => {
-            const bookingId = req.params.id
-            const booking = await Booking.findById(bookingId).populate([{
-                path:'user',
-                select: 'name surname phoneNumber image'
-            },{
-                path:'program',
-                select: 'name'
-            }])
+      return {
+        code: 200,
+        data: booking,
+        message: "",
+      };
+    });
+    res.json(result);
+  },
 
-            return {
-                code: 200,
-                data: booking,
-                message: "",
-            }
-        })
-        res.json(result)
-    },
+  /**
+   * getAllBookings
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
+   * @param {import('express').NextFunction} next
+   */
+  async getAllBookings(req, res, next) {
+    const result = await tryCatchMongooseService(async () => {
+      const bookings = await Booking.find({}).populate([
+        {
+          path: "user",
+          select: "name surname phoneNumber image",
+        },
+        {
+          path: "program",
+          select: "name",
+        },
+      ]);
 
-    /**
-     * getAllBookings
-     * @param {import('express').Request} req
-     * @param {import('express').Response} res
-     * @param {import('express').NextFunction} next
-     */
-    async getAllBookings(req, res, next) {
-        const result = await tryCatchMongooseService(async () => {
-            const bookings = await Booking.find({}).populate([{
-                path:'user',
-                select: 'name surname phoneNumber image'
-            },{
-                path:'program',
-                select: 'name'
-            }])
+      return {
+        code: 200,
+        count: bookings.length,
+        data: bookings,
+        message: "",
+      };
+    });
+    res.json(result);
+  },
 
-            return {
-                code: 200,
-                count : bookings.length,
-                data: bookings,
-                message: "",
-            }
-        })
-        res.json(result)
-    },
+  /**
+   * createBooking
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
+   * @param {import('express').NextFunction} next
+   */
+  async createBooking(req, res, next) {
+    const result = await tryCatchMongooseService(async () => {
+      const token = req.headers.authorization.split(" ")[1] || req.cookies.jwt;
+      const programId = req.params.programId;
+      const user = verifyToken(token);
+      if (!user) throw new Error("unauthorized");
+      if (!programId) throw new Error("programId is required");
 
-    /**
-     * createBooking
-     * @param {import('express').Request} req
-     * @param {import('express').Response} res
-     * @param {import('express').NextFunction} next
-     */
-    async createBooking(req, res, next) {
-        const result = await tryCatchMongooseService(async () => {
-            const token = req.headers.authorization.split(" ")[1] || req.cookies.jwt
-            const programId = req.params.programId
-            const user = verifyToken(token)
-            if(!user) throw new Error("unauthorized")
-            if(!programId) throw new Error("programId is required")
+      const dupeBookingByUserId = await Booking.findOne({
+        user: user._id,
+        program: programId,
+      });
+      if (dupeBookingByUserId)
+        throw new ApiErrorResponse(
+          "you already booked this program",
+          400,
+          "duplicate-booking"
+        );
 
-            const dupeBookingByUserId = await Booking.findOne({ user: user.id, program: programId })
-            if(dupeBookingByUserId) throw new ApiErrorResponse("you already booked this program", 400, "duplicate-booking")
-            
-            const balance = (await User.findById(user._id)).remainingAmount
-            const program = await Program.findById(programId)
-            if(balance < program.price) throw new ApiErrorResponse("not enough balance", 400, "insufficient-balance")
-            else {
-                await User.findByIdAndUpdate(user._id, { remainingAmount: balance - program.price })
-            }
+      const balance = (await User.findById(user._id)).remainingAmount;
+      const program = await Program.findById(programId);
+      if (balance < program.price)
+        throw new ApiErrorResponse(
+          "not enough balance",
+          400,
+          "insufficient-balance"
+        );
+      else {
+        await User.findByIdAndUpdate(user._id, {
+          remainingAmount: balance - program.price,
+        });
+      }
 
-            const payload = req.body
-            payload.program = programId
-            payload.user = user._id
-            const booking = new Booking(payload);
-            await booking.save()
-            console.log(booking)
+      const payload = req.body;
+      payload.program = programId;
+      payload.user = user._id;
+      const booking = new Booking(payload);
+      await booking.save();
+      console.log(booking);
 
-            //Nofify guide
+      //Nofify payment
 
-            const notification = new Notification({
-                user : program.guide,
-                type : "newrequest",
-                title : "New Booking Request",
-                message : `${user.name} ${user.surname} requested to join ${program.name}`
+      const noti_payment = new Notification({
+        user: user._id,
+        type: "coin",
+        title: "Payment Complete",
+        message: `${program.price} is paid to book for ${program.name}`,
+      });
+      await noti_payment.save();
+      console.log(noti_payment);
 
-            });
-            await notification.save()
-            console.log(notification)
+      //Nofify guide
 
-            return {
-                code: 201,
-                data: booking, 
-                message: "booking created"
-            }
-        })
-        res.json(result)
-    },
+      const noti_request = new Notification({
+        user: program.guide,
+        type: "newrequest",
+        title: "New Booking Request",
+        message: `${user.name} ${user.surname} requested to join ${program.name}`,
+      });
+      await noti_request.save();
+      console.log(noti_request);
 
-    /**
-     * getAllBookings
-     * @param {import('express').Request} req
-     * @param {import('express').Response} res
-     * @param {import('express').NextFunction} next
-     */
-     async getAllBookingsByUserId(req, res, next) {
-        const userId = req.params.userId
-        const filterBody = req.query
-        console.log(filterBody)
-        let filter = []
-        filter.push({ user: userId })
-        if(filterBody.status != null) {
-            let statusFilter = []
-            filterBody.status.split(" ").forEach((status) => {
-                statusFilter.push({ status: status })
-            })
-            filter.push({ $or: statusFilter })
-        }
+      return {
+        code: 201,
+        data: booking,
+        message: "booking created",
+      };
+    });
+    res.json(result);
+  },
 
-        const result = await tryCatchMongooseService(async () => {
-            const bookings = await Booking.find({ $and: filter }).populate([{
-                path:'user',
-                select: 'name surname phoneNumber image'
-            },{
-                path:'program',
-                populate: {
-                    path: 'guide',
-                    select : 'name surname'
-                  } 
-                //select: 'name'
-            }])
+  /**
+   * getAllBookings
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
+   * @param {import('express').NextFunction} next
+   */
+  async getAllBookingsByUserId(req, res, next) {
+    const userId = req.params.userId;
+    const filterBody = req.query;
+    console.log(filterBody);
+    let filter = [];
+    filter.push({ user: userId });
+    if (filterBody.status != null) {
+      let statusFilter = [];
+      filterBody.status.split(" ").forEach((status) => {
+        statusFilter.push({ status: status });
+      });
+      filter.push({ $or: statusFilter });
+    }
 
-            return {
-                code: 200,
-                count : bookings.length,
-                data: bookings,
-                message: "",
-            }
-        })
-        res.json(result)
-    },
+    const result = await tryCatchMongooseService(async () => {
+      const bookings = await Booking.find({ $and: filter }).populate([
+        {
+          path: "user",
+          select: "name surname phoneNumber image",
+        },
+        {
+          path: "program",
+          populate: {
+            path: "guide",
+            select: "name surname",
+          },
+          //select: 'name'
+        },
+      ]);
 
-    /**
-     * getAllBookings
-     * @param {import('express').Request} req
-     * @param {import('express').Response} res
-     * @param {import('express').NextFunction} next
-     */
-    async getAllAcceptedBookingsByProgramId(req, res, next) {
-        const programId = req.params.programId
-        const filterBody = req.query
-        console.log(filterBody)
-        let filter = []
-        filter.push({ program: programId })
-        filter.push({ status: 'accepted' })
-        // if(filterBody.status != null) {
-        //     let statusFilter = []
-        //     filterBody.status.split(" ").forEach((status) => {
-        //         statusFilter.push({ status: status })
-        //     })
-        //     filter.push({ $or: statusFilter })
-        // }
+      return {
+        code: 200,
+        count: bookings.length,
+        data: bookings,
+        message: "",
+      };
+    });
+    res.json(result);
+  },
 
-        const result = await tryCatchMongooseService(async () => {
-            const bookings = await Booking.find({ $and: filter }).populate([{
-                path:'user',
-                select: 'name surname phoneNumber image'
-            }])
+  /**
+   * getAllBookings
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
+   * @param {import('express').NextFunction} next
+   */
+  async getAllAcceptedBookingsByProgramId(req, res, next) {
+    const programId = req.params.programId;
+    const filterBody = req.query;
+    console.log(filterBody);
+    let filter = [];
+    filter.push({ program: programId });
+    filter.push({ status: "accepted" });
+    // if(filterBody.status != null) {
+    //     let statusFilter = []
+    //     filterBody.status.split(" ").forEach((status) => {
+    //         statusFilter.push({ status: status })
+    //     })
+    //     filter.push({ $or: statusFilter })
+    // }
 
-            return {
-                code: 200,
-                count : bookings.length,
-                data: bookings,
-                message: "",
-            }
-        })
-        res.json(result)
-    },
+    const result = await tryCatchMongooseService(async () => {
+      const bookings = await Booking.find({ $and: filter }).populate([
+        {
+          path: "user",
+          select: "name surname phoneNumber image",
+        },
+      ]);
 
-        /**
-     * getAllBookings
-     * @param {import('express').Request} req
-     * @param {import('express').Response} res
-     * @param {import('express').NextFunction} next
-     */
-         async getAllBookingsByProgramId(req, res, next) {
-            const programId = req.params.programId
-            const filterBody = req.query
-            console.log(filterBody)
-            let filter = []
-            filter.push({ program: programId })
-            if(filterBody.status != null) {
-                let statusFilter = []
-                filterBody.status.split(" ").forEach((status) => {
-                    statusFilter.push({ status: status })
-                })
-                filter.push({ $or: statusFilter })
-            }
-    
-            const result = await tryCatchMongooseService(async () => {
-                const bookings = await Booking.find({ $and: filter }).populate([{
-                    path:'user',
-                    select: 'name surname phoneNumber image'
-                }])
-    
-                return {
-                    code: 200,
-                    count : bookings.length,
-                    data: bookings,
-                    message: "",
-                }
-            })
-            res.json(result)
+      return {
+        code: 200,
+        count: bookings.length,
+        data: bookings,
+        message: "",
+      };
+    });
+    res.json(result);
+  },
+
+  /**
+   * getAllBookings
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
+   * @param {import('express').NextFunction} next
+   */
+  async getAllBookingsByProgramId(req, res, next) {
+    const programId = req.params.programId;
+    const filterBody = req.query;
+    console.log(filterBody);
+    let filter = [];
+    filter.push({ program: programId });
+    if (filterBody.status != null) {
+      let statusFilter = [];
+      filterBody.status.split(" ").forEach((status) => {
+        statusFilter.push({ status: status });
+      });
+      filter.push({ $or: statusFilter });
+    }
+
+    const result = await tryCatchMongooseService(async () => {
+      const bookings = await Booking.find({ $and: filter }).populate([
+        {
+          path: "user",
+          select: "name surname phoneNumber image",
+        },
+      ]);
+
+      return {
+        code: 200,
+        count: bookings.length,
+        data: bookings,
+        message: "",
+      };
+    });
+    res.json(result);
   },
 
   /**
