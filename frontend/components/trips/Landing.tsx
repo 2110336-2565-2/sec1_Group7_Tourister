@@ -1,10 +1,8 @@
 "use client";
 import { Button, Tab, Tabs, CircularProgress, Stack } from "@mui/material";
-// import Button from '@mui/material-next/Button';
 import * as React from "react";
 import { useState, useEffect, useContext } from "react";
 import Box from "@mui/material/Box";
-import { COLOR } from "@/theme/globalTheme";
 import {
   getAllProgramsFromGuide,
   getAllPrograms,
@@ -52,18 +50,18 @@ const Landing = () => {
   const [ongoingTrips, setOngoingTrips] = useState<ProgramInterface[]>([]);
   const [upcomingTrips, setUpcomingTrips] = useState<ProgramInterface[]>([]);
   const [completeTrips, setCompleteTrips] = useState<ProgramInterface[]>([]);
-  // const authUserData:AuthContextInterface = useAuth()
-  // const userId:string = authUserData.user?._id!
+  const authUserData:AuthContextInterface = useAuth()
+  const userId:string = authUserData.user?._id!
 
   useEffect(() => {
-    const guide = JSON.parse(localStorage.getItem("user") || "{}");
-    const guideId = guide._id;
+    // const guide = JSON.parse(localStorage.getItem("user") || "{}");
+    // const guideId = guide._id;
     //console.log(guideId);
     const fetchTripsData = async () => {
       setLoading(true);
       try {
         //const response = await getAllPrograms();
-        const response = await getAllProgramsFromGuide(guideId, {
+        const response = await getAllProgramsFromGuide(userId, {
           sortBy: "date",
         });
         const programs = response.data || [];
@@ -78,6 +76,11 @@ const Landing = () => {
         const ongoingTrips = programs.filter((program) => {
           const startDate = new Date(program.startDate);
           const endDate = new Date(program.endDate);
+          startDate.setHours(0, 0, 0, 0);
+          endDate.setHours(0, 0, 0, 0);
+
+          // console.log("startDate",startDate);
+          // console.log("endDate",endDate)
           return startDate <= todayWithoutTime && endDate >= todayWithoutTime;
         });
         //console.log("OngoingTrips");
@@ -85,6 +88,7 @@ const Landing = () => {
 
         const upcomingTrips = programs.filter((program) => {
           const startDate = new Date(program.startDate);
+          startDate.setHours(0, 0, 0, 0);
           return startDate > todayWithoutTime;
         });
         //console.log("upcomingTrips");
@@ -92,6 +96,8 @@ const Landing = () => {
 
         const completeTrips = programs.filter((program) => {
           const endDate = new Date(program.endDate);
+          endDate.setHours(0, 0, 0, 0);
+
           return endDate < todayWithoutTime;
         });
         //console.log("completeTrips");
@@ -107,7 +113,7 @@ const Landing = () => {
       setLoading(false);
     };
     fetchTripsData();
-  }, []);
+  }, [userId]);
 
   const OngoingTrips = () => {
     return (
