@@ -201,7 +201,7 @@ const createTrip = () => {
             //   const res = await getUserById(user._id);
             //   localStorage.setItem("user", JSON.stringify(res.data));
             // }
-            // router.push("/trips")
+            router.push("/trips")
           }
         }
       }

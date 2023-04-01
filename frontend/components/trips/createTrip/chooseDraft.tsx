@@ -30,13 +30,15 @@ const chooseDraft = () => {
   // },[])
 
   useEffect(()=>{
-    if(user){
+    // if(authUserData.user && authUserData.user?._id){
       const fetch = async () => {
-      const response = await getAllDarftProgramsFromGuide(user._id?user._id:"");
-      setDrafts(response.data || [])
+        if(authUserData.user && authUserData.user._id){
+          const response = await getAllDarftProgramsFromGuide(authUserData.user._id);
+          setDrafts(response.data || [])
+        }
       }
       fetch();
-    }
+    // }
   },[user])
   const handleEdit = async (draft : ProgramInterface) => {
     if(draft._id){localStorage.setItem("editing", draft._id);}
