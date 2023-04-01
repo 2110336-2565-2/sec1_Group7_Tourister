@@ -283,7 +283,7 @@ const createTrip = () => {
             <Header name="Create Trip" handle={()=>{router.push("/trips");}}></Header>
             <div style={{display:"flex",alignSelf:"center"}}>
               <div>
-                <label style={{color:COLOR.primary}}>&nbsp;&nbsp;&nbsp;information&nbsp;&nbsp;&nbsp;</label>
+                <label style={{color:COLOR.primary}}>&nbsp;&nbsp;&nbsp;Information&nbsp;&nbsp;&nbsp;</label>
                 <div style={{border:`1px solid ${COLOR.primary}`,background:COLOR.primary}}/>
               </div><div>
                 <label style={{color:COLOR.paleblue}}>&nbsp;&nbsp;&nbsp;Schedule&nbsp;&nbsp;&nbsp;</label>
