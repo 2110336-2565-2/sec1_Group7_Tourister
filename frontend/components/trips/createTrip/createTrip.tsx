@@ -420,7 +420,7 @@ const createTrip = () => {
                       <label style={{marginTop:".6rem"}}>Province&nbsp;:</label>
                       <FormInputText name="endProvince" control={control} label="Name of province"/>
                     </div>
-                    <FormInputText name="descriptionOfEndLocation" control={control} label="information"/>
+                    <FormInputText name="descriptionOfEndLocation" control={control} label="Information"/>
                   </Field>
                 </TimelineContent>
               </TimelineItem>
