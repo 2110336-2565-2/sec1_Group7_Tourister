@@ -114,18 +114,16 @@ const BookingController = {
       console.log(booking);
 
       //Nofify payment
-
       const noti_payment = new Notification({
         user: user._id,
         type: "coin",
         title: "Payment Complete",
-        message: `${program.price} is paid to book for ${program.name}`,
+        message: `${program.price} baht is paid to book for ${program.name}`,
       });
       await noti_payment.save();
       console.log(noti_payment);
 
       //Nofify guide
-
       const noti_request = new Notification({
         user: program.guide,
         type: "newrequest",
@@ -330,6 +328,18 @@ const BookingController = {
       await Program.findByIdAndUpdate(updatedBooking.program, {
         $inc: { num_participant: 1 },
       });
+
+      //Nofify tourist
+      const program = await Program.findById(updatedBooking.program);
+      const noti_accept = new Notification({
+        user: updatedBooking.user,
+        type: "accrequest",
+        title: "Request Accepted",
+        message: `Your request to join ${program.name} is accepted`,
+      });
+      await noti_accept.save();
+      console.log(noti_accept);
+
       return {
         code: 204,
         data: updatedBooking,
@@ -357,6 +367,16 @@ const BookingController = {
       await User.findByIdAndUpdate(updatedBooking.user, {
         $inc: { num_booking: -1, remainingAmount: program.price },
       });
+
+      //Nofify tourist
+      const noti_decline = new Notification({
+        user: updatedBooking.user,
+        type: "decrequest",
+        title: "Request Declined",
+        message: `Your request to join ${program.name} is declined and ${program.price} baht is refunded`,
+      });
+      await noti_decline.save();
+      console.log(noti_decline);
 
       return {
         code: 204,
