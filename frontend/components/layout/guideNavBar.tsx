@@ -6,7 +6,11 @@ import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined
 import { useState } from "react";
 import { useRouter } from "next/router";
 
-export default function GuideNavBar() {
+interface guideNavBarProps {
+  userId: string;
+}
+
+export default function GuideNavBar({ userId }: guideNavBarProps) {
   const router = useRouter();
   const [path, setPath] = useState<String | null>(router.pathname);
 

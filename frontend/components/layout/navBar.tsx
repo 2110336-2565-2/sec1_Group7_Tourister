@@ -29,10 +29,11 @@ import UserNavBar from "@/components/layout/userNavBar";
 export default function navBar() {
   const authUserData: AuthContextInterface = useAuth();
   const isGuide: boolean = authUserData.user?.isGuide || false;
-  
+  const userId:string = authUserData.user?._id!
+
   return (
     <Fragment>
-      {isGuide ? <GuideNavBar /> : <UserNavBar />}
+      {isGuide ? <GuideNavBar userId={userId} /> : <UserNavBar userId={userId} />}
     </Fragment>
   );
 }
