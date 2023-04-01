@@ -55,7 +55,10 @@ export const NotificationList = () => {
           if (notiDetail.type === "coin") {
             icon = <Paid />;
             avatarStyle = { backgroundColor: "#4CAF50" };
-          } else if (notiDetail.type === "newrequest") {
+          } else if (notiDetail.type === "decrequest") {
+            icon = <ConfirmationNumber />;
+            avatarStyle = { backgroundColor: "#F44336" };
+          } else if (notiDetail.type === "newrequest"||"accrequest") {
             icon = <ConfirmationNumber />;
             avatarStyle = { backgroundColor: "#2196F3" };
           } else if (notiDetail.type === "upcoming trip") {
