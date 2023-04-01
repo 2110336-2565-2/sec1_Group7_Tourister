@@ -87,7 +87,12 @@ const attraction = ({id,t,l,p,o,f=null,handleDelete,handleCallback}:{id:string,t
                     <input
                       type="file"
                       // id="upload-button"
-                      // style={{ display: "none" }}
+                      style={{ 
+                        opacity: 0,
+                        position: "absolute",
+                        width: "74px",
+                        height: "74px"
+                      }}
                       onChange={handleFileUpload}
                     />
                     {image===null?(
@@ -116,21 +121,19 @@ const attraction = ({id,t,l,p,o,f=null,handleDelete,handleCallback}:{id:string,t
                             padding: "0"
                           }}
                         />
-                        <label htmlFor="upload-button">Upload</label>
+                        <label>Upload</label>
                       </div>
                     ):(
-                      <label htmlFor="upload-button">
-                        <img
-                          src={`data:image/png;base64,${file}`}
-                          alt="img"
-                          style={{
-                            width: "74px",
-                            height: "74px",
-                            marginTop: "5px",
-                            borderRadius: 5,
-                          }}
-                        />
-                      </label>
+                      <img
+                        src={`data:image/png;base64,${file}`}
+                        alt="img"
+                        style={{
+                          width: "74px",
+                          height: "74px",
+                          marginTop: "5px",
+                          borderRadius: 5,
+                        }}
+                      />
                     )}
                     {/* {image===null?( */}
                     {/* // ):(
@@ -202,9 +205,15 @@ const attraction = ({id,t,l,p,o,f=null,handleDelete,handleCallback}:{id:string,t
                     fullWidth
                     style={{fontSize:"12px", height:"30px"}}
                   >
-                    <MenuItem value={"Admission not needed"}><div style={{display:"flex", alignItems:"center", gap:"5px"}}><LabelOffOutlined color="disabled" style={{width:"15px", height:"15px"}}/><label>Admission not needed</label></div></MenuItem>
-                    <MenuItem value={"Admission included"}><div style={{display:"flex", alignItems:"center", gap:"5px"}}><LoyaltyOutlined color="primary" style={{width:"15px", height:"15px"}}/><label>Admission included</label></div></MenuItem>
-                    <MenuItem value={"Admission not included"}><div style={{display:"flex", alignItems:"center", gap:"5px"}}><LoyaltyOutlined color="disabled" style={{width:"15px", height:"15px"}}/><label>Admission not included</label></div></MenuItem>
+                    <MenuItem value={"Admission not needed"}><div style={{display:"flex", alignItems:"center", gap:"5px", fontSize:"12px"}}><LabelOffOutlined color="disabled" style={{width:"15px", height:"15px"}}/><label>Admission not needed</label></div></MenuItem>
+                    <MenuItem value={"Admission included"}><div style={{display:"flex", alignItems:"center", gap:"5px", fontSize:"12px"}}><LoyaltyOutlined color="primary" style={{width:"15px", height:"15px"}}/><label>Admission included</label></div></MenuItem>
+                    <MenuItem value={"Admission not included"}><div style={{display:"flex", alignItems:"center", gap:"5px", fontSize:"12px"}}><LoyaltyOutlined color="disabled" style={{width:"15px", height:"15px"}}/><label>Admission not included</label></div></MenuItem>
+                    {/* sx={{
+                      '& -MuiMenuItem-root': {
+                        padding:"0",
+                        margin:"0",
+                      }
+                    }} */}
                   </Select>
                 </FormControl>
                 <div style={{display:"flex",alignSelf:"center", justifyContent: "flex-end", gap:"10px", height:"25px", margin:"10px 0"}}>
