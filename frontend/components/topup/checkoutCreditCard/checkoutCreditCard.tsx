@@ -8,12 +8,7 @@ import { useRouter } from "next/router";
 
 var PUBLIC_KEY = "pkey_test_5vazimccpm3mze85kj6";
 
-function Checkout(props: any) {
-  // console.log(PUBLIC_KEY);
-  const [omiseToken, setOmiseToken] = useState("");
-  const [omiseSource, setOmiseSource] = useState("");
-  // const [chargeAmount, setChargeAmount] = useState(0);
-  // var amount = 100000;
+function Checkout() {
   const [topup, setTopup] = useState<TopUpTransactionDataInterface>({
     omiseToken: "",
     omiseSource: "",
@@ -82,20 +77,15 @@ function Checkout(props: any) {
   };
 
   const handleClick = async (event: any) => {
-    // event.preventDefault();
+    event.preventDefault();
     creditCardConfigure();
     omiseHandler();
   };
 
-  // function handleInputChange(e: any) {
-  //   setChargeAmount(e.target.value);
-  // }
   return (
     <div>
       <Script url="https://cdn.omise.co/omise.js" onLoad={handleScriptLoad} />
-      {/* <input type="text" value={chargeAmount} onChange={handleInputChange} /> */}
 
-      {/* <button onClick={handleInputChange}>Submit</button> */}
       <form>
         <button
           id="credit-card"

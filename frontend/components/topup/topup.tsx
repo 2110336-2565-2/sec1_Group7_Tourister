@@ -18,10 +18,6 @@ const topUpValues: TopUpValue[] = [
 const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
   const [amount, setAmount] = useState(initialAmount);
   const router = useRouter();
-  const [selectedValue, setSelectedValue] = useState<number | undefined>(
-    undefined
-  );
-  const [customValue, setCustomValue] = useState<number | undefined>(undefined);
 
   const handleValueClick = (value: number) => {
     setAmount(value);
@@ -38,11 +34,11 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
     });
   };
 
-  const valueToShow = customValue || selectedValue;
 
   return (
     <div>
-      <h1>Top Up</h1>
+      <h1>Coin Top Up</h1>
+      <div>Top up value (THB)</div>
       <div
         style={{
           display: "grid",
@@ -57,7 +53,7 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
               padding: "10px",
               border: "1px solid gray",
               borderRadius: "5px",
-              backgroundColor: selectedValue === value ? "lightblue" : "white",
+              backgroundColor: amount === value ? "lightblue" : "white",
             }}
             onClick={() => handleValueClick(value)}
           >
@@ -80,7 +76,6 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
         )}
       </div>
       <div>
-        {/* <input type="number" value={amount} onChange={handleAmountChange} /> */}
         <button onClick={handleTopUp}>Pay Now</button>
       </div>
     </div>

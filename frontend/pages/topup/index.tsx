@@ -1,4 +1,3 @@
-import Transaction from "@/components/topup/checkoutCreditCard/checkoutCreditCard";
 import TopUp from "@/components/topup/topup";
 import { COLOR } from "@/theme/globalTheme";
 import { TopUpTransactionDataInterface } from "@/interfaces/transaction/TopUpTransactionDataInterface";
