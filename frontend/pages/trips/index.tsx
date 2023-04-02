@@ -38,8 +38,8 @@ export default function Page() {
       <Heading>
         <Avatar 
           style={{ marginRight: "1rem" ,width:"70px",height:"70px"}}
-          src={`data:image/png;base64,${user?.image}`}
-        />
+          src={user?.image ? `data:image/png;base64,${user.image}` : undefined}
+          />
         <div>
           <div style={{marginBottom:"0.5rem", fontSize:"1rem"}}>Hello Guide,</div>
 
