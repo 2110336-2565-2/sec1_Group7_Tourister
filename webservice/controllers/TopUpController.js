@@ -23,7 +23,6 @@ const TopUpController = {
             const user  = verifyToken(token);
             if(!user) throw new ApiErrorResponse("invalid token", 401);
             const { omiseToken, omiseSource, chargeAmount, coins } = req.body;
-            console.log(req.body)
             console.log("omiseToken", omiseToken)
             console.log("omiseSource", omiseSource)
 
@@ -33,14 +32,17 @@ const TopUpController = {
                 amount: chargeAmount,
                 currency: 'thb',
                 description: `top up ${coins} coins for user ${user._id}`,
-                capture: true,
+                //capture: true,
                 card: omiseToken,
-                source: omiseSource,
             }, (err, charge) => {
                 if (err) {
                 // Handle error
                 console.error(err);
-                    throw new ApiErrorResponse("transaction failed", 500);
+                    result =  {
+                        code: 500,
+                        message: err,
+                        tag: "transaction-failed",
+                    }
                 } else {
                     // Charge successful
                     console.log(charge);

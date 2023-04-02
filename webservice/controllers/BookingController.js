@@ -295,11 +295,12 @@ const BookingController = {
   async deleteBookingById(req, res, next) {
     const result = await tryCatchMongooseService(async () => {
       const bookingId = req.params.id;
-      const booking = await Booking.findByIdAndDelete(bookingId);
+      const booking = await Booking.findById(bookingId);
+      await Booking.findByIdAndDelete(bookingId);
 
       const program = await Program.findById(booking.program);
-      await User.findByIdAndUpdate(program.guide, {
-        $inc: { num_booking: -1, remainingAmount: program.price },
+      await User.findByIdAndUpdate(booking.user, {
+        $inc: { remainingAmount: program.price },
       });
 
       return {
