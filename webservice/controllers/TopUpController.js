@@ -52,7 +52,7 @@ const TopUpController = {
                 }
             }
             finally {
-                await User.findByIdAndUpdate(user._id, { $inc: { remainingAmount: coins } })
+                await User.findByIdAndUpdate(user._id, { $inc: { remainingAmount: coins / 100 } })
                 const updatedUser = await User.findById(user._id)
                 result.data = updatedUser
                 const topup_noti = new Notification({

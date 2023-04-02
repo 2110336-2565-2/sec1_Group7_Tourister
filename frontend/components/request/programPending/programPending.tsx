@@ -36,43 +36,20 @@ export default function programPending() {
       `{"name":"Name","surname":"Surname","remainingAmount":0,"isGuide":"true"}`
     );
   }
-  // console.log("efwefr");
-  // console.log(guide._id);
-  // setGuideid(guide._id);
-  // console.log(guideId)
   const guideId = guide._id!;
-  const [programs, setPrograms] = useState<ProgramInterface[]>([
-    // {
-    //   _id: "",
-    //   name: "",
-    //   description: "",
-    //   price: 0,
-    //   startDate: Date,
-    //   endDate: Date,
-    //   province: "",
-    //   max_participant: 0,
-    //   num_participant: 0,
-    //   meetLocation: "",
-    //   descriptionOfMeetLocation: "",
-    //   attractions: [],
-    //   language: [],
-    //   endLocation: "",
-    //   descriptionOfEndLocation: "",
-    //   published: true,
-    //   status: "",
-    //   num_pending: 0,
-    // },
-  ]);
+  const [programs, setPrograms] = useState<ProgramInterface[]>([]);
+  const [loading, setLoading] = useState(true);
 
   var programArr: any = [];
   const programPendingDict: { [key: string]: [string] } = {};
 
   async function fetchData() {
+    setLoading(true);
     const response = await getAllBookings();
     const programOfGuide = await getAllProgramsFromGuide(
       guideId.toString().trim()
     );
-    console.log(programOfGuide);
+    console.log(response);
     console.log("eeeee");
     let programOfGuideArr: any = [];
     for (let i = 0; i < programOfGuide.data.length; i++) {
@@ -81,16 +58,16 @@ export default function programPending() {
     console.log(programOfGuideArr);
     console.log(response.data.length);
     for (let i = 0; i < response.data.length; i++) {
-      console.log(i);
-      console.log(
-        response.data[i].program._id.toString().trim(),
-        programOfGuideArr
-      );
-      console.log(
-        programOfGuideArr.includes(
-          response.data[i].program._id.toString().trim()
-        )
-      );
+      // console.log(i);
+      // console.log(
+      //   response.data[i].program._id.toString().trim(),
+      //   programOfGuideArr
+      // );
+      // console.log(
+      //   programOfGuideArr.includes(
+      //     response.data[i].program._id.toString().trim()
+      //   )
+      // );
       if (
         response.data[i].status === "pending" &&
         programOfGuideArr.includes(
@@ -109,17 +86,19 @@ export default function programPending() {
         }
       }
     }
-    console.log("jjjj");
-    console.log(programPendingDict);
+    // console.log("jjjj");
+    // console.log(programPendingDict);
     for (const [key, value] of Object.entries(programPendingDict)) {
       // console.log(`${key}: ${value}`);
       const response = await getProgramById(key);
-      console.log(response.data);
+      // console.log(response.data);
       response.data.num_pending = value.length;
       programArr.push(response.data);
-      console.log(programArr);
+      // console.log(programArr);
     }
     setPrograms(programArr);
+    console.log(programs);
+    setLoading(false);
     // console.log(response.data);
   }
   useEffect(() => {
@@ -140,7 +119,8 @@ export default function programPending() {
     month: "short",
     day: "numeric",
   });
-  if (programs.length < 0) {
+
+  if (loading) {
     return (
       <>
         <Stack alignItems="center">
@@ -149,7 +129,6 @@ export default function programPending() {
       </>
     );
   }
-
   return (
     <div
       style={{
@@ -192,7 +171,7 @@ export default function programPending() {
                       padding: "0px 10px",
                       paddingTop: "20px",
                       borderRadius: 12,
-                      transform: "translateX(20px)"
+                      transform: "translateX(20px)",
                     }}
                   />
                 ) : (
@@ -207,18 +186,18 @@ export default function programPending() {
                       padding: "0px 10px",
                       paddingTop: "20px",
                       borderRadius: 12,
-                      transform: "translateX(20px)"
+                      transform: "translateX(20px)",
                     }}
                   />
                 )}
               </div>
-              <div 
+              <div
                 key={program._id}
                 style={{
                   height: "220px",
                   width: "100%",
                   // border: `10px solid ${COLOR.paleblue}`,
-                  borderBottom: `2px solid ${COLOR.paleblue}`, 
+                  borderBottom: `2px solid ${COLOR.paleblue}`,
                   paddingTop: "10px",
                 }}
               >
@@ -244,7 +223,11 @@ export default function programPending() {
                           </td>
                         </tr>
                         <tr>
-                          <td style={{ transform: "translateY(-10px) translateX(20px)" }}>
+                          <td
+                            style={{
+                              transform: "translateY(-10px) translateX(20px)",
+                            }}
+                          >
                             <Chip
                               icon={<LocationOnOutlined />}
                               size="small"
@@ -272,7 +255,13 @@ export default function programPending() {
                   <br></br>
                   <br></br>
 
-                  <div style={{ display: "inline-block", color:"black", transform:"translateX(-20px)" }}>
+                  <div
+                    style={{
+                      display: "inline-block",
+                      color: "black",
+                      transform: "translateX(-20px)",
+                    }}
+                  >
                     <>
                       <CalendarMonth
                         style={{
@@ -291,7 +280,13 @@ export default function programPending() {
                     </>
                   </div>
 
-                  <div style={{ display: "inline-block", color:"black", transform:"translateX(-20px)" }}>
+                  <div
+                    style={{
+                      display: "inline-block",
+                      color: "black",
+                      transform: "translateX(-20px)",
+                    }}
+                  >
                     <>
                       <CalendarMonth
                         style={{
@@ -330,7 +325,7 @@ export default function programPending() {
                         textAlign: "center",
                         // textDecoration: "none",
                         // textDecorationLine: "none",
-                        letterSpacing: "1.5px"
+                        letterSpacing: "1.5px",
                       }}
                     >
                       {program.num_participant}/{program.max_participant}
@@ -363,7 +358,7 @@ export default function programPending() {
           style={{
             margin: "auto",
             color: "grey",
-            textAlign: "center"
+            textAlign: "center",
           }}
         >
           No requests yet! Keep checking back for new opportunities, or create
