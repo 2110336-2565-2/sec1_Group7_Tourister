@@ -7,8 +7,8 @@ import { COLOR } from "@/theme/globalTheme";
 import { useRouter } from "next/router";
 import appConfig from "@/configs/appConfig";
 
-// appConfig.OMISE_PUBLIC_KEY;
-var PUBLIC_KEY = appConfig.OMISE_PUBLIC_KEY;
+
+var PUBLIC_KEY = "pkey_test_5vazimccpm3mze85kj6";
 let OmiseCard: any;
 
 function Checkout(props: any) {
