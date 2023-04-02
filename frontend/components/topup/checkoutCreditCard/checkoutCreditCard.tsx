@@ -23,6 +23,7 @@ function Checkout() {
   const createCreditCardCharge = async (
     transData: TopUpTransactionDataInterface
   ) => {
+    console.log(transData)
     console.log("res");
     const res = await chargeAndTopUpCoins(transData);
     console.log("res");
