@@ -28,39 +28,36 @@ const TopUpController = {
 
             // Create a charge with Omise
             let result = {}
-            await omise.charges.create({
-                amount: chargeAmount,
-                currency: 'thb',
-                description: `top up ${coins} coins for user ${user._id}`,
-                //capture: true,
-                card: omiseToken,
-            }, (err, charge) => {
-                if (err) {
-                    // Handle error
-                    console.error(err);
-                    User.findByIdAndUpdate(user._id, { $inc: { remainingAmount: coins } })
-                    const updatedUser = User.findById(user._id)
-                    // console.log("updatedUser", updatedUser)
-                    result = {
-                        code: 200,
-                        data: updatedUser,
-                        message: "top up successful",
-                    }
-                } else {
-                    // Charge successful
-                    console.log(charge);
-                    
-                    User.findByIdAndUpdate(user._id, { $inc: { remainingAmount: coins } })
-                    const updatedUser = User.findById(user._id)
-
-                    result = {
-                        code: 200,
-                        data: updatedUser,
-                        message: "top up successful",
-                    }
+            try {
+                const charges = await omise.charges.create({
+                    amount: chargeAmount,
+                    currency: 'thb',
+                    description: `top up ${coins} coins for user ${user._id}`,
+                    //capture: true,
+                    card: omiseToken,
+                });
+                User.findByIdAndUpdate(user._id, { $inc: { remainingAmount: coins } })
+                const updatedUser = User.findById(user._id)
+                // console.log("updatedUser", updatedUser)
+                result = {
+                    code: 200,
+                    data: updatedUser,
+                    message: "top up successful",
                 }
-            });
-            return result;
+                return result;
+            }
+            catch(err) {
+                console.log("err", err)
+                User.findByIdAndUpdate(user._id, { $inc: { remainingAmount: coins } })
+                const updatedUser = User.findById(user._id)
+                result = {
+                    code: 200,
+                    data: null,
+                    message: "top up failed",
+                    tag: "transaction-failed"
+                }
+                return result;
+            }
         })
         res.json(result)
     },
