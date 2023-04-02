@@ -85,6 +85,7 @@ const BookingController = {
         user: user._id,
         program: programId,
       });
+      console.log("dupeBooking",dupeBookingByUserId)
       if (dupeBookingByUserId.length > 0){
         throw new ApiErrorResponse(
           "you already booked this program",
@@ -111,7 +112,7 @@ const BookingController = {
       payload.user = user._id;
       const booking = new Booking(payload);
       await booking.save();
-      console.log(booking);
+      //console.log(booking);
 
       //Nofify payment
       const noti_payment = new Notification({
@@ -121,7 +122,7 @@ const BookingController = {
         message: `${program.price} baht is paid to book for ${program.name}`,
       });
       await noti_payment.save();
-      console.log(noti_payment);
+      //console.log(noti_payment);
 
       //Nofify guide
       const noti_request = new Notification({
@@ -131,7 +132,7 @@ const BookingController = {
         message: `${user.name} ${user.surname} requested to join ${program.name}`,
       });
       await noti_request.save();
-      console.log(noti_request);
+      //console.log(noti_request);
 
       return {
         code: 201,

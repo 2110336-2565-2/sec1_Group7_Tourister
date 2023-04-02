@@ -36,12 +36,15 @@ const TopUpController = {
                 card: omiseToken,
             }, (err, charge) => {
                 if (err) {
-                // Handle error
-                console.error(err);
-                    result =  {
-                        code: 500,
-                        message: err,
-                        tag: "transaction-failed",
+                    // Handle error
+                    console.error(err);
+                    User.findByIdAndUpdate(user._id, { $inc: { remainingAmount: coins } })
+                    const updatedUser = User.findById(user._id)
+
+                    result = {
+                        code: 200,
+                        data: updatedUser,
+                        message: "top up successful",
                     }
                 } else {
                     // Charge successful
