@@ -58,12 +58,15 @@ export const NotificationList = () => {
           } else if (notiDetail.type === "decrequest") {
             icon = <ConfirmationNumber />;
             avatarStyle = { backgroundColor: "#F44336" };
-          } else if (notiDetail.type === "newrequest"||"accrequest") {
+          } else if (notiDetail.type === "nexttrip") {
+            icon = <InsertInvitation />;
+            avatarStyle = { backgroundColor: "#FFC107" };
+          } else if (notiDetail.type === "newrequest" || notiDetail.type === "accrequest") {
             icon = <ConfirmationNumber />;
             avatarStyle = { backgroundColor: "#2196F3" };
-          } else if (notiDetail.type === "upcoming trip") {
+          } else if (notiDetail.type === "endtrip") {
             icon = <InsertInvitation />;
-            avatarStyle = { backgroundColor: "#FFEB3B" };
+            avatarStyle = { backgroundColor: "#9C27B0" };
           } else {
             icon = <Avatar alt="Remy Sharp" />;
             avatarStyle = {};
