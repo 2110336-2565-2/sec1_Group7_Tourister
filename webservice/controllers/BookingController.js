@@ -340,6 +340,28 @@ const BookingController = {
       await noti_accept.save();
       console.log(noti_accept);
 
+      //Nofify tourist trip
+      const noti_trip = new Notification({
+        user: updatedBooking.user,
+        type: "nexttrip",
+        title: "Upcoming Trip",
+        message: `${program.name} will start today at ${program.startTime}. Get Ready!`,
+        notifyTime: Math.max(program.startDate, Date.now),
+      });
+      await noti_trip.save();
+      console.log(noti_trip);
+
+      //Nofify tourist endtrip
+      const noti_endtrip = new Notification({
+        user: updatedBooking.user,
+        type: "endtrip",
+        title: "Finish Trip",
+        message: `${program.name} is finish. If you have any problem, please report to contactTourister@gmail.com`,
+        notifyTime: new Date(program.endDate.getDate + 1),
+      });
+      await noti_endtrip.save();
+      console.log(noti_endtrip);
+
       return {
         code: 204,
         data: updatedBooking,
