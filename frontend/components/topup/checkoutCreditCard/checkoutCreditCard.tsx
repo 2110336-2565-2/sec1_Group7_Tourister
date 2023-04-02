@@ -4,23 +4,27 @@ import { chargeAndTopUpCoins } from "@/services/topupService";
 import Script from "react-load-script";
 import { Button } from "@mui/material";
 import { COLOR } from "@/theme/globalTheme";
+import { useRouter } from "next/router";
 
 var PUBLIC_KEY = "pkey_test_5vazimccpm3mze85kj6";
 
 function Checkout(props: any) {
   // console.log(PUBLIC_KEY);
-  let OmiseCard: any;
   const [omiseToken, setOmiseToken] = useState("");
   const [omiseSource, setOmiseSource] = useState("");
-  const [chargeAmount, setChargeAmount] = useState(0);
-  var inputValue = 100000;
+  // const [chargeAmount, setChargeAmount] = useState(0);
+  // var amount = 100000;
   const [topup, setTopup] = useState<TopUpTransactionDataInterface>({
     omiseToken: "",
     omiseSource: "",
     chargeAmount: 0,
     coins: 0,
   });
+  const router = useRouter();
+  let { amount } = router.query;
+  const parsedAmount = parseInt(amount as string, 10) * 100;
 
+  let OmiseCard: any;
   const createCreditCardCharge = async (
     transData: TopUpTransactionDataInterface
   ) => {
@@ -30,7 +34,7 @@ function Checkout(props: any) {
     console.log(res);
   };
 
-  const handleScriptLoad = () => {
+  const handleScriptLoad = async () => {
     OmiseCard = window.OmiseCard;
     // console.log(window.OmiseCard);
     // general info
@@ -38,7 +42,7 @@ function Checkout(props: any) {
       publicKey: PUBLIC_KEY,
       frameLabel: "Trip Payment",
       submitLabel: "PAY NOW",
-      currency: "THB",
+      currency: "thb",
     });
   };
   const creditCardConfigure = async () => {
@@ -50,12 +54,12 @@ function Checkout(props: any) {
     OmiseCard.attach();
   };
 
-  const omiseHandler = () => {
+  const omiseHandler = async () => {
     // const { createCreditCardCharge } = props;
-    console.log(inputValue);
+    console.log(parsedAmount);
     OmiseCard.open({
       frameDescription: "Invoice #3847",
-      amount: inputValue,
+      amount: parsedAmount,
       onCreateTokenSuccess: (token: any) => {
         console.log(token);
         let Token = "";
@@ -68,8 +72,8 @@ function Checkout(props: any) {
         setTopup({
           omiseToken: Token,
           omiseSource: Source,
-          chargeAmount: inputValue,
-          coins: inputValue,
+          chargeAmount: parsedAmount,
+          coins: parsedAmount,
         });
         createCreditCardCharge(topup);
       },
@@ -83,9 +87,9 @@ function Checkout(props: any) {
     omiseHandler();
   };
 
-  async function handleInputChange(e: any) {
-    setChargeAmount(e.target.value);
-  }
+  // function handleInputChange(e: any) {
+  //   setChargeAmount(e.target.value);
+  // }
   return (
     <div>
       <Script url="https://cdn.omise.co/omise.js" onLoad={handleScriptLoad} />
@@ -97,7 +101,7 @@ function Checkout(props: any) {
           id="credit-card"
           className="btn"
           type="button"
-          // disabled={cart.amount === 0}
+          disabled={parsedAmount === 0}
           onClick={handleClick}
         >
           Pay with Credit Card

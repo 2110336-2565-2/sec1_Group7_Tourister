@@ -1,0 +1,90 @@
+import React, { useState } from "react";
+import { useRouter } from "next/router";
+import { COLOR } from "@/theme/globalTheme";
+
+interface TopUpProps {
+  initialAmount: number;
+}
+
+const topUpValues: TopUpValue[] = [
+  { label: "300", value: 300 },
+  { label: "500", value: 500 },
+  { label: "700", value: 700 },
+  { label: "1000", value: 1000 },
+  { label: "2000", value: 2000},
+  { label: "3000", value: 3000 },
+];
+
+const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
+  const [amount, setAmount] = useState(initialAmount);
+  const router = useRouter();
+  const [selectedValue, setSelectedValue] = useState<number | undefined>(
+    undefined
+  );
+  const [customValue, setCustomValue] = useState<number | undefined>(undefined);
+
+  const handleValueClick = (value: number) => {
+    setAmount(value);
+  };
+
+  const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setAmount(parseInt(event.target.value));
+  };
+
+  const handleTopUp = () => {
+    router.push({
+      pathname: "./topup/checkoutCreditCard",
+      query: { amount },
+    });
+  };
+
+  const valueToShow = customValue || selectedValue;
+
+  return (
+    <div>
+      <h1>Top Up</h1>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(2, 1fr)",
+          gap: "10px",
+        }}
+      >
+        {topUpValues.map(({ label, value }) => (
+          <button
+            key={value}
+            style={{
+              padding: "10px",
+              border: "1px solid gray",
+              borderRadius: "5px",
+              backgroundColor: selectedValue === value ? "lightblue" : "white",
+            }}
+            onClick={() => handleValueClick(value)}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+      <input
+        type="number"
+        value={amount}
+        onChange={handleAmountChange}
+        placeholder="Enter custom amount"
+        style={{ marginTop: "10px" }}
+      />
+      <div style={{ margin: "0.0rem", backgroundColor: COLOR.secondary }}>
+        {amount !== undefined && (
+          <p style={{ marginTop: "10px" }}>
+            You have selected a top-up amount of THB {amount.toFixed(2)}
+          </p>
+        )}
+      </div>
+      <div>
+        {/* <input type="number" value={amount} onChange={handleAmountChange} /> */}
+        <button onClick={handleTopUp}>Pay Now</button>
+      </div>
+    </div>
+  );
+};
+
+export default TopUp;
