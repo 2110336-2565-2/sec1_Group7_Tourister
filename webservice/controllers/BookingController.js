@@ -85,13 +85,13 @@ const BookingController = {
         user: user._id,
         program: programId,
       });
-      if (dupeBookingByUserId)
+      if (dupeBookingByUserId){
         throw new ApiErrorResponse(
           "you already booked this program",
           400,
           "duplicate-booking"
         );
-
+      }
       const balance = (await User.findById(user._id)).remainingAmount;
       const program = await Program.findById(programId);
       if (balance < program.price)

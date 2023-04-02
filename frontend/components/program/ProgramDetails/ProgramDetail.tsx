@@ -4,7 +4,6 @@ import { COLOR } from "@/theme/globalTheme";
 import { useQuery } from "@tanstack/react-query";
 import { RefetchOptions, RefetchQueryFilters, QueryObserverResult} from "@tanstack/react-query";
 
-import * as React from "react";
 import { useState } from "react";
 import { UserCardInterface } from "@/interfaces/UserCardInterface";
 import { ApiResponseInterface } from "@/interfaces/ApiResponsetInterface";
@@ -15,6 +14,7 @@ import {
 import {
   getAllBookingsInProgram,
   createBooking,
+  deleteBookingById
 } from "@/services/bookingService";
 
 import {
@@ -48,6 +48,8 @@ import { format } from "date-fns";
 import { useAuth } from "@/components/AuthProvider";
 import { AuthContextInterface } from "@/interfaces/AuthContextInterface";
 
+import Swal from "sweetalert2";
+
 const iconStyle = {
   color: COLOR.disable,
   padding: "0px 10px",
@@ -67,6 +69,7 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
   onGoBack,
   refetchBooking
 }) => {
+  const [isRequestBooking, setIsRequestBooking] = useState<boolean>(false);
   const authUserData: AuthContextInterface = useAuth();
 
   if (!program) {
@@ -125,10 +128,18 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
         return (
           <Button
             variant="contained"
-            sx={{ width: "100%", fontSize: "1.3rem", color: COLOR.disable }}
-            disabled
+            sx={{
+              width: "100%",
+              fontSize: "1.3rem",
+              backgroundColor: COLOR.yellow,
+              "&.Mui-disabled": {
+                backgroundColor: COLOR.yellow,
+                color: "white",
+              },
+            }}
+            onClick={handleCanCelClick}
           >
-            Pending...
+            Cancel Booking
           </Button>
         );
       default:
@@ -145,16 +156,67 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
   };
 
   const handleBookingClick = async () => {
+    setIsRequestBooking(true);
     try {
       const res = await createBooking(
         { user: user, program: program },
         programId
       );
+      Swal.fire({
+        title: "Booking requested!",
+        icon: "success",
+        timer: 2000
+      })
       refetchBooking();
     } catch (err) {
       console.log(err);
     }
+    setIsRequestBooking(false);
   };
+
+  const handleCanCelClick = async () => {
+    try {
+      await refetchBooking();
+
+      const bookingId = bookings.find(
+        (booking) => booking.user?._id === userId
+      )?._id!
+
+      if(bookingId===undefined) {
+        Swal.fire({
+          text: "Your booking has already been declined..",
+          icon: "warning",
+          timer: 2000
+        })
+        return;
+      }
+
+      if(touristBookingStatus!=="pending"){
+        refetchBooking();
+        Swal.fire({
+          text: "You can't cancel your booking request right now..",
+          icon: "info",
+          timer: 2000
+        })
+        return;
+      }
+
+      const res = await deleteBookingById(bookingId)
+      Swal.fire({
+        text: "Booking cancelled!",
+        icon: "success",
+        timer: 2000
+      })
+    } catch (err) {
+      console.log(err);
+      Swal.fire({
+        title: "Oops...",
+        text: "There's an error... Please try again",
+        icon: "error",
+        timer: 2000
+      })
+    }
+  }
 
   return (
     <>
