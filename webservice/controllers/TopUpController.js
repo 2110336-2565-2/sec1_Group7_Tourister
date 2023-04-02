@@ -33,7 +33,7 @@ const TopUpController = {
                 const charges = await omise.charges.create({
                     amount: chargeAmount,
                     currency: 'thb',
-                    description: `top up ${coins} coins for user ${user._id}`,
+                    description: `top up ${coins / 100} coins for user ${user._id}`,
                     //capture: true,
                     card: omiseToken,
                 });
@@ -59,7 +59,7 @@ const TopUpController = {
                     user: user._id,
                     type: "coin",
                     title: "Top Up Successful",
-                    message: `${coins} coins have been added to your account`,
+                    message: `${coins / 100} coins have been added to your account`,
                     notifyTime: new Date(),
                   });
                 await topup_noti.save();
