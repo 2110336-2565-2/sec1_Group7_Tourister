@@ -3,6 +3,7 @@ const { verifyToken } = require('../services/jwtService');
 const Omise = require('omise');
 const User = require('../models/User');
 const { tryCatchMongooseService } = require('../utils/utils');
+const ApiErrorResponse = require('../exception/ApiErrorResponse');
 
 const omise = Omise({
     publicKey: process.env.OMISE_PUBLIC_KEY,
@@ -22,6 +23,9 @@ const TopUpController = {
             const user  = verifyToken(token);
             if(!user) throw new ApiErrorResponse("invalid token", 401);
             const { omiseToken, omiseSource, chargeAmount, coins } = req.body;
+            console.log(req.body)
+            console.log("omiseToken", omiseToken)
+            console.log("omiseSource", omiseSource)
 
             // Create a charge with Omise
             let result = {}
