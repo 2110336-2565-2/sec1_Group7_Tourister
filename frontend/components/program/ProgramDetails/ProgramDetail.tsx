@@ -4,7 +4,6 @@ import { COLOR } from "@/theme/globalTheme";
 import { useQuery } from "@tanstack/react-query";
 import { RefetchOptions, RefetchQueryFilters, QueryObserverResult} from "@tanstack/react-query";
 
-import * as React from "react";
 import { useState } from "react";
 import { UserCardInterface } from "@/interfaces/UserCardInterface";
 import { ApiResponseInterface } from "@/interfaces/ApiResponsetInterface";
@@ -15,6 +14,7 @@ import {
 import {
   getAllBookingsInProgram,
   createBooking,
+  deleteBookingById
 } from "@/services/bookingService";
 
 import {
@@ -48,6 +48,8 @@ import { format } from "date-fns";
 import { useAuth } from "@/components/AuthProvider";
 import { AuthContextInterface } from "@/interfaces/AuthContextInterface";
 
+import Swal from "sweetalert2";
+
 const iconStyle = {
   color: COLOR.disable,
   padding: "0px 10px",
@@ -67,6 +69,7 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
   onGoBack,
   refetchBooking
 }) => {
+  const [isRequestBooking, setIsRequestBooking] = useState<boolean>(false);
   const authUserData: AuthContextInterface = useAuth();
 
   if (!program) {
@@ -89,7 +92,7 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
   
   const touristBookingStatus = bookings.find(
     (booking) => booking.user?._id === userId
-  )?.status;
+  )?.status!;
   console.log(touristBookingStatus);
 
   const acceptedBookings = bookings.filter((booking)=>{
@@ -125,10 +128,18 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
         return (
           <Button
             variant="contained"
-            sx={{ width: "100%", fontSize: "1.3rem", color: COLOR.disable }}
-            disabled
+            sx={{
+              width: "100%",
+              fontSize: "1.3rem",
+              backgroundColor: COLOR.yellow,
+              "&.Mui-disabled": {
+                backgroundColor: COLOR.yellow,
+                color: "white",
+              },
+            }}
+            onClick={handleCanCelClick}
           >
-            Pending...
+            Cancel Booking
           </Button>
         );
       default:
@@ -145,16 +156,70 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
   };
 
   const handleBookingClick = async () => {
+    setIsRequestBooking(true);
     try {
       const res = await createBooking(
         { user: user, program: program },
         programId
       );
-      refetchBooking();
-    } catch (err) {
+      Swal.fire({
+        title: "Booking requested!",
+        icon: "success",
+        timer: 2000
+      })
+    } catch (err:any) {
       console.log(err);
+      Swal.fire({
+        text: err.message,
+        icon: "error",
+        timer: 2000
+      })
     }
+    refetchBooking();
+    setIsRequestBooking(false);
   };
+
+  const handleCanCelClick = async () => {
+    try {
+      const bookingId = bookings.find(
+        (booking) => booking.user?._id === userId
+      )?._id!
+
+      // if(bookingId===undefined) {
+      //   Swal.fire({
+      //     text: "Your booking has already been declined..",
+      //     icon: "warning",
+      //     timer: 2000
+      //   })
+      //   return;
+      // }
+
+      // if(touristBookingStatus!=="pending"){
+      //   refetchBooking();
+      //   Swal.fire({
+      //     text: "You can't cancel your booking request right now..",
+      //     icon: "info",
+      //     timer: 2000
+      //   })
+      //   return;
+      // }
+
+      const res = await deleteBookingById(bookingId)
+      Swal.fire({
+        text: "Booking cancelled!",
+        icon: "success",
+        timer: 2000
+      })
+    } catch (err:any) {
+      console.log(err);
+      Swal.fire({
+        text: err.message,
+        icon: "error",
+        timer: 2000
+      })
+    }
+    refetchBooking();
+  }
 
   return (
     <>
@@ -411,7 +476,69 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
             margin: "1em",
           }}
         >
-          {generateButton(touristBookingStatus)}
+          {
+            { 
+              "accepted":<>
+              <Button
+                variant="contained"
+                sx={{
+                  width: "100%",
+                  fontSize: "1.3rem",
+                  backgroundColor: COLOR.success,
+                  "&.Mui-disabled": {
+                    backgroundColor: COLOR.success,
+                    color: "white",
+                  },
+                }}
+                disabled
+                >
+                Accepted!
+              </Button>
+              </>,
+            "pending":<>
+              <Button
+                variant="contained"
+                sx={{
+                  width: "100%",
+                  fontSize: "1.3rem",
+                  backgroundColor: COLOR.yellow,
+                  "&.Mui-disabled": {
+                    backgroundColor: COLOR.yellow,
+                    color: "white",
+                  },
+                }}
+                onClick={handleCanCelClick}
+                >
+                Cancel Booking
+              </Button>
+              </>,
+              "declined": <>
+              <Button
+                variant="contained"
+                sx={{
+                  width: "100%",
+                  fontSize: "1.3rem",
+                  backgroundColor: COLOR.error,
+                  "&.Mui-disabled": {
+                    backgroundColor: COLOR.error,
+                    color: "white",
+                  },
+                }}
+                disabled
+                >
+                Declined
+              </Button>
+              </>
+            }[touristBookingStatus] || <>
+              <Button
+                variant="contained"
+                sx={{ width: "100%", fontSize: "1.3rem" }}
+                onClick={handleBookingClick}
+                >
+                Booking
+              </Button>
+            </>
+          }
         </div>
       )}
     </>

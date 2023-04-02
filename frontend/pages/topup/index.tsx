@@ -8,7 +8,7 @@ import { useState } from "react";
 export default function Page() {
 
   return (
-    <div style={{ margin: "0.0rem", backgroundColor: COLOR.background }}>
+    <div style={{ margin: "0.0rem", backgroundColor: COLOR.primary }}>
       <TopUp initialAmount={0}/>
       <NavBar />
     </div>

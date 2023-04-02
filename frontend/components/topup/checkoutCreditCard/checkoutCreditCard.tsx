@@ -20,14 +20,14 @@ function Checkout(props: any) {
   // const router = useRouter();
   // let { amount } = router.query;
   // const parsedAmount = parseInt(amount as string, 10) * 100;
-  
+
   const handleScriptLoad = async () => {
     OmiseCard = window.OmiseCard;
     // console.log(window.OmiseCard);
     // general info
     OmiseCard.configure({
       publicKey: PUBLIC_KEY,
-      frameLabel: "Trip Payment",
+      frameLabel: "TopUp Payment",
       submitLabel: "PAY NOW",
       currency: "thb",
     });
@@ -35,11 +35,13 @@ function Checkout(props: any) {
   const createCreditCardCharge = async (
     transData: TopUpTransactionDataInterface
   ) => {
-    console.log("res");
     console.log(transData);
-    const res = await chargeAndTopUpCoins(transData);
-    console.log("res");
-    console.log(res);
+    try {
+      const res = await chargeAndTopUpCoins(transData);
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
   };
   const creditCardConfigure = async () => {
     OmiseCard.configure({
@@ -66,18 +68,18 @@ function Checkout(props: any) {
         } else {
           Source = token;
         }
-        setTopup({
-          omiseToken: Token,
-          omiseSource: Source,
-          chargeAmount: parsedAmount,
-          coins: parsedAmount,
-        });
-        console.log({
-          omiseToken: Token,
-          omiseSource: Source,
-          chargeAmount: parsedAmount,
-          coins: parsedAmount,
-        });
+        // setTopup({
+        //   omiseToken: Token,
+        //   omiseSource: Source,
+        //   chargeAmount: parsedAmount,
+        //   coins: parsedAmount,
+        // });
+        // console.log({
+        //   omiseToken: Token,
+        //   omiseSource: Source,
+        //   chargeAmount: parsedAmount,
+        //   coins: parsedAmount,
+        // });
         createCreditCardCharge({
           omiseToken: Token,
           omiseSource: Source,

@@ -62,7 +62,8 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
           </button>
         ))}
       </div>
-      <input
+      Input Amount (THB) :
+       <input
         type="number"
         value={amount}
         onChange={handleAmountChange}
