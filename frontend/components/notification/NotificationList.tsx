@@ -74,7 +74,7 @@ export const NotificationList = () => {
           
           return(
               <>
-              <ListItem alignItems="flex-start" sx={{borderBottom: '1px solid #ddd', backgroundColor: notiDetail.isRead ? 'inherit' : '#E3FCF8'}} key={notiDetail._id}>
+              <ListItem key={notiDetail._id} alignItems="flex-start" sx={{borderBottom: '1px solid #ddd', backgroundColor: notiDetail.isRead ? 'inherit' : '#E3FCF8'}}>
               <ListItemAvatar>
                 <Avatar style={{ ...avatarStyle, color: "#fff" }} variant="circular">
                   {icon}
