@@ -12,7 +12,7 @@ import { FormData, validationSchema, formDatatoProgramInterface} from "./createT
 import { ProgramInterface } from "@/interfaces/ProgramInterface";
 import { UserInterface } from "@/interfaces/UserInterface";
 import { AttractionInterface } from "@/interfaces/AttractionInterface";
-import { createProgram,getProgramById,updateProgramById} from "@/services/programService"
+import { createProgram,getAllProgramsFromGuide,getProgramById,updateProgramById} from "@/services/programService"
 import { getUserById, updateUserById } from "@/services/userService";
 import { useAuth } from "@/components/AuthProvider"
 import { AuthContextInterface } from "@/interfaces/AuthContextInterface"
@@ -52,6 +52,7 @@ const createTrip = () => {
     attractions : AttractionInterface[]
   }[]>();
   const [unmatchedStartAndEndDate,setUnmatchedStartAndEndDate] = useState(false)
+  const [overlap,setOverlap] = useState(false)
   const [languageCheck,setLanguageCheck] = useState([false,false,false,false,false,false,false,false])
   const router = useRouter();
   const languageMap : {[key:string]:number} = {'Thai':0,'English':1,'Chinese':2,'Japanese':3,'Korean':4,'Spanish':5,'Russian':6,'German':7}
@@ -82,13 +83,14 @@ const createTrip = () => {
       setLanguageCheck(lang)
     }
   },[draft])
-  const HandleNext = () => {
+  const HandleNext = async () => {
     setUnmatchedStartAndEndDate(false)
+    setOverlap(false)
     setDays([])
     let date = new Date(getValues("startDate"))
     let end = new Date(getValues("endDate"))
-    // console.log(date.toString())
-    // console.log(end.toString())
+    console.log(date.toString())
+    console.log(end.toString())
     let errExist = false;
     setStage(1)
     if(date > end ||(getValues("name")===undefined || getValues("name")==="")
@@ -96,20 +98,70 @@ const createTrip = () => {
      || getValues("province")===undefined || getValues("province")==="" ||getValues("startDate")===undefined || getValues("startTime")===undefined
      || getValues("startTime")==="" || getValues("endDate")===undefined || getValues("endTime")===undefined || getValues("endTime")===""
      || getValues("max_participant")===undefined || getValues("max_participant").toString()==="" || languageCheck.every((e)=>!e)
-     || Number.isNaN(Number(getValues("price"))) || Number.isNaN(Number(getValues("max_participant")))){errExist=true;}
+     || Number.isNaN(Number(getValues("price"))) || Number.isNaN(Number(getValues("max_participant")))){console.log("invalid input");errExist=true;}
     // if(languageCheck.every((e)=>!e)){errExist=true}
     if(date > end){console.log("case1");setUnmatchedStartAndEndDate(true)}
-    if(date===end && getValues("startTime")!==undefined && getValues("endTime")!==undefined &&
+    if(getValues("startTime")!==undefined && getValues("endTime")!==undefined &&
       getValues("startTime")!=="" && getValues("endTime")!==""){
-      const sTime = getValues("startTime").split(":")
-      const eTime = getValues("endTime").split(":")
-      if(Number(sTime[0]) > Number(eTime[0]) || (Number(sTime[0])===Number(eTime[0]) && Number(sTime[1])>Number(eTime[1]))){
-        console.log("case2")
-        setUnmatchedStartAndEndDate(true);errExist=true;}
+      // console.log("time check")
+      if(date.toString()===end.toString()){
+        const sTime = getValues("startTime").split(":")
+        const eTime = getValues("endTime").split(":")
+        if(Number(sTime[0]) > Number(eTime[0]) || (Number(sTime[0])===Number(eTime[0]) && Number(sTime[1])>Number(eTime[1]))){
+          console.log("error unmatch startdateenddate")
+          setUnmatchedStartAndEndDate(true);errExist=true;}
+      }
+      if(getValues("startDate")!==undefined && getValues("endDate")!==undefined){
+        const checkOverlap = async () => {
+          if(authUserData.user?._id){
+            const res = await getAllProgramsFromGuide(authUserData.user._id)
+            if(res.data){
+              console.log(res.data)
+              const check = (program: ProgramInterface) => {
+                //------get info
+                const thisStartDate = new Date(getValues("startDate"))
+                const thisEndDate = new Date(getValues("endDate"))
+                const thisStartTime = getValues("startTime").split(":").map((t)=>Number(t))
+                const thisEndTime = getValues("endTime").split(":").map((t)=>Number(t))
+                const otherStartDate = new Date(program.startDate)
+                const otherEndDate = new Date(program.endDate)
+                const otherStartTime = program.startTime.split(":").map((t)=>Number(t))
+                const otherEndTime = program.endTime.split(":").map((t)=>Number(t))
+                // console.log("thisStartDate > otherStartDate:",thisStartDate > otherStartDate)
+                if(thisStartDate > otherStartDate || (thisStartDate.toString()===otherStartDate.toString() && (thisStartTime[0]*60+thisStartTime[1]>otherStartTime[0]*60+otherStartTime[1]))){
+                  if((otherEndDate > thisStartDate || (otherEndDate.toString()===thisStartDate.toString() && (otherEndTime[0]*60+otherEndTime[1]>thisStartTime[0]*60+thisStartTime[1])))){
+                    return true /*------this.start , other.start , this.end*/}
+                }else if((thisStartDate < otherStartDate || (thisStartDate.toString()===otherStartDate.toString() && (thisStartTime[0]*60+thisStartTime[1]<otherStartTime[0]*60+otherStartTime[1])))){
+                  if((thisEndDate > otherStartDate || (thisEndDate.toString()===otherStartDate.toString() && (thisEndTime[0]*60+thisEndTime[1]>otherStartTime[0]*60+otherStartTime[1])))){
+                    return true
+                //------this.start === other.start
+                }}else {
+                  if((thisEndDate.toString()===thisStartDate.toString() && thisStartTime===thisEndTime) || (otherEndDate.toString()===otherStartDate.toString() && otherEndTime===otherStartTime)){
+                    return false;
+                  }else return true;
+                }
+                return false
+              }
+              for(let i=0;i<res.data?.length;i++){
+                // console.log("-------------------------------")
+                // console.log(i)
+                if(check(res.data[i])){return true;}
+            }}
+          }return false
+        }
+        if(await checkOverlap()){
+          console.log("overlap")
+          setOverlap(true)
+          errExist = true
+        }
+      }
     }
     trigger(["name","description","price","province","startDate","startTime","endDate","endTime","max_participant"])
-    if(errExist){return;}
+    // errExist= true;console.log("force error line 160")
+    if(errExist){console.log("draft not ok");return;}
+    console.log("draft ok")
     setUnmatchedStartAndEndDate(false)
+    setOverlap(false)
     end.setDate(end.getDate() + 1)
     let k = 0
     while(date.toString()!==end.toString()){
@@ -184,23 +236,6 @@ const createTrip = () => {
           const response = await updateProgramById(data._id,programData)
           console.log(response)
           if(response.code===204){
-            // if(user._id&&draft&&user.draft&&draft._id){
-            //   let Drafts = user.draft
-            //   // const id = draft._id
-            //   // const {[id]: _, ...withoutId} = allDraft
-            //   // let allDraft = (user.draft).map((d)=>{
-            //   //   if(d._id?.toString()===draft._id?.toString())return null
-            //   //   return d
-            //   // }).filter(function(i): i is ProgramInterface {return i!==null})
-            //   // : {[key:string]: ProgramInterface }
-            //   const draftarray = Object.keys(user.draft).map((key:string,i)=>{
-            //     if(draft._id?.toString()===key.toString())return null
-            //     return Drafts[key];
-            //   }).filter(function(i) {return i!==null})
-              
-            //   const res = await getUserById(user._id);
-            //   localStorage.setItem("user", JSON.stringify(res.data));
-            // }
             router.push("/trips")
           }
         }
@@ -315,6 +350,7 @@ const createTrip = () => {
                 <FormInputTime name="endTime" control={control} label="End Time"/>
               </div>
               {unmatchedStartAndEndDate? <p>Please add a matching start and end Date Time</p> : <Fragment/>}
+              {overlap? <p>You already have another trip at this time</p> : <Fragment/>}
             </Field><Field>{/* Group Size */}
               <RequireFormLabel className="AsteriskRequired">Group size</RequireFormLabel>
               <FormInputText name="max_participant" control={control} label="Number of participant(s)"/>
