@@ -92,7 +92,7 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
   
   const touristBookingStatus = bookings.find(
     (booking) => booking.user?._id === userId
-  )?.status;
+  )?.status!;
   console.log(touristBookingStatus);
 
   const acceptedBookings = bookings.filter((booking)=>{
@@ -167,39 +167,42 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
         icon: "success",
         timer: 2000
       })
-      refetchBooking();
-    } catch (err) {
+    } catch (err:any) {
       console.log(err);
+      Swal.fire({
+        text: err.message,
+        icon: "error",
+        timer: 2000
+      })
     }
+    refetchBooking();
     setIsRequestBooking(false);
   };
 
   const handleCanCelClick = async () => {
     try {
-      await refetchBooking();
-
       const bookingId = bookings.find(
         (booking) => booking.user?._id === userId
       )?._id!
 
-      if(bookingId===undefined) {
-        Swal.fire({
-          text: "Your booking has already been declined..",
-          icon: "warning",
-          timer: 2000
-        })
-        return;
-      }
+      // if(bookingId===undefined) {
+      //   Swal.fire({
+      //     text: "Your booking has already been declined..",
+      //     icon: "warning",
+      //     timer: 2000
+      //   })
+      //   return;
+      // }
 
-      if(touristBookingStatus!=="pending"){
-        refetchBooking();
-        Swal.fire({
-          text: "You can't cancel your booking request right now..",
-          icon: "info",
-          timer: 2000
-        })
-        return;
-      }
+      // if(touristBookingStatus!=="pending"){
+      //   refetchBooking();
+      //   Swal.fire({
+      //     text: "You can't cancel your booking request right now..",
+      //     icon: "info",
+      //     timer: 2000
+      //   })
+      //   return;
+      // }
 
       const res = await deleteBookingById(bookingId)
       Swal.fire({
@@ -207,15 +210,15 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
         icon: "success",
         timer: 2000
       })
-    } catch (err) {
+    } catch (err:any) {
       console.log(err);
       Swal.fire({
-        title: "Oops...",
-        text: "There's an error... Please try again",
+        text: err.message,
         icon: "error",
         timer: 2000
       })
     }
+    refetchBooking();
   }
 
   return (
@@ -473,7 +476,69 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
             margin: "1em",
           }}
         >
-          {generateButton(touristBookingStatus)}
+          {
+            { 
+              "accepted":<>
+              <Button
+                variant="contained"
+                sx={{
+                  width: "100%",
+                  fontSize: "1.3rem",
+                  backgroundColor: COLOR.success,
+                  "&.Mui-disabled": {
+                    backgroundColor: COLOR.success,
+                    color: "white",
+                  },
+                }}
+                disabled
+                >
+                Accepted!
+              </Button>
+              </>,
+            "pending":<>
+              <Button
+                variant="contained"
+                sx={{
+                  width: "100%",
+                  fontSize: "1.3rem",
+                  backgroundColor: COLOR.yellow,
+                  "&.Mui-disabled": {
+                    backgroundColor: COLOR.yellow,
+                    color: "white",
+                  },
+                }}
+                onClick={handleCanCelClick}
+                >
+                Cancel Booking
+              </Button>
+              </>,
+              "declined": <>
+              <Button
+                variant="contained"
+                sx={{
+                  width: "100%",
+                  fontSize: "1.3rem",
+                  backgroundColor: COLOR.error,
+                  "&.Mui-disabled": {
+                    backgroundColor: COLOR.error,
+                    color: "white",
+                  },
+                }}
+                disabled
+                >
+                Declined
+              </Button>
+              </>
+            }[touristBookingStatus] || <>
+              <Button
+                variant="contained"
+                sx={{ width: "100%", fontSize: "1.3rem" }}
+                onClick={handleBookingClick}
+                >
+                Booking
+              </Button>
+            </>
+          }
         </div>
       )}
     </>
