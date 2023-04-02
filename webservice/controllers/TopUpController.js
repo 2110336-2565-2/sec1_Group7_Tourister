@@ -4,6 +4,7 @@ const Omise = require('omise');
 const User = require('../models/User');
 const { tryCatchMongooseService } = require('../utils/utils');
 const ApiErrorResponse = require('../exception/ApiErrorResponse');
+const Notification = require('../models/Notification');
 
 const omise = Omise({
     publicKey: process.env.OMISE_PUBLIC_KEY,
@@ -54,6 +55,14 @@ const TopUpController = {
                 await User.findByIdAndUpdate(user._id, { $inc: { remainingAmount: coins } })
                 const updatedUser = await User.findById(user._id)
                 result.data = updatedUser
+                const topup_noti = new Notification({
+                    user: user._id,
+                    type: "coin",
+                    title: "Top Up Successful",
+                    message: `${coins} coins have been added to your account`,
+                    notifyTime: new Date(),
+                  });
+                await topup_noti.save();
                 return result
             }
         })
