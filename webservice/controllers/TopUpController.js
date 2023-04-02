@@ -28,7 +28,7 @@ const TopUpController = {
 
             // Create a charge with Omise
             let result = {}
-            omise.charges.create({
+            await omise.charges.create({
                 amount: chargeAmount,
                 currency: 'thb',
                 description: `top up ${coins} coins for user ${user._id}`,
@@ -40,7 +40,7 @@ const TopUpController = {
                     console.error(err);
                     User.findByIdAndUpdate(user._id, { $inc: { remainingAmount: coins } })
                     const updatedUser = User.findById(user._id)
-
+                    // console.log("updatedUser", updatedUser)
                     result = {
                         code: 200,
                         data: updatedUser,
