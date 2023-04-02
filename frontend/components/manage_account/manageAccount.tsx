@@ -173,7 +173,7 @@ const manageAccount = () => {
               fontSize: "1.05rem",
             }}
           >
-            Transfer Funds
+            Topup Coins
           </h3>
           <NavigateNextOutlinedIcon style={{ width: "20%", color: "gray" }} />
         </Button>

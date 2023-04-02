@@ -7,29 +7,20 @@ import { COLOR } from "@/theme/globalTheme";
 import { useRouter } from "next/router";
 
 var PUBLIC_KEY = "pkey_test_5vazimccpm3mze85kj6";
+let OmiseCard: any;
 
-function Checkout() {
+function Checkout(props: any) {
   const [topup, setTopup] = useState<TopUpTransactionDataInterface>({
-    omiseToken: "",
-    omiseSource: "",
     chargeAmount: 0,
     coins: 0,
+    omiseSource: "",
+    omiseToken: "",
   });
-  const router = useRouter();
-  let { amount } = router.query;
-  const parsedAmount = parseInt(amount as string, 10) * 100;
 
-  let OmiseCard: any;
-  const createCreditCardCharge = async (
-    transData: TopUpTransactionDataInterface
-  ) => {
-    console.log(transData)
-    console.log("res");
-    const res = await chargeAndTopUpCoins(transData);
-    console.log("res");
-    console.log(res);
-  };
-
+  // const router = useRouter();
+  // let { amount } = router.query;
+  // const parsedAmount = parseInt(amount as string, 10) * 100;
+  
   const handleScriptLoad = async () => {
     OmiseCard = window.OmiseCard;
     // console.log(window.OmiseCard);
@@ -40,6 +31,15 @@ function Checkout() {
       submitLabel: "PAY NOW",
       currency: "thb",
     });
+  };
+  const createCreditCardCharge = async (
+    transData: TopUpTransactionDataInterface
+  ) => {
+    console.log("res");
+    console.log(transData);
+    const res = await chargeAndTopUpCoins(transData);
+    console.log("res");
+    console.log(res);
   };
   const creditCardConfigure = async () => {
     OmiseCard.configure({
@@ -52,6 +52,7 @@ function Checkout() {
 
   const omiseHandler = async () => {
     // const { createCreditCardCharge } = props;
+    const parsedAmount = parseInt(props.amount as string, 10) * 100;
     console.log(parsedAmount);
     OmiseCard.open({
       frameDescription: "Invoice #3847",
@@ -71,7 +72,18 @@ function Checkout() {
           chargeAmount: parsedAmount,
           coins: parsedAmount,
         });
-        createCreditCardCharge(topup);
+        console.log({
+          omiseToken: Token,
+          omiseSource: Source,
+          chargeAmount: parsedAmount,
+          coins: parsedAmount,
+        });
+        createCreditCardCharge({
+          omiseToken: Token,
+          omiseSource: Source,
+          chargeAmount: parsedAmount,
+          coins: parsedAmount,
+        });
       },
       onFormClosed: () => {},
     });
@@ -92,7 +104,7 @@ function Checkout() {
           id="credit-card"
           className="btn"
           type="button"
-          disabled={parsedAmount === 0}
+          // disabled={parsedAmount === 0}
           onClick={handleClick}
         >
           Pay with Credit Card

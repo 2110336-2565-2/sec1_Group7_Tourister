@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { COLOR } from "@/theme/globalTheme";
+import Transaction from "@/components/topup/checkoutCreditCard/checkoutCreditCard";
 
 interface TopUpProps {
   initialAmount: number;
@@ -76,7 +77,8 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
         )}
       </div>
       <div>
-        <button onClick={handleTopUp}>Pay Now</button>
+        {/* <button onClick={handleTopUp}>Pay Now</button> */}
+        <Transaction amount={amount} />
       </div>
     </div>
   );
