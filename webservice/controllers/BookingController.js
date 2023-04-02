@@ -81,11 +81,11 @@ const BookingController = {
       if (!user) throw new Error("unauthorized");
       if (!programId) throw new Error("programId is required");
 
-      const dupeBookingByUserId = await Booking.findOne({
+      const dupeBookingByUserId = await Booking.find({
         user: user._id,
         program: programId,
       });
-      if (dupeBookingByUserId)
+      if (dupeBookingByUserId.length > 0)
         throw new ApiErrorResponse(
           "you already booked this program",
           400,
@@ -296,6 +296,9 @@ const BookingController = {
     const result = await tryCatchMongooseService(async () => {
       const bookingId = req.params.id;
       const booking = await Booking.findById(bookingId);
+      if(booking.status != "pending") {
+        throw new ApiErrorResponse(400, "Booking is not pending");
+      }
       await Booking.findByIdAndDelete(bookingId);
 
       const program = await Program.findById(booking.program);
