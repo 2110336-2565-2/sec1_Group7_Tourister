@@ -12,16 +12,17 @@ export default function Page() {
     <div 
       style={{ 
         margin: "0.0rem", 
-        // backgroundColor: COLOR.primary 
+        backgroundColor: COLOR.background 
       }}
     >
       <Link href={"./manage_account"}>
         <button
           style={{
             margin: ".3rem 0px 0px 0px",
-            background: "white",
+            background: COLOR.background,
             border: "0px",
             transform: "translate(2.3rem,5.5rem)",
+            color: "white",
           }}
           type="button"
         >
