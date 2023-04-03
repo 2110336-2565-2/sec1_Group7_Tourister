@@ -46,7 +46,7 @@ const manageAccount = () => {
   const user:UserInterface|undefined = authUserData.user;
 
   if(!user) return (
-    <div style={{display:"flex", alignItems:"center"}}>
+    <div style={{display:"flex", alignItems:"center",justifyContent:"center"}}>
       <CircularProgress/>
     </div>
   )
