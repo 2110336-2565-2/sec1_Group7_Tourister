@@ -5,15 +5,31 @@ import { chargeAndTopUpCoins } from "@/services/topupService";
 import NavBar from "@/components/layout/navBar";
 import { useState } from "react";
 import Link from "next/link";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 
 export default function Page() {
-
   return (
-    <div style={{ margin: "0.0rem", backgroundColor: "#FFFFFF" }}>
+    <div
+      style={{
+        margin: "0.0rem",
+        backgroundColor: COLOR.background,
+      }}
+    >
       <Link href={"./manage_account"}>
-        <button>Back</button>
+        <button
+          style={{
+            margin: ".3rem 0px 0px 0px",
+            background: COLOR.background,
+            border: "0px",
+            transform: "translate(2.3rem,5.5rem)",
+            color: "white",
+          }}
+          type="button"
+        >
+          <ChevronLeftIcon />
+        </button>
       </Link>
-      <Withdraw initialAmount={0}/>
+      <Withdraw initialAmount={0} />
       {/* <NavBar /> */}
     </div>
   );
