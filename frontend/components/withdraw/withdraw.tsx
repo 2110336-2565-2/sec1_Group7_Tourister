@@ -59,8 +59,6 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
   const [showPopup, setShowPopup] = useState(false);
   const [bankAccountNumber, setBankAccountNumber] = useState<string>("");
   const [bankAccount, setBankAccount] = useState<accountType>("");
-  const router = useRouter();
-  //   const [selectedBank, setSelectedBank] = useState("");
 
   const handleBankChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setBankAccount(event.target.value);
@@ -102,13 +100,13 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
   };
 
   const onSubmit = async () => {
-    console.log("submit");
-    console.log(validateAmount(amount));
-    console.log(validateAccountNumber(bankAccountNumber));
+    // console.log("submit");
+    // console.log(validateAmount(amount));
+    // console.log(validateAccountNumber(bankAccountNumber));
     if (validateAmount(amount) && validateAccountNumber(bankAccountNumber)) {
       try {
         const res = await userWithdrawCoins({ amount: amount.toString() });
-        console.log(res);
+        // console.log(res);
         setShowPopup(true);
       } catch (err) {
         console.log(err);
@@ -117,7 +115,7 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
       alert("Invalid input");
     }
   };
-  console.log(amount);
+//   console.log(amount);
   const {
     control,
     formState: { errors },

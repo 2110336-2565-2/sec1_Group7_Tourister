@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { COLOR } from "@/theme/globalTheme";
 import Transaction from "@/components/topup/checkoutCreditCard/checkoutCreditCard";
-import { StyledInput, PrimaryButton } from '@/css/styling'
+import { StyledInput, RequireFormLabel } from '@/css/styling'
 
 interface TopUpProps {
   initialAmount: number;
@@ -19,9 +19,7 @@ const topUpValues: TopUpValue[] = [
 
 const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
   const [amount, setAmount] = useState(initialAmount);
-  const [showPopup, setShowPopup] = useState(false);
 
-  const router = useRouter();
 
   const handleValueClick = (value: number) => {
     setAmount(value);
@@ -86,7 +84,7 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
             <button
               key={value}
               style={{
-                fontSize: 17,
+                fontSize: 20,
                 padding: "10px",
                 border: "1px solid lightgray",
                 borderRadius: "5px",
@@ -107,11 +105,15 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
           style={{
             alignItems: "center",
             padding: "10px 20px 10px 20px",
-            margin: "auto",
+            marginTop: "10px",
+            marginBottom: "10px",
             alignSelf: "center",
           }}
         >
-        Input Amount (THB) :
+        <RequireFormLabel className="AsteriskRequired"
+          style={{fontSize: 17}}
+        >Input Amount (THB)</RequireFormLabel>
+        
         </div>
         <StyledInput
           type="number"
@@ -128,7 +130,7 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
             <div>
             <p style={{ 
               // margin: "auto"
-              marginTop: "10px" 
+              marginTop: "20px" 
             }}>
               You have selected a top-up amount of 
             </p>
@@ -149,7 +151,7 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
         <div style={{
           alignSelf: "center",
           textAlign: "center",
-          padding: "10px",
+          // padding: "10px",
         }}
         >
           {/* <PrimaryButton> */}
