@@ -66,7 +66,7 @@ export const RequireFormLabel = styled(FormLabel)({
 });
 
 export const StyledInput = styled(Input)({
-  width: 350,
+  width: 370,
   fontSize: 20,
   color: COLOR.primary,
   fontWeight: "bold",

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { COLOR } from "@/theme/globalTheme";
 import Transaction from "@/components/topup/checkoutCreditCard/checkoutCreditCard";
-import { StyledInput } from '@/css/styling'
+import { StyledInput, PrimaryButton } from '@/css/styling'
 
 interface TopUpProps {
   initialAmount: number;
@@ -134,8 +134,15 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
           </div>
         )}
       </div>
-      <div>
-        <Transaction amount={amount} />
+      <div style={{
+        alignSelf: "center",
+        textAlign: "center",
+        padding: "10px",
+      }}
+      >
+        {/* <PrimaryButton> */}
+          <Transaction amount={amount} />
+        {/* </PrimaryButton> */}
       </div>
 
     </div>
