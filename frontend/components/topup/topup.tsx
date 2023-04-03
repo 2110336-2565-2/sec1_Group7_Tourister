@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { COLOR } from "@/theme/globalTheme";
 import Transaction from "@/components/topup/checkoutCreditCard/checkoutCreditCard";
-import { StyledInput, PrimaryButton } from '@/css/styling'
+import { StyledInput, RequireFormLabel } from '@/css/styling'
 
 interface TopUpProps {
   initialAmount: number;
@@ -112,7 +112,10 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
             alignSelf: "center",
           }}
         >
-        Input Amount (THB)
+        <RequireFormLabel className="AsteriskRequired"
+          style={{fontSize: 17}}
+        >Input Amount (THB)</RequireFormLabel>
+        
         </div>
         <StyledInput
           type="number"
