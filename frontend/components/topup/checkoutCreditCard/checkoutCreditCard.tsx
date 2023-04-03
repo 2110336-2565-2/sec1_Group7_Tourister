@@ -110,7 +110,7 @@ function Checkout(props: any) {
           disabled={props.amount === 0}
           onClick={handleClick}
           style={{
-            backgroundColor:COLOR.background, 
+            backgroundColor:props.amount === 0?COLOR.disable:COLOR.background, 
             border: 0,
             borderRadius: 12,
             height: 50,
