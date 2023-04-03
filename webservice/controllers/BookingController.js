@@ -309,14 +309,25 @@ const BookingController = {
         $inc: { remainingAmount: program.price },
       });
 
+      const user = await User.findById(booking.user);
+
       //notify refund
       const noti_refund = new Notification({
-        user: booking.user,
-        type: "coin",
+        user: user,
+        type: "refund",
         title: "Coin Refunded",
         message: `You booking for ${program.name} is cancelled, ${program.price} baht is refunded`,
       });
       await noti_refund.save();
+
+      //notify guide
+      const noti_cancel = new Notification({
+        user: booking.guide,
+        type: "cancel",
+        title: "Request Cancelled",
+        message: `${user.name} ${user.surname} cancel request for ${program.name}`,
+      });
+      await noti_cancel.save();
 
       return {
         code: 200,
