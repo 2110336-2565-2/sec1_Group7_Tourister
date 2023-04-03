@@ -8,7 +8,8 @@ import { useRouter } from "next/router";
 import appConfig from "@/configs/appConfig";
 import Link from "next/link";
 
-var PUBLIC_KEY = "pkey_test_5vazimccpm3mze85kj6";
+const PUBLIC_KEY = appConfig.OMISE_PUBLIC_KEY;
+console.log(PUBLIC_KEY);
 let OmiseCard: any;
 
 function Checkout(props: any) {
