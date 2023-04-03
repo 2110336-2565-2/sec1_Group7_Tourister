@@ -33,7 +33,7 @@ const Heading = styled.div`
 `
 
 export default function Page() {
-  const [programFilter, setProgramFilter] = useState<ProgramFilterInterface>({})
+  const [programFilter, setProgramFilter] = useState<ProgramFilterInterface|undefined>(undefined)
   const [user, setUser] = useState<UserInterface | null>(null)
 
   useEffect(()=>{

@@ -69,7 +69,6 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
   onGoBack,
   refetchBooking
 }) => {
-  const [isRequestBooking, setIsRequestBooking] = useState<boolean>(false);
   const authUserData: AuthContextInterface = useAuth();
 
   if (!program) {
@@ -536,7 +535,7 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
                 sx={{ width: "100%", fontSize: "1.3rem" }}
                 onClick={handleBookingClick}
                 >
-                Booking
+                Book
               </Button>
             </>
           }
