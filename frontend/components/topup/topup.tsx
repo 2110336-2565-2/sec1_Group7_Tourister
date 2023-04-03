@@ -86,7 +86,7 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
             <button
               key={value}
               style={{
-                fontSize: 17,
+                fontSize: 20,
                 padding: "10px",
                 border: "1px solid lightgray",
                 borderRadius: "5px",
@@ -107,11 +107,12 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
           style={{
             alignItems: "center",
             padding: "10px 20px 10px 20px",
-            margin: "auto",
+            marginTop: "10px",
+            marginBottom: "10px",
             alignSelf: "center",
           }}
         >
-        Input Amount (THB) :
+        Input Amount (THB)
         </div>
         <StyledInput
           type="number"
@@ -128,7 +129,7 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
             <div>
             <p style={{ 
               // margin: "auto"
-              marginTop: "10px" 
+              marginTop: "20px" 
             }}>
               You have selected a top-up amount of 
             </p>
@@ -149,7 +150,7 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
         <div style={{
           alignSelf: "center",
           textAlign: "center",
-          padding: "10px",
+          // padding: "10px",
         }}
         >
           {/* <PrimaryButton> */}
