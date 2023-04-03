@@ -69,20 +69,6 @@ const ProgramController = {
       const program = new Program(payload);
       await program.save();
       console.log(program);
-
-      //Nofify guide
-      if (program.published){
-        const notifyTime = program.startDate < now ? now : program.startDate;
-        const noti_trip = new Notification({
-          user: program.guide,
-          type: "nexttrip",
-          title: "Upcoming Trip",
-          message: `${program.name} will start today at ${program.startTime}. Meeting point at ${program.meetLocation}. Get Ready!`,
-          notifyTime: notifyTime,
-        });
-        await noti_trip.save();
-        console.log(noti_trip);
-      }
       
       return {
         code: 201,
@@ -113,7 +99,7 @@ const ProgramController = {
           user: updatedProgram.guide,
           type: "nexttrip",
           title: "Upcoming Trip",
-          message: `${updatedProgram.name} will start today at ${updatedProgram.startTime}. Meeting point at ${program.meetLocation}. Get Ready!`,
+          message: `${updatedProgram.name} will start today at ${updatedProgram.startTime}. Meeting point at ${updatedProgram.meetLocation}. Get Ready!`,
           notifyTime: updatedProgram.startDate,
         });
         await noti_trip.save();
