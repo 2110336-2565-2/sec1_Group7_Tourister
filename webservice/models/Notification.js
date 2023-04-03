@@ -16,6 +16,7 @@ const NotificationSchema = new mongoose.Schema({
       "nexttrip",
       "endtrip",
       "coin",
+      "payment"
     ],
     required: [true, "Please add a notification type"],
   },

@@ -119,7 +119,7 @@ const BookingController = {
       //Nofify payment
       const noti_payment = new Notification({
         user: user._id,
-        type: "coin",
+        type: "payment",
         title: "Payment Complete",
         message: `${program.price} baht is paid to book for ${program.name}`,
       });
