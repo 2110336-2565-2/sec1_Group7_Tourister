@@ -23,7 +23,7 @@ import { FormInputDate } from "@/components/formInput/FormInputDate";
 import { FormInputTime } from "@/components/formInput/FormInputTime";
 import { PrimaryButton, RequireFormLabel } from "@/css/styling";
 import { Form, FieldName, Field } from "@/css/layout";
-import { Button } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import FormHelperText from '@mui/material/FormHelperText';
 import Checkbox from '@mui/material/Checkbox';
@@ -53,6 +53,7 @@ const createTrip = () => {
   }[]>();
   const [unmatchedStartAndEndDate,setUnmatchedStartAndEndDate] = useState(false)
   const [overlap,setOverlap] = useState(false)
+  const [loading,setLoading] = useState(false)
   const [languageCheck,setLanguageCheck] = useState([false,false,false,false,false,false,false,false])
   const router = useRouter();
   const languageMap : {[key:string]:number} = {'Thai':0,'English':1,'Chinese':2,'Japanese':3,'Korean':4,'Spanish':5,'Russian':6,'German':7}
@@ -84,6 +85,7 @@ const createTrip = () => {
     }
   },[draft])
   const HandleNext = async () => {
+    setLoading(true)
     setUnmatchedStartAndEndDate(false)
     setOverlap(false)
     setDays([])
@@ -93,6 +95,7 @@ const createTrip = () => {
     console.log(end.toString())
     let errExist = false;
     setStage(1)
+    console.log("test")
     if(date > end ||(getValues("name")===undefined || getValues("name")==="")
      || getValues("description")===undefined || getValues("description")==="" || getValues("price")===undefined || getValues("price").toString()===""
      || getValues("province")===undefined || getValues("province")==="" ||getValues("startDate")===undefined || getValues("startTime")===undefined
@@ -100,6 +103,7 @@ const createTrip = () => {
      || getValues("max_participant")===undefined || getValues("max_participant").toString()==="" || languageCheck.every((e)=>!e)
      || Number.isNaN(Number(getValues("price"))) || Number.isNaN(Number(getValues("max_participant")))){console.log("invalid input");errExist=true;}
     // if(languageCheck.every((e)=>!e)){errExist=true}
+    console.log("test4")
     if(date > end){console.log("case1");setUnmatchedStartAndEndDate(true)}
     if(getValues("startTime")!==undefined && getValues("endTime")!==undefined &&
       getValues("startTime")!=="" && getValues("endTime")!==""){
@@ -111,10 +115,13 @@ const createTrip = () => {
           console.log("error unmatch startdateenddate")
           setUnmatchedStartAndEndDate(true);errExist=true;}
       }
+      console.log("test3")
       if(getValues("startDate")!==undefined && getValues("endDate")!==undefined){
         const checkOverlap = async () => {
           if(authUserData.user?._id){
+            console.log("fetching")
             const res = await getAllProgramsFromGuide(authUserData.user._id)
+            console.log("fetching done")
             if(res.data){
               console.log(res.data)
               const check = (program: ProgramInterface) => {
@@ -143,8 +150,8 @@ const createTrip = () => {
                 return false
               }
               for(let i=0;i<res.data?.length;i++){
-                // console.log("-------------------------------")
-                // console.log(i)
+                console.log("-------------------------------")
+                console.log("checking overlap with",res.data[i])
                 if(check(res.data[i])){return true;}
             }}
           }return false
@@ -156,9 +163,10 @@ const createTrip = () => {
         }
       }
     }
+    console.log("test2")
     trigger(["name","description","price","province","startDate","startTime","endDate","endTime","max_participant"])
     // errExist= true;console.log("force error line 160")
-    if(errExist){console.log("draft not ok");return;}
+    if(errExist){console.log("draft not ok");setLoading(false);return;}
     console.log("draft ok")
     setUnmatchedStartAndEndDate(false)
     setOverlap(false)
@@ -166,7 +174,7 @@ const createTrip = () => {
     let k = 0
     while(date.toString()!==end.toString()){
       const i = date.toString()
-      // console.log(i)
+      console.log("trip day i is",i)
       setDays(days => [...days,i])
       date.setDate(date.getDate() + 1);
       k = k+1
@@ -175,6 +183,7 @@ const createTrip = () => {
     // console.log(days)
     HandleSaveDraft()
     setStage(2)
+    setLoading(false)
   }
   const HandleBack = () => {setStage(0)}
   const HandleSaveDraft = async () => {
@@ -370,6 +379,9 @@ const createTrip = () => {
             </Field>
             {/* <button type="button" onClick={()=>{HandleNext()}}>Next</button> */}
             <PrimaryButton style={{alignSelf:"center"}} type="button" onClick={()=>{HandleNext()}} variant="contained" >Next</PrimaryButton>
+            {loading? <div style={{display:"flex", justifyContent:"center"}}>
+              <CircularProgress/>
+            </div> : <Fragment/>}
           </Fragment>
         ):(
           <Fragment>
