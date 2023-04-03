@@ -8,7 +8,7 @@ const { getTodayDateYYYY_MM_DD, getSecsDiff } = require('../../utils/utils');
 const StartUpdateUsersBalanceEveryMidnight = () => {
     console.log('Updating users balance every midnight');
     
-    cron.schedule('39 22 * * *', async () => {
+    cron.schedule('1 0 * * *', async () => {
         console.log('Updating balance...')
         const todayDate = getTodayDateYYYY_MM_DD();
         const programs = await Program.find({ endDate: { $lte: todayDate } }, );
