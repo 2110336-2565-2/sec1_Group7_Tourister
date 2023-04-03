@@ -322,7 +322,7 @@ const BookingController = {
 
       //notify guide
       const noti_cancel = new Notification({
-        user: booking.guide,
+        user: program.guide,
         type: "cancel",
         title: "Request Cancelled",
         message: `${user.name} ${user.surname} cancel request for ${program.name}`,
