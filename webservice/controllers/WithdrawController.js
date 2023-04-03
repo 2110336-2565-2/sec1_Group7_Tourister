@@ -18,6 +18,8 @@ const WithdrawController = {
         const user  = verifyToken(token);
         if(!user) throw new ApiErrorResponse("unauthorized", 401);
         const { amount } = req.body;
+        const userData = await User.findById(user._id);
+        if(amount > userData.remainingAmount) throw new ApiErrorResponse("Invalid withdrawal amount", 400);
 
         setTimeout(async () => {
             try {
