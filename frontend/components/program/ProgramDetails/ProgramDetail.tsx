@@ -156,12 +156,21 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
   };
 
   const handleBookingClick = async () => {
-    setIsRequestBooking(true);
+    Swal.fire({
+      title: 'Please wait...',
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      showConfirmButton: false,
+      willOpen: ()=> {
+        Swal.showLoading();
+      }
+    });
     try {
       const res = await createBooking(
         { user: user, program: program },
         programId
       );
+      Swal.close();
       Swal.fire({
         title: "Booking requested!",
         icon: "success",
@@ -169,6 +178,7 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
       })
     } catch (err:any) {
       console.log(err);
+      Swal.close();
       Swal.fire({
         text: err.message,
         icon: "error",
@@ -176,35 +186,25 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
       })
     }
     refetchBooking();
-    setIsRequestBooking(false);
   };
 
   const handleCanCelClick = async () => {
+    Swal.fire({
+      title: 'Please wait...',
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      showConfirmButton: false,
+      willOpen: ()=> {
+        Swal.showLoading();
+      }
+    });
     try {
       const bookingId = bookings.find(
         (booking) => booking.user?._id === userId
       )?._id!
 
-      // if(bookingId===undefined) {
-      //   Swal.fire({
-      //     text: "Your booking has already been declined..",
-      //     icon: "warning",
-      //     timer: 2000
-      //   })
-      //   return;
-      // }
-
-      // if(touristBookingStatus!=="pending"){
-      //   refetchBooking();
-      //   Swal.fire({
-      //     text: "You can't cancel your booking request right now..",
-      //     icon: "info",
-      //     timer: 2000
-      //   })
-      //   return;
-      // }
-
       const res = await deleteBookingById(bookingId)
+      Swal.close();
       Swal.fire({
         text: "Booking cancelled!",
         icon: "success",
@@ -212,6 +212,7 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
       })
     } catch (err:any) {
       console.log(err);
+      Swal.close();
       Swal.fire({
         text: err.message,
         icon: "error",
@@ -284,7 +285,7 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
 
         <div style={{ color: COLOR.text }}>
           <PeopleAltOutlined style={{ ...iconStyle }} fontSize="medium" />
-          {bookings.length} / {program.max_participant}
+          {program.num_participant} / {program.max_participant}
         </div>
 
         <div style={{ color: COLOR.text }}>
