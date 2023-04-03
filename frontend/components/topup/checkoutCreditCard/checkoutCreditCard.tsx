@@ -109,6 +109,18 @@ function Checkout(props: any) {
           type="button"
           disabled={props.amount === 0}
           onClick={handleClick}
+          style={{
+            backgroundColor:COLOR.background, 
+            border: 0,
+            borderRadius: 12,
+            height: 50,
+            width: "300px",
+            padding: "10px auto",
+            margin: "20px",
+            color: "white",
+            fontSize: "20px",
+            fontWeight: "bold"
+          }}
         >
           Pay with Credit Card
         </button>
