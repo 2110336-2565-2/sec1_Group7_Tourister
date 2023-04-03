@@ -71,16 +71,18 @@ const ProgramController = {
       console.log(program);
 
       //Nofify guide
-      const noti_trip = new Notification({
-        user: program.guide,
-        type: "nexttrip",
-        title: "Upcoming Trip",
-        message: `${program.name} will start today at ${program.startTime}. Get Ready!`,
-        notifyTime: program.startDate,
-      });
-      await noti_trip.save();
-      console.log(noti_trip);
-
+      if (program.published){
+        const noti_trip = new Notification({
+          user: program.guide,
+          type: "nexttrip",
+          title: "Upcoming Trip",
+          message: `${program.name} will start today at ${program.startTime}. Get Ready!`,
+          notifyTime: program.startDate,
+        });
+        await noti_trip.save();
+        console.log(noti_trip);
+      }
+      
       return {
         code: 201,
         data: program,
@@ -99,9 +101,24 @@ const ProgramController = {
   async updateProgramById(req, res, next) {
     const result = await tryCatchMongooseService(async () => {
       const programId = req.params.id;
+      const program = await Program.findById(programId);
       const payload = req.body;
       await Program.findByIdAndUpdate(programId, { $set: payload });
       const updatedProgram = await Program.findById(programId);
+
+      //Nofify guide
+      if (!program.published && updatedProgram.published){
+        const noti_trip = new Notification({
+          user: updatedProgram.guide,
+          type: "nexttrip",
+          title: "Upcoming Trip",
+          message: `${updatedProgram.name} will start today at ${updatedProgram.startTime}. Get Ready!`,
+          notifyTime: updatedProgram.startDate,
+        });
+        await noti_trip.save();
+        console.log(noti_trip);
+      }
+
       return {
         code: 204,
         data: updatedProgram,
