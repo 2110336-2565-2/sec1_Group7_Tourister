@@ -175,7 +175,7 @@ const BookingController = {
           path: "program",
           populate: {
             path: "guide",
-            select: "name surname",
+            select: "name surname image",
           },
           //select: 'name'
         },
