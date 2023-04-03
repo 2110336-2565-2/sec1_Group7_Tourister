@@ -28,7 +28,7 @@ export default function ProgramDetailPage() {
     queryFn: () => {
       if (!programId) return null;
       return getAllBookingsInProgram(programId as string, {
-        status: ["pending", "accepted"],
+        status: ["pending", "accepted", "declined"],
       });
     },
   });
