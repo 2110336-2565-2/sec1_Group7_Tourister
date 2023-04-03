@@ -6,22 +6,16 @@ import { Button } from "@mui/material";
 import { COLOR } from "@/theme/globalTheme";
 import { useRouter } from "next/router";
 import appConfig from "@/configs/appConfig";
-
+import Link from "next/link";
 
 var PUBLIC_KEY = "pkey_test_5vazimccpm3mze85kj6";
 let OmiseCard: any;
 
 function Checkout(props: any) {
-  const [topup, setTopup] = useState<TopUpTransactionDataInterface>({
-    chargeAmount: 0,
-    coins: 0,
-    omiseSource: "",
-    omiseToken: "",
-  });
-
-  // const router = useRouter();
+  const router = useRouter();
   // let { amount } = router.query;
   // const parsedAmount = parseInt(amount as string, 10) * 100;
+  const [showPopup, setShowPopup] = useState(false);
 
   const handleScriptLoad = async () => {
     OmiseCard = window.OmiseCard;
@@ -41,6 +35,7 @@ function Checkout(props: any) {
     try {
       const res = await chargeAndTopUpCoins(transData);
       console.log(res);
+      setShowPopup(true);
     } catch (err) {
       console.log(err);
     }
@@ -55,7 +50,6 @@ function Checkout(props: any) {
   };
 
   const omiseHandler = async () => {
-    // const { createCreditCardCharge } = props;
     const parsedAmount = parseInt(props.amount as string, 10) * 100;
     console.log(parsedAmount);
     OmiseCard.open({
@@ -70,24 +64,13 @@ function Checkout(props: any) {
         } else {
           Source = token;
         }
-        // setTopup({
-        //   omiseToken: Token,
-        //   omiseSource: Source,
-        //   chargeAmount: parsedAmount,
-        //   coins: parsedAmount,
-        // });
-        // console.log({
-        //   omiseToken: Token,
-        //   omiseSource: Source,
-        //   chargeAmount: parsedAmount,
-        //   coins: parsedAmount,
-        // });
         createCreditCardCharge({
           omiseToken: Token,
           omiseSource: Source,
           chargeAmount: parsedAmount,
           coins: parsedAmount,
         });
+        // router.push("./manage_account")
       },
       onFormClosed: () => {},
     });
@@ -99,6 +82,21 @@ function Checkout(props: any) {
     omiseHandler();
   };
 
+  const handleClosePopup = () => {
+    setShowPopup(false);
+  };
+
+  const [dateTime, setDateTime] = useState(new Date());
+  const formattedDateTime = dateTime.toLocaleString("en-US", {
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+    hour12: false,
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+
   return (
     <div>
       <Script url="https://cdn.omise.co/omise.js" onLoad={handleScriptLoad} />
@@ -108,12 +106,50 @@ function Checkout(props: any) {
           id="credit-card"
           className="btn"
           type="button"
-          // disabled={parsedAmount === 0}
+          disabled={props.amount === 0}
           onClick={handleClick}
         >
           Pay with Credit Card
         </button>
       </form>
+      {showPopup && (
+        <div className="popup-container">
+          <div className="popup">
+            <h2>TopUp successful</h2>
+            <div>Pay {props.amount} THB</div>
+            <div>Received {props.amount} coins</div>
+            <div>Payment Method: Credit Card</div>
+            <div>Created On: {formattedDateTime}</div>
+            <Link href={"./manage_account"}>
+              <button onClick={handleClosePopup}>
+                Go to manage account page
+              </button>
+            </Link>
+          </div>
+        </div>
+      )}
+      <style jsx>{`
+        .popup-container {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.5);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        .popup {
+          background-color: white;
+          padding: 20px;
+          border-radius: 5px;
+          box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+      `}</style>
     </div>
   );
 }
