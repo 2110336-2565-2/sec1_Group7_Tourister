@@ -3,11 +3,39 @@ import { useRouter } from "next/router";
 import { COLOR } from "@/theme/globalTheme";
 import { userWithdrawCoins } from "@/services/withdrawService";
 import Link from "next/link";
+import { validationSchema, FormData, defaultValues } from "./withdrawSchema";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+
 interface TopUpProps {
   initialAmount: number;
 }
 
-const topUpValues: TopUpValue[] = [
+const bankOptions = [
+  { value: "scb", label: "SCB - ธนาคารไทยพาณิชย์" },
+  { value: "TTB", label: "TTB - ธนาคารทหารไทย" },
+  { value: "kbank", label: "KBANK - ธนาคารกสิกรไทย" },
+  { value: "bbl", label: "BBL - ธนาคารกรุงเทพ" },
+  { value: "krungsri", label: "Krungsri - ธนาคารกรุงศรีอยุธยา" },
+  { value: "tmb", label: "TMB - ธนาคารทหารไทยธนชาต" },
+  { value: "cimb", label: "CIMB - ธนาคารซีไอเอ็มบีไทย" },
+  { value: "uob", label: "UOB - ธนาคารยูโอบี" },
+  { value: "icbc", label: "ICBC - ธนาคารไอซีบีซี (ไทย)" },
+  { value: "bay", label: "BAY - ธนาคารกรุงศรีฯ" },
+  { value: "hsbc", label: "HSBC - ธนาคารเอชเอสบีซี" },
+  { value: "deutsche", label: "Deutsche - ธนาคารเดอตูช์" },
+  { value: "citibank", label: "Citibank - ธนาคารซิตี้แบงก์" },
+  { value: "standardchartered", label: "SCB - ธนาคารสแตนดาร์ดชาร์เตอร์ด์" },
+  { value: "thanachart", label: "TNC - ธนาคารธนชาต" },
+  { value: "mbanking", label: "mBanking - ธนาคารกรุงไทย mBanking" },
+  { value: "gsb", label: "GSB - ธนาคารออมสิน" },
+  { value: "tbank", label: "TBank - ธนาคารตากสิน" },
+  { value: "baac", label: "BAAC - ธนาคารเพื่อการเกษตรและสหกรณ์การเกษตร" },
+  { value: "gls", label: "GLS - ธนาคารทิสโก้เกียรตินาคินภัทร" },
+  { value: "kkp", label: "KKP - ธนาคารเกียรตินาคินภัทร" },
+];
+
+const withdrawValues: withdrawValue[] = [
   { label: "300", value: 300 },
   { label: "500", value: 500 },
   { label: "700", value: 700 },
@@ -19,8 +47,25 @@ const topUpValues: TopUpValue[] = [
 const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
   const [amount, setAmount] = useState(initialAmount);
   const [showPopup, setShowPopup] = useState(false);
-
+  const [bankAccountNumber, setBankAccountNumber] = useState("");
+  const [bankAccount, setBankAccount] = useState<accountType>("");
   const router = useRouter();
+  //   const [selectedBank, setSelectedBank] = useState("");
+
+  const handleBankChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setBankAccount(event.target.value);
+  };
+
+  const {
+    watch,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: yupResolver(validationSchema),
+    defaultValues: defaultValues,
+  });
+  //   const watchAccountType = watch("accountType");
 
   const handleValueClick = (value: number) => {
     setAmount(value);
@@ -35,6 +80,28 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
     } else {
       alert("Input value must be between ฿100 and ฿1000000.");
     }
+  };
+  const handleBankNumberChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    if (
+      event.target.value === "" ||
+      (Number(event.target.value) >= 0 &&
+        Number(event.target.value) <= 10000000000)
+    ) {
+      setBankAccountNumber(event.target.value);
+    } else {
+      alert("Wrong Format Input");
+    }
+
+    // validationSchema
+    //   .validate({ bankAccount, bankAccountNumber })
+    //   .then((values) => {
+    //     setBankAccountNumber(event.target.value);
+    //   })
+    //   .catch((error) => {
+    //     console.error(error);
+    //   });
   };
 
   const handleWithdraw = async () => {
@@ -70,7 +137,7 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
           gap: "10px",
         }}
       >
-        {topUpValues.map(({ label, value }) => (
+        {withdrawValues.map(({ label, value }) => (
           <button
             key={value}
             style={{
@@ -94,25 +161,24 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
         style={{ marginTop: "10px" }}
       />
       <div>
-        {" "}
         Bank account number:
         <input
           type="string"
-          value={""}
-          placeholder="xxx-x-x0707-x"
+          value={bankAccountNumber}
+          onChange={handleBankNumberChange}
+          placeholder="0000000007"
           style={{ marginTop: "10px" }}
         />
       </div>
-      <div>
-        {" "}
-        Bank:
-        <input
-          type="string"
-          value={""}
-          placeholder="e.g. SCB"
-          style={{ marginTop: "10px" }}
-        />
-      </div>
+      <label htmlFor="bankSelect">Select bank:</label>
+      <select id="bankSelect" value={bankAccount} onChange={handleBankChange}>
+        <option value="">Select an option</option>
+        {bankOptions.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
       <div style={{ margin: "0.0rem", backgroundColor: COLOR.secondary }}>
         {amount !== undefined && (
           <p style={{ marginTop: "10px" }}>
