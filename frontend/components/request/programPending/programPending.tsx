@@ -13,18 +13,7 @@ import { ProgramInterface } from "@/interfaces/ProgramInterface";
 import { ProgramCardForGuide } from "@/components/program/ProgramCardForGuide";
 import { CalendarMonth, LocationOnOutlined } from "@mui/icons-material";
 import { COLOR } from "@/theme/globalTheme";
-// import { Chip } from "@mui/material";
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Chip,
-  colors,
-  autocompleteClasses,
-  Button,
-  CircularProgress,
-  Stack,
-} from "@mui/material";
+import { Chip, CircularProgress, Stack } from "@mui/material";
 
 export default function programPending() {
   // const [guideId, setGuideid] = useState<String>("0");
@@ -49,8 +38,8 @@ export default function programPending() {
     const programOfGuide = await getAllProgramsFromGuide(
       guideId.toString().trim()
     );
-    console.log(response);
-    console.log("eeeee");
+    // console.log(response);
+    // console.log("eeeee");
     let programOfGuideArr: any = [];
     for (let i = 0; i < programOfGuide.data.length; i++) {
       programOfGuideArr.push(programOfGuide.data[i]._id);
@@ -58,16 +47,6 @@ export default function programPending() {
     console.log(programOfGuideArr);
     console.log(response.data.length);
     for (let i = 0; i < response.data.length; i++) {
-      // console.log(i);
-      // console.log(
-      //   response.data[i].program._id.toString().trim(),
-      //   programOfGuideArr
-      // );
-      // console.log(
-      //   programOfGuideArr.includes(
-      //     response.data[i].program._id.toString().trim()
-      //   )
-      // );
       if (
         response.data[i].status === "pending" &&
         programOfGuideArr.includes(
@@ -86,20 +65,14 @@ export default function programPending() {
         }
       }
     }
-    // console.log("jjjj");
-    // console.log(programPendingDict);
     for (const [key, value] of Object.entries(programPendingDict)) {
-      // console.log(`${key}: ${value}`);
       const response = await getProgramById(key);
-      // console.log(response.data);
       response.data.num_pending = value.length;
       programArr.push(response.data);
-      // console.log(programArr);
     }
     setPrograms(programArr);
     console.log(programs);
     setLoading(false);
-    // console.log(response.data);
   }
   useEffect(() => {
     fetchData();

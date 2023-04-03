@@ -18,6 +18,9 @@ const topUpValues: TopUpValue[] = [
 
 const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
   const [amount, setAmount] = useState(initialAmount);
+  const [showPopup, setShowPopup] = useState(false);
+
+
   const router = useRouter();
 
   const handleValueClick = (value: number) => {
@@ -25,7 +28,11 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
   };
 
   const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAmount(parseInt(event.target.value));
+    if (event.target.value === '' || (Number(event.target.value) >= 100 && Number(event.target.value) <= 1000000)) {
+      setAmount(parseInt(event.target.value));
+    } else {
+      alert('Input value must be between ฿100 and ฿1000000.');
+    }
   };
 
   const handleTopUp = () => {
@@ -78,9 +85,9 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
         )}
       </div>
       <div>
-        {/* <button onClick={handleTopUp}>Pay Now</button> */}
         <Transaction amount={amount} />
       </div>
+
     </div>
   );
 };
