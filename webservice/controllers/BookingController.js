@@ -93,6 +93,7 @@ const BookingController = {
           "duplicate-booking"
         );
       }
+
       const balance = (await User.findById(user._id)).remainingAmount;
       const program = await Program.findById(programId);
       if (balance < program.price)
@@ -106,6 +107,7 @@ const BookingController = {
           remainingAmount: balance - program.price,
         });
       }
+      if((new Date(program.startDate)) < (new Date())) throw new ApiErrorResponse( "program already started", 400, "program-already-started" );
 
       const payload = req.body;
       payload.program = programId;
