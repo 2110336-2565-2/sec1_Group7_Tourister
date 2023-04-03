@@ -42,9 +42,9 @@ export default function UserNavBar({ userId }: UserNavBarProps) {
 
     fetchNotifications();
 
-    const interval = setInterval(fetchNotifications, 60000); // fetch notifications every minute
+    //const interval = setInterval(fetchNotifications, 60000); // fetch notifications every minute
 
-    return () => clearInterval(interval);
+    //return () => clearInterval(interval);
   }, [userId]);
 
   // useEffect(() => {

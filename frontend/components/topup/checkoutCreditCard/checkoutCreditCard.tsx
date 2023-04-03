@@ -2,11 +2,12 @@ import { useState, useEffect, Component } from "react";
 import { TopUpTransactionDataInterface } from "@/interfaces/transaction/TopUpTransactionDataInterface";
 import { chargeAndTopUpCoins } from "@/services/topupService";
 import Script from "react-load-script";
-import { Button } from "@mui/material";
+import { Avatar, Button } from "@mui/material";
 import { COLOR } from "@/theme/globalTheme";
 import { useRouter } from "next/router";
 import appConfig from "@/configs/appConfig";
 import Link from "next/link";
+import { Check, Done } from "@mui/icons-material";
 
 const PUBLIC_KEY = appConfig.OMISE_PUBLIC_KEY;
 console.log(PUBLIC_KEY);
@@ -88,15 +89,14 @@ function Checkout(props: any) {
   };
 
   const [dateTime, setDateTime] = useState(new Date());
-  const formattedDateTime = dateTime.toLocaleString("en-US", {
-    hour: "numeric",
-    minute: "numeric",
-    second: "numeric",
-    hour12: false,
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  });
+  const formattedDateTime = dateTime.toLocaleString("en-GB", { 
+    day: '2-digit', 
+    month: 'short', 
+    year: 'numeric', 
+    hour: '2-digit', 
+    minute: '2-digit', 
+    second: '2-digit' 
+  }).replace(',','');
 
   return (
     <div>
@@ -109,6 +109,18 @@ function Checkout(props: any) {
           type="button"
           disabled={props.amount === 0}
           onClick={handleClick}
+          style={{
+            backgroundColor:props.amount === 0?COLOR.disable:COLOR.primary, 
+            border: 0,
+            borderRadius: 12,
+            height: 50,
+            width: "300px",
+            padding: "10px",
+            margin: "20px",
+            color: "white",
+            fontSize: "20px",
+            fontWeight: "bold"
+          }}
         >
           Pay with Credit Card
         </button>
@@ -116,14 +128,40 @@ function Checkout(props: any) {
       {showPopup && (
         <div className="popup-container">
           <div className="popup">
-            <h2>TopUp successful</h2>
-            <div>Pay {props.amount} THB</div>
+            <div style={{marginTop:"-38px", padding:"5px", backgroundColor:"white", borderRadius:"50%"}}>
+              <Avatar sx={{ bgcolor: "mediumaquamarine" }}>
+                <Done fontSize="medium" style={{color:"white"}}/>
+              </Avatar>
+            </div>
+            <h3 style={{margin:"0px 0 0px 0"}}>Top up Successfully</h3>
+            <label style={{color:"dimgrey", fontSize:"14px", margin:"-4px"}}>{formattedDateTime}</label>
+            <hr style={{border:"1px solid lightgrey", width:"100%", margin:"20px 0"}}/>
+            <div style={{display:"table", width:"100%"}}>
+              <div style={{display:"table-row", height:"40px"}}>
+                <div style={{display:"table-cell"}}>Pay</div>
+                <div style={{display:"table-cell", fontWeight:"600", fontSize:"18px"}}>{props.amount} THB</div>
+              </div>
+              <div style={{display:"table-row", height:"35px"}}>
+                <div style={{display:"table-cell"}}>Received</div>
+                <div style={{display:"table-cell"}}>{props.amount} coins</div>
+              </div>
+              <div style={{display:"table-row", height:"35px"}}>
+                <div style={{display:"table-cell"}}>Payment Method:</div>
+                <div style={{display:"table-cell"}}>Credit Card</div>
+              </div>
+            </div>
+            {/* <div>Pay {props.amount} THB</div>
             <div>Received {props.amount} coins</div>
-            <div>Payment Method: Credit Card</div>
-            <div>Created On: {formattedDateTime}</div>
+            <div>Payment Method: Credit Card</div> */}
             <Link href={"./manage_account"}>
-              <button onClick={handleClosePopup}>
-                Go to manage account page
+              <button onClick={handleClosePopup} style={{
+                border:"none", borderRadius:"5px", 
+                backgroundColor:"mediumaquamarine",
+                // backgroundColor:COLOR.primary,
+                fontSize:"20px", color:"white", letterSpacing:"1px",
+                width:"320px", height:"42px", marginTop:"20px"
+              }}>
+                Continue
               </button>
             </Link>
           </div>
@@ -145,6 +183,8 @@ function Checkout(props: any) {
           background-color: white;
           padding: 20px;
           border-radius: 5px;
+          margin: 20px;
+          min-width: 320px;
           box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
           display: flex;
           flex-direction: column;

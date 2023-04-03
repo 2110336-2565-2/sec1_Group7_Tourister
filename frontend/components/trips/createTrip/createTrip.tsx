@@ -348,6 +348,10 @@ const createTrip = () => {
               <FormInputText name="province" control={control} label="Pick a province for showing"/>
             </Field><Field> {/* Duration */}
               <RequireFormLabel className="AsteriskRequired">Duration</RequireFormLabel>
+              <div style={{margin:"0 1rem", fontSize:"12px", color:COLOR.error}}>
+                {unmatchedStartAndEndDate? <label>Please add a matching start and end Date Time<br/></label> : <Fragment/>}
+                {overlap? <label>You already have another trip at this time<br/></label> : <Fragment/>}
+              </div>
               <label style={{marginLeft:"0.5rem"}}>{"Start"}</label>
               <div style={{display:"flex",alignSelf:"center", gap:"0.6rem"}}>
                 <FormInputDate name="startDate" control={control} label="Start Date"/>
@@ -358,13 +362,14 @@ const createTrip = () => {
                 <FormInputDate name="endDate" control={control} label="End Date"/>
                 <FormInputTime name="endTime" control={control} label="End Time"/>
               </div>
-              {unmatchedStartAndEndDate? <p>Please add a matching start and end Date Time</p> : <Fragment/>}
-              {overlap? <p>You already have another trip at this time</p> : <Fragment/>}
             </Field><Field>{/* Group Size */}
               <RequireFormLabel className="AsteriskRequired">Group size</RequireFormLabel>
               <FormInputText name="max_participant" control={control} label="Number of participant(s)"/>
             </Field><Field> {/* language */}
               <RequireFormLabel className="AsteriskRequired">Language(s)</RequireFormLabel>
+              {languageCheck.every((e)=>!e) && stage===1?(
+                <label style={{margin:"0 1rem", fontSize:"12px", color:COLOR.error}}>Please select at least one language<br/></label>
+              ) : <Fragment/>}
               <FormGroup style={{gap:"0px"}}>
                 {Object.keys(languageMap).map((lang:string,i)=>(
                   <FormControlLabel
@@ -375,7 +380,6 @@ const createTrip = () => {
                   />)
                 )}
               </FormGroup>
-              {languageCheck.every((e)=>!e) && stage===1?<p>Please select at least one language</p> : <Fragment/>}
             </Field>
             {/* <button type="button" onClick={()=>{HandleNext()}}>Next</button> */}
             <PrimaryButton style={{alignSelf:"center"}} type="button" onClick={()=>{HandleNext()}} variant="contained" >Next</PrimaryButton>
