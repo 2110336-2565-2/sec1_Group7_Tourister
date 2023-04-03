@@ -107,7 +107,7 @@ const BookingController = {
           remainingAmount: balance - program.price,
         });
       }
-      if((new Date(program.startDate)) < (new Date())) throw new ApiErrorResponse( "program already started", 400, "program-already-started" );
+      // if((new Date(program.startDate)) < (new Date())) throw new ApiErrorResponse( "program already started", 400, "program-already-started" );
 
       const payload = req.body;
       payload.program = programId;

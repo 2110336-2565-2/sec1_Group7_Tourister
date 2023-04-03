@@ -14,7 +14,7 @@ export const addHoursToDate = (d: Date, h: number) => {
 
 export const isDateTimeInThePass = (d: Date, t: string) => {
     const date = new Date(d);
-    const [hour,minute] = t.split(":")
+    const [hour,minute] = t.split(":").map((t)=>Number(t))
     const currentDate = new Date();
     if(date.getFullYear() < currentDate.getFullYear()){
         return true;
@@ -25,10 +25,10 @@ export const isDateTimeInThePass = (d: Date, t: string) => {
             if(date.getDate() < currentDate.getDate()){
                 return true;
             } else if (date.getDate()===currentDate.getDate()){
-                if(hour as unknown as number < currentDate.getHours()){
+                if(hour < currentDate.getHours()){
                     return true;
-                } else if (hour as unknown as number === currentDate.getHours()){
-                    if(minute as unknown as number < currentDate.getMinutes()){
+                } else if (hour === currentDate.getHours()){
+                    if(minute < currentDate.getMinutes()){
                         return true;
                     }
                 }
