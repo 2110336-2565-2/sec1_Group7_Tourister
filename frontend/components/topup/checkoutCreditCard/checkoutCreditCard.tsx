@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import appConfig from "@/configs/appConfig";
 import Link from "next/link";
 import { Check, Done } from "@mui/icons-material";
+import Swal from "sweetalert2";
 
 const PUBLIC_KEY = appConfig.OMISE_PUBLIC_KEY;
 console.log(PUBLIC_KEY);
@@ -34,12 +35,28 @@ function Checkout(props: any) {
     transData: TopUpTransactionDataInterface
   ) => {
     console.log(transData);
+    Swal.fire({
+      title: 'Please wait...',
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      showConfirmButton: false,
+      willOpen: ()=> {
+        Swal.showLoading();
+      }
+    });
     try {
       const res = await chargeAndTopUpCoins(transData);
+      Swal.close();
       console.log(res);
       setShowPopup(true);
     } catch (err) {
       console.log(err);
+      Swal.close();
+      Swal.fire({
+        text: err.message,
+        icon: "error",
+        timer: 2000
+      })
     }
   };
   const creditCardConfigure = async () => {

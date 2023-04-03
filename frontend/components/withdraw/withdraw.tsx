@@ -15,6 +15,7 @@ import { Avatar, InputAdornment, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { PrimaryButton, RequireFormLabel, StyledInput } from "@/css/styling";
 import { Done } from "@mui/icons-material";
+import Swal from "sweetalert2";
 
 interface TopUpProps {
   initialAmount: number;
@@ -104,12 +105,28 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
     // console.log(validateAmount(amount));
     // console.log(validateAccountNumber(bankAccountNumber));
     if (validateAmount(amount) && validateAccountNumber(bankAccountNumber)) {
+      Swal.fire({
+        title: 'Please wait...',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showConfirmButton: false,
+        willOpen: ()=> {
+          Swal.showLoading();
+        }
+      });
       try {
         const res = await userWithdrawCoins({ amount: amount.toString() });
+        Swal.close();
         // console.log(res);
         setShowPopup(true);
       } catch (err) {
         console.log(err);
+        Swal.close();
+        Swal.fire({
+          text: err.message,
+          icon: "error",
+          timer: 2000
+        })
       }
     } else {
       alert("Invalid input");
