@@ -52,7 +52,9 @@ export const validationSchema = yup.object().shape({
     ),
   amount: yup
     .number()
+    .typeError('amount must be a number')
+    .nullable(true)
     .required("Please enter amount (THB)")
-    .min(100, "Amount(THB) must be greater than ฿100")
-    .max(1000000, "Amount(THB) must be less than or equal to ฿1000000"),
+    .moreThan(-1, "Amount(THB) must be greater than ฿100")
+    .lessThan(7, "Amount(THB) must be less than or equal to ฿1000000"),
 });

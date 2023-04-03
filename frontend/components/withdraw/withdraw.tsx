@@ -56,7 +56,7 @@ const withdrawValues: withdrawValue[] = [
 ];
 
 const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
-  const [amount, setAmount] = useState<number>(initialAmount);
+  const [amount, setAmount] = useState<number>();
   const [showPopup, setShowPopup] = useState(false);
   const [bankAccountNumber, setBankAccountNumber] = useState("");
   const [bankAccount, setBankAccount] = useState<accountType>("");
@@ -147,6 +147,7 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
       console.log(err);
     }
   };
+  console.log(amount)
 
   return (
     <div>
