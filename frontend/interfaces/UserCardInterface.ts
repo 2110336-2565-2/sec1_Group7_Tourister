@@ -6,4 +6,5 @@ export interface UserCardInterface {
   surname: string;
   request?: string;
   phoneNumber: string;
+  image: string;
 }
