@@ -73,6 +73,7 @@ export default function userPending() {
         surname: "",
         request: "",
         phoneNumber: "",
+        image: ""
       };
       const response = await getUserById(userArr[i]);
 
@@ -82,6 +83,7 @@ export default function userPending() {
       usercard.surname = response.data.surname;
       usercard.request = requestArr[i];
       usercard.phoneNumber = response.data.phoneNumber;
+      usercard.image = response.data?.image;
 
       usercards.push(usercard);
     }
