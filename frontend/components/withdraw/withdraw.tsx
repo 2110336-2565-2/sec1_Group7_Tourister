@@ -13,7 +13,7 @@ import { Controller } from "react-hook-form";
 import styled from "styled-components";
 import { InputAdornment, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { PrimaryButton } from "@/css/styling";
+import { PrimaryButton, RequireFormLabel } from "@/css/styling";
 
 interface TopUpProps {
   initialAmount: number;
@@ -184,7 +184,7 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
         <div
           style={{ display: "grid", width: "80%", justifyContent: "center" }}
         >
-          Input Amount (THB) :
+          Input Amount (THB)
           {/* <input
             type="number"
             value={amount}
@@ -202,7 +202,7 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
             }) => (
               <TextField
                 helperText={error ? error.message : null}
-                size="medium"
+                size="small"
                 error={Boolean(error)}
                 onChange={handleAmountChange}
                 value={amount}
@@ -215,7 +215,8 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
               />
             )}
           />
-          <FieldName
+          <RequireFormLabel className="AsteriskRequired">Bank account number</RequireFormLabel>
+          {/* <FieldName
             style={{
               alignSelf: "flex-start",
               marginTop: "1rem",
@@ -223,12 +224,13 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
             }}
           >
             Bank account number:
-          </FieldName>
+          </FieldName> */}
           <FormInputText
             name="phoneNumber"
             control={control}
             label="Bank account number"
           />
+
           <HeaderInPopup>Select bank</HeaderInPopup>
           <FormInputSelect
             name="Select bank:"
