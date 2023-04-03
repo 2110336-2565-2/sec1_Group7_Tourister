@@ -31,12 +31,12 @@ type accountType =
 export type FormData = {
   bankAccount: accountType;
   accountNumber: string;
-  amount:number
+  amount: number;
 };
 export const defaultValues = {
   bankAccount: "kbank" as accountType,
   accountNumber: "",
-  amount:0
+  amount: 0,
 };
 
 export const validationSchema = yup.object().shape({
@@ -51,12 +51,8 @@ export const validationSchema = yup.object().shape({
       (val) => val?.length === 10
     ),
   amount: yup
-    .string()
+    .number()
     .required("Please enter amount (THB)")
-    .matches(/^[0-9]+$/, "Bank account number must be only digits")
-    .test(
-      "len",
-      "Bank account number must have 7 numbers",
-      (val) => val?.length === 7
-    ),
+    .min(100, "Amount(THB) must be greater than ฿100")
+    .max(1000000, "Amount(THB) must be less than or equal to ฿1000000"),
 });

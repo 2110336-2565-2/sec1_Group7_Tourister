@@ -56,7 +56,7 @@ const withdrawValues: withdrawValue[] = [
 ];
 
 const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
-  const [amount, setAmount] = useState(initialAmount);
+  const [amount, setAmount] = useState<number>(initialAmount);
   const [showPopup, setShowPopup] = useState(false);
   const [bankAccountNumber, setBankAccountNumber] = useState("");
   const [bankAccount, setBankAccount] = useState<accountType>("");
@@ -128,15 +128,6 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
   const handleClosePopup = () => {
     setShowPopup(false);
   };
-  const onSubmit = async (data: FormData) => {
-    try {
-      const res = await userWithdrawCoins({ amount: amount.toString() });
-      console.log(res);
-      setShowPopup(true);
-    } catch (err) {
-      console.log(err);
-    }
-  };
   const {
     watch,
     control,
@@ -146,6 +137,16 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
     resolver: yupResolver(validationSchema),
     defaultValues: defaultValues,
   });
+
+  const onSubmit = async () => {
+    try {
+      const res = await userWithdrawCoins({ amount: amount.toString() });
+      console.log(res);
+      setShowPopup(true);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <div>
@@ -184,16 +185,11 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
         <div
           style={{ display: "grid", width: "80%", justifyContent: "center" }}
         >
-          Input Amount (THB)
-          {/* <input
-            type="number"
-            value={amount}
-            onChange={handleAmountChange}
-            placeholder="Enter custom amount"
-            style={{ marginTop: "10px" }}
-          /> */}
+          <RequireFormLabel className="AsteriskRequired">
+            Input Amount (THB)
+          </RequireFormLabel>
           <Controller
-            name="Input Amount (THB)"
+            name="amount"
             control={control}
             render={({
               field: { onChange, value },
@@ -207,35 +203,30 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
                 onChange={handleAmountChange}
                 value={amount}
                 fullWidth
-                placeholder="Enter custom amount"
+                // placeholder="Enter custom amount"
                 variant="outlined"
-                // InputProps={{
-                //   readOnly: readonly
-                // }}
+                InputProps={{
+                  readOnly: false,
+                }}
               />
             )}
           />
-          <RequireFormLabel className="AsteriskRequired">Bank account number</RequireFormLabel>
-          {/* <FieldName
-            style={{
-              alignSelf: "flex-start",
-              marginTop: "1rem",
-              marginBottom: "0.5rem",
-            }}
-          >
-            Bank account number:
-          </FieldName> */}
+          <RequireFormLabel className="AsteriskRequired">
+            Bank account number
+          </RequireFormLabel>
           <FormInputText
-            name="phoneNumber"
+            name="accountNumber"
             control={control}
             label="Bank account number"
           />
 
-          <HeaderInPopup>Select bank</HeaderInPopup>
+          <RequireFormLabel className="AsteriskRequired">
+            Select bank
+          </RequireFormLabel>
           <FormInputSelect
-            name="Select bank:"
+            name="bankAccount"
             control={control}
-            label="Select bank"
+            label=""
             options={bankOptions}
           />
         </div>
@@ -269,7 +260,7 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
           style={{ alignSelf: "center", marginTop: "3rem" }}
           type="submit"
           variant="contained"
-          onClick={handleWithdraw}
+        //   onClick={onSubmit}
         >
           Withdraw
         </PrimaryButton>
