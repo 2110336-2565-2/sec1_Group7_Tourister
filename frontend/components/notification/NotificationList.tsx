@@ -34,15 +34,6 @@ export const NotificationList = () => {
   
     const noti = programResponse?.data;
     console.log("noti",noti);
-  
-    
-  
-    const today = new Date();
-    // const showingNotication = noti?.filter(({program})=>{
-    //   if(history) return new Date(program?.endDate!).getTime() < today.getTime();
-    //   return new Date(program?.endDate!).getTime() >= today.getTime();
-    // })
-  
     if((noti?.length)===0){
       return <>
       <br />

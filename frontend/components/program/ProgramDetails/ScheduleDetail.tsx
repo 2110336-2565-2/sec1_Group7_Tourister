@@ -107,7 +107,7 @@ const ScheduleDetail: FC<IScheduleDetailProps> = ({ program, dayTrips }) => {
                         height: "15px",
                       },
                     }}
-                    label={program.province}
+                    label={attraction.province}
                   />
 
                   {attraction.option === "Admission included" && (
