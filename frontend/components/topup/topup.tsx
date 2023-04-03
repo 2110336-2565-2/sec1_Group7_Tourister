@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { COLOR } from "@/theme/globalTheme";
 import Transaction from "@/components/topup/checkoutCreditCard/checkoutCreditCard";
+import { StyledInput } from '@/css/styling'
 
 interface TopUpProps {
   initialAmount: number;
@@ -20,7 +21,6 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
   const [amount, setAmount] = useState(initialAmount);
   const [showPopup, setShowPopup] = useState(false);
 
-
   const router = useRouter();
 
   const handleValueClick = (value: number) => {
@@ -34,7 +34,6 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
       alert('Input value must be between ฿100 and ฿1000000.');
     }
   };
-
 
 
   return (
@@ -81,10 +80,10 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
               borderRadius: "5px",
               backgroundColor: "white",
 
-              // backgroundColor: amount === value ? COLOR.orange : "white",
-              borderColor: amount === value ? COLOR.orange : "lightgray",
+              // backgroundColor: amount === value ? COLOR.primary : "white",
+              borderColor: amount === value ? COLOR.primary : "lightgray",
               fontWeight: amount === value ? "bold" : "normal",
-              color: amount === value ? COLOR.orange : "black",
+              color: amount === value ? COLOR.primary : "black",
             }}
             onClick={() => handleValueClick(value)}
           >
@@ -102,32 +101,37 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
       >
       Input Amount (THB) :
       </div>
-      <input
+      <StyledInput
         type="number"
         value={amount}
         onChange={handleAmountChange}
         placeholder="Enter custom amount"
-        style={{ 
-          width: 350,
-          margin: "auto", 
-          color: COLOR.orange,
-          padding: "10px 10px 10px 10px", 
-          transform: "translateX(20px)",
-          border: "1px solid grey",
-          fontSize: 17,
-          fontWeight: "bold",
-        }}
       />
       <div style={{ 
         margin: "0.0rem", 
         padding: "10px 20px 10px 20px", 
-        // backgroundColor: COLOR.orange,
+        // backgroundColor: COLOR.primary,
       }}>
         {amount !== undefined && (
-          <p style={{ marginTop: "10px" }}>
+          <div>
+          <p style={{ 
+            // margin: "auto"
+            marginTop: "10px" 
+          }}>
             You have selected a top-up amount of 
+          </p>
+          <p
+            style={{
+              margin: "auto",
+              color: COLOR.primary,
+              fontSize: 25,
+              fontWeight: "bold",
+              transform: "translateY(-10px)"
+            }}
+          >
             THB {amount.toFixed(2)}
           </p>
+          </div>
         )}
       </div>
       <div>

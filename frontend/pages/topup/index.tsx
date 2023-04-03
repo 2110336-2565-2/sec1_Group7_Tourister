@@ -13,6 +13,7 @@ export default function Page() {
       style={{ 
         margin: "0.0rem", 
         // backgroundColor: COLOR.primary 
+        // margin: "0.0rem", backgroundColor: COLOR.background
       }}
     >
       <Link href={"./manage_account"}>
