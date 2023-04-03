@@ -161,7 +161,7 @@ const manageAccount = () => {
           ></NavigateNextOutlinedIcon>
         </Button>
       </Link>
-      <Link href="./transaction" style={{ width: "100%", textDecoration: "none" }} passHref>
+      <Link href="./topup" style={{ width: "100%", textDecoration: "none" }} passHref>
         <Button>
           <SwapHorizOutlinedIcon style={{ width: "20%", color: "gray" }} />
           <h3
@@ -173,7 +173,7 @@ const manageAccount = () => {
               fontSize: "1.05rem",
             }}
           >
-            Transfer Funds
+            Topup Coins
           </h3>
           <NavigateNextOutlinedIcon style={{ width: "20%", color: "gray" }} />
         </Button>

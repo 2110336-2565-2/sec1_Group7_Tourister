@@ -5,8 +5,9 @@ import { addHoursToDate } from '@/utils/Utils';
 import Router, { useRouter } from 'next/router'
 import React, { createContext, useState, useContext, useEffect } from 'react'
 import Swal from 'sweetalert2';
+import { AuthContextInterface } from '@/interfaces/AuthContextInterface';
 
-const AuthContext = createContext({});
+const AuthContext = createContext<AuthContextInterface>({});
 
 interface Props {
     role?: string
@@ -15,7 +16,7 @@ interface Props {
 
 export const AuthProvider = ({ role, children }: Props) => {
     const router = useRouter();
-    const [user, setUser] = useState<UserInterface | null>(null)
+    const [user, setUser] = useState<UserInterface | undefined>(undefined)
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {

@@ -27,6 +27,7 @@ export default function UserNavBar({ userId }: UserNavBarProps) {
   useEffect(() => {
     console.log("start use Effect in userNavBar")
     const fetchNotifications = async () => {
+      if (!userId) return; // if userId is undefined, exit early
       console.log("fetching notifications");
       try {
         const res = await getAllNotificationsFromUser(userId); 

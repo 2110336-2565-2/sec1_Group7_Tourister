@@ -81,17 +81,18 @@ const BookingController = {
       if (!user) throw new Error("unauthorized");
       if (!programId) throw new Error("programId is required");
 
-      const dupeBookingByUserId = await Booking.findOne({
+      const dupeBookingByUserId = await Booking.find({
         user: user._id,
         program: programId,
       });
-      if (dupeBookingByUserId)
+      console.log("dupeBooking",dupeBookingByUserId)
+      if (dupeBookingByUserId.length > 0){
         throw new ApiErrorResponse(
           "you already booked this program",
           400,
           "duplicate-booking"
         );
-
+      }
       const balance = (await User.findById(user._id)).remainingAmount;
       const program = await Program.findById(programId);
       if (balance < program.price)
@@ -111,7 +112,7 @@ const BookingController = {
       payload.user = user._id;
       const booking = new Booking(payload);
       await booking.save();
-      console.log(booking);
+      //console.log(booking);
 
       //Nofify payment
       const noti_payment = new Notification({
@@ -121,7 +122,7 @@ const BookingController = {
         message: `${program.price} baht is paid to book for ${program.name}`,
       });
       await noti_payment.save();
-      console.log(noti_payment);
+      //console.log(noti_payment);
 
       //Nofify guide
       const noti_request = new Notification({
@@ -131,7 +132,7 @@ const BookingController = {
         message: `${user.name} ${user.surname} requested to join ${program.name}`,
       });
       await noti_request.save();
-      console.log(noti_request);
+      //console.log(noti_request);
 
       return {
         code: 201,
@@ -295,12 +296,25 @@ const BookingController = {
   async deleteBookingById(req, res, next) {
     const result = await tryCatchMongooseService(async () => {
       const bookingId = req.params.id;
-      const booking = await Booking.findByIdAndDelete(bookingId);
+      const booking = await Booking.findById(bookingId);
+      if(booking.status != "pending") {
+        throw new ApiErrorResponse(400, "Booking is not pending");
+      }
+      await Booking.findByIdAndDelete(bookingId);
 
       const program = await Program.findById(booking.program);
-      await User.findByIdAndUpdate(program.guide, {
-        $inc: { num_booking: -1, remainingAmount: program.price },
+      await User.findByIdAndUpdate(booking.user, {
+        $inc: { remainingAmount: program.price },
       });
+
+      //notify refund
+      const noti_refund = new Notification({
+        user: booking.user,
+        type: "coin",
+        title: "Coin Refunded",
+        message: `You booking for ${program.name} is cancelled, ${program.price} baht is refunded`,
+      });
+      await noti_refund.save();
 
       return {
         code: 200,
@@ -341,12 +355,14 @@ const BookingController = {
       console.log(noti_accept);
 
       //Nofify tourist trip
+      const now = new Date(); // current time
+      const notifyTime = program.startDate < now ? now : program.startDate;
       const noti_trip = new Notification({
         user: updatedBooking.user,
         type: "nexttrip",
         title: "Upcoming Trip",
         message: `${program.name} will start today at ${program.startTime}. Get Ready!`,
-        notifyTime: Math.max(program.startDate, Date.now),
+        notifyTime: notifyTime
       });
       await noti_trip.save();
       console.log(noti_trip);
@@ -357,7 +373,7 @@ const BookingController = {
         type: "endtrip",
         title: "Finish Trip",
         message: `${program.name} is finish. If you have any problem, please report to contactTourister@gmail.com`,
-        notifyTime: new Date(program.endDate.getDate + 1),
+        notifyTime: new Date(program.endDate.getTime() + 24*60*60*1000),
       });
       await noti_endtrip.save();
       console.log(noti_endtrip);

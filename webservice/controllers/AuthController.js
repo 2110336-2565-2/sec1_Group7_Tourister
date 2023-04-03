@@ -68,9 +68,13 @@ const AuthController = {
         }
         if(data != null && role_match) 
         {
+            let user = await User.findById(data._id)
+            delete user.password
+            delete user.draft
+            
             result = {
                 code: 200,
-                data: data,
+                data: user,
                 message: "token authorized"
             }
         }

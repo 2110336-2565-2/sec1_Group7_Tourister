@@ -16,3 +16,12 @@ export const getAllNotificationsFromUser = async (userId: string) => {
     if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined, res.tag ?? "")
     return res;
 } 
+
+export const readAllNotificationsFromUser = async (userId: string) => {
+    const configs = localStorage.getItem("accessToken") != undefined ? { headers: { 'Authorization' : `Bearer ${localStorage.getItem("accessToken")}`} } : {}
+    const axios_res = await axios.put(`${appConfig.BACKEND_URL}/api/notification/read/${userId}`, configs)
+    
+    const res = axios_res.data as ApiResponseInterface<NotificationInterface[]>
+    if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined, res.tag ?? "")
+    return res;
+} 
