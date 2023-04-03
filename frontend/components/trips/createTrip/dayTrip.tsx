@@ -87,9 +87,9 @@ const dayTrip = ({date,order,savedAttraction,handleCB}:{date:string,order:number
           {stage===3 && ((attractions.length===1 && attractions[0].location==="") || (attractions.length<1))?(
               <p style={{color:"red",fontSize:"0.8rem"}}>Please add at least one location for each date</p>
             ):(<Fragment/>)}
-          {stage===3 && attractions.length<1?(
+        {/* {stage===3 && attractions.length<1?(
               <p style={{color:"red",fontSize:"0.8rem"}}>Please add at least one location for each date</p>
-            ):(<Fragment/>)}
+            ):(<Fragment/>)} */}
           </Fragment>
   );
 };
