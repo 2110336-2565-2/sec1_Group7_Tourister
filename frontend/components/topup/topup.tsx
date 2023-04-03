@@ -35,12 +35,6 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
     }
   };
 
-  const handleTopUp = () => {
-    router.push({
-      pathname: "./topup/checkoutCreditCard",
-      query: { amount },
-    });
-  };
 
 
   return (

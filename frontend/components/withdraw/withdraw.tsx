@@ -6,10 +6,21 @@ import Link from "next/link";
 import { validationSchema, FormData, defaultValues } from "./withdrawSchema";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { FieldName, Form } from "@/css/layout";
+import { FormInputText } from "../formInput/FormInputText";
+import { FormInputSelect } from "@/components/formInput/FormInputSelect";
+import { Controller } from "react-hook-form";
+import styled from "styled-components";
+import { InputAdornment, TextField } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import { PrimaryButton } from "@/css/styling";
 
 interface TopUpProps {
   initialAmount: number;
 }
+const HeaderInPopup = styled.h4`
+  margin: 0.7rem 0 0.5rem 0;
+`;
 
 const bankOptions = [
   { value: "scb", label: "SCB - ธนาคารไทยพาณิชย์" },
@@ -56,15 +67,6 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
     setBankAccount(event.target.value);
   };
 
-  const {
-    watch,
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm<FormData>({
-    resolver: yupResolver(validationSchema),
-    defaultValues: defaultValues,
-  });
   //   const watchAccountType = watch("accountType");
 
   const handleValueClick = (value: number) => {
@@ -72,14 +74,14 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
   };
 
   const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (
-      event.target.value === "" ||
-      (Number(event.target.value) >= 0 && Number(event.target.value) <= 1000000)
-    ) {
-      setAmount(parseInt(event.target.value));
-    } else {
-      alert("Input value must be between ฿100 and ฿1000000.");
-    }
+    // if (
+    //   event.target.value === "" ||
+    //   (Number(event.target.value) >= 0 && Number(event.target.value) <= 1000000)
+    // ) {
+    setAmount(parseInt(event.target.value));
+    // } else {
+    //   alert("Input value must be between ฿100 and ฿1000000.");
+    // }
   };
   const handleBankNumberChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -126,75 +128,150 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
   const handleClosePopup = () => {
     setShowPopup(false);
   };
+  const onSubmit = async (data: FormData) => {
+    try {
+      const res = await userWithdrawCoins({ amount: amount.toString() });
+      console.log(res);
+      setShowPopup(true);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const {
+    watch,
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: yupResolver(validationSchema),
+    defaultValues: defaultValues,
+  });
+
   return (
     <div>
-      <h1>Coin Withdraw</h1>
-      <div>Withdraw value (THB)</div>
-      <div
+      <Form
         style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(2, 1fr)",
-          gap: "10px",
+          display: "flex",
+          alignItems: "center",
+          flexDirection: "column",
         }}
+        onSubmit={handleSubmit(onSubmit)}
       >
-        {withdrawValues.map(({ label, value }) => (
-          <button
-            key={value}
+        <h1>Coin Withdraw</h1>
+        <div>Withdraw value (THB)</div>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(2, 1fr)",
+            gap: "10px",
+          }}
+        >
+          {withdrawValues.map(({ label, value }) => (
+            <button
+              key={value}
+              style={{
+                padding: "10px",
+                border: "1px solid gray",
+                borderRadius: "5px",
+                backgroundColor: amount === value ? "lightblue" : "white",
+              }}
+              onClick={() => handleValueClick(value)}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+        <div
+          style={{ display: "grid", width: "80%", justifyContent: "center" }}
+        >
+          Input Amount (THB) :
+          {/* <input
+            type="number"
+            value={amount}
+            onChange={handleAmountChange}
+            placeholder="Enter custom amount"
+            style={{ marginTop: "10px" }}
+          /> */}
+          <Controller
+            name="Input Amount (THB)"
+            control={control}
+            render={({
+              field: { onChange, value },
+              fieldState: { error },
+              formState,
+            }) => (
+              <TextField
+                helperText={error ? error.message : null}
+                size="medium"
+                error={Boolean(error)}
+                onChange={handleAmountChange}
+                value={amount}
+                fullWidth
+                placeholder="Enter custom amount"
+                variant="outlined"
+                // InputProps={{
+                //   readOnly: readonly
+                // }}
+              />
+            )}
+          />
+          <FieldName
             style={{
-              padding: "10px",
-              border: "1px solid gray",
-              borderRadius: "5px",
-              backgroundColor: amount === value ? "lightblue" : "white",
+              alignSelf: "flex-start",
+              marginTop: "1rem",
+              marginBottom: "0.5rem",
             }}
-            onClick={() => handleValueClick(value)}
           >
-            {label}
-          </button>
-        ))}
-      </div>
-      Input Amount (THB) :
-      <input
-        type="number"
-        value={amount}
-        onChange={handleAmountChange}
-        placeholder="Enter custom amount"
-        style={{ marginTop: "10px" }}
-      />
-      <div>
-        Bank account number:
-        <input
-          type="string"
-          value={bankAccountNumber}
-          onChange={handleBankNumberChange}
-          placeholder="0000000007"
-          style={{ marginTop: "10px" }}
-        />
-      </div>
-      <label htmlFor="bankSelect">Select bank:</label>
-      <select id="bankSelect" value={bankAccount} onChange={handleBankChange}>
-        <option value="">Select an option</option>
-        {bankOptions.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
-      <div style={{ margin: "0.0rem", backgroundColor: COLOR.secondary }}>
-        {amount !== undefined && (
-          <p style={{ marginTop: "10px" }}>
-            You have selected a withdraw amount of THB {amount.toFixed(2)}
-          </p>
-        )}
-      </div>
-      <button
-        id="credit-card"
-        className="btn"
-        type="button"
-        disabled={amount === 0}
-        onClick={handleWithdraw}
-      >
-        Withdraw
-      </button>
+            Bank account number:
+          </FieldName>
+          <FormInputText
+            name="phoneNumber"
+            control={control}
+            label="Bank account number"
+          />
+          <HeaderInPopup>Select bank</HeaderInPopup>
+          <FormInputSelect
+            name="Select bank:"
+            control={control}
+            label="Select bank"
+            options={bankOptions}
+          />
+        </div>
+
+        {/* <label htmlFor="bankSelect">Select bank:</label>
+        <select id="bankSelect" value={bankAccount} onChange={handleBankChange}>
+          <option value="">Select an option</option>
+          {bankOptions.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select> */}
+        <div style={{ margin: "0.0rem", backgroundColor: COLOR.secondary }}>
+          {amount !== undefined && (
+            <p style={{ marginTop: "10px" }}>
+              You have selected a withdraw amount of THB {amount.toFixed(2)}
+            </p>
+          )}
+        </div>
+        {/* <button
+          id="credit-card"
+          className="btn"
+          type="button"
+          disabled={amount === 0}
+          onClick={handleWithdraw}
+          >
+          Withdraw
+        </button> */}
+        <PrimaryButton
+          style={{ alignSelf: "center", marginTop: "3rem" }}
+          type="submit"
+          variant="contained"
+          onClick={handleWithdraw}
+        >
+          Withdraw
+        </PrimaryButton>
+      </Form>
       {showPopup && (
         <div className="popup-container">
           <div className="popup">

@@ -1,5 +1,11 @@
 import * as yup from "yup";
-import { FormControl, InputLabel, Select, MenuItem, FormHelperText } from '@material-ui/core';
+import {
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  FormHelperText,
+} from "@material-ui/core";
 
 type accountType =
   | "scb"
@@ -32,21 +38,32 @@ type accountType =
 export type FormData = {
   bankAccount: accountType;
   accountNumber: string;
+  amount:number
 };
 export const defaultValues = {
   bankAccount: "kbank" as accountType,
   accountNumber: "",
+  amount:0
 };
 
 export const validationSchema = yup.object().shape({
-//   bankAccount: yup.string().required("Please choose your bank account type"),
+  bankAccount: yup.string().required("Please choose your bank account type"),
   accountNumber: yup
     .string()
     .required("Please enter bank account number")
     .matches(/^[0-9]+$/, "Bank account number must be only digits")
     .test(
       "len",
-      "Bank account number must have 13 numbers",
+      "Bank account number must have 10 numbers",
       (val) => val?.length === 10
+    ),
+  amount: yup
+    .string()
+    .required("Please enter amount (THB)")
+    .matches(/^[0-9]+$/, "Bank account number must be only digits")
+    .test(
+      "len",
+      "Bank account number must have 7 numbers",
+      (val) => val?.length === 7
     ),
 });

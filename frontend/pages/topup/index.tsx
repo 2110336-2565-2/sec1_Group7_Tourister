@@ -4,13 +4,16 @@ import { TopUpTransactionDataInterface } from "@/interfaces/transaction/TopUpTra
 import { chargeAndTopUpCoins } from "@/services/topupService";
 import NavBar from "@/components/layout/navBar";
 import { useState } from "react";
+import Link from "next/link";
 
 export default function Page() {
-
   return (
     <div style={{ margin: "0.0rem", backgroundColor: COLOR.primary }}>
-      <TopUp initialAmount={0}/>
-      <NavBar />
+      <Link href={"./manage_account"}>
+        <button>Back</button>
+      </Link>
+      <TopUp initialAmount={0} />
+      {/* <NavBar /> */}
     </div>
   );
 }
