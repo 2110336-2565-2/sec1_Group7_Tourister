@@ -1,12 +1,12 @@
-import { useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
 
-import { Avatar, CircularProgress, Divider, List, ListItem, ListItemAvatar, ListItemText, Typography } from "@mui/material"
+import { Avatar, Button, CircularProgress, Divider, List, ListItem, ListItemAvatar, ListItemText, Typography } from "@mui/material"
 import { useAuth } from "@/components/AuthProvider"
 import { AuthContextInterface } from "@/interfaces/AuthContextInterface"
-import { getAllNotificationsFromUser} from "@/services/notificationService"
+import { getAllNotificationsFromUser,readAllNotificationsFromUser} from "@/services/notificationService"
 import { NotificationInterface } from "@/interfaces/NotificationInterface";
-import React from "react"
-import {ConfirmationNumber, Paid,InsertInvitation} from '@mui/icons-material';
+import React, { useEffect } from "react"
+import {ConfirmationNumber, Paid,InsertInvitation, SyncAlt } from '@mui/icons-material';
 import { COLOR } from "@/theme/globalTheme";
 
 export const NotificationList = () => {
@@ -20,7 +20,12 @@ export const NotificationList = () => {
         return getAllNotificationsFromUser(userId)
       }
     })
-    
+
+    const handleMarkAllNotificationsAsRead = async () => {
+      await readAllNotificationsFromUser(userId);
+      refetch();
+    }
+  
     if(isLoading) return (
       <div style={{display:"flex", justifyContent:"center"}}>
         <CircularProgress/>
@@ -28,8 +33,9 @@ export const NotificationList = () => {
     )
   
     const noti = programResponse?.data;
-    console.log(noti);
+    console.log("noti",noti);
   
+    
   
     const today = new Date();
     // const showingNotication = noti?.filter(({program})=>{
@@ -48,27 +54,50 @@ export const NotificationList = () => {
   
     return (
       <>
+      <Button onClick={handleMarkAllNotificationsAsRead}>Mark all as read</Button>
+
       <List sx={{ width: '100%' }}>
       {noti?.map((notiDetail) => {     
           let icon;
           let avatarStyle;
+          // withdraw and top up
           if (notiDetail.type === "coin") {
+            icon = <SyncAlt />;
+            avatarStyle = { backgroundColor: "#4CAF50" };
+
+          // guide recieve money and tourister pay 
+          } else if (notiDetail.type === "payment") {
             icon = <Paid />;
             avatarStyle = { backgroundColor: "#4CAF50" };
-          } else if (notiDetail.type === "decrequest") {
-            icon = <ConfirmationNumber />;
-            avatarStyle = { backgroundColor: "#F44336" };
+          
+          //refund
+          } else if (notiDetail.type === "refund") {
+            icon = <Paid />;
+            avatarStyle = { backgroundColor: "#FFC107" };
+
+          //upcoming trip
           } else if (notiDetail.type === "nexttrip") {
             icon = <InsertInvitation />;
             avatarStyle = { backgroundColor: "#FFC107" };
+
+          //end trip
+          } else if (notiDetail.type === "endtrip") {
+            icon = <InsertInvitation />;
+            avatarStyle = { backgroundColor: "#2196F3" };
+          
+          //declined request and cancel request
+          } else if (notiDetail.type === "decrequest" || notiDetail.type === "cancel") {
+            icon = <ConfirmationNumber />;
+            avatarStyle = { backgroundColor: "#F44336" };
+          
+          //new request and accept request
           } else if (notiDetail.type === "newrequest" || notiDetail.type === "accrequest") {
             icon = <ConfirmationNumber />;
             avatarStyle = { backgroundColor: "#2196F3" };
-          } else if (notiDetail.type === "endtrip") {
-            icon = <InsertInvitation />;
-            avatarStyle = { backgroundColor: "#9C27B0" };
+
+          
           } else {
-            icon = <Avatar alt="Remy Sharp" />;
+            icon = <Avatar alt="" />;
             avatarStyle = {};
           }
           
@@ -100,7 +129,9 @@ export const NotificationList = () => {
               </ListItem>
         </>
       );
-    })}
+    })
+    }
+
   </List>
 
       </>
