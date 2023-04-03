@@ -113,17 +113,6 @@ export const NotificationList = () => {
                   primary={notiDetail.title}
                   secondary={
                       notiDetail.message
-                      // <React.Fragment>
-                      // <Typography
-                      //     sx={{ display: 'inline' }}
-                      //     component="span"
-                      //     variant="body2"
-                      //     color="text.primary"
-                      // >
-                      //     Ali Connors
-                      // </Typography>
-                      // {" — I'll be in your neighborhood doing errands this…"}
-                      // </React.Fragment>
                   }
               />
               </ListItem>
