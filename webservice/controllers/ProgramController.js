@@ -99,7 +99,7 @@ const ProgramController = {
           user: updatedProgram.guide,
           type: "nexttrip",
           title: "Upcoming Trip",
-          message: `${updatedProgram.name} will start today at ${updatedProgram.startTime}. Meeting point at ${program.meetLocation}. Get Ready!`,
+          message: `${updatedProgram.name} will start today at ${updatedProgram.startTime}. Meeting point at ${updatedProgram.meetLocation}. Get Ready!`,
           notifyTime: updatedProgram.startDate,
         });
         await noti_trip.save();
