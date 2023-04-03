@@ -72,12 +72,13 @@ const ProgramController = {
 
       //Nofify guide
       if (program.published){
+        const notifyTime = program.startDate < now ? now : program.startDate;
         const noti_trip = new Notification({
           user: program.guide,
           type: "nexttrip",
           title: "Upcoming Trip",
           message: `${program.name} will start today at ${program.startTime}. Meeting point at ${program.meetLocation}. Get Ready!`,
-          notifyTime: program.startDate,
+          notifyTime: notifyTime,
         });
         await noti_trip.save();
         console.log(noti_trip);
