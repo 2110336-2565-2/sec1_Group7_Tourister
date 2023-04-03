@@ -15,7 +15,7 @@ import { CalendarMonth, LocationOnOutlined } from "@mui/icons-material";
 import { COLOR } from "@/theme/globalTheme";
 import { Chip, CircularProgress, Stack } from "@mui/material";
 
-export default function programPending() {
+export default function ProgramPending() {
   // const [guideId, setGuideid] = useState<String>("0");
   let guide: UserInterface;
   if (typeof window !== "undefined") {
@@ -41,33 +41,33 @@ export default function programPending() {
     // console.log(response);
     // console.log("eeeee");
     let programOfGuideArr: any = [];
-    for (let i = 0; i < programOfGuide.data.length; i++) {
-      programOfGuideArr.push(programOfGuide.data[i]._id);
+    for (let i = 0; i < programOfGuide.data!.length; i++) {
+      programOfGuideArr.push(programOfGuide.data![i]._id);
     }
     console.log(programOfGuideArr);
-    console.log(response.data.length);
-    for (let i = 0; i < response.data.length; i++) {
+    console.log(response.data!.length);
+    for (let i = 0; i < response.data!.length; i++) {
       if (
-        response.data[i].status === "pending" &&
+        response.data![i].status === "pending" &&
         programOfGuideArr.includes(
-          response.data[i].program._id.toString().trim()
+          response.data![i].program!._id!.toString().trim()
         )
       ) {
         console.log("yes");
-        if (response.data[i].program._id in programPendingDict) {
-          programPendingDict[response.data[i].program._id].push(
-            response.data[i].user._id
+        if (response.data![i].program!._id! in programPendingDict) {
+          programPendingDict[response.data![i].program!._id!].push(
+            response.data![i].user!._id!
           );
         } else {
-          programPendingDict[response.data[i].program._id] = [
-            response.data[i].user._id,
+          programPendingDict[response.data![i].program!._id!] = [
+            response.data![i].user!._id!,
           ];
         }
       }
     }
     for (const [key, value] of Object.entries(programPendingDict)) {
       const response = await getProgramById(key);
-      response.data.num_pending = value.length;
+      response.data!.num_pending = value.length;
       programArr.push(response.data);
     }
     setPrograms(programArr);

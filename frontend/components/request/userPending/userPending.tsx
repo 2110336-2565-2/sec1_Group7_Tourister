@@ -22,21 +22,10 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import tourist from "../../../images/tourist.png";
 
 var programName = "";
-export default function userPending() {
-  const [userCards, setuserCards] = useState<[UserCardInterface]>([
-    // {
-    //   bookingId: "",
-    //   userId: "",
-    //   name: "",
-    //   surname: "",
-    //   request: "",
-    //   phoneNumber: "",
-    // },
-  ]);
-  // eslint-disable-next-line react-hooks/rules-of-hooks
+export default function UserPending() {
+  const [userCards, setuserCards] = useState<UserCardInterface[]>([]);
   const router = useRouter();
   const { programId } = router.query;
-  // console.log(programId);
   var isDraft = false;
   async function fetchData() {
     var userArr: any = [];
@@ -45,23 +34,21 @@ export default function userPending() {
     var usercards: any = [];
     const response = await getAllBookings();
     const bookings = response.data || [];
-    console.log("eeee");
-    console.log(response.data);
+
     const pending = bookings.filter((booking) => {
       const status = booking.status;
       return status == "pending";
     });
-    console.log(pending);
 
-    for (let i = 0; i < response.data.length; i++) {
+    for (let i = 0; i < response.data!.length; i++) {
       if (
-        response.data[i].program._id.toString().trim() === programId &&
-        response.data[i].status === "pending"
+        response.data![i].program!._id!.toString().trim() === programId &&
+        response.data![i].status === "pending"
       ) {
-        programName = response.data[i].program.name;
-        userArr.push(response.data[i].user._id);
-        requestArr.push(response.data[i].request);
-        bookingIdArr.push(response.data[i]._id);
+        programName = response.data![i].program!.name;
+        userArr.push(response.data![i].user!._id);
+        requestArr.push(response.data![i].request);
+        bookingIdArr.push(response.data![i]._id);
       }
     }
 
@@ -78,19 +65,17 @@ export default function userPending() {
       const response = await getUserById(userArr[i]);
 
       usercard.bookingId = bookingIdArr[i];
-      usercard.userId = response.data._id;
-      usercard.name = response.data.name;
-      usercard.surname = response.data.surname;
+      usercard.userId = response.data!._id!;
+      usercard.name = response.data!.name;
+      usercard.surname = response.data!.surname;
       usercard.request = requestArr[i];
-      usercard.phoneNumber = response.data.phoneNumber;
-      usercard.image = response.data?.image;
+      usercard.phoneNumber = response.data!.phoneNumber;
+      usercard.image = response.data!.image!;
 
       usercards.push(usercard);
     }
-    // console.log(usercards);
     setuserCards(usercards);
   }
-  // console.log(userCards);
 
   const statusChange = async (bookingId: string, status: string) => {
     if (status === "accepted") {
@@ -98,7 +83,6 @@ export default function userPending() {
       console.log(res.data);
     } else if (status === "declined") {
       const res = declineBookingById(bookingId);
-      // console.log(res);
     }
     await fetchData();
   };

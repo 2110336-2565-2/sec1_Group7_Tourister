@@ -75,29 +75,42 @@ const tryCatchApiService = async (callback, catchCallback = undefined, finallyCa
   }).finally(() => typeof finallyCallback === 'function' && finallyCallback());
 }
 
+const addHoursToDate = (d ,h ) => {
+  d.setTime(d.getTime() + (h*60*60*1000));
+  return d
+}
+
 const getSecsDiff = (date1, date2) => {
   return Math.abs(date1 - date2) / 1000;
 }
 
-const getTodayDateYYYY_MM_DD = () => {
-  const today = new Date();
-  const dd = String(today.getDate()).padStart(2, '0');
-  const mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-  const yyyy = today.getFullYear();
+const getDateYYYY_MM_DD = (date) => {
+  const dd = String(date.getDate()).padStart(2, '0');
+  const mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
+  const yyyy = date.getFullYear();
   return yyyy + '-' + mm + '-' + dd;
+}
+
+const getTodayDateYYYY_MM_DD = () => {
+  return getDateYYYY_MM_DD(new Date());
 }
 
 const getYesterDayDateYYYY_MM_DD = (yyyymmdd) => {
   const days_in_month = [31,28,31,30,31,30,31,31,30,31,30,31];
-  const [yyyy, mm, dd] = yyyymmdd.split('-');
-  yyyy = parseInt(yyyy);
-  mm = parseInt(mm);
-  dd = parseInt(dd);
+  const [year, mon, dat] = yyyymmdd.split('-');
+  console.log(year, mon, dat)
+  yyyy = parseInt(year);
+  mm = parseInt(mon);
+  dd = parseInt(dat);
+  console.log(yyyy, mm, dd)
   if(dd-1 == 0){
     if(mm-1 == 0){
       return (yyyy-1) + '-' + 12 + '-' + days_in_month[11];
     }
     return yyyy + '-' + (mm-1) + '-' + days_in_month[mm-2];
+  }
+  else {
+    return yyyy + '-' + mm + '-' + (dd-1);
   }
 }
 
@@ -107,4 +120,6 @@ module.exports = {
     getSecsDiff,
     getTodayDateYYYY_MM_DD,
     getYesterDayDateYYYY_MM_DD,
+    getDateYYYY_MM_DD,
+    addHoursToDate,
 }
