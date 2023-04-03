@@ -243,7 +243,7 @@ const ProgramController = {
   async getAllPublishedPrograms(req, res, next) {
     const filterBody = req.query;
     let { filter, sorter } = queryObjToProgramFilter(filterBody);
-    filter.push({ published: true });
+    filter.push({ published: true, startDate: {$gte: Date.now()} });
 
     const result = await tryCatchMongooseService(async () => {
       const programs = await Program.find({ $and: filter })
@@ -255,6 +255,7 @@ const ProgramController = {
 
       return {
         code: 200,
+        count: programs.length,
         data: programs,
         message: "",
       };
