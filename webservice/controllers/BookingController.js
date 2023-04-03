@@ -307,6 +307,15 @@ const BookingController = {
         $inc: { remainingAmount: program.price },
       });
 
+      //notify refund
+      const noti_refund = new Notification({
+        user: booking.user,
+        type: "coin",
+        title: "Coin Refunded",
+        message: `You booking for ${program.name} is cancelled, ${program.price} baht is refunded`,
+      });
+      await noti_refund.save();
+
       return {
         code: 200,
         data: booking,
