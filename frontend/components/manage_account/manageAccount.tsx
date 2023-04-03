@@ -178,6 +178,23 @@ const manageAccount = () => {
           <NavigateNextOutlinedIcon style={{ width: "20%", color: "gray" }} />
         </Button>
       </Link>
+      <Link href="./topup" style={{ width: "100%", textDecoration: "none" }} passHref>
+        <Button>
+          <SwapHorizOutlinedIcon style={{ width: "20%", color: "gray" }} />
+          <h3
+            style={{
+              width: "60%",
+              paddingTop: "0.1rem",
+              textAlign: "left",
+              fontFamily: "Poppins",
+              fontSize: "1.05rem",
+            }}
+          >
+            Withdraw Coins
+          </h3>
+          <NavigateNextOutlinedIcon style={{ width: "20%", color: "gray" }} />
+        </Button>
+      </Link>
       <Link href="" style={{ width: "100%", textDecoration: "none" }} passHref>
         <Button onClick={handleLogout}>
           <LogoutOutlinedIcon style={{ width: "20%", color: "gray" }} />
