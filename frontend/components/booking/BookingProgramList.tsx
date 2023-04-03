@@ -35,7 +35,7 @@ export const BookingProgramList = ({bookingFilter,history=false}:{bookingFilter:
 
   const today = new Date();
   const upcomingBookings = bookings?.filter(({program})=>{
-    const isInThePass = isDateTimeInThePass(program?.startDate!, program?.startTime!);
+    const isInThePass = isDateTimeInThePass(program?.endDate!, program?.endTime!);
     if(history) return isInThePass;
     return !isInThePass;
   })

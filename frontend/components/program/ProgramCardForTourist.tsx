@@ -9,6 +9,7 @@ import { Avatar, CardMedia } from "@mui/material";
 import styled from "styled-components";
 
 import { LocationTag } from "./LocationTag";
+import { isDateTimeInThePass } from "@/utils/Utils";
 
 const CardContainer = styled.div`
   display: flex;
@@ -23,10 +24,10 @@ interface IProgramInterface {
   program: ProgramInterface,
   bookingStatus?: BookingStatusInterface,
 }
-function renderBookingStatus(bookingStatus:BookingStatusInterface, endDate:Date){
+function renderBookingStatus(bookingStatus:BookingStatusInterface, endDate:Date, endTime:string){
   switch(bookingStatus){
     case "accepted":
-      if(endDate.getTime() < new Date().getTime()){
+      if(isDateTimeInThePass(endDate, endTime)){
         return <div style={{marginLeft:"auto", paddingRight: "0.6rem"}}><label style={{color: COLOR.success}}>Completed</label></div>
       }
       return <div style={{marginLeft:"auto", paddingRight: "0.6rem"}}><label style={{color: COLOR.primary}}>Accepted</label></div>
@@ -70,7 +71,7 @@ export const ProgramCardForTourist = ({program, bookingStatus}:IProgramInterface
       {
         bookingStatus
         ? ( 
-          renderBookingStatus(bookingStatus, endDate)
+          renderBookingStatus(bookingStatus, program.endDate, program.endTime)
           )
           : (
             <div style={{marginLeft:"auto", paddingRight: "0.6rem"}}>THB <label style={{color: COLOR.primary}}>{program.price}</label></div>
