@@ -19,9 +19,7 @@ const topUpValues: TopUpValue[] = [
 
 const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
   const [amount, setAmount] = useState(initialAmount);
-  const [showPopup, setShowPopup] = useState(false);
 
-  const router = useRouter();
 
   const handleValueClick = (value: number) => {
     setAmount(value);
