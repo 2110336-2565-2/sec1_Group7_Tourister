@@ -346,12 +346,14 @@ const BookingController = {
       console.log(noti_accept);
 
       //Nofify tourist trip
+      const now = new Date(); // current time
+      const notifyTime = program.startDate < now ? now : program.startDate;
       const noti_trip = new Notification({
         user: updatedBooking.user,
         type: "nexttrip",
         title: "Upcoming Trip",
         message: `${program.name} will start today at ${program.startTime}. Get Ready!`,
-        notifyTime: Math.max(program.startDate, Date.now),
+        notifyTime: notifyTime
       });
       await noti_trip.save();
       console.log(noti_trip);
@@ -362,7 +364,7 @@ const BookingController = {
         type: "endtrip",
         title: "Finish Trip",
         message: `${program.name} is finish. If you have any problem, please report to contactTourister@gmail.com`,
-        notifyTime: new Date(program.endDate.getDate + 1),
+        notifyTime: new Date(program.endDate.getTime() + 24*60*60*1000),
       });
       await noti_endtrip.save();
       console.log(noti_endtrip);
