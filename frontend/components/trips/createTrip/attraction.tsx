@@ -233,12 +233,12 @@ const attraction = ({id,t,l,p,o,f=null,handleDelete,handleCallback}:{id:string,t
                 </div>
               </div>
             </div>
-            <div style={{fontSize:"14px"}}>
-              {errorName? <label>* Please add a name for the location<br/></label> : <Fragment/>}
-              {errorTime? <label>* Please add a time for the location<br/></label> : <Fragment/>}
-              {errorInvalidTime? <label>* Please add a time which matches other location<br/></label> : <Fragment/>}
-              {errorProvince? <label>* Please add a province for the location<br/></label> : <Fragment/>}
-              {errorFile? <label>* Please add an image for the location<br/></label> : <Fragment/>}
+            <div style={{margin:"0 1rem", fontSize:"12px", color:COLOR.error}}>
+              {errorName? <label>Please add a name for the location<br/></label> : <Fragment/>}
+              {errorTime? <label>Please add a time for the location<br/></label> : <Fragment/>}
+              {errorInvalidTime? <label>Please add a time which matches other location<br/></label> : <Fragment/>}
+              {errorProvince? <label>Please add a province for the location<br/></label> : <Fragment/>}
+              {errorFile? <label>Please add an image for the location<br/></label> : <Fragment/>}
             </div>
           </div>
         ) : (

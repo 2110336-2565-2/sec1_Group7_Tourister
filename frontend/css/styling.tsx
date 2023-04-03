@@ -1,3 +1,4 @@
+import { Input } from "@mui/material";
 import { Button } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { FormLabel } from "@mui/material";
@@ -62,6 +63,21 @@ export const RequireFormLabel = styled(FormLabel)({
   required: true,
   color: "black",
   fontSize: 15,
+});
+
+export const StyledInput = styled(Input)({
+  width: 370,
+  fontSize: 20,
+  color: COLOR.primary,
+  fontWeight: "bold",
+  margin: "auto", 
+  padding: "5px 10px 0px 10px", 
+  transform: "translateX(20px)",
+  border: "1px solid lightgrey",
+  borderRadius: "5px",
+  '&.Mui-selected': {
+    borderColor: COLOR.primary
+  }
 });
 
 // NOTE error in animation
