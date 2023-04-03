@@ -243,7 +243,9 @@ const ProgramController = {
   async getAllPublishedPrograms(req, res, next) {
     const filterBody = req.query;
     let { filter, sorter } = queryObjToProgramFilter(filterBody);
-    filter.push({ published: true, startDate: {$gte: Date.now()} });
+    let todaydate = new Date()
+    todaydate.setHours(0, 0, 0, 0);
+    filter.push({ published: true, startDate: {$gte: todaydate} });
 
     const result = await tryCatchMongooseService(async () => {
       const programs = await Program.find({ $and: filter })
