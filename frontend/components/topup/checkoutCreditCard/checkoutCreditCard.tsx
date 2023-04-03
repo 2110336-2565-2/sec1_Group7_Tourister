@@ -110,12 +110,12 @@ function Checkout(props: any) {
           disabled={props.amount === 0}
           onClick={handleClick}
           style={{
-            backgroundColor:props.amount === 0?COLOR.disable:COLOR.background, 
+            backgroundColor:props.amount === 0?COLOR.disable:COLOR.primary, 
             border: 0,
             borderRadius: 12,
             height: 50,
             width: "300px",
-            padding: "10px auto",
+            padding: "10px",
             margin: "20px",
             color: "white",
             fontSize: "20px",
@@ -155,7 +155,9 @@ function Checkout(props: any) {
             <div>Payment Method: Credit Card</div> */}
             <Link href={"./manage_account"}>
               <button onClick={handleClosePopup} style={{
-                border:"none", borderRadius:"5px", backgroundColor:"mediumaquamarine",
+                border:"none", borderRadius:"5px", 
+                backgroundColor:"mediumaquamarine",
+                // backgroundColor:COLOR.primary,
                 fontSize:"20px", color:"white", letterSpacing:"1px",
                 width:"320px", height:"42px", marginTop:"20px"
               }}>
