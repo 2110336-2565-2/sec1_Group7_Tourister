@@ -107,7 +107,7 @@ const BookingController = {
           remainingAmount: balance - program.price,
         });
       }
-      if((new Date(program.startDate)) < (new Date())) throw new ApiErrorResponse( "program already started", 400, "program-already-started" );
+      //if((new Date(program.startDate)) < (new Date())) throw new ApiErrorResponse( "program already started", 400, "program-already-started" );
 
       const payload = req.body;
       payload.program = programId;
@@ -369,7 +369,9 @@ const BookingController = {
 
       //Nofify tourist trip
       const now = new Date(); // current time
-      const notifyTime = program.startDate < now ? now : program.startDate;
+      let startdate = program.startDate
+      startdate.setHours(0, 0, 0, 0);
+      const notifyTime = startdate < now ? now : startdate;
       const noti_trip = new Notification({
         user: updatedBooking.user,
         type: "nexttrip",
@@ -386,7 +388,7 @@ const BookingController = {
         type: "endtrip",
         title: "Finish Trip",
         message: `${program.name} is finish. If you have any problem, please report to contactTourister@gmail.com`,
-        notifyTime: new Date(program.endDate.getTime() + 24*60*60*1000),
+        notifyTime: new Date(program.endDate.getTime() + 17*60*60*1000),
       });
       await noti_endtrip.save();
       console.log(noti_endtrip);

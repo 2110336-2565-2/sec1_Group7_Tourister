@@ -136,7 +136,7 @@ function Checkout(props: any) {
             <h3 style={{margin:"0px 0 0px 0"}}>Top up Successfully</h3>
             <label style={{color:"dimgrey", fontSize:"14px", margin:"-4px"}}>{formattedDateTime}</label>
             <hr style={{border:"1px solid lightgrey", width:"100%", margin:"20px 0"}}/>
-            <div style={{display:"table", width:"100%"}}>
+            <div style={{display:"table", width:"100%", textAlign:"left"}}>
               <div style={{display:"table-row", height:"40px"}}>
                 <div style={{display:"table-cell"}}>Pay</div>
                 <div style={{display:"table-cell", fontWeight:"600", fontSize:"18px"}}>{props.amount} THB</div>

@@ -69,20 +69,6 @@ const ProgramController = {
       const program = new Program(payload);
       await program.save();
       console.log(program);
-
-      //Nofify guide
-      if (program.published){
-        const notifyTime = program.startDate < now ? now : program.startDate;
-        const noti_trip = new Notification({
-          user: program.guide,
-          type: "nexttrip",
-          title: "Upcoming Trip",
-          message: `${program.name} will start today at ${program.startTime}. Meeting point at ${program.meetLocation}. Get Ready!`,
-          notifyTime: notifyTime,
-        });
-        await noti_trip.save();
-        console.log(noti_trip);
-      }
       
       return {
         code: 201,
@@ -109,12 +95,16 @@ const ProgramController = {
 
       //Nofify guide
       if (!program.published && updatedProgram.published){
+        const now = new Date(); // current time
+        let startdate = program.startDate
+        startdate.setHours(0, 0, 0, 0);
+        const notifyTime = startdate < now ? now : startdate;
         const noti_trip = new Notification({
           user: updatedProgram.guide,
           type: "nexttrip",
           title: "Upcoming Trip",
-          message: `${updatedProgram.name} will start today at ${updatedProgram.startTime}. Meeting point at ${program.meetLocation}. Get Ready!`,
-          notifyTime: updatedProgram.startDate,
+          message: `${updatedProgram.name} will start today at ${updatedProgram.startTime}. Meeting point at ${updatedProgram.meetLocation}. Get Ready!`,
+          notifyTime: notifyTime,
         });
         await noti_trip.save();
         console.log(noti_trip);
@@ -253,7 +243,7 @@ const ProgramController = {
         .sort(sorter)
         .populate({
           path: "guide",
-          select: "name surname",
+          select: "name surname image",
         });
 
       return {

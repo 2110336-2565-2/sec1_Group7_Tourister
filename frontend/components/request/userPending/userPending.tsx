@@ -2,7 +2,7 @@
 
 import { Fragment, useEffect } from "react";
 import { useState } from "react";
-import { Button, CircularProgress, Stack } from "@mui/material";
+import { Avatar, Button, CircularProgress, Stack } from "@mui/material";
 import { useRouter } from "next/router";
 import {
   acceptBookingById,
@@ -73,6 +73,7 @@ export default function userPending() {
         surname: "",
         request: "",
         phoneNumber: "",
+        image: ""
       };
       const response = await getUserById(userArr[i]);
 
@@ -82,6 +83,7 @@ export default function userPending() {
       usercard.surname = response.data.surname;
       usercard.request = requestArr[i];
       usercard.phoneNumber = response.data.phoneNumber;
+      usercard.image = response.data?.image;
 
       usercards.push(usercard);
     }
@@ -198,12 +200,16 @@ export default function userPending() {
                   <Fragment />
                 )}
                 <div style={{ display: "inline-block", float: "left", transform: "translateX(25px)" }}>
-                  <Image
+                  {/* <Image
                     style={{ marginLeft: "auto", marginRight: "auto" }}
                     // alt={singleOption.label}
                     src={tourist}
                     width={50}
                     height={50}
+                  /> */}
+                  <Avatar
+                    style={{ marginLeft: "auto", marginRight: "auto", width:"50",height:"50" }}
+                    src={user.image?(`data:image/png;base64,${user.image}`):("https://cdn-icons-png.flaticon.com/512/3061/3061221.png")}
                   />
                 </div>
                 <div>

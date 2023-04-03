@@ -21,6 +21,7 @@ import { getAllPrograms } from "@/services/programService";
 import { ProgramInterface } from "@/interfaces/ProgramInterface"
 import { ProgramFilterInterface } from "@/interfaces/filter/ProgramFilterInterface";
 import { UserInterface } from "@/interfaces/UserInterface";
+import { isDateTimeInThePass } from "@/utils/Utils";
 
 const Heading = styled.div`
   display: flex;
@@ -75,7 +76,7 @@ export default function Page() {
               <CircularProgress/>
             </div>
           : programs?.map((program:ProgramInterface)=>{
-            if(new Date(program?.endDate).getTime() < new Date().getTime())return;
+            if(isDateTimeInThePass(program.startDate, program.startTime))return;
             return <ProgramCardForTourist key={program._id} program={program}/>
             })
         }

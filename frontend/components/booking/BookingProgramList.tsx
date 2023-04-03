@@ -9,6 +9,7 @@ import { AuthContextInterface } from "@/interfaces/AuthContextInterface"
 
 import { getAllBookingsFromTourist } from "@/services/bookingService"
 import { BookingFilterInterface } from "@/interfaces/filter/BookingFilterInterface"
+import { isDateTimeInThePass } from "@/utils/Utils"
 
 export const BookingProgramList = ({bookingFilter,history=false}:{bookingFilter:BookingFilterInterface,history?:boolean}) => {
   const authUserData:AuthContextInterface = useAuth()
@@ -34,8 +35,9 @@ export const BookingProgramList = ({bookingFilter,history=false}:{bookingFilter:
 
   const today = new Date();
   const upcomingBookings = bookings?.filter(({program})=>{
-    if(history) return new Date(program?.endDate!).getTime() < today.getTime();
-    return new Date(program?.endDate!).getTime() >= today.getTime();
+    const isInThePass = isDateTimeInThePass(program?.startDate!, program?.startTime!);
+    if(history) return isInThePass;
+    return !isInThePass;
   })
 
   if((upcomingBookings?.length)===0){
