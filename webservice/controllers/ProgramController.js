@@ -76,7 +76,7 @@ const ProgramController = {
           user: program.guide,
           type: "nexttrip",
           title: "Upcoming Trip",
-          message: `${program.name} will start today at ${program.startTime}. Get Ready!`,
+          message: `${program.name} will start today at ${program.startTime}. Meeting point at ${program.meetLocation}. Get Ready!`,
           notifyTime: program.startDate,
         });
         await noti_trip.save();
@@ -112,7 +112,7 @@ const ProgramController = {
           user: updatedProgram.guide,
           type: "nexttrip",
           title: "Upcoming Trip",
-          message: `${updatedProgram.name} will start today at ${updatedProgram.startTime}. Get Ready!`,
+          message: `${updatedProgram.name} will start today at ${updatedProgram.startTime}. Meeting point at ${program.meetLocation}. Get Ready!`,
           notifyTime: updatedProgram.startDate,
         });
         await noti_trip.save();
