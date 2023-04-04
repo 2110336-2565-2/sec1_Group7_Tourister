@@ -48,7 +48,7 @@ export const NotificationList = () => {
       <Button onClick={handleMarkAllNotificationsAsRead}>Mark all as read</Button>
 
       <List sx={{ width: '100%' }}>
-      {noti?.map((notiDetail) => {     
+      {noti?.map((notiDetail,index) => {     
           let icon;
           let avatarStyle;
           // withdraw and top up
@@ -94,7 +94,7 @@ export const NotificationList = () => {
           
           return(
               <>
-              <ListItem key={notiDetail._id} alignItems="flex-start" sx={{borderBottom: '1px solid #ddd', backgroundColor: notiDetail.isRead ? 'inherit' : '#E3FCF8'}}>
+              <ListItem key={index} alignItems="flex-start" sx={{borderBottom: '1px solid #ddd', backgroundColor: notiDetail.isRead ? 'inherit' : '#E3FCF8'}}>
               <ListItemAvatar>
                 <Avatar style={{ ...avatarStyle, color: "#fff" }} variant="circular">
                   {icon}
