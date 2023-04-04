@@ -26,11 +26,11 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
   };
 
   const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.value === '' || (Number(event.target.value) >= 100 && Number(event.target.value) <= 1000000)) {
-      setAmount(parseInt(event.target.value));
-    } else {
-      alert('Input value must be between ฿100 and ฿1000000.');
-    }
+    setAmount(parseInt(event.target.value));
+    // if (event.target.value === '' || (Number(event.target.value) >= 100 && Number(event.target.value) <= 1000000)) {
+    // } else {
+    //   alert('Input value must be between ฿100 and ฿1000000.');
+    // }
   };
 
 
