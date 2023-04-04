@@ -8,47 +8,40 @@ import { NotificationInterface } from "@/interfaces/NotificationInterface";
 import React, { useEffect } from "react"
 import {ConfirmationNumber, Paid,InsertInvitation, SyncAlt } from '@mui/icons-material';
 import { COLOR } from "@/theme/globalTheme";
+import { useNotification } from "./NotificationProvider"
 
 export const NotificationList = () => {
-    const authUserData:AuthContextInterface = useAuth()
-    const userId:string = authUserData.user?._id!
+  const authUserData:AuthContextInterface = useAuth()
+  const userId:string = authUserData.user?._id!
   
-    const { data:programResponse, refetch, isLoading, isError, error } = useQuery({
-      queryKey: ['notificationPrograms', userId],
-      queryFn: ()=>{
-        if(!userId)return null;
-        return getAllNotificationsFromUser(userId)
-      }
-    })
+  const { notificationData, refetchNotification, isLoadingNotification} = useNotification();
 
-    const handleMarkAllNotificationsAsRead = async () => {
-      await readAllNotificationsFromUser(userId);
-      refetch();
-    }
-  
-    if(isLoading) return (
-      <div style={{display:"flex", justifyContent:"center"}}>
-        <CircularProgress/>
-      </div>
-    )
-  
-    const noti = programResponse?.data;
-    console.log("noti",noti);
-    if((noti?.length)===0){
-      return <>
-      <br />
-      <div style={{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",height:"max-content"}}>
-      <h3>Sorry, There aren't any notification</h3>
-      </div>
-      </>
-    }
-  
-    return (
-      <>
-      <Button onClick={handleMarkAllNotificationsAsRead}>Mark all as read</Button>
+  const handleMarkAllNotificationsAsRead = async () => {
+    await readAllNotificationsFromUser(userId);
+    refetchNotification();
+  }
 
-      <List sx={{ width: '100%' }}>
-      {noti?.map((notiDetail,index) => {     
+  if(isLoadingNotification) return (
+    <div style={{display:"flex", justifyContent:"center"}}>
+      <CircularProgress/>
+    </div>
+  )
+
+  if((notificationData?.length)===0){
+    return <>
+    <br />
+    <div style={{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",height:"max-content"}}>
+    <h3>Sorry, There aren't any notification</h3>
+    </div>
+    </>
+  }
+
+  return (
+    <>
+    <Button onClick={handleMarkAllNotificationsAsRead}>Mark all as read</Button>
+
+    <List sx={{ width: '100%' }}>
+      {notificationData?.map((notiDetail,index) => {     
           let icon;
           let avatarStyle;
           // withdraw and top up
@@ -99,7 +92,7 @@ export const NotificationList = () => {
                 <Avatar style={{ ...avatarStyle, color: "#fff" }} variant="circular">
                   {icon}
                 </Avatar>
-               </ListItemAvatar>
+                </ListItemAvatar>
               <ListItemText
                   primary={notiDetail.title}
                   secondary={
@@ -111,12 +104,10 @@ export const NotificationList = () => {
       );
     })
     }
-
   </List>
-
-      </>
-    );
+  </>
+  );
     
     
     
-  }
+}

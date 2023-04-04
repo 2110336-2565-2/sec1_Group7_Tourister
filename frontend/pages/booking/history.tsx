@@ -10,6 +10,7 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { AuthProvider } from "@/components/AuthProvider";
 
 import { BookingProgramList } from "@/components/booking/BookingProgramList";
+import { NotificationProvider } from "@/components/notification/NotificationProvider";
 
 const BackButton = styled(Button)`
   display:"flex";
@@ -21,6 +22,7 @@ const BackButton = styled(Button)`
 export default function Page(){
   return (
     <AuthProvider role="tourist">
+      <NotificationProvider>
       <>
         <div style={{display:"flex", flexDirection:"row", alignItems:"center",justifyContent:"space-between"}}>
           <div style={{marginLeft:"1rem"}}>
@@ -29,7 +31,7 @@ export default function Page(){
               startIcon={
                 <ArrowBackIosNewIcon sx={{color:COLOR.text}}/>
               }
-            />
+              />
             </Link>
           </div>
           <h1 style={{textAlign:"center"}}>Booking History</h1>
@@ -37,6 +39,7 @@ export default function Page(){
         </div>
         <BookingProgramList bookingFilter={{status:["accepted","declined"]}} history={true}/>
       </>
+      </NotificationProvider>
     </AuthProvider>
   )
 }

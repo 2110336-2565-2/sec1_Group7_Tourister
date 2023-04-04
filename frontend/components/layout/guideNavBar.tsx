@@ -5,7 +5,7 @@ import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNone
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import { useState ,useEffect} from "react";
 import { useRouter } from "next/router";
-import { getAllNotificationsFromUser } from "@/services/notificationService";
+import { useNotification } from "../notification/NotificationProvider";
 
 interface guideNavBarProps {
   userId: string;
@@ -14,8 +14,7 @@ interface guideNavBarProps {
 export default function GuideNavBar({ userId }: guideNavBarProps) {
   const router = useRouter();
   const [path, setPath] = useState<String | null>(router.pathname);
-  const [notificationCount, setNotificationCount] = useState<number>(0);
-
+  const { newNotificationCount } = useNotification();
 
   const handleChange = (event: any, newPathname: String) => {
     setPath(newPathname);
@@ -25,29 +24,6 @@ export default function GuideNavBar({ userId }: guideNavBarProps) {
     router.push(href);
   };
 
-  useEffect(() => {
-    console.log("start use Effect in userNavBar")
-    const fetchNotifications = async () => {
-      if (!userId) return; // if userId is undefined, exit early
-      console.log("fetching notifications");
-      try {
-        const res = await getAllNotificationsFromUser(userId); 
-        const newNotifications = res.data;
-        const newNotificationCount = newNotifications?.filter(notification => !notification.isRead).length;
-        console.log("new noti count",newNotificationCount)
-        setNotificationCount(newNotificationCount ?? 0);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-
-    fetchNotifications();
-
-    //const interval = setInterval(fetchNotifications, 60000); // fetch notifications every minute
-
-    //return () => clearInterval(interval);
-  }, [userId]);
-  
   return (
     <Paper
       sx={{
@@ -77,7 +53,7 @@ export default function GuideNavBar({ userId }: guideNavBarProps) {
             label="Notication" 
             value="/notification" 
             icon={
-              <Badge badgeContent={notificationCount} color="secondary">
+              <Badge badgeContent={newNotificationCount} color="secondary">
                 <NotificationsNoneOutlinedIcon fontSize="large"/>
               </Badge>
             } 

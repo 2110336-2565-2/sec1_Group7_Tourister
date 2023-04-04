@@ -10,6 +10,7 @@ import guide from "@/images/guide.png";
 import { Avatar } from "@mui/material";
 import { UserInterface } from "@/interfaces/UserInterface";
 import { useEffect, useState, useReducer } from "react";
+import { NotificationProvider } from "@/components/notification/NotificationProvider";
 
 
 
@@ -33,22 +34,24 @@ export default function Page() {
 
   return (
     <AuthProvider role="guide">
-    <>
-      <NavBar/>
-      <Heading>
-        <Avatar 
-          style={{ marginRight: "1rem" ,width:"70px",height:"70px"}}
-          src={user?.image ? `data:image/png;base64,${user.image}` : undefined}
-          />
-        <div>
-          <div style={{marginBottom:"0.5rem", fontSize:"1rem"}}>Hello Guide,</div>
+      <NotificationProvider>
+      <>
+        <NavBar/>
+        <Heading>
+          <Avatar 
+            style={{ marginRight: "1rem" ,width:"70px",height:"70px"}}
+            src={user?.image ? `data:image/png;base64,${user.image}` : undefined}
+            />
+          <div>
+            <div style={{marginBottom:"0.5rem", fontSize:"1rem"}}>Hello Guide,</div>
 
-          {/* <h3 style={{margin:"0", overflowWrap:"break-word", fontSize:"1.5rem"}}>{guide?.name} {guide?.surname}</h3> */}
-          <h3 style={{margin:"0", overflowWrap:"break-word", fontSize:"1.5rem"}}>{user?.name} {user?.surname}</h3>
-        </div>
-      </Heading>
-      <Landing/>
-    </>
+            {/* <h3 style={{margin:"0", overflowWrap:"break-word", fontSize:"1.5rem"}}>{guide?.name} {guide?.surname}</h3> */}
+            <h3 style={{margin:"0", overflowWrap:"break-word", fontSize:"1.5rem"}}>{user?.name} {user?.surname}</h3>
+          </div>
+        </Heading>
+        <Landing/>
+      </>
+      </NotificationProvider>
     </AuthProvider>
   );
 }

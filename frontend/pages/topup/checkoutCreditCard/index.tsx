@@ -5,13 +5,19 @@ import { TopUpTransactionDataInterface } from "@/interfaces/transaction/TopUpTra
 import { chargeAndTopUpCoins } from "@/services/topupService";
 import NavBar from "@/components/layout/navBar";
 import { useState } from "react";
+import { AuthProvider } from "@/components/AuthProvider";
+import { NotificationProvider } from "@/components/notification/NotificationProvider";
 
 export default function Page() {
 
   return (
-    <div style={{ margin: "0.0rem", backgroundColor: COLOR.background }}>
-      <Transaction/>
-      <NavBar />
-    </div>
+    <AuthProvider>
+      <NotificationProvider>
+      <div style={{ margin: "0.0rem", backgroundColor: COLOR.background }}>
+        <Transaction/>
+        <NavBar />
+      </div>
+      </NotificationProvider>
+    </AuthProvider>
   );
 }
