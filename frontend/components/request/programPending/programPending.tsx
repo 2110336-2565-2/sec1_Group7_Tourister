@@ -150,8 +150,7 @@ export default function ProgramPending() {
                     style={{
                       width: "75px",
                       height: "75px",
-                      padding: "0px 10px",
-                      paddingTop: "20px",
+                      margin: "20px 10px 0px 0px",
                       borderRadius: 12,
                     }}
                   />
@@ -164,8 +163,7 @@ export default function ProgramPending() {
                     style={{
                       width: "75px",
                       height: "75px",
-                      padding: "0px 10px",
-                      paddingTop: "20px",
+                      margin: "20px 10px 0px 0px",
                       borderRadius: 12,
                     }}
                   />
