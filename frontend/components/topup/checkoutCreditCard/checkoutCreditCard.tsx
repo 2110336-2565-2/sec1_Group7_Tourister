@@ -35,14 +35,15 @@ function Checkout(props: any) {
     transData: TopUpTransactionDataInterface
   ) => {
     console.log(transData);
+
     Swal.fire({
-      title: 'Please wait...',
+      title: "Please wait...",
       allowOutsideClick: false,
       allowEscapeKey: false,
       showConfirmButton: false,
-      willOpen: ()=> {
+      willOpen: () => {
         Swal.showLoading();
-      }
+      },
     });
     try {
       const res = await chargeAndTopUpCoins(transData);
@@ -55,8 +56,8 @@ function Checkout(props: any) {
       Swal.fire({
         text: err.message,
         icon: "error",
-        timer: 2000
-      })
+        timer: 2000,
+      });
     }
   };
   const creditCardConfigure = async () => {
@@ -97,6 +98,18 @@ function Checkout(props: any) {
 
   const handleClick = async (event: any) => {
     event.preventDefault();
+    if (
+      props.amount !== "" ||
+      Number(props.amount) < 100 ||
+      Number(props.amount) > 1000000
+    ) {
+      Swal.fire({
+        text: "Input value must be between ฿100 and ฿1000000.",
+        icon: "error",
+        timer: 2000,
+      });
+      return;
+    }
     creditCardConfigure();
     omiseHandler();
   };
@@ -106,14 +119,16 @@ function Checkout(props: any) {
   };
 
   const [dateTime, setDateTime] = useState(new Date());
-  const formattedDateTime = dateTime.toLocaleString("en-GB", { 
-    day: '2-digit', 
-    month: 'short', 
-    year: 'numeric', 
-    hour: '2-digit', 
-    minute: '2-digit', 
-    second: '2-digit' 
-  }).replace(',','');
+  const formattedDateTime = dateTime
+    .toLocaleString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    })
+    .replace(",", "");
 
   return (
     <div>
@@ -127,7 +142,7 @@ function Checkout(props: any) {
           disabled={props.amount === 0}
           onClick={handleClick}
           style={{
-            backgroundColor:props.amount === 0?COLOR.disable:COLOR.primary, 
+            backgroundColor: props.amount === 0 ? COLOR.disable : COLOR.primary,
             border: 0,
             borderRadius: 12,
             height: 50,
@@ -136,7 +151,7 @@ function Checkout(props: any) {
             margin: "20px",
             color: "white",
             fontSize: "20px",
-            fontWeight: "bold"
+            fontWeight: "bold",
           }}
         >
           Pay with Credit Card
@@ -145,39 +160,74 @@ function Checkout(props: any) {
       {showPopup && (
         <div className="popup-container">
           <div className="popup">
-            <div style={{marginTop:"-38px", padding:"5px", backgroundColor:"white", borderRadius:"50%"}}>
+            <div
+              style={{
+                marginTop: "-38px",
+                padding: "5px",
+                backgroundColor: "white",
+                borderRadius: "50%",
+              }}
+            >
               <Avatar sx={{ bgcolor: "mediumaquamarine" }}>
-                <Done fontSize="medium" style={{color:"white"}}/>
+                <Done fontSize="medium" style={{ color: "white" }} />
               </Avatar>
             </div>
-            <h3 style={{margin:"0px 0 0px 0"}}>Top up Successfully</h3>
-            <label style={{color:"dimgrey", fontSize:"14px", margin:"-4px"}}>{formattedDateTime}</label>
-            <hr style={{border:"1px solid lightgrey", width:"100%", margin:"20px 0"}}/>
-            <div style={{display:"table", width:"100%", textAlign:"left"}}>
-              <div style={{display:"table-row", height:"40px"}}>
-                <div style={{display:"table-cell"}}>Pay</div>
-                <div style={{display:"table-cell", fontWeight:"600", fontSize:"18px"}}>{props.amount} THB</div>
+            <h3 style={{ margin: "0px 0 0px 0" }}>Top up Successfully</h3>
+            <label
+              style={{ color: "dimgrey", fontSize: "14px", margin: "-4px" }}
+            >
+              {formattedDateTime}
+            </label>
+            <hr
+              style={{
+                border: "1px solid lightgrey",
+                width: "100%",
+                margin: "20px 0",
+              }}
+            />
+            <div style={{ display: "table", width: "100%", textAlign: "left" }}>
+              <div style={{ display: "table-row", height: "40px" }}>
+                <div style={{ display: "table-cell" }}>Pay</div>
+                <div
+                  style={{
+                    display: "table-cell",
+                    fontWeight: "600",
+                    fontSize: "18px",
+                  }}
+                >
+                  {props.amount} THB
+                </div>
               </div>
-              <div style={{display:"table-row", height:"35px"}}>
-                <div style={{display:"table-cell"}}>Received</div>
-                <div style={{display:"table-cell"}}>{props.amount} coins</div>
+              <div style={{ display: "table-row", height: "35px" }}>
+                <div style={{ display: "table-cell" }}>Received</div>
+                <div style={{ display: "table-cell" }}>
+                  {props.amount} coins
+                </div>
               </div>
-              <div style={{display:"table-row", height:"35px"}}>
-                <div style={{display:"table-cell"}}>Payment Method:</div>
-                <div style={{display:"table-cell"}}>Credit Card</div>
+              <div style={{ display: "table-row", height: "35px" }}>
+                <div style={{ display: "table-cell" }}>Payment Method:</div>
+                <div style={{ display: "table-cell" }}>Credit Card</div>
               </div>
             </div>
             {/* <div>Pay {props.amount} THB</div>
             <div>Received {props.amount} coins</div>
             <div>Payment Method: Credit Card</div> */}
             <Link href={"./manage_account"}>
-              <button onClick={handleClosePopup} style={{
-                border:"none", borderRadius:"5px", 
-                backgroundColor:"mediumaquamarine",
-                // backgroundColor:COLOR.primary,
-                fontSize:"20px", color:"white", letterSpacing:"1px",
-                width:"320px", height:"42px", marginTop:"20px"
-              }}>
+              <button
+                onClick={handleClosePopup}
+                style={{
+                  border: "none",
+                  borderRadius: "5px",
+                  backgroundColor: "mediumaquamarine",
+                  // backgroundColor:COLOR.primary,
+                  fontSize: "20px",
+                  color: "white",
+                  letterSpacing: "1px",
+                  width: "320px",
+                  height: "42px",
+                  marginTop: "20px",
+                }}
+              >
                 Continue
               </button>
             </Link>

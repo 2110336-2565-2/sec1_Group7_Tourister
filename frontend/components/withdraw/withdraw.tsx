@@ -129,7 +129,12 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
         })
       }
     } else {
-      alert("Invalid input");
+      Swal.fire({
+        text: "Invalid Input",
+        icon: "error",
+        timer: 2000,
+      });
+      return;
     }
   };
 //   console.log(amount);
@@ -176,7 +181,7 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
             alignSelf: "center",
           }}
         >
-          Withdraw value (THB)
+          Withdraw value (coins)
         </div>
         <div
           style={{
@@ -216,7 +221,7 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
             alignSelf: "center",
           }}
         >
-          Input Amount (THB)
+          Input Amount (coins)
         </RequireFormLabel>
         <StyledInput
           name="amount"
@@ -282,9 +287,19 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
                 style={{
                   // margin: "auto"
                   marginTop: "10px",
+                  marginBottom: "-2px",
                 }}
               >
-                You have selected a top-up amount of
+                You have selected a withdraw amount of
+              </p>
+              <p
+                style={{
+                  // margin: "auto"
+                  fontSize: 10,
+                  marginTop: "-3px",
+                }}
+              >
+                (You will received same amount of THB in your bank account)
               </p>
               <p
                 style={{
@@ -295,7 +310,7 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
                   transform: "translateY(-10px)",
                 }}
               >
-                THB {amount.toFixed(2)}
+                {amount.toFixed(2)} coins
               </p>
             </div>
           )}
