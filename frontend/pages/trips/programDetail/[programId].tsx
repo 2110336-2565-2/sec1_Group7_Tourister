@@ -12,6 +12,7 @@ import { getAllBookingsInProgram, getAllBookingsAcceptedInProgram } from "@/serv
 import { ProgramInterface } from '@/interfaces/ProgramInterface';
 import { BookingInterface } from '@/interfaces/BookingInterface';
 import { CircularProgress, Stack } from '@mui/material';
+import { NotificationProvider } from '@/components/notification/NotificationProvider';
 
 
 export default function ProgramDetailPage() {
@@ -45,23 +46,25 @@ export default function ProgramDetailPage() {
 
   return (
     <AuthProvider>
-      <>
-        <NavBar />
-        {isLoadingBooking || isLoadingProgram ? (
-          <>
-          <div style={{ alignItems: "center", display: "flex", justifyContent: "center", height: "90vh", width: "100vw" }}><CircularProgress/></div>
-          </>
-        ) : program ? (
-          <ProgramDetail
+      <NotificationProvider>
+        <>
+          <NavBar />
+          {isLoadingBooking || isLoadingProgram ? (
+            <>
+            <div style={{ alignItems: "center", display: "flex", justifyContent: "center", height: "90vh", width: "100vw" }}><CircularProgress/></div>
+            </>
+          ) : program ? (
+            <ProgramDetail
             program={program}
             bookings = {bookings}
             onGoBack={() => router.back()}
             refetchBooking={refetchBooking}
-          />
-        ) : (
-          <div>No program found</div>
-        )}
-      </>
+            />
+            ) : (
+              <div>No program found</div>
+              )}
+        </>
+      </NotificationProvider>
     </AuthProvider>
   );
 }

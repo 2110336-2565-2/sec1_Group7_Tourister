@@ -6,6 +6,8 @@ import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined
 import { useState , useEffect} from 'react';
 import { useRouter } from 'next/router';
 import { getAllNotificationsFromUser } from '@/services/notificationService';
+import { useNotification } from '../notification/NotificationProvider';
+
 interface UserNavBarProps {
   userId: string;
 }
@@ -13,8 +15,8 @@ interface UserNavBarProps {
 export default function UserNavBar({ userId }: UserNavBarProps) {
   const router = useRouter();
   const [path, setPath] = useState<String|null>(router.pathname)
-  const [notificationCount, setNotificationCount] = useState<number>(0);
-  // console.log("usernavbar",userId);
+
+  const { newNotificationCount } = useNotification();
   
   const handleChange = (event: any, newPathname:String) => {
     setPath(newPathname)
@@ -23,51 +25,6 @@ export default function UserNavBar({ userId }: UserNavBarProps) {
   const onLink = (href: string) => {
     router.push(href)
   };
-  
-  useEffect(() => {
-    console.log("start use Effect in userNavBar")
-    const fetchNotifications = async () => {
-      if (!userId) return; // if userId is undefined, exit early
-      console.log("fetching notifications");
-      try {
-        const res = await getAllNotificationsFromUser(userId); 
-        const newNotifications = res.data;
-        const newNotificationCount = newNotifications?.filter(notification => !notification.isRead).length;
-        console.log("new noti count",newNotificationCount)
-        setNotificationCount(newNotificationCount ?? 0);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-
-    fetchNotifications();
-
-    //const interval = setInterval(fetchNotifications, 60000); // fetch notifications every minute
-
-    //return () => clearInterval(interval);
-  }, [userId]);
-
-  // useEffect(() => {
-
-  //   console.log("start use Effect in userNavBar")
-  //   const interval = setInterval(async () => {
-  //     console.log("enter loop of interval")
-  //     try {
-  //       // console.log("checkID before call getNoti",userId);
-  //       const res = await getAllNotificationsFromUser(userId); 
-  //       const newNotifications = res.data;
-  //       const newNotificationCount = newNotifications?.filter(notification => !notification.isRead).length;
-  //       console.log("new noti count",newNotificationCount)
-  //       setNotificationCount(newNotificationCount ?? 0);
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   }, 60000); // fetch notifications every minute
-
-  //   return () => clearInterval(interval);
-  // }, [userId]); // run effect only once on component mount
-
-  // console.log("notification count", notificationCount);
 
   return (
     <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, color:"light", zIndex:100}} elevation={8}>
@@ -92,7 +49,7 @@ export default function UserNavBar({ userId }: UserNavBarProps) {
             label="Notication" 
             value="/notification" 
             icon={
-              <Badge badgeContent={notificationCount} color="secondary">
+              <Badge badgeContent={newNotificationCount} color="secondary">
                 <NotificationsNoneOutlinedIcon fontSize="large"/>
               </Badge>
             } 

@@ -14,6 +14,7 @@ import { COLOR } from "@/theme/globalTheme";
 import { AuthProvider } from "@/components/AuthProvider";
 import NavBar from "@/components/layout/navBar";
 import { BookingProgramList } from "@/components/booking/BookingProgramList";
+import { NotificationProvider } from "@/components/notification/NotificationProvider";
 
 const HistoryButton = styled(Button)`
   align-self: flex-end; 
@@ -44,6 +45,7 @@ export default function Page() {
 
   return (
     <AuthProvider role="tourist">
+      <NotificationProvider>
       <>
         <NavBar/>
         <div style={{display:"flex", flexDirection:"column", alignItems:"center",justifyContent:"center"}}>
@@ -52,7 +54,7 @@ export default function Page() {
           // onClick={showAdvanceSearchPopup} 
           // href="/search"
           variant="outlined"
-        >
+          >
           <Link href="/booking/history" style={{textDecoration:'none', color:COLOR.background}}>History</Link>
         </HistoryButton>
         <h1 style={{textAlign:"center", marginTop:"0"}}>Booking</h1>
@@ -64,7 +66,7 @@ export default function Page() {
             variant="fullWidth"
             scrollButtons={false}
             // aria-label="scrollable prevent tabs example"
-          >
+            >
             <Tab label="Pending" />
             <Tab label="Accepted"/>
           </Tabs>
@@ -74,6 +76,7 @@ export default function Page() {
           <BookingProgramList bookingFilter={bookingFilter}/>
         </Box>
       </>
+      </NotificationProvider>
     </AuthProvider>
   )
 }
