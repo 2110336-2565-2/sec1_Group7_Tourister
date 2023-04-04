@@ -103,37 +103,46 @@ export default function ProgramPending() {
     );
   }
   return (
-    <div
-      style={{
-        // borderBottom: `2px solid ${COLOR.paleblue}`,
-        padding: "1em 0em 0.25em 0em ",
-        // padding: "2em 1em 0.25em 2em ",
-      }}
-    >
+    <div>
       <div
         style={{
           textAlign: "center",
           color: "black",
-          margin: "0",
           paddingTop: "35px",
           paddingBottom: "20px",
           fontFamily: "sans-serif",
           fontSize: "30px",
           fontWeight: "900",
           textTransform: "uppercase",
+          // border: "2px solid black"
         }}
       >
         Request
       </div>
       {programs.length > 0 ? (
-        <div>
+        <div style={{
+          // border: "10px solid grey",
+          borderBottom: "1px solid",
+          borderColor: COLOR.paleblue,
+        }}>
+          <div 
+            style={{
+              display: "flex", 
+              flexDirection: "column",
+              paddingLeft: "2em",
+              paddingTop: "0.2em"
+            }}
+          >
           {programs.map((program) => (
             <Link
               href={`/request/userPending/${program._id}`}
               key={program._id}
               style={{ textDecoration: "none" }}
             >
-              <div style={{ display: "inline-block", float: "left" }}>
+              <div style={{ 
+                display: "flex",
+                flexDirection: "row",
+              }}>
                 {program.dayTrips && program.dayTrips[0] ? (
                   <img
                     src={`data:image/jpeg;base64,${program.dayTrips[0].attractions[0].file}`}
@@ -144,7 +153,6 @@ export default function ProgramPending() {
                       padding: "0px 10px",
                       paddingTop: "20px",
                       borderRadius: 12,
-                      transform: "translateX(20px)",
                     }}
                   />
                 ) : (
@@ -159,173 +167,144 @@ export default function ProgramPending() {
                       padding: "0px 10px",
                       paddingTop: "20px",
                       borderRadius: 12,
-                      transform: "translateX(20px)",
                     }}
                   />
                 )}
-              </div>
+
               <div
-                key={program._id}
                 style={{
-                  height: "220px",
-                  width: "100%",
-                  // border: `10px solid ${COLOR.paleblue}`,
-                  borderBottom: `2px solid ${COLOR.paleblue}`,
-                  paddingTop: "10px",
+                  display: "flex",
+                  flexDirection: "column",
+                  marginLeft: "1em",
+                  marginTop: "1em"
                 }}
               >
-                <ul>
+                <div
+                  key={program._id}
+                >
                   <div
                     style={{
                       color: "black",
-                      display: "inline-block",
-                      float: "left",
+                      display: "flex",
+                      flexDirection: "column",
                       padding: "10px",
                     }}
                   >
-                    <table>
-                      <tbody>
-                        <tr>
-                          <td
-                            style={{
-                              fontWeight: "bold",
-                              transform: "translateY(-15px) translateX(30px)",
-                            }}
-                          >
-                            {program.name}
-                          </td>
-                        </tr>
-                        <tr>
-                          <td
-                            style={{
-                              transform: "translateY(-10px) translateX(20px)",
-                            }}
-                          >
-                            <Chip
-                              icon={<LocationOnOutlined />}
-                              size="small"
-                              sx={{
-                                backgroundColor: COLOR.paleblue,
-                                color: COLOR.text,
-                                borderRadius: 10,
-                                margin: "2px 8px",
-                                padding: "2px 8px",
-
-                                "& .MuiChip-icon": {
-                                  width: "15px",
-                                  height: "15px",
-                                },
-                              }}
-                              label={program.province}
-                            />
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                  <br></br>
-                  <br></br>
-                  <br></br>
-                  <br></br>
-
-                  <div
-                    style={{
-                      display: "inline-block",
-                      color: "black",
-                      transform: "translateX(-20px)",
-                    }}
-                  >
-                    <>
-                      <CalendarMonth
-                        style={{
-                          color: COLOR.primary,
-                          padding: "0px 10px",
-                          transform: "translateY(5px)",
-                        }}
-                        fontSize="medium"
-                      />
-                      {new Date(program.startDate).toLocaleDateString("en-GB", {
-                        year: "numeric",
-                        month: "short",
-                        day: "numeric",
-                      })}{" "}
-                      , {program.startTime} to
-                    </>
-                  </div>
-                  <br/>
-
-                  <div
-                    style={{
-                      display: "inline-block",
-                      color: "black",
-                      transform: "translateX(-20px)",
-                    }}
-                  >
-                    <>
-                      <CalendarMonth
-                        style={{
-                          color: COLOR.background,
-                          padding: "0px 10px",
-                          transform: "translateY(5px)",
-                        }}
-                        fontSize="medium"
-                      />
-                      {new Date(program.endDate).toLocaleDateString("en-GB", {
-                        year: "numeric",
-                        month: "short",
-                        day: "numeric",
-                      })}
-                      , {program.endTime}
-                    </>
-                  </div>
-                  <div
-                    style={{
-                      // color: COLOR.primary,
-                      transform: "translateY(-50px) translateX(-5px)",
-                      margin: "0 16em",
-                      display: "flex",
-                      // textDecoration: "none",
-                      // textDecorationLine: "none",
-                    }}
-                  >
-                    <div
-                      style={{
-                        color: COLOR.primary,
-                        backgroundColor: "transparent",
-                        padding: "10px 24px 10px",
-                        fontWeight: "bold",
-                        border: "1px solid grey",
+                    {program.name}
+                    <Chip
+                      icon={<LocationOnOutlined />}
+                      size="small"
+                      sx={{
+                        backgroundColor: COLOR.paleblue,
+                        color: COLOR.text,
                         borderRadius: 10,
-                        textAlign: "center",
-                        // textDecoration: "none",
-                        // textDecorationLine: "none",
-                        letterSpacing: "1.5px",
+                        padding: "2px 8px",
+                        marginTop: "8px",
+                        transform: "translateX(-5px)",
+
+                        "& .MuiChip-icon": {
+                          width: "15px",
+                          height: "15px",
+                        },
                       }}
-                    >
-                      {program.num_participant}/{program.max_participant}
-                    </div>
+                      label={program.province}
+                    />
                   </div>
-                  <div
-                    style={{
-                      width: "150px",
-                      margin: "0 10em",
-                      color: "black",
-                      padding: "7px 24px 7px",
-                      backgroundColor: COLOR.yellow,
-                      borderRadius: "10px 0 0 0",
-                      textAlign: "right",
-                      fontWeight: "bold",
-                      transform: "translateY(-35px) translateX(17px)",
-                      // textDecoration: "none",
-                      // textDecorationLine: "none",
-                    }}
-                  >
-                    {program.num_pending} more request(s)
-                  </div>
-                </ul>
+                </div>
               </div>
+            </div>
+
+            <div
+              style={{
+                color: "black",
+                display: "flex",
+                flexDirection: "row",
+                marginTop: "2em"
+              }}
+            >
+              <>
+                <CalendarMonth
+                  style={{
+                    color: COLOR.primary,
+                    padding: "0px 10px",
+                  }}
+                  fontSize="medium"
+                />
+                {new Date(program.startDate).toLocaleDateString("en-GB", {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                })}{" "}
+                , {program.startTime} to
+              </>
+
+              {/* participants */}
+              <div
+                style={{
+                  color: COLOR.primary,
+                  backgroundColor: "transparent",
+                  padding: "10px 24px 10px",
+                  fontWeight: "bold",
+                  border: "1px solid grey",
+                  borderRadius: 10,
+                  textAlign: "center",
+                  letterSpacing: "1.5px",
+                  marginRight: "2em", 
+                  marginLeft: "auto",
+                  transform: "translateY(10px)"
+              }}
+                >
+                {program.num_participant}/{program.max_participant}
+              </div>
+            </div>
+
+            <div
+              style={{
+                color: "black",
+                display: "flex",
+                flexDirection: "row",
+                transform: "translateY(-10px)"
+              }}
+            >
+              <>
+                <CalendarMonth
+                  style={{
+                    color: COLOR.background,
+                    padding: "0px 10px",
+                  }}
+                  fontSize="medium"
+                />
+                {new Date(program.endDate).toLocaleDateString("en-GB", {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                })}
+                , {program.endTime}
+              </>
+            </div>
+
+            {/* requests left */}
+            <div
+              style={{
+                width: "150px",
+                margin: "0 10em",
+                color: "black",
+                padding: "7px 24px 7px",
+                backgroundColor: COLOR.yellow,
+                borderRadius: "10px 0 0 0",
+                textAlign: "right",
+                fontWeight: "bold",
+                marginTop: "0.5em",
+                marginRight: "0em",
+                marginLeft: "auto",
+              }}
+            >
+              {program.num_pending} more request(s)
+            </div>
+
             </Link>
           ))}
+          </div>
         </div>
       ) : (
         <div
