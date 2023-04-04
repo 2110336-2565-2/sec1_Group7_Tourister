@@ -224,7 +224,7 @@ export default function ProgramPending() {
                 <CalendarMonth
                   style={{
                     color: COLOR.primary,
-                    padding: "0px 10px",
+                    // padding: "0px 10px",
                   }}
                   fontSize="medium"
                 />
@@ -268,7 +268,7 @@ export default function ProgramPending() {
                 <CalendarMonth
                   style={{
                     color: COLOR.background,
-                    padding: "0px 10px",
+                    // padding: "0px 10px",
                   }}
                   fontSize="medium"
                 />
