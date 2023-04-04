@@ -252,6 +252,7 @@ export default function ProgramPending() {
                       , {program.startTime} to
                     </>
                   </div>
+                  <br/>
 
                   <div
                     style={{
