@@ -18,6 +18,7 @@ import { FieldName } from "@/css/layout";
 
 import AddPhotoAlternateRoundedIcon from "@mui/icons-material/AddPhotoAlternateRounded";
 import { Avatar } from "@mui/material";
+import { flushSync } from "react-dom";
 
 const API_URL = "http://localhost:2000/api/program";
 type FormData = {
@@ -63,6 +64,60 @@ const editProfile = () => {
     image: user.image,
   };
 
+  function uploadCompressedImage(imgToCompress: string, maxWidth: number, maxHeight: number, quality: number) {
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
+
+    const img = new Image();
+    img.src = imgToCompress;
+
+    img.addEventListener('load', function() {
+      const originalWidth = img.width;
+      const originalHeight = img.height;
+
+      const resizingFactor = Math.min(1, Math.min(maxWidth / originalWidth, maxHeight / originalHeight))
+
+      canvas.width = originalWidth * resizingFactor
+      canvas.height = originalHeight * resizingFactor
+
+      context!.drawImage(
+        img,
+        0,
+        0,
+        originalWidth * resizingFactor,
+        originalHeight * resizingFactor
+      );
+
+      // Reducing the quality of the image
+      canvas.toBlob(
+        (blob) => {
+          if (blob) {
+            const reader = new FileReader();
+            reader.onload = async () => {
+              const contents = reader.result;
+              if (typeof contents === 'string') {
+                // setFile(btoa(contents)); // Set image here
+                
+                setValue("image", btoa(contents));
+                setPreviewImg(btoa(contents));
+                if (user._id != null)
+                  console.log(await updateUserById(user._id, { image: btoa(contents) }));
+
+                if (user._id) {
+                  const response = await getUserById(user._id);
+                  console.log(response.data);
+                  localStorage.setItem("user", JSON.stringify(response.data));
+                }
+              }
+            };
+            reader.readAsBinaryString(blob);
+          }
+        },
+        "image/jpeg",
+        quality
+      );
+    });
+  }
   function handleFileUpload(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
     if (!file) {
@@ -70,22 +125,13 @@ const editProfile = () => {
     }
 
     const reader = new FileReader();
-    reader.onload = async (event) => {
+    reader.onload = (event) => {
       const result = event.target?.result;
       if (typeof result === "string") {
-        setValue("image", btoa(result));
-        setPreviewImg(btoa(result));
-        if (user._id != null)
-          console.log(await updateUserById(user._id, { image: btoa(result) }));
-
-        if (user._id) {
-          const response = await getUserById(user._id);
-          console.log(response.data);
-          localStorage.setItem("user", JSON.stringify(response.data));
-        }
+        uploadCompressedImage(result,150,150,0.5)
       }
     };
-    reader.readAsBinaryString(file);
+    reader.readAsDataURL(file);
   }
 
   const onSubmit = async (data: FormData) => {
