@@ -30,6 +30,50 @@ const attraction = ({id,t,l,p,o,f=null,handleDelete,handleCallback}:{id:string,t
   const [errorFile,setErrorFile] = useState(false);
   // const [place_imageUrl,setFile] = useState("");
 
+  function uploadCompressedImage(imgToCompress: string, maxWidth: number, maxHeight: number, quality: number) {
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
+
+    const img = new Image();
+    img.src = imgToCompress;
+
+    img.addEventListener('load', function() {
+      const originalWidth = img.width;
+      const originalHeight = img.height;
+
+      const resizingFactor = Math.min(1, Math.min(maxWidth / originalWidth, maxHeight / originalHeight))
+
+      canvas.width = originalWidth * resizingFactor
+      canvas.height = originalHeight * resizingFactor
+
+      context!.drawImage(
+        img,
+        0,
+        0,
+        originalWidth * resizingFactor,
+        originalHeight * resizingFactor
+      );
+
+      // Reducing the quality of the image
+      canvas.toBlob(
+        (blob) => {
+          if (blob) {
+            const reader = new FileReader();
+            reader.onload = () => {
+              const contents = reader.result;
+              if (typeof contents === 'string') {
+                setFile(btoa(contents)); // Set image here
+              }
+            };
+            reader.readAsBinaryString(blob);
+          }
+        },
+        "image/jpeg",
+        quality
+      );
+    });
+  }
+
   function handleFileUpload(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
     if (!file) {
@@ -40,10 +84,13 @@ const attraction = ({id,t,l,p,o,f=null,handleDelete,handleCallback}:{id:string,t
     reader.onload = (event) => {
       const result = event.target?.result;
       if (typeof result === 'string') {
-        setFile(btoa(result));
+        //console.log(btoa(result))
+        // setFile(btoa(result));
+        uploadCompressedImage(result, 400, 300, 0.5);
       }
     };
-    reader.readAsBinaryString(file);
+    // reader.readAsBinaryString(file);
+    reader.readAsDataURL(file);
   }
 
   const valid= ()=>{
