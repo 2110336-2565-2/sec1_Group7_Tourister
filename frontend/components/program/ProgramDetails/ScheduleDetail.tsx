@@ -11,6 +11,14 @@ import {
 } from "@mui/icons-material";
 import { Chip } from "@mui/material";
 
+import { Timeline } from "@mui/lab";
+import TimelineItem from "@mui/lab/TimelineItem";
+import TimelineSeparator from "@mui/lab/TimelineSeparator";
+import TimelineDot from "@mui/lab/TimelineDot";
+import TimelineConnector from "@mui/lab/TimelineConnector";
+import TimelineContent from "@mui/lab/TimelineContent";
+import Typography from '@mui/material/Typography';
+
 interface IScheduleDetailProps {
   program: ProgramInterface;
   dayTrips: { date: string; attractions: AttractionInterface[] }[];
@@ -27,6 +35,22 @@ const ScheduleDetail: FC<IScheduleDetailProps> = ({ program, dayTrips }) => {
 
         return (
           <div key={index}>
+
+            {/* Timeline dot version */}
+            {/* <TimelineItem>
+              <TimelineSeparator>
+                <TimelineDot variant="outlined" color="primary">
+                  <LocationOnOutlined style={{color:"transparent"}}/>
+                </TimelineDot>
+                <TimelineConnector/>
+              </TimelineSeparator>
+              <TimelineContent>
+              <Typography variant="h6" component="span">{`Day ${index + 1}`}&nbsp;&nbsp;•&nbsp;&nbsp;{formattedtDate}</Typography>
+              </TimelineContent>
+            </TimelineItem> */}
+
+            {/* Not timeline version */}
+
             {/* Day N*/}
             <div
               style={{

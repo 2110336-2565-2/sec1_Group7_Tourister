@@ -28,6 +28,14 @@ import {
 } from "@mui/icons-material";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 
+import { Timeline } from "@mui/lab";
+import TimelineItem from "@mui/lab/TimelineItem";
+import TimelineSeparator from "@mui/lab/TimelineSeparator";
+import TimelineDot from "@mui/lab/TimelineDot";
+import TimelineConnector from "@mui/lab/TimelineConnector";
+import TimelineContent from "@mui/lab/TimelineContent";
+import Typography from '@mui/material/Typography';
+
 import {
   Accordion,
   AccordionDetails,
@@ -49,6 +57,10 @@ import { useAuth } from "@/components/AuthProvider";
 import { AuthContextInterface } from "@/interfaces/AuthContextInterface";
 
 import Swal from "sweetalert2";
+
+import React, { createContext } from "react";
+
+export const StageContext = createContext(0)
 
 const iconStyle = {
   color: COLOR.disable,
@@ -311,7 +323,126 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
         <AccordionDetails style={{ marginTop: "-1.5rem", paddingLeft: "7.5%" }}>
           {/* render schedule component */}
 
-          {/* Meeting point */}
+          {/* Meeting point version timeline */}
+          {/* <Timeline
+            style={{margin:"0", padding:"0"}}
+            sx={{
+              "& .MuiTimelineItem-root:before": {
+                padding: 0,
+                margin: 0,
+                flex: 0
+              }
+            }}
+          >
+
+            <TimelineItem>
+              <TimelineSeparator>
+                <TimelineDot style={{padding:"0.4rem",background:COLOR.primary}}>
+                  <LocationOnOutlined style={{color:"white"}}/>
+                </TimelineDot>
+                <TimelineConnector/>
+              </TimelineSeparator>
+              <TimelineContent sx={{py:"1.05rem"}}>
+                <Typography variant="h6" component="span">{program.startTime}&nbsp;&nbsp;•&nbsp;&nbsp;Meeting Point</Typography>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "flex-start",
+                    marginTop: "0.5rem",
+                    // marginBottom: "0.5rem",
+                  }}
+                >
+                  <div>{program.meetLocation}</div>
+                  <Chip
+                    icon={<LocationOnOutlined />}
+                    size="small"
+                    sx={{
+                      backgroundColor: COLOR.paleblue,
+                      color: COLOR.text,
+                      borderRadius: 10,
+                      margin: "3px 0px",
+                      padding: "2px 8px",
+                      "& .MuiChip-icon": {
+                        width: "15px",
+                        height: "15px",
+                      },
+                    }}
+                    label={program.meetProvince}
+                  />
+                  {program.descriptionOfMeetLocation && (
+                    <div style={{ fontSize: "0.85rem", color: COLOR.text }}>
+                      {program.descriptionOfMeetLocation}
+                    </div>
+                  )}
+                </div>
+              </TimelineContent>
+            </TimelineItem>
+
+            <TimelineItem>
+              <TimelineSeparator>
+                <TimelineDot style={{padding:"0.4rem",background:"lightcyan"}}>
+                  <MapOutlinedIcon style={{color:"dimgray"}}/>
+                </TimelineDot>
+                <TimelineConnector/>
+              </TimelineSeparator>
+              <TimelineContent sx={{py:"1.05rem"}}>
+                <Typography variant="h6" component="span">Attractions / Activities</Typography>
+              </TimelineContent>
+            </TimelineItem>
+
+            <ScheduleDetail program={program} dayTrips={program.dayTrips!} />
+
+            <TimelineItem>
+              <TimelineSeparator>
+                <TimelineDot style={{padding:"0.4rem",background:COLOR.primary}}>
+                  <LocationOnOutlined style={{color:"white"}}/>
+                </TimelineDot>
+                <TimelineConnector/>
+              </TimelineSeparator>
+              <TimelineContent sx={{py:"1.05rem"}}>
+                <Typography variant="h6" component="span">{program.endTime}&nbsp;&nbsp;•&nbsp;&nbsp;Return Point</Typography>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "flex-start",
+                    marginTop: "0.5rem",
+                    // marginBottom: "0.5rem",
+                  }}
+                >
+                  <div>{program.endLocation}</div>
+                  <Chip
+                    icon={<LocationOnOutlined />}
+                    size="small"
+                    sx={{
+                      backgroundColor: COLOR.paleblue,
+                      color: COLOR.text,
+                      borderRadius: 10,
+                      margin: "3px 0px",
+                      padding: "2px 8px",
+                      "& .MuiChip-icon": {
+                        width: "15px",
+                        height: "15px",
+                      },
+                    }}
+                    label={program.endProvince}
+                  />
+                  {program.descriptionOfEndLocation && (
+                    <div style={{ fontSize: "0.85rem", color: COLOR.text }}>
+                      {program.descriptionOfEndLocation}
+                    </div>
+                  )}
+                </div>
+              </TimelineContent>
+            </TimelineItem>
+
+          </Timeline> */}
+
+          { /* ======Old version (without timeline)========= */ }
+
           <div
             style={{
               display: "flex",
@@ -368,7 +499,6 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
             )}
           </div>
 
-          {/* Attraction and activities*/}
           <div
             style={{
               display: "flex",
@@ -390,10 +520,8 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
             <h3 style={{ paddingLeft: "2.5%" }}>Attractions / Activities</h3>
           </div>
 
-          {/* Schedule details */}
           <ScheduleDetail program={program} dayTrips={program.dayTrips!} />
 
-          {/* Return point */}
           <div
             style={{
               display: "flex",
@@ -538,9 +666,9 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
                 Book
               </Button>
             </>
-          }
+          } 
         </div>
-      )}
+      )} 
     </>
   );
 };
