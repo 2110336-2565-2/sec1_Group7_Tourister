@@ -17,7 +17,7 @@ import TimelineSeparator from "@mui/lab/TimelineSeparator";
 import TimelineDot from "@mui/lab/TimelineDot";
 import TimelineConnector from "@mui/lab/TimelineConnector";
 import TimelineContent from "@mui/lab/TimelineContent";
-import Typography from '@mui/material/Typography';
+import Typography from "@mui/material/Typography";
 
 interface IScheduleDetailProps {
   program: ProgramInterface;
@@ -34,8 +34,7 @@ const ScheduleDetail: FC<IScheduleDetailProps> = ({ program, dayTrips }) => {
         // console.log(attractions);
 
         return (
-          <div key={index}>
-
+          <div key={index} style={{transform: "translate(-0rem,1.5rem)"}}>
             {/* Timeline dot version */}
             {/* <TimelineItem>
               <TimelineSeparator>
@@ -60,6 +59,7 @@ const ScheduleDetail: FC<IScheduleDetailProps> = ({ program, dayTrips }) => {
                 border: `0.1rem solid ${COLOR.primary}`,
                 borderRadius: "0.75rem",
                 marginBottom: "1.5rem",
+                transform: "translate(-3.5rem,0rem)"
               }}
             >
               <div
@@ -91,6 +91,7 @@ const ScheduleDetail: FC<IScheduleDetailProps> = ({ program, dayTrips }) => {
                   gap: "1.25rem",
                   paddingLeft: "7.5%",
                   marginBottom: "1.75rem",
+                  transform: "translate(-1.5rem,-0.5rem)"
                 }}
                 key={index}
               >
