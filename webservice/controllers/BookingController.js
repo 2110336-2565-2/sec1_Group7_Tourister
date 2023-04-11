@@ -85,8 +85,8 @@ const BookingController = {
         user: user._id,
         program: programId,
       });
-      console.log("dupeBooking",dupeBookingByUserId)
-      if (dupeBookingByUserId.length > 0){
+      console.log("dupeBooking", dupeBookingByUserId);
+      if (dupeBookingByUserId.length > 0) {
         throw new ApiErrorResponse(
           "you already booked this program",
           400,
@@ -122,6 +122,7 @@ const BookingController = {
         type: "payment",
         title: "Payment Complete",
         message: `${program.price} baht is paid to book for ${program.name}`,
+        program: program,
       });
       await noti_payment.save();
       //console.log(noti_payment);
@@ -132,6 +133,7 @@ const BookingController = {
         type: "newrequest",
         title: "New Booking Request",
         message: `${user.name} ${user.surname} requested to join ${program.name}`,
+        program: program,
       });
       await noti_request.save();
       //console.log(noti_request);
@@ -299,7 +301,7 @@ const BookingController = {
     const result = await tryCatchMongooseService(async () => {
       const bookingId = req.params.id;
       const booking = await Booking.findById(bookingId);
-      if(booking.status != "pending") {
+      if (booking.status != "pending") {
         throw new ApiErrorResponse(400, "Booking is not pending");
       }
       await Booking.findByIdAndDelete(bookingId);
@@ -317,6 +319,7 @@ const BookingController = {
         type: "refund",
         title: "Coin Refunded",
         message: `You booking for ${program.name} is cancelled, ${program.price} baht is refunded`,
+        program: program,
       });
       await noti_refund.save();
 
@@ -326,6 +329,7 @@ const BookingController = {
         type: "cancel",
         title: "Request Cancelled",
         message: `${user.name} ${user.surname} cancel request for ${program.name}`,
+        program: program,
       });
       await noti_cancel.save();
 
@@ -363,13 +367,14 @@ const BookingController = {
         type: "accrequest",
         title: "Request Accepted",
         message: `Your request to join ${program.name} is accepted`,
+        program: program,
       });
       await noti_accept.save();
       console.log(noti_accept);
 
       //Nofify tourist trip
       const now = new Date(); // current time
-      let startdate = program.startDate
+      let startdate = program.startDate;
       startdate.setHours(0, 0, 0, 0);
       const notifyTime = startdate < now ? now : startdate;
       const noti_trip = new Notification({
@@ -377,7 +382,8 @@ const BookingController = {
         type: "nexttrip",
         title: "Upcoming Trip",
         message: `${program.name} will start today at ${program.startTime}. Meeting point at ${program.meetLocation}. Get Ready!`,
-        notifyTime: notifyTime
+        notifyTime: notifyTime,
+        program: program,
       });
       await noti_trip.save();
       console.log(noti_trip);
@@ -388,7 +394,8 @@ const BookingController = {
         type: "endtrip",
         title: "Finish Trip",
         message: `${program.name} is finish. If you have any problem, please report to contactTourister@gmail.com`,
-        notifyTime: new Date(program.endDate.getTime() + 17*60*60*1000),
+        notifyTime: new Date(program.endDate.getTime() + 17 * 60 * 60 * 1000),
+        program: program,
       });
       await noti_endtrip.save();
       console.log(noti_endtrip);
@@ -427,6 +434,7 @@ const BookingController = {
         type: "decrequest",
         title: "Request Declined",
         message: `Your request to join ${program.name} is declined and ${program.price} baht is refunded`,
+        program: program,
       });
       await noti_decline.save();
       console.log(noti_decline);

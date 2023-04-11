@@ -69,7 +69,7 @@ const ProgramController = {
       const program = new Program(payload);
       await program.save();
       console.log(program);
-      
+
       return {
         code: 201,
         data: program,
@@ -94,9 +94,9 @@ const ProgramController = {
       const updatedProgram = await Program.findById(programId);
 
       //Nofify guide
-      if (!program.published && updatedProgram.published){
+      if (!program.published && updatedProgram.published) {
         const now = new Date(); // current time
-        let startdate = program.startDate
+        let startdate = program.startDate;
         startdate.setHours(0, 0, 0, 0);
         const notifyTime = startdate < now ? now : startdate;
         const noti_trip = new Notification({
@@ -105,6 +105,7 @@ const ProgramController = {
           title: "Upcoming Trip",
           message: `${updatedProgram.name} will start today at ${updatedProgram.startTime}. Meeting point at ${updatedProgram.meetLocation}. Get Ready!`,
           notifyTime: notifyTime,
+          program: program,
         });
         await noti_trip.save();
         console.log(noti_trip);
@@ -234,9 +235,9 @@ const ProgramController = {
   async getAllPublishedPrograms(req, res, next) {
     const filterBody = req.query;
     let { filter, sorter } = queryObjToProgramFilter(filterBody);
-    let todaydate = new Date()
+    let todaydate = new Date();
     todaydate.setHours(0, 0, 0, 0);
-    filter.push({ published: true, startDate: {$gte: todaydate} });
+    filter.push({ published: true, startDate: { $gte: todaydate } });
 
     const result = await tryCatchMongooseService(async () => {
       const programs = await Program.find({ $and: filter })
