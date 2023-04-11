@@ -9,6 +9,7 @@ router.get('/notification/:id', notificationController.getNotificationById)
 router.put('/notification/read/:userId', notificationController.readAllPublishedNotificationsByUserId)
 router.post('/notification', notificationController.createNotification)
 router.put('/notification/:id', notificationController.updateNotificationById)
+router.put('/notification/read/:id', notificationController.readNotificationById)
 router.delete('/notification/:id', notificationController.deleteNotificationById)
 
 module.exports = router
