@@ -57,12 +57,17 @@ module.exports = router
  *                  isRead:
  *                      type: Boolean
  *                      description: Whether or not the notification has been read
+ *                  program:
+ *                      type: string
+ *                      description: The Id for the program which this notification is for
  *              example:
  *                  id: 6432696d2e242ebede1d88dd
  *                  user: 63fdda63e748bfc47d0100ca
- *                  type: refund
- *                  title: Refund Title
- *                  message: refund success
+ *                  type: nexttrip
+ *                  title: Upcoming Trip
+ *                  message: Wonderful Bangkok will start today at 09:00. Meeting point at Airport. Get Ready!
+ *                  notifyTime: 2023-04-09T17:00:00.000Z
+ *                  isRead: false
  */
 
 /**
