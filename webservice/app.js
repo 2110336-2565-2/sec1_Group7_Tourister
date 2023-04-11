@@ -5,6 +5,8 @@ const logger = require('morgan')
 const mongoose = require('mongoose')
 const dbConfig = require('./configs/database')
 const MyLogger = require('./middlewares/myLogger')
+const swaggerJsDoc = require('swagger-jsdoc')
+const swaggerUI = require('swagger-ui-express')
 const { StartUpdateUsersBalanceEveryMidnight } = require('./services/user/balanceUpdateService')
 
 const apiRoute = require('./routes/api')
@@ -18,6 +20,25 @@ app.use(logger('dev'))
 app.use(cors())
 app.use(cookieParser());
 app.use(MyLogger)
+const swaggerOptions = {
+    swaggerDefinition:{
+        openapi: '3.0.0',
+        info: {
+            title: 'Library API',
+            version: '1.0.0',
+            description: 'A simple Express VacQ API'
+        },
+        servers: [
+            {
+                url: `http://localhost:${process.env.PORT || 2555}/api`
+            }
+        ]
+    },
+    apis:['./routes/*.js'],
+}
+
+const swaggerDocs = swaggerJsDoc(swaggerOptions)
+app.use('/api-docs',swaggerUI.serve, swaggerUI.setup(swaggerDocs))
 
 // use express router
 app.use('/api', apiRoute)
