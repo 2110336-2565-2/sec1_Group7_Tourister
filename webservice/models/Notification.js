@@ -18,7 +18,7 @@ const NotificationSchema = new mongoose.Schema({
       "coin",
       "payment",
       "refund",
-      "cancel"
+      "cancel",
     ],
     required: [true, "Please add a notification type"],
   },
@@ -36,6 +36,10 @@ const NotificationSchema = new mongoose.Schema({
   isRead: {
     type: Boolean,
     default: false,
+  },
+  program: {
+    type: mongoose.Schema.ObjectId,
+    ref: "Program",
   },
 });
 
