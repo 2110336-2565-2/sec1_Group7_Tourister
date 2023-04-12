@@ -6,10 +6,10 @@ const { authGuide } = require('../middlewares/auth')
 router.get('/notification', notificationController.getAllNotifications)
 router.get('/notification/notify/:userId', notificationController.getAllPublishedNotificationsByUserId)
 router.get('/notification/:id', notificationController.getNotificationById)
-router.put('/notification/read/:userId', notificationController.readAllPublishedNotificationsByUserId)
+router.put('/notification/read/:id', notificationController.readNotificationById)
+router.put('/notification/readAll/:userId', notificationController.readAllPublishedNotificationsByUserId)
 router.post('/notification', notificationController.createNotification)
 router.put('/notification/:id', notificationController.updateNotificationById)
-router.put('/notification/read/:id', notificationController.readNotificationById)
 router.delete('/notification/:id', notificationController.deleteNotificationById)
 
 module.exports = router

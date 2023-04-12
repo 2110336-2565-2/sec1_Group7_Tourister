@@ -214,7 +214,7 @@ const NotificationController = {
       return {
         code: 204,
         data: updatedNotification,
-        message: "notification updated",
+        message: "notification read",
       };
     });
     res.json(result);
