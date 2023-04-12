@@ -151,24 +151,60 @@ module.exports = router
 
 /**
  * @swagger
- * /notification/read/{userId}:
+ * /notification/readAll/{userId}:
  *   put:
- *     summary: Mark all published notifications as read for a specific user
+ *     summary: Mark all published notifications of a user as read
  *     tags: [Notifications]
  *     parameters:
  *       - in: path
  *         name: userId
  *         required: true
- *         description: ID of the user to mark notifications as read
+ *         description: ID of the user whose notifications are to be marked as read
  *         schema:
  *           type: string
  *     responses:
  *       '200':
- *         description: Successfully marked notifications as read
+ *         description: Successfully marked all published notifications of the user as read
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "All notifications of the user have been marked as read"
  *       '400':
  *         description: Invalid user ID provided
  *       '404':
  *         description: User not found
+ *       '500':
+ *         description: Internal server error
+ */
+
+/**
+ * @swagger
+ * /notification/read/{id}:
+ *   put:
+ *     summary: Mark a notification as read by ID
+ *     tags: [Notifications]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the notification to mark as read
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: Successfully marked the notification as read
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Notification'
+ *       '400':
+ *         description: Invalid notification ID provided
+ *       '404':
+ *         description: Notification not found
  *       '500':
  *         description: Internal server error
  */
