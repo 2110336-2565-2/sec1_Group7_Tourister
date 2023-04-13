@@ -130,7 +130,7 @@ export const NotificationList = () => {
           return(
               <>
               <ListItem 
-              key={index}   
+              key={notiDetail._id}   
               onClick={() => handleClickNoti(pushPath,notiDetail._id)}
               alignItems="flex-start" 
               sx={{borderBottom: '1px solid #ddd', backgroundColor: notiDetail.isRead ? 'inherit' : '#E3FCF8'}}>
