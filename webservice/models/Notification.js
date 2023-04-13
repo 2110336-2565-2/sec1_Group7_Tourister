@@ -17,6 +17,7 @@ const NotificationSchema = new mongoose.Schema({
       "endtrip",
       "coin",
       "payment",
+      "paymentguide",
       "refund",
       "cancel",
     ],

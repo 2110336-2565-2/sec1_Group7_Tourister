@@ -3,7 +3,7 @@ import { useMutation, useQuery } from "@tanstack/react-query"
 import { Avatar, Button, CircularProgress, Divider, List, ListItem, ListItemAvatar, ListItemText, Typography } from "@mui/material"
 import { useAuth } from "@/components/AuthProvider"
 import { AuthContextInterface } from "@/interfaces/AuthContextInterface"
-import { getAllNotificationsFromUser,readAllNotificationsFromUser} from "@/services/notificationService"
+import { getAllNotificationsFromUser,readAllNotificationsFromUser,readNotificationsById} from "@/services/notificationService"
 import { NotificationInterface } from "@/interfaces/NotificationInterface";
 import React, { useEffect } from "react"
 import {ConfirmationNumber, Paid,InsertInvitation, SyncAlt } from '@mui/icons-material';
@@ -15,6 +15,8 @@ export const NotificationList = () => {
   const authUserData:AuthContextInterface = useAuth()
   const userId:string = authUserData.user?._id!
   const router = useRouter();
+
+
 
   const { notificationData, refetchNotification, isLoadingNotification} = useNotification();
 
@@ -29,6 +31,7 @@ export const NotificationList = () => {
     </div>
   )
   console.log("noti-data",notificationData)
+
   if((notificationData?.length)===0){
     return <>
     <br />
@@ -38,7 +41,10 @@ export const NotificationList = () => {
     </>
   }
 
-  
+  const handleClickNoti = (pushPath: string, notiID: string) => {
+    router.push(pushPath);
+    readNotificationsById(notiID)
+  };
 
   return (
     <>
@@ -48,52 +54,73 @@ export const NotificationList = () => {
       {notificationData?.map((notiDetail,index) => {     
           let icon;
           let avatarStyle;
-          let pushPath;
-          // withdraw and top up
+          let pushPath: string;
+
+
+          //guide,tourist: withdraw and top up
           if (notiDetail.type === "coin") {
             icon = <SyncAlt />;
             avatarStyle = { backgroundColor: "#4CAF50" };
             pushPath = `/manage_account`
 
-          // guide recieve money and tourister pay 
+          //tourist: tourister pay for booking
           } else if (notiDetail.type === "payment") {
+            icon = <Paid />;
+            avatarStyle = { backgroundColor: "#4CAF50" };
+            pushPath = `/booking`
+          
+          
+          //guide: recieve money after end trip
+          } else if (notiDetail.type === "paymentguide") {
             icon = <Paid />;
             avatarStyle = { backgroundColor: "#4CAF50" };
             pushPath = `/manage_account`
 
-          //refund
+          //tourist: refund when cancel booking before guide accept
           } else if (notiDetail.type === "refund") {
             icon = <Paid />;
             avatarStyle = { backgroundColor: "#FFC107" };
             pushPath = `/manage_account`
 
-          //upcoming trip
+          //guide,tourist: notify upcoming trip
           } else if (notiDetail.type === "nexttrip") {
             icon = <InsertInvitation />;
             avatarStyle = { backgroundColor: "#FFC107" };
             pushPath = `/trips/programDetail/${notiDetail.program}`
 
-          //end trip
+          //tourist: notify end trip
           } else if (notiDetail.type === "endtrip") {
             icon = <InsertInvitation />;
             avatarStyle = { backgroundColor: "#2196F3" };
             pushPath = `/trips/programDetail/${notiDetail.program}`
 
           
-          //declined request and cancel request
-          } else if (notiDetail.type === "decrequest" || notiDetail.type === "cancel") {
+          //guide: cancel request
+        } else if (notiDetail.type === "cancel") {
+          icon = <ConfirmationNumber />;
+          avatarStyle = { backgroundColor: "#F44336" };
+          pushPath = `/request`
+
+
+          //tourist: declined request
+          } else if (notiDetail.type === "decrequest") {
             icon = <ConfirmationNumber />;
             avatarStyle = { backgroundColor: "#F44336" };
-            pushPath = `/trips/programDetail/${notiDetail.program}`
+            pushPath = `/booking/history`
 
           
-          //new request and accept request
-          } else if (notiDetail.type === "newrequest" || notiDetail.type === "accrequest") {
+          //guide: new request 
+          } else if (notiDetail.type === "newrequest") {
             icon = <ConfirmationNumber />;
             avatarStyle = { backgroundColor: "#2196F3" };
-            pushPath = `/trips/programDetail/${notiDetail.program}`
+            pushPath = `/request`
 
-          
+          //tourist: accept request
+          } else if (notiDetail.type === "accrequest") {
+            icon = <ConfirmationNumber />;
+            avatarStyle = { backgroundColor: "#2196F3" };
+            pushPath = `/booking`
+
           } else {
             icon = <Avatar alt="" />;
             avatarStyle = {};
@@ -102,7 +129,11 @@ export const NotificationList = () => {
           
           return(
               <>
-              <ListItem key={index} alignItems="flex-start" sx={{borderBottom: '1px solid #ddd', backgroundColor: notiDetail.isRead ? 'inherit' : '#E3FCF8'}}>
+              <ListItem 
+              key={index}   
+              onClick={() => handleClickNoti(pushPath,notiDetail._id)}
+              alignItems="flex-start" 
+              sx={{borderBottom: '1px solid #ddd', backgroundColor: notiDetail.isRead ? 'inherit' : '#E3FCF8'}}>
               <ListItemAvatar>
                 <Avatar style={{ ...avatarStyle, color: "#fff" }} variant="circular">
                   {icon}
