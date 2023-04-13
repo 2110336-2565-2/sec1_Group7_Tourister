@@ -26,7 +26,7 @@ const StartUpdateUsersBalanceEveryMidnight = () => {
 
                 const noti = new Notification({
                     user: program.guide,
-                    type: "payment",
+                    type: "paymentguide",
                     title: "Trip Has Ended",
                     message: `You have earned ${totalIncome} baht from your program ${program.name}`,
                     isRead: false,

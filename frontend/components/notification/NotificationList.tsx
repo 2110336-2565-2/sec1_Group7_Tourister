@@ -9,11 +9,13 @@ import React, { useEffect } from "react"
 import {ConfirmationNumber, Paid,InsertInvitation, SyncAlt } from '@mui/icons-material';
 import { COLOR } from "@/theme/globalTheme";
 import { useNotification } from "./NotificationProvider"
+import { useRouter } from 'next/router';
 
 export const NotificationList = () => {
   const authUserData:AuthContextInterface = useAuth()
   const userId:string = authUserData.user?._id!
-  
+  const router = useRouter();
+
   const { notificationData, refetchNotification, isLoadingNotification} = useNotification();
 
   const handleMarkAllNotificationsAsRead = async () => {
@@ -26,7 +28,7 @@ export const NotificationList = () => {
       <CircularProgress/>
     </div>
   )
-
+  console.log("noti-data",notificationData)
   if((notificationData?.length)===0){
     return <>
     <br />
@@ -36,6 +38,8 @@ export const NotificationList = () => {
     </>
   }
 
+  
+
   return (
     <>
     <Button onClick={handleMarkAllNotificationsAsRead}>Mark all as read</Button>
@@ -44,45 +48,56 @@ export const NotificationList = () => {
       {notificationData?.map((notiDetail,index) => {     
           let icon;
           let avatarStyle;
+          let pushPath;
           // withdraw and top up
           if (notiDetail.type === "coin") {
             icon = <SyncAlt />;
             avatarStyle = { backgroundColor: "#4CAF50" };
+            pushPath = `/manage_account`
 
           // guide recieve money and tourister pay 
           } else if (notiDetail.type === "payment") {
             icon = <Paid />;
             avatarStyle = { backgroundColor: "#4CAF50" };
-          
+            pushPath = `/manage_account`
+
           //refund
           } else if (notiDetail.type === "refund") {
             icon = <Paid />;
             avatarStyle = { backgroundColor: "#FFC107" };
+            pushPath = `/manage_account`
 
           //upcoming trip
           } else if (notiDetail.type === "nexttrip") {
             icon = <InsertInvitation />;
             avatarStyle = { backgroundColor: "#FFC107" };
+            pushPath = `/trips/programDetail/${notiDetail.program}`
 
           //end trip
           } else if (notiDetail.type === "endtrip") {
             icon = <InsertInvitation />;
             avatarStyle = { backgroundColor: "#2196F3" };
+            pushPath = `/trips/programDetail/${notiDetail.program}`
+
           
           //declined request and cancel request
           } else if (notiDetail.type === "decrequest" || notiDetail.type === "cancel") {
             icon = <ConfirmationNumber />;
             avatarStyle = { backgroundColor: "#F44336" };
+            pushPath = `/trips/programDetail/${notiDetail.program}`
+
           
           //new request and accept request
           } else if (notiDetail.type === "newrequest" || notiDetail.type === "accrequest") {
             icon = <ConfirmationNumber />;
             avatarStyle = { backgroundColor: "#2196F3" };
+            pushPath = `/trips/programDetail/${notiDetail.program}`
 
           
           } else {
             icon = <Avatar alt="" />;
             avatarStyle = {};
+            pushPath = `/manage_account`
           }
           
           return(

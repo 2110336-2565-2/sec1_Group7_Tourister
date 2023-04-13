@@ -109,8 +109,8 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
   const userId: string = user?._id!;
   const programId = program._id!;
 
-  console.log("program");
-  console.log(program);
+  console.log("program",program);
+  // console.log(program);
 
   const touristBookingStatus = bookings.find(
     (booking) => booking.user?._id === userId
