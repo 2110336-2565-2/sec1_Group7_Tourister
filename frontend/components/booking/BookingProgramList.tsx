@@ -34,9 +34,9 @@ export const BookingProgramList = ({bookingFilter,history=false}:{bookingFilter:
 
 
   const today = new Date();
-  const upcomingBookings = bookings?.filter(({program})=>{
+  const upcomingBookings = bookings?.filter(({program,status})=>{
     const isInThePass = isDateTimeInThePass(program?.endDate!, program?.endTime!);
-    if(history) return isInThePass;
+    if(history) return status==='declined' || isInThePass;
     return !isInThePass;
   })
 
