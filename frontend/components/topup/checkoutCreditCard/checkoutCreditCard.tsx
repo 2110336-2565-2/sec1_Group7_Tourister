@@ -99,10 +99,10 @@ function Checkout(props: any) {
   const handleClick = async (event: any) => {
     event.preventDefault();
     if (
-      props.amount !== "" ||
-      Number(props.amount) < 100 ||
-      Number(props.amount) > 1000000
+      props.amount < 100 ||
+      props.amount > 1000000
     ) {
+      console.log(props.amount);
       Swal.fire({
         text: "Input value must be between ฿100 and ฿1000000.",
         icon: "error",

@@ -46,6 +46,10 @@ const UserSchema = new mongoose.Schema({
       return this.isGuide;
     },
   },
+  darkmode: {
+    type: Boolean,
+    default: false
+  },
   image: {
     type: String,
     default: function() {

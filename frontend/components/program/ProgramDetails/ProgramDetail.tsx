@@ -2,7 +2,11 @@ import { ProgramInterface } from "@/interfaces/ProgramInterface";
 import { FC } from "react";
 import { COLOR } from "@/theme/globalTheme";
 import { useQuery } from "@tanstack/react-query";
-import { RefetchOptions, RefetchQueryFilters, QueryObserverResult} from "@tanstack/react-query";
+import {
+  RefetchOptions,
+  RefetchQueryFilters,
+  QueryObserverResult,
+} from "@tanstack/react-query";
 
 import { useState } from "react";
 import { UserCardInterface } from "@/interfaces/UserCardInterface";
@@ -14,7 +18,7 @@ import {
 import {
   getAllBookingsInProgram,
   createBooking,
-  deleteBookingById
+  deleteBookingById,
 } from "@/services/bookingService";
 
 import {
@@ -27,6 +31,14 @@ import {
   Padding,
 } from "@mui/icons-material";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
+
+import { Timeline } from "@mui/lab";
+import TimelineItem from "@mui/lab/TimelineItem";
+import TimelineSeparator from "@mui/lab/TimelineSeparator";
+import TimelineDot from "@mui/lab/TimelineDot";
+import TimelineConnector from "@mui/lab/TimelineConnector";
+import TimelineContent from "@mui/lab/TimelineContent";
+import Typography from "@mui/material/Typography";
 
 import {
   Accordion,
@@ -50,6 +62,10 @@ import { AuthContextInterface } from "@/interfaces/AuthContextInterface";
 
 import Swal from "sweetalert2";
 
+import React, { createContext } from "react";
+
+export const StageContext = createContext(0);
+
 const iconStyle = {
   color: COLOR.disable,
   padding: "0px 10px",
@@ -60,14 +76,21 @@ interface IProgramDetailProps {
   program: ProgramInterface;
   bookings?: BookingInterface[];
   onGoBack: () => void;
-  refetchBooking: <TPageData>(options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined) => Promise<QueryObserverResult<ApiResponseInterface<BookingInterface[]> | null, unknown>>
+  refetchBooking: <TPageData>(
+    options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined
+  ) => Promise<
+    QueryObserverResult<
+      ApiResponseInterface<BookingInterface[]> | null,
+      unknown
+    >
+  >;
 }
 
 const ProgramDetail: FC<IProgramDetailProps> = ({
   program,
   bookings = [],
   onGoBack,
-  refetchBooking
+  refetchBooking,
 }) => {
   const authUserData: AuthContextInterface = useAuth();
 
@@ -86,17 +109,17 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
   const userId: string = user?._id!;
   const programId = program._id!;
 
-  console.log("program");
-  console.log(program);
-  
+  console.log("program",program);
+  // console.log(program);
+
   const touristBookingStatus = bookings.find(
     (booking) => booking.user?._id === userId
   )?.status!;
   console.log(touristBookingStatus);
 
-  const acceptedBookings = bookings.filter((booking)=>{
-    return booking.status === "accepted"
-  })
+  const acceptedBookings = bookings.filter((booking) => {
+    return booking.status === "accepted";
+  });
 
   const startDateTime = new Date(program.startDate);
   const endDateTime = new Date(program.endDate);
@@ -171,13 +194,13 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
     if(dismiss === Swal.DismissReason.cancel) return;
 
     Swal.fire({
-      title: 'Please wait...',
+      title: "Please wait...",
       allowOutsideClick: false,
       allowEscapeKey: false,
       showConfirmButton: false,
-      willOpen: ()=> {
+      willOpen: () => {
         Swal.showLoading();
-      }
+      },
     });
     try {
       const res = await createBooking(
@@ -188,53 +211,52 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
       Swal.fire({
         title: "Booking requested!",
         icon: "success",
-        timer: 2000
-      })
-    } catch (err:any) {
+        timer: 2000,
+      });
+    } catch (err: any) {
       console.log(err);
       Swal.close();
       Swal.fire({
         text: err.message,
         icon: "error",
-        timer: 2000
-      })
+        timer: 2000,
+      });
     }
     refetchBooking();
   };
 
   const handleCanCelClick = async () => {
     Swal.fire({
-      title: 'Please wait...',
+      title: "Please wait...",
       allowOutsideClick: false,
       allowEscapeKey: false,
       showConfirmButton: false,
-      willOpen: ()=> {
+      willOpen: () => {
         Swal.showLoading();
-      }
+      },
     });
     try {
-      const bookingId = bookings.find(
-        (booking) => booking.user?._id === userId
-      )?._id!
+      const bookingId = bookings.find((booking) => booking.user?._id === userId)
+        ?._id!;
 
-      const res = await deleteBookingById(bookingId)
+      const res = await deleteBookingById(bookingId);
       Swal.close();
       Swal.fire({
         text: "Booking cancelled!",
         icon: "success",
-        timer: 2000
-      })
-    } catch (err:any) {
+        timer: 2000,
+      });
+    } catch (err: any) {
       console.log(err);
       Swal.close();
       Swal.fire({
         text: err.message,
         icon: "error",
-        timer: 2000
-      })
+        timer: 2000,
+      });
     }
     refetchBooking();
-  }
+  };
 
   return (
     <>
@@ -326,8 +348,128 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
         <AccordionDetails style={{ marginTop: "-1.5rem", paddingLeft: "7.5%" }}>
           {/* render schedule component */}
 
-          {/* Meeting point */}
-          <div
+          {/* Meeting point version timeline */}
+          <Timeline
+            style={{margin:`0rem 0rem 1.5rem 0rem`, padding:"0"}}
+            sx={{
+              "& .MuiTimelineItem-root:before": {
+                padding: 0,
+                margin: 0,
+                flex: 0
+              }
+            }}
+          >
+
+            <TimelineItem>
+              <TimelineSeparator>
+                <TimelineDot style={{padding:"0.4rem",background:COLOR.primary}}>
+                  <LocationOnOutlined style={{color:"white"}}/>
+                </TimelineDot>
+                <TimelineConnector/>
+              </TimelineSeparator>
+              <TimelineContent sx={{py:"1.05rem"}}>
+                <Typography variant="h6" component="span">{program.startTime}&nbsp;&nbsp;•&nbsp;&nbsp;Meeting Point</Typography>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "flex-start",
+                    marginTop: "0.5rem",
+                    // marginBottom: "0.5rem",
+                  }}
+                >
+                  <div>{program.meetLocation}</div>
+                  <Chip
+                    icon={<LocationOnOutlined />}
+                    size="small"
+                    sx={{
+                      backgroundColor: COLOR.paleblue,
+                      color: COLOR.text,
+                      borderRadius: 10,
+                      margin: "3px 0px",
+                      padding: "2px 8px",
+                      "& .MuiChip-icon": {
+                        width: "15px",
+                        height: "15px",
+                      },
+                    }}
+                    label={program.meetProvince}
+                  />
+                  {program.descriptionOfMeetLocation && (
+                    <div style={{ fontSize: "0.85rem", color: COLOR.text }}>
+                      {program.descriptionOfMeetLocation}
+                    </div>
+                  )}
+                </div>
+              </TimelineContent>
+            </TimelineItem>
+
+            <TimelineItem>
+              <TimelineSeparator>
+                <TimelineDot style={{padding:"0.4rem",background:"lightcyan"}}>
+                  <MapOutlinedIcon style={{color:"dimgray"}}/>
+                </TimelineDot>
+                <TimelineConnector/>
+              </TimelineSeparator>
+              <TimelineContent sx={{py:"1.05rem"}}>
+                <Typography variant="h6" component="span">Attractions / Activities</Typography>
+                <ScheduleDetail program={program} dayTrips={program.dayTrips!} />
+              </TimelineContent>
+            </TimelineItem>
+
+            {/* <ScheduleDetail program={program} dayTrips={program.dayTrips!} /> */}
+
+            <TimelineItem>
+              <TimelineSeparator>
+                <TimelineDot style={{padding:"0.4rem",background:COLOR.primary}}>
+                  <LocationOnOutlined style={{color:"white"}}/>
+                </TimelineDot>
+                <TimelineConnector/>
+              </TimelineSeparator>
+              <TimelineContent sx={{py:"1.05rem"}}>
+                <Typography variant="h6" component="span">{program.endTime}&nbsp;&nbsp;•&nbsp;&nbsp;Return Point</Typography>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "flex-start",
+                    marginTop: "0.5rem",
+                    // marginBottom: "0.5rem",
+                  }}
+                >
+                  <div>{program.endLocation}</div>
+                  <Chip
+                    icon={<LocationOnOutlined />}
+                    size="small"
+                    sx={{
+                      backgroundColor: COLOR.paleblue,
+                      color: COLOR.text,
+                      borderRadius: 10,
+                      margin: "3px 0px",
+                      padding: "2px 8px",
+                      "& .MuiChip-icon": {
+                        width: "15px",
+                        height: "15px",
+                      },
+                    }}
+                    label={program.endProvince}
+                  />
+                  {program.descriptionOfEndLocation && (
+                    <div style={{ fontSize: "0.85rem", color: COLOR.text }}>
+                      {program.descriptionOfEndLocation}
+                    </div>
+                  )}
+                </div>
+              </TimelineContent>
+            </TimelineItem>
+
+          </Timeline>
+
+          {/* ======Old version (without timeline)========= */}
+
+          {/* <div
             style={{
               display: "flex",
               flexDirection: "row",
@@ -383,7 +525,6 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
             )}
           </div>
 
-          {/* Attraction and activities*/}
           <div
             style={{
               display: "flex",
@@ -405,10 +546,8 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
             <h3 style={{ paddingLeft: "2.5%" }}>Attractions / Activities</h3>
           </div>
 
-          {/* Schedule details */}
           <ScheduleDetail program={program} dayTrips={program.dayTrips!} />
 
-          {/* Return point */}
           <div
             style={{
               display: "flex",
@@ -463,7 +602,7 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
                 {program.descriptionOfEndLocation}
               </div>
             )}
-          </div>
+          </div> */}
         </AccordionDetails>
       </Accordion>
       {isGuide && (
@@ -491,69 +630,75 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
             margin: "1em",
           }}
         >
-          {
-            { 
-              "accepted":<>
-              <Button
-                variant="contained"
-                sx={{
-                  width: "100%",
-                  fontSize: "1.3rem",
-                  backgroundColor: COLOR.success,
-                  "&.Mui-disabled": {
+          {{
+            accepted: (
+              <>
+                <Button
+                  variant="contained"
+                  sx={{
+                    width: "100%",
+                    fontSize: "1.3rem",
                     backgroundColor: COLOR.success,
-                    color: "white",
-                  },
-                }}
-                disabled
+                    "&.Mui-disabled": {
+                      backgroundColor: COLOR.success,
+                      color: "white",
+                    },
+                  }}
+                  disabled
                 >
-                Accepted!
-              </Button>
-              </>,
-            "pending":<>
-              <Button
-                variant="contained"
-                sx={{
-                  width: "100%",
-                  fontSize: "1.3rem",
-                  backgroundColor: COLOR.yellow,
-                  "&.Mui-disabled": {
-                    backgroundColor: COLOR.yellow,
-                    color: "white",
-                  },
-                }}
-                onClick={handleCanCelClick}
-                >
-                Cancel Booking
-              </Button>
-              </>,
-              "declined": <>
-              <Button
-                variant="contained"
-                sx={{
-                  width: "100%",
-                  fontSize: "1.3rem",
-                  backgroundColor: COLOR.error,
-                  "&.Mui-disabled": {
-                    backgroundColor: COLOR.error,
-                    color: "white",
-                  },
-                }}
-                disabled
-                >
-                Declined
-              </Button>
+                  Accepted!
+                </Button>
               </>
-            }[touristBookingStatus] || <>
+            ),
+            pending: (
+              <>
+                <Button
+                  variant="contained"
+                  sx={{
+                    width: "100%",
+                    fontSize: "1.3rem",
+                    backgroundColor: COLOR.yellow,
+                    "&.Mui-disabled": {
+                      backgroundColor: COLOR.yellow,
+                      color: "white",
+                    },
+                  }}
+                  onClick={handleCanCelClick}
+                >
+                  Cancel Booking
+                </Button>
+              </>
+            ),
+            declined: (
+              <>
+                <Button
+                  variant="contained"
+                  sx={{
+                    width: "100%",
+                    fontSize: "1.3rem",
+                    backgroundColor: COLOR.error,
+                    "&.Mui-disabled": {
+                      backgroundColor: COLOR.error,
+                      color: "white",
+                    },
+                  }}
+                  disabled
+                >
+                  Declined
+                </Button>
+              </>
+            ),
+          }[touristBookingStatus] || (
+            <>
               <Button
                 variant="contained"
                 sx={{ width: "100%", fontSize: "1.3rem" }}
                 onClick={handleBookingClick}
-                >
+              >
                 Book
               </Button>
             </>
-          }
+          )}
         </div>
       )}
     </>

@@ -1,6 +1,7 @@
 import { UserInterface } from "./UserInterface";
 import { ApiResponseInterface } from "./ApiResponsetInterface";
 import { RefetchOptions, RefetchQueryFilters, QueryObserverResult } from "@tanstack/react-query";
+import { ProgramInterface } from "./ProgramInterface";
 
 export interface NotificationInterface {
   _id: string;
@@ -10,6 +11,7 @@ export interface NotificationInterface {
   user?: UserInterface, //objectId User
   notifyTime? : Date;
   isRead?: boolean;
+  program?: ProgramInterface; //objectId Program
 }
 
 export interface NotificationContextInterface {

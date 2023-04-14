@@ -61,6 +61,7 @@ const Landing = () => {
       setLoading(true);
       try {
         //const response = await getAllPrograms();
+        if(!userId)return null;
         const response = await getAllProgramsFromGuide(userId, {
           sortBy: "date",
         });

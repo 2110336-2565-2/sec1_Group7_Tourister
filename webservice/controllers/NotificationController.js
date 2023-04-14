@@ -181,18 +181,40 @@ const NotificationController = {
 
       notifications.forEach(async (notification) => {
         await Notification.findByIdAndUpdate(notification._id, {
-          $set: { isRead: true},
+          $set: { isRead: true },
         });
       });
 
-      const updatednotifications = await Notification.find({ $and: filter }).sort(
-        sorter
-      );
+      const updatednotifications = await Notification.find({
+        $and: filter,
+      }).sort(sorter);
 
       return {
         code: 200,
         data: updatednotifications,
         message: "",
+      };
+    });
+    res.json(result);
+  },
+
+  /**
+   * readNotificationById
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
+   * @param {import('express').NextFunction} next
+   */
+  async readNotificationById(req, res, next) {
+    const result = await tryCatchMongooseService(async () => {
+      const notificationId = req.params.id;
+      await Notification.findByIdAndUpdate(notificationId, {
+        $set: { isRead: true },
+      });
+      const updatedNotification = await Notification.findById(notificationId);
+      return {
+        code: 204,
+        data: updatedNotification,
+        message: "notification read",
       };
     });
     res.json(result);

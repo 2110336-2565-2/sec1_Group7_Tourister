@@ -82,7 +82,8 @@ export default function UserPending() {
       const res = await acceptBookingById(bookingId);
       console.log(res.data);
     } else if (status === "declined") {
-      const res = declineBookingById(bookingId);
+      const res = await declineBookingById(bookingId);
+      console.log(res.data);
     }
     await fetchData();
   };

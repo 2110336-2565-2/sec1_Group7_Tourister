@@ -11,6 +11,14 @@ import {
 } from "@mui/icons-material";
 import { Chip } from "@mui/material";
 
+import { Timeline } from "@mui/lab";
+import TimelineItem from "@mui/lab/TimelineItem";
+import TimelineSeparator from "@mui/lab/TimelineSeparator";
+import TimelineDot from "@mui/lab/TimelineDot";
+import TimelineConnector from "@mui/lab/TimelineConnector";
+import TimelineContent from "@mui/lab/TimelineContent";
+import Typography from "@mui/material/Typography";
+
 interface IScheduleDetailProps {
   program: ProgramInterface;
   dayTrips: { date: string; attractions: AttractionInterface[] }[];
@@ -26,7 +34,22 @@ const ScheduleDetail: FC<IScheduleDetailProps> = ({ program, dayTrips }) => {
         // console.log(attractions);
 
         return (
-          <div key={index}>
+          <div key={index} style={{ transform: "translate(-0rem,1.5rem)" }}>
+            {/* Timeline dot version */}
+            {/* <TimelineItem>
+              <TimelineSeparator>
+                <TimelineDot variant="outlined" color="primary">
+                  <LocationOnOutlined style={{color:"transparent"}}/>
+                </TimelineDot>
+                <TimelineConnector/>
+              </TimelineSeparator>
+              <TimelineContent>
+              <Typography variant="h6" component="span">{`Day ${index + 1}`}&nbsp;&nbsp;•&nbsp;&nbsp;{formattedtDate}</Typography>
+              </TimelineContent>
+            </TimelineItem> */}
+
+            {/* Not timeline version */}
+
             {/* Day N*/}
             <div
               style={{
@@ -36,6 +59,7 @@ const ScheduleDetail: FC<IScheduleDetailProps> = ({ program, dayTrips }) => {
                 border: `0.1rem solid ${COLOR.primary}`,
                 borderRadius: "0.75rem",
                 marginBottom: "1.5rem",
+                transform: "translate(-3.5rem,0rem)",
               }}
             >
               <div
@@ -67,6 +91,7 @@ const ScheduleDetail: FC<IScheduleDetailProps> = ({ program, dayTrips }) => {
                   gap: "1.25rem",
                   paddingLeft: "7.5%",
                   marginBottom: "1.75rem",
+                  transform: "translate(-1.5rem,-0.5rem)",
                 }}
                 key={index}
               >
