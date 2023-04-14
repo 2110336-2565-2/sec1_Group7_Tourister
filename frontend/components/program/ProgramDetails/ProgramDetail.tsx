@@ -155,6 +155,21 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
   };
 
   const handleBookingClick = async () => {
+    const { value, dismiss } = await Swal.fire({
+      title: program.name,
+      text: "price: "+program.price,
+      input: "text",
+      inputLabel: "Additional information:",
+      showCancelButton: true,
+      confirmButtonColor: COLOR.primary,
+      cancelButtonColor: COLOR.disable,
+      confirmButtonText: 'Book !',
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+    })
+
+    if(dismiss === Swal.DismissReason.cancel) return;
+
     Swal.fire({
       title: 'Please wait...',
       allowOutsideClick: false,
@@ -166,7 +181,7 @@ const ProgramDetail: FC<IProgramDetailProps> = ({
     });
     try {
       const res = await createBooking(
-        { user: user, program: program },
+        { user: user, program: program, request:value },
         programId
       );
       Swal.close();
