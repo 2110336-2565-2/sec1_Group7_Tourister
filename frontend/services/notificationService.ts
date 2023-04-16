@@ -34,3 +34,11 @@ export const readNotificationsById = async (id: string) => {
     if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined, res.tag ?? "")
     return res;
 } 
+
+export const deleteNotificationById = async (id: string) => {
+    const configs = localStorage.getItem("accessToken") != undefined ? { headers: { 'Authorization' : `Bearer ${localStorage.getItem("accessToken")}`} } : {}
+    const axios_res = await axios.delete(`${appConfig.BACKEND_URL}/api/notification/${id}`, configs)
+    const res = axios_res.data as ApiResponseInterface<NotificationInterface>
+    if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined, res.tag ?? "")
+    return res;
+}
