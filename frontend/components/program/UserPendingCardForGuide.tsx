@@ -14,7 +14,6 @@ import Image from "next/image";
 import tourist from "../../images/tourist.png";
 import { Button } from "@mui/material";
 
-
 interface UserPendingInterface {
   user: UserCardInterface;
   isComplete: boolean;
@@ -22,12 +21,13 @@ interface UserPendingInterface {
   handleFunction?: () => void;
 }
 
-export const UserPendingCardForGuide: FC<IProgramInterface> = ({
+export const UserPendingCardForGuide: FC<any> = ({
   user,
   isComplete,
   isDraft = false,
   handleFunction,
 }) => {
+  const statusChange = (a: any, b: any) => {}
   return (
     <>
       {/* <Link key={user._id} href={`/trips/userDetail/${user._id}`}> */}
@@ -52,6 +52,7 @@ export const UserPendingCardForGuide: FC<IProgramInterface> = ({
           )}
           <div style={{ display: "inline-block", float: "left" }}>
             <Image
+              alt="tourist"
               style={{ marginLeft: "auto", marginRight: "auto" }}
               // alt={singleOption.label}
               src={tourist}

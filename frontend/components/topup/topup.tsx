@@ -8,6 +8,11 @@ interface TopUpProps {
   initialAmount: number;
 }
 
+interface TopUpValue {
+  label: string;
+  value: number;
+}
+
 const topUpValues: TopUpValue[] = [
   { label: "300", value: 300 },
   { label: "500", value: 500 },

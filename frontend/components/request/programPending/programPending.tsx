@@ -80,8 +80,8 @@ export default function ProgramPending() {
 
   console.log(programs);
 
-  const startDateTime = new Date(programs.startDate);
-  const endDateTime = new Date(programs.endDate);
+  const startDateTime = new Date(programs[0].startDate);
+  const endDateTime = new Date(programs[0].endDate);
   const formattedStartDate = startDateTime.toLocaleDateString("en-GB", {
     year: "numeric",
     month: "short",

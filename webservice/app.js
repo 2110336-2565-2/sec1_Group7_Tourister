@@ -44,6 +44,10 @@ app.use('/api-docs',swaggerUI.serve, swaggerUI.setup(swaggerDocs))
 app.use('/api', apiRoute)
 app.use('/auth', authRoute)
 
+app.get('/', (req, res) => {
+    res.send('Hello World Tourister!')
+})
+
 
 // Error handler
 /**
