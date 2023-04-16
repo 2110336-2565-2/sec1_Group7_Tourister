@@ -44,6 +44,7 @@ module.exports = router
  *                          - endtrip
  *                          - coin
  *                          - payment
+ *                          - paymentguide
  *                          - refund
  *                          - cancel
  *                  title:
