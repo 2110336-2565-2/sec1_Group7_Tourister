@@ -14,7 +14,7 @@ type AppEnv = "PRD" | "DEV" | undefined
 
 const APP_SETTINGS: AppSettings = {
     "PRD": {
-        BACKEND_URL: "http://localhost:2000",
+        BACKEND_URL: "https://se-tourister-production.up.railway.app",
         OMISE_PUBLIC_KEY: process.env.NEXT_PUBLIC_OMISE_PUBLIC_KEY ?? "",
         OMISE_SECRET_KEY: process.env.NEXT_PUBLIC_OMISE_SECRET_KEY ?? "",
     },
