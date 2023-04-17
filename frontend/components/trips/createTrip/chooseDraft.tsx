@@ -2,13 +2,14 @@
 
 import React, { useEffect, useState, MouseEvent, Fragment } from "react";
 import { Controller,useFormContext,useForm,useFieldArray } from "react-hook-form";
+import { flushSync } from "react-dom";
 import TextField from "@mui/material/TextField";
-import { useRouter } from "next/router";
+import { useRouter } from "next/router";  
 import { UserInterface } from "@/interfaces/UserInterface";
 import { FieldName } from "@/css/layout";
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { ProgramCardForGuide } from "@/components/program/ProgramCardForGuide";
-import { getAllDarftProgramsFromGuide, getAllProgramsFromGuide } from "@/services/programService";
+import { deleteProgramById, getAllDarftProgramsFromGuide, getAllProgramsFromGuide } from "@/services/programService";
 import { ProgramInterface } from "@/interfaces/ProgramInterface";
 import { useAuth } from "@/components/AuthProvider"
 import { AuthContextInterface } from "@/interfaces/AuthContextInterface"
@@ -16,6 +17,7 @@ import { AuthContextInterface } from "@/interfaces/AuthContextInterface"
 const chooseDraft = () => {
   const router = useRouter();
   const [drafts, setDrafts] = useState<ProgramInterface[]>([])
+  const [dummy, setDummy] = useState("dummy")
   const authUserData: AuthContextInterface = useAuth();
   const user = authUserData.user
   console.log(authUserData)
@@ -28,21 +30,35 @@ const chooseDraft = () => {
   //     setUser(JSON.parse(`{}`))
   //   }
   // },[])
-
+  const fetch = async () => {
+    if(authUserData.user && authUserData.user._id){
+      const response = await getAllDarftProgramsFromGuide(authUserData.user._id);
+      setDrafts(response.data || [])
+      // flushSync(()=>{setDrafts(response.data || [])})
+    }
+  }
   useEffect(()=>{
     // if(authUserData.user && authUserData.user?._id){
-      const fetch = async () => {
-        if(authUserData.user && authUserData.user._id){
-          const response = await getAllDarftProgramsFromGuide(authUserData.user._id);
-          setDrafts(response.data || [])
-        }
-      }
       fetch();
     // }
   },[user])
   const handleEdit = async (draft : ProgramInterface) => {
+    console.log("editing")
     if(draft._id){localStorage.setItem("editing", draft._id);}
     router.push("/trips/createTrip")
+  }
+  const handleDelete = async (draft : ProgramInterface) => {
+    console.log("deleting")
+    if(draft._id){
+      deleteProgramById(draft._id)
+      fetch();
+      setTimeout(()=> { setDummy("dummy")
+      }, 100)
+      setTimeout(()=> { setDummy("dummy")
+      }, 500)
+      setTimeout(()=> { setDummy("dummy")
+      }, 1000)
+    }
   }
   const {
     formState: { errors }
@@ -61,7 +77,7 @@ const chooseDraft = () => {
     <div style={{display:"grid", width:"100%"}}>
     {drafts.map((draft)=>(
       <div key={draft._id} style={{padding:"10px 20px"}}>
-        <ProgramCardForGuide program={draft} isComplete={false} isDraft={true} handleFunction={()=>{handleEdit(draft)}}/>
+        <ProgramCardForGuide program={draft} isComplete={false} isDraft={true} handleFunction={()=>{handleEdit(draft)}} handleFunction2={()=>{handleDelete(draft)}}/>
       </div>
     ))}
     </div>
