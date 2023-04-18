@@ -1,7 +1,7 @@
 import { useState, useEffect, Component } from "react";
 import { TopUpTransactionDataInterface } from "@/interfaces/transaction/TopUpTransactionDataInterface";
 import { chargeAndTopUpCoins } from "@/services/topupService";
-import Script from "react-load-script";
+const Script = require("react-load-script");
 import { Avatar, Button } from "@mui/material";
 import { COLOR } from "@/theme/globalTheme";
 import { useRouter } from "next/router";
@@ -53,7 +53,7 @@ function Checkout(props: any) {
     } catch (err:any) {
       console.log(err);
       Swal.close();
-      Swal.fire({
+      if(err instanceof Error) Swal.fire({
         text: err.message,
         icon: "error",
         timer: 2000,

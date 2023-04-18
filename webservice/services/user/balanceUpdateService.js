@@ -8,7 +8,7 @@ const { getTodayDateYYYY_MM_DD, getSecsDiff, getDateYYYY_MM_DD, getYesterDayDate
 const StartUpdateUsersBalanceEveryMidnight = () => {
     console.log('Updating users balance every midnight');
     
-    cron.schedule('1 0 * * *', async () => {
+    cron.schedule('01 00 * * *', async () => {
         console.log('Updating balance...')
         const yesterDate = getYesterDayDateYYYY_MM_DD(getTodayDateYYYY_MM_DD());
         const todayDate = (new Date(getTodayDateYYYY_MM_DD())).toISOString();
@@ -19,9 +19,10 @@ const StartUpdateUsersBalanceEveryMidnight = () => {
             const yester_date = addHoursToDate(new Date(yesterDate), 7)
             const secsDiff = getSecsDiff(end_date , yester_date);
             if(secsDiff == 0) {
-                //console.log(program)
-                const bookings = await Booking.find({ programId: program._id });
-                const totalIncome = program.price * bookings.length;
+                console.log("finished program",program)
+                const bookings = await Booking.find({ programId: program._id});
+                // console.log("booking",bookings)
+                const totalIncome = program.price * program.num_participant;
                 await User.findByIdAndUpdate(program.guide, { $inc: { remainingAmount: totalIncome } });
 
                 const noti = new Notification({

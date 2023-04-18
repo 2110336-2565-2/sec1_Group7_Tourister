@@ -9,12 +9,14 @@ import { BorderColorOutlined, CalendarMonth, LocationOnOutlined } from "@mui/ico
 import { format } from "date-fns";
 import { Chip } from "@mui/material";
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 interface IProgramInterface {
   program: ProgramInterface;
   isComplete: boolean;
   isDraft?: boolean;
   handleFunction?: () => void;
+  handleFunction2?: () => void;
 }
 
 
@@ -23,6 +25,7 @@ export const ProgramCardForGuide= ({
   isComplete,
   isDraft=false,
   handleFunction,
+  handleFunction2,
 }:IProgramInterface) => {
   const router = useRouter();
 
@@ -102,15 +105,26 @@ export const ProgramCardForGuide= ({
         <div>
           {isDraft? (
             // <button type="button" onClick={handleFunction}><DriveFileRenameOutlineIcon/></button>
-            <button 
-              style={{
-                width:"25px", height:"25px", margin:"0 0 5px auto", float:"right",
-                borderWidth:"1px", borderColor:"lightgrey", borderRadius:"50%", 
-                color:"grey", display:"flex", justifyContent:"center", alignItems:"center"
-              }}
-              type="button" onClick={handleFunction}>
-                <BorderColorOutlined style={{width:"15px", height:"15px"}}/>
-            </button>
+            <div>
+              <button 
+                style={{
+                  width:"25px", height:"25px", margin:"0 0 5px auto", float:"right",
+                  borderWidth:"1px", borderColor:"lightgrey", borderRadius:"50%", 
+                  color:"grey", display:"flex", justifyContent:"center", alignItems:"center"
+                }}
+                type="button" onClick={handleFunction2}>
+                  <DeleteIcon style={{width:"15px", height:"15px"}}/>
+              </button>
+              <button 
+                style={{
+                  width:"25px", height:"25px", margin:"0 0 5px auto", float:"right",
+                  borderWidth:"1px", borderColor:"lightgrey", borderRadius:"50%", 
+                  color:"grey", display:"flex", justifyContent:"center", alignItems:"center"
+                }}
+                type="button" onClick={handleFunction}>
+                  <BorderColorOutlined style={{width:"15px", height:"15px"}}/>
+              </button>
+            </div>
           ):(<Fragment/>)}
           <div style={{ display: "inline-block", float: "left" }}>
             {program.dayTrips && program.dayTrips[0]?(

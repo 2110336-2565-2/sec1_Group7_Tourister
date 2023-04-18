@@ -128,24 +128,37 @@ const CreateTrip = () => {
                 const thisEndDate = new Date(getValues("endDate"))
                 const thisStartTime = getValues("startTime").split(":").map((t)=>Number(t))
                 const thisEndTime = getValues("endTime").split(":").map((t)=>Number(t))
+                thisStartDate.setHours(thisStartTime[0],thisStartTime[1])
+                thisEndDate.setHours(thisEndTime[0],thisEndTime[1])
                 const otherStartDate = new Date(program.startDate)
                 const otherEndDate = new Date(program.endDate)
-                const otherStartTime = program.startTime.split(":").map((t)=>Number(t))
-                const otherEndTime = program.endTime.split(":").map((t)=>Number(t))
-                // console.log("thisStartDate > otherStartDate:",thisStartDate > otherStartDate)
-                if(thisStartDate > otherStartDate || (thisStartDate.toString()===otherStartDate.toString() && (thisStartTime[0]*60+thisStartTime[1]>otherStartTime[0]*60+otherStartTime[1]))){
-                  if((otherEndDate > thisStartDate || (otherEndDate.toString()===thisStartDate.toString() && (otherEndTime[0]*60+otherEndTime[1]>thisStartTime[0]*60+thisStartTime[1])))){
-                    return true /*------this.start , other.start , this.end*/}
-                }else if((thisStartDate < otherStartDate || (thisStartDate.toString()===otherStartDate.toString() && (thisStartTime[0]*60+thisStartTime[1]<otherStartTime[0]*60+otherStartTime[1])))){
-                  if((thisEndDate > otherStartDate || (thisEndDate.toString()===otherStartDate.toString() && (thisEndTime[0]*60+thisEndTime[1]>otherStartTime[0]*60+otherStartTime[1])))){
-                    return true
-                //------this.start === other.start
-                }}else {
-                  if((thisEndDate.toString()===thisStartDate.toString() && thisStartTime===thisEndTime) || (otherEndDate.toString()===otherStartDate.toString() && otherEndTime===otherStartTime)){
-                    return false;
-                  }else return true;
-                }
-                return false
+                console.log(thisStartDate,thisEndDate)
+                console.log(otherStartDate,otherEndDate)
+                if(thisStartDate.getTime() >= otherEndDate.getTime()){return false}
+                if(thisEndDate.getTime() <= otherStartDate.getTime()){return false}
+                return true
+                // const thisStartDate = new Date(getValues("startDate"))
+                // const thisEndDate = new Date(getValues("endDate"))
+                // const thisStartTime = getValues("startTime").split(":").map((t)=>Number(t))
+                // const thisEndTime = getValues("endTime").split(":").map((t)=>Number(t))
+                // const otherStartDate = new Date(program.startDate)
+                // const otherEndDate = new Date(program.endDate)
+                // const otherStartTime = program.startTime.split(":").map((t)=>Number(t))
+                // const otherEndTime = program.endTime.split(":").map((t)=>Number(t))
+                // // console.log("thisStartDate > otherStartDate:",thisStartDate > otherStartDate)
+                // if(thisStartDate > otherStartDate || (thisStartDate.toString()===otherStartDate.toString() && (thisStartTime[0]*60+thisStartTime[1]>otherStartTime[0]*60+otherStartTime[1]))){
+                //   if((otherEndDate > thisStartDate || (otherEndDate.toString()===thisStartDate.toString() && (otherEndTime[0]*60+otherEndTime[1]>thisStartTime[0]*60+thisStartTime[1])))){
+                //     return true /*------this.start , other.start , this.end*/}
+                // }else if((thisStartDate < otherStartDate || (thisStartDate.toString()===otherStartDate.toString() && (thisStartTime[0]*60+thisStartTime[1]<otherStartTime[0]*60+otherStartTime[1])))){
+                //   if((thisEndDate > otherStartDate || (thisEndDate.toString()===otherStartDate.toString() && (thisEndTime[0]*60+thisEndTime[1]>otherStartTime[0]*60+otherStartTime[1])))){
+                //     return true
+                // //------this.start === other.start
+                // }}else {
+                //   if((thisEndDate.toString()===thisStartDate.toString() && thisStartTime===thisEndTime) || (otherEndDate.toString()===otherStartDate.toString() && otherEndTime===otherStartTime)){
+                //     return false;
+                //   }else return true;
+                // }
+                // return false
               }
               for(let i=0;i<res.data?.length;i++){
                 console.log("-------------------------------")

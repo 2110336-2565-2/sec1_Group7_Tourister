@@ -49,12 +49,20 @@ export const validationSchema = yup.object().shape({
 });
 
 export function formDatatoProgramInterface(data: FormData, user: UserInterface, filterDayTrips: {date: string; attractions: AttractionInterface[];}[]) {
+  const newStartDate = new Date(data.startDate)
+  const numStartTime = data.startTime.split(":").map((t)=>Number(t))
+  newStartDate.setHours(numStartTime[0],numStartTime[1])
+  const newEndDate = new Date(data.endDate)
+  const numEndTime = data.endTime.split(":").map((t)=>Number(t))
+  newEndDate.setHours(numEndTime[0],numEndTime[1])
+  // console.log(newStartDate)
+  // console.log(newStartDate.toString())
   let programData : ProgramInterface = {
     _id: data._id,
     name: data.name,
     price: data.price,
-    startDate: data.startDate,
-    endDate: data.endDate,
+    startDate: newStartDate,
+    endDate: newEndDate,
     startTime: data.startTime,
     endTime: data.endTime,
     province: data.province,

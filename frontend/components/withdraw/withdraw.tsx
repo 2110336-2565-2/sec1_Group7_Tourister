@@ -26,6 +26,10 @@ interface withdrawValue {
   value:number
 }
 
+interface BankOption {
+  value: string;
+  label: string;
+}
 
 const bankOptions = [
   { value: "scb", label: "SCB - ธนาคารไทยพาณิชย์" },
@@ -127,7 +131,7 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
       } catch (err:any) {
         console.log(err);
         Swal.close();
-        Swal.fire({
+        if(err instanceof Error) Swal.fire({
           text: err.message,
           icon: "error",
           timer: 2000
