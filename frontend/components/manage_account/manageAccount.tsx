@@ -39,7 +39,7 @@ const Button = styled.button`
   padding: 0;
 `;
 
-const manageAccount = () => {
+const ManageAccount = () => {
   const router = useRouter();
 
   const authUserData:AuthContextInterface = useAuth();
@@ -216,4 +216,4 @@ const manageAccount = () => {
   );
 };
 
-export default manageAccount;
+export default ManageAccount;

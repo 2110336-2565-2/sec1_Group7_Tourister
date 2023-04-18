@@ -36,7 +36,7 @@ export const NotificationList = () => {
     return <>
     <br />
     <div style={{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",height:"max-content"}}>
-    <h3>Sorry, There aren't any notification</h3>
+    <h3>Sorry, There aren&apos;t any notification</h3>
     </div>
     </>
   }

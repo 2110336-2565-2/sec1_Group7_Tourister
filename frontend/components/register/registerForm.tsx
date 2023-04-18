@@ -14,7 +14,7 @@ import { FormInputAccountType } from "../formInput/FormInputAccountType";
 import { Form, FieldName, Field } from "@/css/layout";
 
 
-const registerForm = () => {
+const RegisterForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -117,4 +117,4 @@ const registerForm = () => {
   );
 };
 
-export default registerForm;
+export default RegisterForm;

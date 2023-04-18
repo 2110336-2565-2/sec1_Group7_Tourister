@@ -1,5 +1,3 @@
-"use client";
-
 import { useState, useContext, Fragment } from "react";
 import { nanoid } from "nanoid";
 import Attraction from "./attraction";
@@ -8,7 +6,7 @@ import TextField from "@mui/material/TextField";
 import { AttractionInterface } from "@/interfaces/AttractionInterface";
 import { COLOR } from "@/theme/globalTheme";
 
-const dayTrip = ({date,order,savedAttraction,handleCB}:{date:string,order:number,savedAttraction:AttractionInterface[],handleCB:Function}) => {
+const DayTrip = ({date,order,savedAttraction,handleCB}:{date:string,order:number,savedAttraction:AttractionInterface[],handleCB:Function}) => {
   const stage = useContext(StageContext)
   const [attractions,setAttractions] = useState<AttractionInterface[]>(savedAttraction);
 
@@ -94,7 +92,7 @@ const dayTrip = ({date,order,savedAttraction,handleCB}:{date:string,order:number
   );
 };
 
-dayTrip.defaultProps = {
+DayTrip.defaultProps = {
   savedAttraction : [{
     "id": nanoid(),
     "time": "",
@@ -104,4 +102,4 @@ dayTrip.defaultProps = {
     "file": undefined
   }]
 }
-export default dayTrip;
+export default DayTrip;

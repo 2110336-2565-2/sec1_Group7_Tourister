@@ -1,5 +1,3 @@
-"use client";
-
 import { useState, MouseEvent, Fragment, ChangeEvent } from "react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
@@ -45,7 +43,7 @@ const validationSchema = yup.object().shape({
     .max(10, "Please enter the valid phone number"),
 });
 
-const editProfile = () => {
+const EditProfile = () => {
   let user: UserInterface;
   const [previewImg, setPreviewImg] = useState<string>();
   if (typeof window !== "undefined") {
@@ -369,4 +367,4 @@ const editProfile = () => {
   );
 };
 
-export default editProfile;
+export default EditProfile;

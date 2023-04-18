@@ -1,5 +1,3 @@
-"use client";
-
 import { ChangeEvent, useState, MouseEvent, Fragment } from "react";
 import { Controller,useFormContext,useForm,useFieldArray } from "react-hook-form";
 // import { yupResolver } from "@hookform/resolvers/yup"
@@ -14,7 +12,7 @@ import { Chip, FormControl, MenuItem, Select } from "@mui/material";
 import { COLOR } from "@/theme/globalTheme";
 import { TimePicker } from "@mui/x-date-pickers";
 
-const attraction = ({id,t,l,p,o,f=null,handleDelete,handleCallback}:{id:string,t:string,l:string,p:string,o:string,f:string | null,handleDelete:Function,handleCallback:Function}) => {
+const Attraction = ({id,t,l,p,o,f=null,handleDelete,handleCallback}:{id:string,t:string,l:string,p:string,o:string,f:string | null,handleDelete:Function,handleCallback:Function}) => {
   const [time,setTime] = useState(t)
   const [location,setLocation] = useState(l);
   const [province,setProvince] = useState(p)
@@ -104,7 +102,7 @@ const attraction = ({id,t,l,p,o,f=null,handleDelete,handleCallback}:{id:string,t
     <Fragment>
       {editing===true ? (
           <div>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.0/jquery.min.js" async></script>
             <div style={{display:"flex", margin: "0"}}>
               <div style={{width:"70px", marginRight:'10px'}}>
                 <TextField 
@@ -424,4 +422,4 @@ const attraction = ({id,t,l,p,o,f=null,handleDelete,handleCallback}:{id:string,t
 // attraction.defualtProps = {
 //   name: ''
 // }
-export default attraction;
+export default Attraction;

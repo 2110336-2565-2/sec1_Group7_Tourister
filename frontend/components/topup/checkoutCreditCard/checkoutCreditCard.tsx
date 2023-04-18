@@ -50,7 +50,7 @@ function Checkout(props: any) {
       Swal.close();
       console.log(res);
       setShowPopup(true);
-    } catch (err) {
+    } catch (err:any) {
       console.log(err);
       Swal.close();
       Swal.fire({

@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useEffect, useState, createContext, Fragment } from "react";
 import { Controller,useFormContext,useForm,useFieldArray } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup"
@@ -42,7 +40,7 @@ import _ from "lodash";
 
 export const StageContext = createContext(0)
 
-const createTrip = () => {
+const CreateTrip = () => {
   const [stage, setStage ] = useState<number>(0); // 0:start 1:next clicked 2:page 2 3:submit clicked
   // const [user, setUser] = useState<UserInterface>()
   const [draft, setDraft] = useState<ProgramInterface>()
@@ -373,6 +371,7 @@ const createTrip = () => {
               <FormGroup style={{gap:"0px"}}>
                 {Object.keys(languageMap).map((lang:string,i)=>(
                   <FormControlLabel
+                    key={i}
                     control={
                       <Checkbox checked={languageCheck[i]} onChange={toggleLanguage} name={lang} />
                     }
@@ -524,4 +523,4 @@ const createTrip = () => {
   );
 };
 
-export default createTrip;
+export default CreateTrip;

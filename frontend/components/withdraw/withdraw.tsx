@@ -21,6 +21,11 @@ interface TopUpProps {
   initialAmount: number;
 }
 
+interface withdrawValue {
+  label:string,
+  value:number
+}
+
 
 const bankOptions = [
   { value: "scb", label: "SCB - ธนาคารไทยพาณิชย์" },
@@ -59,7 +64,7 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
   const [amount, setAmount] = useState<number>(initialAmount);
   const [showPopup, setShowPopup] = useState(false);
   const [bankAccountNumber, setBankAccountNumber] = useState<string>("");
-  const [bankAccount, setBankAccount] = useState<accountType>("");
+  const [bankAccount, setBankAccount] = useState<string>("");
 
   const handleBankChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setBankAccount(event.target.value);
@@ -119,7 +124,7 @@ const TopUp: React.FC<TopUpProps> = ({ initialAmount }) => {
         Swal.close();
         // console.log(res);
         setShowPopup(true);
-      } catch (err) {
+      } catch (err:any) {
         console.log(err);
         Swal.close();
         Swal.fire({

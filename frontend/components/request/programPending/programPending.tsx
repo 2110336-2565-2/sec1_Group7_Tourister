@@ -80,18 +80,18 @@ export default function ProgramPending() {
 
   console.log(programs);
 
-  const startDateTime = new Date(programs.startDate);
-  const endDateTime = new Date(programs.endDate);
-  const formattedStartDate = startDateTime.toLocaleDateString("en-GB", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  });
-  const formattedEndDate = endDateTime.toLocaleDateString("en-GB", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  });
+  // const startDateTime = new Date(programs.startDate);
+  // const endDateTime = new Date(programs.endDate);
+  // const formattedStartDate = startDateTime.toLocaleDateString("en-GB", {
+  //   year: "numeric",
+  //   month: "short",
+  //   day: "numeric",
+  // });
+  // const formattedEndDate = endDateTime.toLocaleDateString("en-GB", {
+  //   year: "numeric",
+  //   month: "short",
+  //   day: "numeric",
+  // });
 
   if (loading) {
     return (

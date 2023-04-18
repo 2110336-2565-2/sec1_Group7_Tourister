@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useEffect, useState, MouseEvent, Fragment } from "react";
 import { Controller,useFormContext,useForm,useFieldArray } from "react-hook-form";
 import TextField from "@mui/material/TextField";
@@ -13,7 +11,7 @@ import { ProgramInterface } from "@/interfaces/ProgramInterface";
 import { useAuth } from "@/components/AuthProvider"
 import { AuthContextInterface } from "@/interfaces/AuthContextInterface"
 
-const chooseDraft = () => {
+const ChooseDraft = () => {
   const router = useRouter();
   const [drafts, setDrafts] = useState<ProgramInterface[]>([])
   const authUserData: AuthContextInterface = useAuth();
@@ -69,4 +67,4 @@ const chooseDraft = () => {
   );
 };
 
-export default chooseDraft;
+export default ChooseDraft;

@@ -18,12 +18,12 @@ interface IProgramInterface {
 }
 
 
-export const ProgramCardForGuide: FC<IProgramInterface> = ({
+export const ProgramCardForGuide= ({
   program,
   isComplete,
   isDraft=false,
   handleFunction,
-}) => {
+}:IProgramInterface) => {
   const router = useRouter();
 
   const handleClick = () => {

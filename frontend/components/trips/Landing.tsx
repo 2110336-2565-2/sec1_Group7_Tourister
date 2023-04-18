@@ -1,4 +1,3 @@
-"use client";
 import { Button, Tab, Tabs, CircularProgress, Stack } from "@mui/material";
 import * as React from "react";
 import { useState, useEffect, useContext } from "react";
@@ -136,7 +135,7 @@ const Landing = () => {
             ) : (
               <>
                 <UnFoundLabel>
-                  You don't have any ongoing trips at the moment.{" "}
+                  You don&apos;t have any ongoing trips at the moment.{" "}
                 </UnFoundLabel>
                 <UnFoundLabel>
                   Keep creating and publishing trips for tourists to book and
@@ -171,7 +170,7 @@ const Landing = () => {
           <>
             <UnFoundLabel>No Upcoming Trips</UnFoundLabel>
             <UnFoundLabel>
-              Don't worry though - there are always more adventures to be
+              Don&apos;t worry though - there are always more adventures to be
               created!{" "}
             </UnFoundLabel>
             </>
@@ -204,7 +203,7 @@ const Landing = () => {
             <UnFoundLabel>
               Keep creating amazing trips for tourists.
             </UnFoundLabel>
-            <UnFoundLabel>They'll show up in this tab soon!</UnFoundLabel>
+            <UnFoundLabel>They&apos;ll show up in this tab soon!</UnFoundLabel>
           
             </>
             )}
