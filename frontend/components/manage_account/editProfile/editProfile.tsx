@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { FormInputText } from "@/components/formInput/FormInputText";
-import { getUserById, updateUserById } from "@/services/userService";
+import { getUserById, updateUserById, uploadProfilePic } from "@/services/userService";
 import { UserInterface } from "@/interfaces/UserInterface";
 import axios from "axios";
 
@@ -122,11 +122,14 @@ const EditProfile = () => {
       return;
     }
 
+    uploadProfilePic(user._id ?? '', file).then((res) => console.log(res))
+
     const reader = new FileReader();
     reader.onload = (event) => {
       const result = event.target?.result;
       if (typeof result === "string") {
-        uploadCompressedImage(result,150,150,0.5)
+        console.log('upload profilleee')
+        //uploadCompressedImage(result,150,150,0.5)
       }
     };
     reader.readAsDataURL(file);

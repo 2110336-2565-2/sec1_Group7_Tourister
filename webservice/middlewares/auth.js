@@ -10,10 +10,13 @@ const AuthMiddleware = {
     async authUser(req, res, next) {
         const token = req.cookies.jwt || req.headers.authorization?.split(' ')[1];
         if(verifyToken(token)) return next()
-        else return res.json({
-            code: 403,
-            message: "forbidden request",
-        })
+        else {
+            console.log('unauth', verifyToken(token))
+            return res.json({
+                code: 403,
+                message: "forbidden request",
+            })
+        }
     },
     
     /**
