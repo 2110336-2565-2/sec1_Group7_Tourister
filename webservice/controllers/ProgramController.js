@@ -5,6 +5,7 @@ const { tryCatchMongooseService } = require("../utils/utils");
 const bcrypt = require("bcrypt");
 const { queryObjToProgramFilter } = require("../utils/queryToMongooseFilter");
 const Notification = require("../models/Notification");
+const { uploadImage } = require("../services/uploadImageService");
 
 const ProgramController = {
   /**
@@ -276,7 +277,58 @@ const ProgramController = {
         }
     })
     res.json(result)
-},
+  },
+
+  /**
+     * uploadProgramPhotosByProgramId
+     * @param {import('express').Request} req
+     * @param {import('express').Response} res
+     * @param {import('express').NextFunction} next
+     */
+  async uploadProgramPhotosByProgramId(req, res, next) {
+    const result = await tryCatchMongooseService(async () => {
+      const imageFiles = req.files
+      console.log(imageFiles) 
+
+      const programId = req.params.id;
+      const programDoc = await Program.findById(programId);
+      const program = programDoc.toObject();
+
+      let pos = 0;
+      const attractionsAmt = program.dayTrips.reduce((acc, dayTrip) => {
+        return acc + dayTrip.attractions.length;
+      }, 0);
+      if(attractionsAmt !== imageFiles.length) {
+        throw new ApiErrorResponse("number of images does not match number of attractions", 400)
+      }
+
+      for(let i=0; i<program.dayTrips.length; i++) {
+        for(let j=0; j<program.dayTrips[i].attractions.length; j++) {
+          if (pos < imageFiles.length) {
+            const uploadResult = await uploadImage(imageFiles[pos])
+            if(uploadResult.status === 'failed' || uploadResult.response?.image?.url == null) {
+                console.log(uploadResult)
+                throw new ApiErrorResponse("upload failed: " + uploadResult.message, 500)
+            }
+            const imgUrl = uploadResult.response.image.url
+            program.dayTrips[i].attractions[j].image = imgUrl
+            pos++
+          } 
+        }
+      }
+
+      await Program.findByIdAndUpdate(programId, { $set: program });
+      const updatedProgram = await Program.findById(programId);
+
+      return {
+        code: 204,
+        data: updatedProgram,
+        message: "program photos uploaded",
+      };
+    });
+    res.json(result);
+  },
+
 };
 
 module.exports = ProgramController;

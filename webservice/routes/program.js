@@ -13,6 +13,6 @@ router.post('/program', authGuide, programController.createProgram)
 router.put('/program/:id', authGuide, programController.updateProgramById)
 router.delete('/program/:id', authGuide, programController.deleteProgramById)
 
-router.post('/program/upload/photos', multipleImageFileUpload,  programController.uploadProgramPhotos)
+router.post('/program/upload/photos/:id', multipleImageFileUpload,  programController.uploadProgramPhotosByProgramId)
 
 module.exports = router
