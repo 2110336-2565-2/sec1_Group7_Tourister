@@ -317,13 +317,15 @@ const ProgramController = {
         }
       }
 
+      program.published = true;
+
       await Program.findByIdAndUpdate(programId, { $set: program });
       const updatedProgram = await Program.findById(programId);
 
       return {
         code: 204,
         data: updatedProgram,
-        message: "program photos uploaded",
+        message: "program photos uploaded and published",
       };
     });
     res.json(result);

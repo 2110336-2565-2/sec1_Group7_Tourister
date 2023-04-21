@@ -68,6 +68,8 @@ export const deleteProgramById = async (id: string) => {
 }
 
 export const publishProgram = async (id: string, data: any, images: File[]) => {
+    if(data.published != null) data.published = false;
+    
     // length of image array must equal to total attractions
     const configs = localStorage.getItem("accessToken") != undefined ? { headers: { 'Authorization' : `Bearer ${localStorage.getItem("accessToken")}`} } : {}
     const axios_res = await axios.put(`${appConfig.BACKEND_URL}/api/program/${id}`, data, configs) 
@@ -83,6 +85,6 @@ export const publishProgram = async (id: string, data: any, images: File[]) => {
     const res2 = axios_res2.data as ApiResponseInterface
     if(!isHttpStatusOk(res2.code)) throw new ApiErrorResponse(res2.message ?? "", res2.code, res2.errors ?? undefined, res2.tag ?? "")
     console.log("upload images success")
-    
+
     return res;
 }
