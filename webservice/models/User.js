@@ -46,10 +46,6 @@ const UserSchema = new mongoose.Schema({
       return this.isGuide;
     },
   },
-  darkmode: {
-    type: Boolean,
-    default: false
-  },
   profilePic: {
     type: String,
     default: function() {
