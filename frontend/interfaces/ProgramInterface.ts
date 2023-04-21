@@ -20,6 +20,7 @@ export interface ProgramInterface {
   // attractions?: AttractionInterface[];
   dayTrips? : {date:string,attractions: AttractionInterface[]}[]
   image?: string;
+  coverImage?: string;
   language?: string[];
   endLocation?: string;
   endProvince?: string;

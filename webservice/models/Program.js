@@ -76,12 +76,16 @@ const ProgramSchema = new mongoose.Schema({
                         type : String,
                         require : true
                     },
+                    image: String, 
                     file: String,
                     // file: File | undefined
                 }, {_id: false})]}
         }, {_id: false})]
     },
     image: {
+        type: String
+    },
+    coverImage: {
         type: String
     },
     language: {

@@ -44,8 +44,11 @@ export default function ProgramPending() {
     for (let i = 0; i < programOfGuide.data!.length; i++) {
       programOfGuideArr.push(programOfGuide.data![i]._id);
     }
+    response.data = response.data?.filter((program) => {
+      return program !== null;
+    })
     console.log(programOfGuideArr);
-    console.log(response.data!.length);
+    console.log(response.data!);
     for (let i = 0; i < response.data!.length; i++) {
       if (
         response.data![i].status === "pending" &&
@@ -75,7 +78,11 @@ export default function ProgramPending() {
     setLoading(false);
   }
   useEffect(() => {
-    fetchData();
+    try{
+      fetchData();
+    } catch(err:any){
+      console.log(err)
+    }
   }, []);
 
   console.log(programs);

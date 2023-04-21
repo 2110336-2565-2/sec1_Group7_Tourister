@@ -94,7 +94,7 @@ const ManageAccount = () => {
         >
           <Avatar
             style={{ width: "3.4rem", height: "3.4rem" }}
-            src={`data:image/png;base64,${user?.image}`}
+            src={`${user?.profilePic}`}
           />
           <div
             style={{

@@ -19,7 +19,7 @@ export const getAllNotificationsFromUser = async (userId: string) => {
 
 export const readAllNotificationsFromUser = async (userId: string) => {
     const configs = localStorage.getItem("accessToken") != undefined ? { headers: { 'Authorization' : `Bearer ${localStorage.getItem("accessToken")}`} } : {}
-    const axios_res = await axios.put(`${appConfig.BACKEND_URL}/api/notification/readAll/${userId}`, configs)
+    const axios_res = await axios.put(`${appConfig.BACKEND_URL}/api/notification/readAll/${userId}`, {}, configs)
     
     const res = axios_res.data as ApiResponseInterface<NotificationInterface[]>
     if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined, res.tag ?? "")
@@ -28,7 +28,8 @@ export const readAllNotificationsFromUser = async (userId: string) => {
 
 export const readNotificationsById = async (id: string) => {
     const configs = localStorage.getItem("accessToken") != undefined ? { headers: { 'Authorization' : `Bearer ${localStorage.getItem("accessToken")}`} } : {}
-    const axios_res = await axios.put(`${appConfig.BACKEND_URL}/api/notification/read/${id}`, configs)
+    console.log(configs)
+    const axios_res = await axios.put(`${appConfig.BACKEND_URL}/api/notification/read/${id}`, {}, configs)
     
     const res = axios_res.data as ApiResponseInterface<NotificationInterface[]>
     if(!isHttpStatusOk(res.code)) throw new ApiErrorResponse(res.message ?? "", res.code, res.errors ?? undefined, res.tag ?? "")

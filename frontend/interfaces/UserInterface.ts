@@ -11,5 +11,6 @@ export interface UserInterface {
   remainingAmount?: number;
   licenseId?: string;
   image?: string;
+  profilePic?: string;
   draft?: {[key:string]:ProgramInterface};
 }
