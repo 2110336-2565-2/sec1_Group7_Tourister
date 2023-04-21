@@ -1,6 +1,7 @@
 import { ReactElement } from "react";
 import styled from "styled-components"
-import { Button } from "@mui/material";
+import { IconButton } from "@mui/material";
+import CloseIcon from '@mui/icons-material/Close';
 
 const Popup = styled.div`
   position: fixed;
@@ -26,10 +27,12 @@ const InnerPopup = styled.div`
   flex-direction: column;
 `
 
-const CloseButton = styled(Button)`
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
+const CloseButton = styled(IconButton)`
+  && {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+  }
 `
 
 export const SearchPopup = (props:any) => {
@@ -41,7 +44,7 @@ export const SearchPopup = (props:any) => {
     <Popup>
       <InnerPopup>
         <CloseButton onClick={closeAdvanceSearchPopup}>
-          close
+          <CloseIcon/>
         </CloseButton>
         {props.children}
       </InnerPopup>

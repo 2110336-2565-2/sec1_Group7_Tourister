@@ -23,11 +23,13 @@ import { SearchPopup } from "./SearchPopup";
 import { COLOR } from "@/theme/globalTheme";
 
 const AdvanceButton = styled(Button)`
-  transform: translateY(-20px); 
-  align-self: flex-end; 
-  border-radius: 1rem; 
-  color:${COLOR.background};
-  border-color:${COLOR.background};
+  && {  
+    transform: translateY(-20px); 
+    align-self: flex-end; 
+    border-radius: 1rem; 
+    color:${COLOR.background};
+    border-color:${COLOR.background};
+  }
 `
 
 const HeaderInPopup = styled.h4`

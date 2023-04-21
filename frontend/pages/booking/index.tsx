@@ -17,12 +17,14 @@ import { BookingProgramList } from "@/components/booking/BookingProgramList";
 import { NotificationProvider } from "@/components/notification/NotificationProvider";
 
 const HistoryButton = styled(Button)`
-  align-self: flex-end; 
-  border-radius: 1em;
-  margin-top: 2em;
-  margin-right: 1em; 
-  color:${COLOR.background};
-  border-color:${COLOR.background};
+  && {
+    align-self: flex-end; 
+    border-radius: 1em;
+    margin-top: 2em;
+    margin-right: 1em; 
+    color:${COLOR.background};
+    border-color:${COLOR.background};
+  }
 `
 
 export default function Page() {
