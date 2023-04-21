@@ -9,6 +9,7 @@ const AuthMiddleware = {
      */
     async authUser(req, res, next) {
         const token = req.cookies.jwt || req.headers.authorization?.split(' ')[1];
+        //console.log('authing user', token)
         if(verifyToken(token)) return next()
         else {
             console.log('unauth', verifyToken(token))
