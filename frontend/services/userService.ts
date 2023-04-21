@@ -35,7 +35,7 @@ export const getUserById = async (id: string) => {
   return res;
 };
 
-export const createUser = async (data: UserInterface) => {
+export const createUser = async (data: UserInterface, image: File | undefined =undefined) => {
   const axios_res = await axios.post(`${appConfig.BACKEND_URL}/api/user`, data);
   const res = axios_res.data as ApiResponseInterface<UserInterface>;
   if (!isHttpStatusOk(res.code))
@@ -45,10 +45,20 @@ export const createUser = async (data: UserInterface) => {
       res.errors ?? undefined,
       res.tag ?? ""
     );
+  
+  if(image != undefined){
+    const formData = new FormData();
+    formData.append("image", image);
+    const axios_res2 = await axios.post(`${appConfig.BACKEND_URL}/api/user/uploadProfilePic/${res.data?._id}`, formData);
+    const res2 = axios_res.data as ApiResponseInterface<UserInterface>;
+    if (!isHttpStatusOk(res.code))
+      console.log('upload image error', res.message ?? "")
+  }
+
   return res;
 };
 
-export const registerUser = async (data: UserInterface) => {
+export const registerUser = async (data: UserInterface, image:File | undefined = undefined) => {
   const axios_res = await axios.post(`${appConfig.BACKEND_URL}/api/user`, data);
   const res = axios_res.data as ApiResponseInterface<UserInterface>;
   if (!isHttpStatusOk(res.code))
@@ -58,6 +68,16 @@ export const registerUser = async (data: UserInterface) => {
       res.errors ?? undefined,
       res.tag ?? ""
     );
+
+  if(image != undefined){
+    const formData = new FormData();
+    formData.append("image", image);
+    const axios_res2 = await axios.post(`${appConfig.BACKEND_URL}/api/user/uploadProfilePic/${res.data?._id}`, formData);
+    const res2 = axios_res.data as ApiResponseInterface<UserInterface>;
+    if (!isHttpStatusOk(res.code))
+      console.log('upload image error', res.message ?? "")
+  }
+
   return res;
 };
 
