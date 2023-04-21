@@ -56,10 +56,12 @@ const UserSchema = new mongoose.Schema({
       }
     }
   },
+  /*-----Deprecated-----*/
   image: {
     type: String,
     default: "",
   },
+  /*-----Deprecated-----*/
   draft:{
     type: Object,
   },

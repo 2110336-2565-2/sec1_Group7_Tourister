@@ -256,6 +256,27 @@ const ProgramController = {
     });
     res.json(result);
   },
+
+  /**
+     * upload photos
+     * @param {import('express').Request} req
+     * @param {import('express').Response} res
+     * @param {import('express').NextFunction} next
+     */
+  async uploadProgramPhotos(req, res, next) {
+    const result = await tryCatchMongooseService (async () => {
+        const imageFiles = req.files
+        console.log(imageFiles)
+        console.log(req.body)            
+
+        return {
+            code: 200,
+            data: {},
+            message: "photos received",
+        }
+    })
+    res.json(result)
+},
 };
 
 module.exports = ProgramController;
