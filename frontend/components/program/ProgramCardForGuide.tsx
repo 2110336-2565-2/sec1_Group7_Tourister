@@ -104,7 +104,22 @@ export const ProgramCardForGuide= ({
       >
         <div>
           {isDraft? (
-            // <button type="button" onClick={handleFunction}><DriveFileRenameOutlineIcon/></button>
+            // <PopupState variant="popover" popupId="popup-menu">
+            //   {(popupState) => (
+            //     <React.Fragment>
+            //       <IconButton
+            //         style = {{padding:"0", marginTop:"0", float:"right"}}
+            //         {...bindTrigger(popupState)}
+            //       >
+            //         <MoreVert/>
+            //       </IconButton>
+            //       <Menu {...bindMenu(popupState)} sx={{"& .MuiMenuItem-root":{padding:"0 15px", width:"100px"}}}>
+            //         <MenuItem onClick={() => {popupState.close; handleFunction;}}>Edit</MenuItem>
+            //         <MenuItem onClick={() => {popupState.close; handleFunction2;}}>Delete</MenuItem>
+            //       </Menu>
+            //     </React.Fragment>
+            //   )}
+            // </PopupState>
             <div>
               <button 
                 style={{
@@ -117,7 +132,7 @@ export const ProgramCardForGuide= ({
               </button>
               <button 
                 style={{
-                  width:"25px", height:"25px", margin:"0 0 5px auto", float:"right",
+                  width:"25px", height:"25px", margin:"0 5px 5px auto", float:"right",
                   borderWidth:"1px", borderColor:"lightgrey", borderRadius:"50%", 
                   color:"grey", display:"flex", justifyContent:"center", alignItems:"center"
                 }}
