@@ -16,12 +16,15 @@ export const NotificationList = () => {
   const userId:string = authUserData.user?._id!
   const router = useRouter();
 
-
-
   const { notificationData, refetchNotification, isLoadingNotification} = useNotification();
 
   const handleMarkAllNotificationsAsRead = async () => {
-    await readAllNotificationsFromUser(userId);
+    try{
+      if(!userId)return
+      await readAllNotificationsFromUser(userId);
+    }catch(err:any){
+      console.log(err)
+    }
     refetchNotification();
   }
 
