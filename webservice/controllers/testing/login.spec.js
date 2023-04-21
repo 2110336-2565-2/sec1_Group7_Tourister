@@ -19,7 +19,7 @@ const nonexistentuser = {
 };
 
 describe("POST /auth/login", () => {
-  describe("When a username is not provided", () => {
+  describe("When an email is not provided", () => {
     let res;
     beforeAll(async () => {
       res = await request(app)
