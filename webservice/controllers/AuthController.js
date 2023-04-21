@@ -22,7 +22,7 @@ const AuthController = {
                 throw new ApiErrorResponse("invalid email or password", 401)
             }
             else {
-                const userData = user.toJSON()
+                const userData = JSON.parse(JSON.stringify(user))
                 delete userData.draft
                 delete userData.password
                 delete userData.image
