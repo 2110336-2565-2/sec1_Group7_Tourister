@@ -44,7 +44,7 @@ export default function ProgramPending() {
     for (let i = 0; i < programOfGuide.data!.length; i++) {
       programOfGuideArr.push(programOfGuide.data![i]._id);
     }
-    response.data?.filter((program) => {
+    response.data = response.data?.filter((program) => {
       return program !== null;
     })
     console.log(programOfGuideArr);
@@ -78,7 +78,11 @@ export default function ProgramPending() {
     setLoading(false);
   }
   useEffect(() => {
-    fetchData();
+    try{
+      fetchData();
+    } catch(err:any){
+      console.log(err)
+    }
   }, []);
 
   console.log(programs);
