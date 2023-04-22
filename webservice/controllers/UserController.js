@@ -54,9 +54,13 @@ const UserController = {
     async createUser(req, res, next) {
         const result = await tryCatchMongooseService(async () => {
             const payload = req.body
-            if(!payload.email || !payload.password) throw new ApiErrorResponse("please specify email and password", 400)
+            if(!payload.email) throw new ApiErrorResponse("please specify email", 400)
             const checkDupeUser = await User.findOne({ email: payload.email })
             if(checkDupeUser) throw new ApiErrorResponse("email already in use", 406)
+            if(!payload.password) throw new ApiErrorResponse("please specify password", 400)
+            if(!payload.name) throw new ApiErrorResponse("please specify name", 400)
+            if(!payload.surname) throw new ApiErrorResponse("please specify surname", 400)
+            if(!payload.phoneNumber) throw new ApiErrorResponse("please specify phone number", 400)
             payload.password = bcrypt.hashSync(payload.password, 10)
             const user = new User(payload);
             await user.save()
