@@ -245,7 +245,7 @@ const ProgramController = {
         .sort(sorter)
         .populate({
           path: "guide",
-          select: "name surname image",
+          select: "name surname profilePic",
         });
 
       return {
