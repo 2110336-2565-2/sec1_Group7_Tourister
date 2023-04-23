@@ -50,9 +50,9 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: function() {
       if (this.isGuide) {
-        return "https://ibb.co/59x36Q5"
+        return "https://i.ibb.co/9v30Nxq/guide.png"
       } else {
-        return "https://ibb.co/zbC9kyk"
+        return "https://i.ibb.co/gwQqn5n/tourist.png"
       }
     }
   },

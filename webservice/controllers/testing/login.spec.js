@@ -11,7 +11,7 @@ jest.mock("../../models/User");
 
 const user1 = {
   email: "user1@gmail.com",
-  password: "user1",
+  password: "user1pass",
 };
 const nonexistentuser = {
   email: "nonexistentuser@gmail.com",
@@ -19,7 +19,7 @@ const nonexistentuser = {
 };
 
 describe("POST /auth/login", () => {
-  describe("When an email is not provided", () => {
+  describe("TC2-1 When an email is not provided", () => {
     let res;
     beforeAll(async () => {
       res = await request(app)
@@ -40,7 +40,7 @@ describe("POST /auth/login", () => {
     });
   });
 
-  describe("When a user is not exist", () => {
+  describe("TC2-2 When a user is not exist", () => {
     let res;
 
     beforeAll(async () => {
@@ -69,7 +69,28 @@ describe("POST /auth/login", () => {
     });
   });
 
-  describe("When a password is incorrect", () => {
+  describe("TC2-3 When a password is not provided", () => {
+    let res;
+    beforeAll(async () => {
+      res = await request(app)
+        .post("/auth/login")
+        .send({ email: user1.email});
+    });
+
+    it("Should return status code 200", () => {
+      expect(res.statusCode).toEqual(200);
+    });
+    it("Should return code 400", () => {
+      expect(res.body.code).toEqual(400);
+    });
+    it("Should return message", () => {
+      expect(res.body.message).toEqual(
+        "please provide both email and password"
+      );
+    });
+  });
+
+  describe("TC2-4 When a password is incorrect", () => {
     let res;
     const incorrectPassword = "incorrect_password";
 
@@ -100,7 +121,7 @@ describe("POST /auth/login", () => {
     });
   });
 
-  describe("When a password is correct", () => {
+  describe("TC2-5 When a password is correct", () => {
     let res;
 
     beforeAll(async () => {
