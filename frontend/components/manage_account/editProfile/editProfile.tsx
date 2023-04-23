@@ -18,6 +18,8 @@ import AddPhotoAlternateRoundedIcon from "@mui/icons-material/AddPhotoAlternateR
 import { Avatar } from "@mui/material";
 import { flushSync } from "react-dom";
 
+import Swal from "sweetalert2";
+
 const API_URL = "http://localhost:2000/api/program";
 type FormData = {
   // accountType: accountType;
@@ -167,12 +169,26 @@ const EditProfile = () => {
 
   const onSubmit = async (data: FormData) => {
     console.log(data);
-    if (user?._id != null) console.log(await updateUserById(user._id, data));
-
-    if (user?._id) {
-      const response = await getUserById(user._id);
-      console.log(response.data);
-      localStorage.setItem("user", JSON.stringify(response.data));
+    try{
+      if (user?._id != null) console.log(await updateUserById(user._id, data));
+  
+      if (user?._id) {
+        const response = await getUserById(user._id);
+        console.log(response.data);
+        localStorage.setItem("user", JSON.stringify(response.data));
+      }
+      Swal.fire({
+        text: "Profile edited!",
+        icon: "success",
+        timer: 2000,
+      });
+    } catch(err:any){
+      console.log(err)
+      Swal.fire({
+        text: err.message,
+        icon: "error",
+        timer: 2000,
+      });
     }
   };
 
