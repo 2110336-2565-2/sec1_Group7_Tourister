@@ -65,7 +65,7 @@ export const ProgramCardForTourist = ({program, bookingStatus}:IProgramInterface
     <div style={{ display:"flex", flexDirection:"row", justifyContent:"center", alignItems:"center" }}>
       <Avatar 
         style={{ width:"22px",height:"22px"}}
-        src={program.guide?.image?(`data:image/png;base64,${program.guide?.image}`):("https://cdn-icons-png.flaticon.com/512/7723/7723210.png")}
+        src={program?.guide?.profilePic}
       />
       <label style={{color: "grey", fontSize: "0.7rem", paddingLeft: "0.6rem"}}>{program.guide?.name} {program.guide?.surname}</label>
       {
