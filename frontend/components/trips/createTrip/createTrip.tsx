@@ -6,11 +6,11 @@ import { nanoid } from "nanoid";
 
 import DayTrip from "./dayTrip";
 import Header from "./header"
-import { FormData, validationSchema, formDatatoProgramInterface} from "./createTripSchema"
+import { FormData, validationSchema, formDatatoProgramInterface, getImageFromDaytrips } from "./createTripSchema"
 import { ProgramInterface } from "@/interfaces/ProgramInterface";
 import { UserInterface } from "@/interfaces/UserInterface";
 import { AttractionInterface } from "@/interfaces/AttractionInterface";
-import { createProgram,getAllProgramsFromGuide,getProgramById,updateProgramById} from "@/services/programService"
+import { createProgram,getAllProgramsFromGuide,getProgramById,updateProgramById,publishProgram} from "@/services/programService"
 import { getUserById, updateUserById } from "@/services/userService";
 import { useAuth } from "@/components/AuthProvider"
 import { AuthContextInterface } from "@/interfaces/AuthContextInterface"
@@ -222,6 +222,7 @@ const CreateTrip = () => {
         }else{
           console.log("no draft")
           const data = _.omit(programData,'_id');
+          console.log({...data,guide:authUserData.user,max_participant:Number(programData.max_participant)})
           const response = await createProgram({...data,guide:authUserData.user});
           console.log(response)
           if(isHttpStatusOk(response.code) && response.data?._id){setValue("_id",response.data?._id)}
@@ -249,11 +250,13 @@ const CreateTrip = () => {
           if(days.some(day => day.toString()==dayI.toString()))return true
           return false
         })
+        let imgList = getImageFromDaytrips(filterDayTrips)
         let programData : ProgramInterface = formDatatoProgramInterface(data,authUserData.user,filterDayTrips)
-        // console.log(data._id)
-        // console.log(programData)
+        console.log(data._id)
+        console.log(imgList)
+        console.log(programData)
         if(data._id){
-          const response = await updateProgramById(data._id,programData)
+          const response = await publishProgram(data._id,programData,imgList)
           console.log(response)
           if(response.code===204){
             router.push("/trips")

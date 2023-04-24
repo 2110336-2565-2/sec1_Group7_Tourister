@@ -49,6 +49,10 @@ export const validationSchema = yup.object().shape({
 });
 
 export function formDatatoProgramInterface(data: FormData, user: UserInterface, filterDayTrips: {date: string; attractions: AttractionInterface[];}[]) {
+  
+  let DayTrips : {date: string; attractions: AttractionInterface[];}[] =filterDayTrips.map((daytrip)=>{
+    return {date: daytrip.date ,attractions: daytrip.attractions.map((attraction)=>{return {...attraction,file:""}})}
+  })
   const newStartDate = new Date(data.startDate)
   const numStartTime = data.startTime.split(":").map((t)=>Number(t))
   newStartDate.setHours(numStartTime[0],numStartTime[1])
@@ -70,7 +74,7 @@ export function formDatatoProgramInterface(data: FormData, user: UserInterface, 
     num_participant: 0,
     descriptionOfMeetLocation: data.descriptionOfMeetLocation,
     guide: user,
-    dayTrips : filterDayTrips,
+    dayTrips : DayTrips,
     language: data.language,
     descriptionOfEndLocation: data.descriptionOfEndLocation,
     num_pending: 0,
@@ -82,4 +86,29 @@ export function formDatatoProgramInterface(data: FormData, user: UserInterface, 
   if(data.endLocation){programData = {...programData,endLocation: data.endLocation}}
   if(data.endProvince){programData = {...programData,endProvince: data.endProvince}}
   return programData;
+}
+
+export function getImageFromDaytrips(filterDayTrips: {date: string; attractions: AttractionInterface[];}[]) {
+  let imgList : File[] = []; 
+  function dataURLtoFile(dataurl: string, filename: string) {
+        let mime = 'image/jpeg'
+        let bstr = atob(dataurl)
+        let n = bstr.length
+        let u8arr = new Uint8Array(n);
+        while(n--){
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+        return new File([u8arr], filename, {type:mime});
+    }
+
+  filterDayTrips.map((daytrip)=>{
+    daytrip.attractions.map((attraction)=>{
+      if(attraction.file){
+        let image = dataURLtoFile(attraction.file,attraction.location)
+        console.log(image)
+        imgList = [...imgList,image]
+      }
+    })
+  })
+  return imgList;
 }
