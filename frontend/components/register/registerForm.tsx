@@ -117,7 +117,7 @@ const RegisterForm = () => {
       <RequireFormLabel className="AsteriskRequired">Confirm Password</RequireFormLabel>
       <FormInputHiddenText name="confirmPassword" control={control} label="Confirm Password" showPassword={showConfirmPassword} handleClickShowPassword={handleClickShowConfirmPassword} handleMouseDownPassword={handleMouseDownPassword} />
       </Field>
-      <PrimaryButton style={{ alignSelf: "center", width: "100%", margin: "0" }}
+      <PrimaryButton id='submitbtn' style={{ alignSelf: "center", width: "100%", margin: "0" }}
         type="submit"
         variant="contained"
       >
