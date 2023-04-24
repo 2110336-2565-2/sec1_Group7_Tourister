@@ -84,7 +84,7 @@ const user0= {
       });
     });
 
-    describe("TC1-3 When an password is not provided", () => {
+    describe("TC1-3 When a password is not provided", () => {
       let res;
       beforeAll(async () => {
         res = await request(app)
@@ -110,7 +110,35 @@ const user0= {
       });
     });
 
-    describe("TC1-4 When an name is not provided", () => {
+    describe("TC1-4 When a password is less than 8 characters", () => {
+      let res;
+      beforeAll(async () => {
+        res = await request(app)
+          .post("/api/user")
+          .send({
+            email: user1.email,
+            password: "user1",
+            name: user1.name,
+            surname: user1.surname,
+            phoneNumber: user1.phoneNumber 
+          });
+      });
+  
+      it("Should return status code 200", () => {
+        expect(res.statusCode).toEqual(200);
+      });
+      it("Should return code 400", () => {
+        expect(res.body.code).toEqual(400);
+      });
+      it("Should return message", () => {
+        expect(res.body.message).toEqual(
+          "password must be at least 8 characters"
+        );
+      });
+    });
+
+
+    describe("TC1-5 When a name is not provided", () => {
       let res;
       beforeAll(async () => {
         res = await request(app)
@@ -136,7 +164,7 @@ const user0= {
       });
     });
 
-    describe("TC1-5 When a surname is not provided", () => {
+    describe("TC1-6 When a surname is not provided", () => {
       let res;
       beforeAll(async () => {
         res = await request(app)
@@ -162,7 +190,7 @@ const user0= {
       });
     });
 
-    describe("TC1-6 When a phone number is not provided", () => {
+    describe("TC1-7 When a phone number is not provided", () => {
       let res;
       beforeAll(async () => {
         res = await request(app)
@@ -188,7 +216,7 @@ const user0= {
       });
     });
 
-    describe("TC1-7 Register Success", () => {
+    describe("TC1-8 Register Success", () => {
       let res;
   
       beforeAll(async () => {
