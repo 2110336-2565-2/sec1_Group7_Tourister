@@ -67,6 +67,14 @@ const ProgramController = {
   async createProgram(req, res, next) {
     const result = await tryCatchMongooseService(async () => {
       const payload = req.body;
+      if(!payload.name) throw new ApiErrorResponse("please specify name", 400)
+      if(!payload.price) throw new ApiErrorResponse("please specify price", 400)
+      if(payload.price<0) throw new ApiErrorResponse("price cannot be negative", 400)
+      if(!payload.startDate) throw new ApiErrorResponse("please specify start date", 400)
+      if(!payload.endDate) throw new ApiErrorResponse("please specify end date", 400)
+      if(payload.endDate<payload.startDate) throw new ApiErrorResponse("end date cannot be before start date", 400)
+      if(!payload.max_participant) throw new ApiErrorResponse("please specify max participant", 400)
+      if(!payload.province) throw new ApiErrorResponse("please specify province", 400)
       const program = new Program(payload);
       await program.save();
       console.log(program);
