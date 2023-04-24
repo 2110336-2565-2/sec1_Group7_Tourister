@@ -5,7 +5,7 @@ import GuideNavBar from '@/components/layout/guideNavBar';
 const Page  = () => {
   return (
   <>
-    <h1 style={{textAlign: 'center'}}>REGISTRATION</h1>
+    <h1 id='header01' style={{textAlign: 'center'}}>REGISTRATION</h1>
     <RegisterForm/>
   </>
   );

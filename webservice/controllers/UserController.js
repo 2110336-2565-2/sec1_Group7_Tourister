@@ -58,6 +58,7 @@ const UserController = {
             const checkDupeUser = await User.findOne({ email: payload.email })
             if(checkDupeUser) throw new ApiErrorResponse("email already in use", 406)
             if(!payload.password) throw new ApiErrorResponse("please specify password", 400)
+            if(payload.password.length<8) throw new ApiErrorResponse("password must be at least 8 characters", 400)
             if(!payload.name) throw new ApiErrorResponse("please specify name", 400)
             if(!payload.surname) throw new ApiErrorResponse("please specify surname", 400)
             if(!payload.phoneNumber) throw new ApiErrorResponse("please specify phone number", 400)
