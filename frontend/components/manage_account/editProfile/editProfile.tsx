@@ -1,4 +1,4 @@
-import { useState, MouseEvent, Fragment, ChangeEvent } from "react";
+import { useState, useEffect, MouseEvent, Fragment, ChangeEvent } from "react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -18,6 +18,8 @@ import AddPhotoAlternateRoundedIcon from "@mui/icons-material/AddPhotoAlternateR
 import { Avatar } from "@mui/material";
 import { flushSync } from "react-dom";
 
+import Swal from "sweetalert2";
+
 const API_URL = "http://localhost:2000/api/program";
 type FormData = {
   // accountType: accountType;
@@ -26,7 +28,7 @@ type FormData = {
   email: string;
   phoneNumber: string;
   licenseId?: string;
-  image?: string;
+  profilePic?: string;
 };
 type accountType = "tourist" | "guide";
 const validationSchema = yup.object().shape({
@@ -41,88 +43,118 @@ const validationSchema = yup.object().shape({
     .matches(/^[0-9]+$/, "Phone number must be only digits")
     .min(9, "Please enter the valid phone number")
     .max(10, "Please enter the valid phone number"),
-});
+  });
+  
+const defaultValues = {
+  name: "",
+  surname: "",
+  phoneNumber: "",
+  licenseId: "",
+  email: "",
+  profilePic: ""
+};
 
 const EditProfile = () => {
-  let user: UserInterface;
+  const [user, setUser] = useState<UserInterface | null>(null)
   const [previewImg, setPreviewImg] = useState<string>();
-  if (typeof window !== "undefined") {
-    // console.log('we are running on the client');
-    user = JSON.parse(localStorage.getItem("user") || `{}`);
-  } else {
-    // console.log('we are running on the server');
-    user = JSON.parse(`{}`);
-  }
-  const defaultValues = {
-    name: user.name,
-    surname: user.surname,
-    phoneNumber: user.phoneNumber,
-    licenseId: user.licenseId,
-    email: user.email,
-    image: user.image,
-  };
+  
+  const {
+    register,
+    control,
+    setValue,
+    getValues,
+    handleSubmit,
+    formState: { errors },
+    reset
+  } = useForm<FormData>({
+    resolver: yupResolver(validationSchema),
+    defaultValues: defaultValues
+  });
 
-  function uploadCompressedImage(imgToCompress: string, maxWidth: number, maxHeight: number, quality: number) {
-    const canvas = document.createElement("canvas");
-    const context = canvas.getContext("2d");
+  useEffect(()=>{
+    setUser(JSON.parse(localStorage.getItem('user')||""));
+  },[])
 
-    const img = new Image();
-    img.src = imgToCompress;
+  useEffect(()=>{
+    if(user){
+      reset({
+        name: user.name,
+        surname: user.surname,
+        phoneNumber: user.phoneNumber,
+        licenseId: user.licenseId,
+        email: user.email,
+        profilePic: user.profilePic,
+      });
+    }
+  },[user])
 
-    img.addEventListener('load', function() {
-      const originalWidth = img.width;
-      const originalHeight = img.height;
 
-      const resizingFactor = Math.min(1, Math.min(maxWidth / originalWidth, maxHeight / originalHeight))
+  // function uploadCompressedImage(imgToCompress: string, maxWidth: number, maxHeight: number, quality: number) {
+  //   const canvas = document.createElement("canvas");
+  //   const context = canvas.getContext("2d");
 
-      canvas.width = originalWidth * resizingFactor
-      canvas.height = originalHeight * resizingFactor
+  //   const img = new Image();
+  //   img.src = imgToCompress;
 
-      context!.drawImage(
-        img,
-        0,
-        0,
-        originalWidth * resizingFactor,
-        originalHeight * resizingFactor
-      );
+  //   img.addEventListener('load', function() {
+  //     const originalWidth = img.width;
+  //     const originalHeight = img.height;
 
-      // Reducing the quality of the image
-      canvas.toBlob(
-        (blob) => {
-          if (blob) {
-            const reader = new FileReader();
-            reader.onload = async () => {
-              const contents = reader.result;
-              if (typeof contents === 'string') {
-                // setFile(btoa(contents)); // Set image here
+  //     const resizingFactor = Math.min(1, Math.min(maxWidth / originalWidth, maxHeight / originalHeight))
+
+  //     canvas.width = originalWidth * resizingFactor
+  //     canvas.height = originalHeight * resizingFactor
+
+  //     context!.drawImage(
+  //       img,
+  //       0,
+  //       0,
+  //       originalWidth * resizingFactor,
+  //       originalHeight * resizingFactor
+  //     );
+
+  //     // Reducing the quality of the image
+  //     canvas.toBlob(
+  //       (blob) => {
+  //         if (blob) {
+  //           const reader = new FileReader();
+  //           reader.onload = async () => {
+  //             const contents = reader.result;
+  //             if (typeof contents === 'string') {
+  //               // setFile(btoa(contents)); // Set image here
                 
-                setValue("image", btoa(contents));
-                setPreviewImg(btoa(contents));
-                if (user._id != null)
-                  console.log(await updateUserById(user._id, { image: btoa(contents) }));
+  //               setValue("image", btoa(contents));
+  //               setPreviewImg(btoa(contents));
+  //               if (user?._id != null)
+  //                 console.log(await updateUserById(user._id, { image: btoa(contents) }));
 
-                if (user._id) {
-                  const response = await getUserById(user._id);
-                  console.log(response.data);
-                  localStorage.setItem("user", JSON.stringify(response.data));
-                }
-              }
-            };
-            reader.readAsBinaryString(blob);
-          }
-        },
-        "image/jpeg",
-        quality
-      );
-    });
-  }
+  //               if (user?._id) {
+  //                 const response = await getUserById(user._id);
+  //                 console.log(response.data);
+  //                 localStorage.setItem("user", JSON.stringify(response.data));
+  //               }
+  //             }
+  //           };
+  //           reader.readAsBinaryString(blob);
+  //         }
+  //       },
+  //       "image/jpeg",
+  //       quality
+  //     );
+  //   });
+  // }
   function handleFileUpload(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
     if (!file) {
       return;
     }
 
-    uploadProfilePic(user._id ?? '', file).then((res) => console.log(res))
+    uploadProfilePic(user?._id ?? '', file)
+    .then((res) => {
+      console.log(res);
+      localStorage.setItem("user", JSON.stringify(res.data));
+      setUser(res.data!);
+    })
 
     const reader = new FileReader();
     reader.onload = (event) => {
@@ -137,25 +169,28 @@ const EditProfile = () => {
 
   const onSubmit = async (data: FormData) => {
     console.log(data);
-    if (user._id != null) console.log(await updateUserById(user._id, data));
-
-    if (user._id) {
-      const response = await getUserById(user._id);
-      console.log(response.data);
-      localStorage.setItem("user", JSON.stringify(response.data));
+    try{
+      if (user?._id != null) console.log(await updateUserById(user._id, data));
+  
+      if (user?._id) {
+        const response = await getUserById(user._id);
+        console.log(response.data);
+        localStorage.setItem("user", JSON.stringify(response.data));
+      }
+      Swal.fire({
+        text: "Profile edited!",
+        icon: "success",
+        timer: 2000,
+      });
+    } catch(err:any){
+      console.log(err)
+      Swal.fire({
+        text: err.message,
+        icon: "error",
+        timer: 2000,
+      });
     }
   };
-  const {
-    register,
-    control,
-    setValue,
-    getValues,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormData>({
-    resolver: yupResolver(validationSchema),
-    defaultValues: defaultValues,
-  });
 
   return (
     <form
@@ -215,7 +250,7 @@ const EditProfile = () => {
             zIndex: 1,
             boxShadow: `0.1rem 0.1rem 1rem 0.2rem rgba(0,0,0,0.25)`,
           }}
-          src={`data:image/png;base64,${getValues("image")}`}
+          src={user?.profilePic}
           alt="mock-img"
         />
         {/* <img
@@ -301,7 +336,7 @@ const EditProfile = () => {
           Surname
         </FieldName>
         <FormInputText name="surname" control={control} label="Surname" />
-        {user.isGuide ? (
+        {user?.isGuide ? (
           <Fragment>
             <FieldName
               style={{

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup"
 import Link from 'next/link';
+import Swal from "sweetalert2";
 
 import { validationSchema, FormData, defaultValues} from "./registerSchema";
 import { registerUser } from "@/services/userService";
@@ -12,11 +13,13 @@ import { COLOR } from "@/theme/globalTheme";
 import { PrimaryButton, RequireFormLabel } from "@/css/styling";
 import { FormInputAccountType } from "../formInput/FormInputAccountType";
 import { Form, FieldName, Field } from "@/css/layout";
+import { useRouter } from "next/router";
 
 
 const RegisterForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const router = useRouter();
 
   const handleClickShowPassword = () =>{
     setShowPassword((password) => !password);
@@ -56,8 +59,19 @@ const RegisterForm = () => {
     try {
       const response = await registerUser(userData)
       console.log(response)
-    } catch (error) {
-      console.log(error)
+      Swal.fire({
+        text: "Register success!",
+        icon: "success",
+        timer: 2000,
+      });
+      router.push('./login')
+    } catch (err:any) {
+      console.log(err)
+      Swal.fire({
+        text: err.message,
+        icon: "error",
+        timer: 2000,
+      });
     }
   }
 
@@ -75,10 +89,10 @@ const RegisterForm = () => {
       <RequireFormLabel className="AsteriskRequired">Surname</RequireFormLabel>
       <FormInputText name="surname" control={control} label="Surname"/>
       </Field>
-      <Field>
+      {/* <Field>
       <RequireFormLabel className="AsteriskRequired">Citizen ID</RequireFormLabel>
       <FormInputText name="citizenId" control={control} label="Citizen ID"/>
-      </Field>
+      </Field> */}
       {watchAccountType==="guide" && 
         <>
           <Field>
@@ -103,7 +117,7 @@ const RegisterForm = () => {
       <RequireFormLabel className="AsteriskRequired">Confirm Password</RequireFormLabel>
       <FormInputHiddenText name="confirmPassword" control={control} label="Confirm Password" showPassword={showConfirmPassword} handleClickShowPassword={handleClickShowConfirmPassword} handleMouseDownPassword={handleMouseDownPassword} />
       </Field>
-      <PrimaryButton style={{ alignSelf: "center", width: "100%", margin: "0" }}
+      <PrimaryButton id='submitbtn' style={{ alignSelf: "center", width: "100%", margin: "0" }}
         type="submit"
         variant="contained"
       >

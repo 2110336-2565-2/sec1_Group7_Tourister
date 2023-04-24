@@ -18,7 +18,7 @@ export const defaultValues = {
   accountType: "tourist" as accountType,
   name: "",
   surname: "",
-  citizenId: "",
+  // citizenId: "",
   phoneNumber: "",
   email: "",
   password: "",
@@ -31,11 +31,11 @@ export const validationSchema = yup.object().shape({
     .required("Please choose your account type"),
   name: yup.string().required("Please enter your name"),
   surname: yup.string().required("Please enter your surname"),
-  citizenId: yup
-    .string()
-    .required("Please enter the citizen number")
-    .matches(/^[0-9]+$/, "Citizen ID must be only digits")
-    .test('len', 'Citizen ID must have 13 numbers', val => val?.length===13),
+  // citizenId: yup
+  //   .string()
+  //   .required("Please enter the citizen number")
+  //   .matches(/^[0-9]+$/, "Citizen ID must be only digits")
+  //   .test('len', 'Citizen ID must have 13 numbers', val => val?.length===13),
   phoneNumber: yup
     .string()
     .required("Please enter the phone number")
