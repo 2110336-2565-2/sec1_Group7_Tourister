@@ -1441,9 +1441,9 @@
   "version" "18.13.0"
 
 "@types/node@^16.10.2":
-  "integrity" "sha512-LJSIirgASa1LicFGTUFwDY7BfKDtLIbijqDLkH47LxEo/jtdrtiZ4/kLPD99bEQhTcPcuh6KhDllHqRxygJD2w=="
-  "resolved" "https://registry.npmjs.org/@types/node/-/node-16.18.22.tgz"
-  "version" "16.18.22"
+  "integrity" "sha512-XAMpaw1s1+6zM+jn2tmw8MyaRDIJfXxqmIQIS0HfoGYPuf7dUWeiUKopwq13KFX9lEp1+THGtlaaYx39Nxr58g=="
+  "resolved" "https://registry.npmjs.org/@types/node/-/node-16.18.23.tgz"
+  "version" "16.18.23"
 
 "@types/node@^8.10.66":
   "integrity" "sha512-tktOkFUA4kXx2hhhrB8bIFb5TbwzS4uOhKEmwiD+NoiL0qtP2OQ9mFldbgD4dV1djrlBYP6eBuQZiWjuHUpqFw=="
@@ -2243,9 +2243,9 @@
   "version" "1.1.1"
 
 "electron-to-chromium@^1.4.284":
-  "integrity" "sha512-gM7TdwuG3amns/1rlgxMbeeyNoBFPa+4Uu0c7FeROWh4qWmvSOnvcslKmWy51ggLKZ2n/F/4i2HJ+PVNxH9uCQ=="
-  "resolved" "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.4.348.tgz"
-  "version" "1.4.348"
+  "integrity" "sha512-LNi3+/9nV0vT6Bz1OsSoZ/w7IgNuWdefZ7mjKNjZxyRlI/ag6uMXxsxAy5Etvuixq3Q26exw2fc4bNYvYQqXSw=="
+  "resolved" "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.4.347.tgz"
+  "version" "1.4.347"
 
 "emittery@^0.13.1":
   "integrity" "sha512-DeWwawk6r5yR9jFgnDKYt4sLS0LmHJJi3ZOnb5/JdbYwj3nW+FxQnHIjhBKz8YLC7oRNPVM9NQ47I3CVx34eqQ=="
