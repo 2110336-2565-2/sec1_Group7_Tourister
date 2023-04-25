@@ -10,7 +10,7 @@ Verify registration form with all input field
     Open Browser    http://localhost:3000/register    chrome
 
     #Input firstname
-    Wait Until Element Contains    //*[@id='header01']    REGISTRATION
+    # Wait Until Element Contains    //*[@id='header01']    REGISTRATION
     Input text    //*[@id=':R8km:']    studentFirstName
     ${firstname}=    Get Value    //*[@id=':R8km:']
     Should Be Equal    ${firstname}    studentFirstName

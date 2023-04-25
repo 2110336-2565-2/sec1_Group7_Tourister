@@ -14,7 +14,8 @@ Verify registration form with all input field
     Input text    //*[@id=':R8km:']    studentFirstName
     ${firstname}=    Get Value    //*[@id=':R8km:']
     Should Be Equal    ${firstname}    studentFirstName
-
+    Verify firstname display error empty message
+    
 Verify firstName input
     [Tags]    valid
     Open browser registration form

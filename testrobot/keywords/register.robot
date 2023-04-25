@@ -56,7 +56,7 @@ Input and verify password
     Should Be Equal    ${password}    ${test_data_password}    
     ${length}=    Get Length    ${password}
     Should Be True    ${length} > 7    Password must have at least 8 characters
-    
+
 Input and verify confirm password
     Input text    //*[@id=':Ra4m:']    ${test_data_password}
     ${confirm_password}    Get Value    //*[@id=':Ra4m:']
@@ -87,25 +87,25 @@ Verify phoneNumber error empty message
  
 # error email
 Verify email error empty message
-    Wait Until Element Contains    //*[@id='R9km:-helper-text']  Please enter email
+    Wait Until Element Contains    //*[@id=':R9km:-helper-text']  Please enter email
 
- Verify email error valid message
-    Wait Until Element Contains    //*[@id='R9km:-helper-text']  Please enter the valid email
+Verify email error valid message
+    Wait Until Element Contains    //*[@id=':R9km:-helper-text']  Please enter the valid email
 
  
 # error password
-# Verify email error empty message
-#     Wait Until Element Contains    //*[@id=':R9sm:-helper-text']  Please enter password
+Verify password error empty message
+    Wait Until Element Contains    //*[@id=':R9sm:-helper-text']  Please enter password
 
 
-#  Verify email error datatype message
-#     Wait Until Element Contains    //*[@id=':R9sm:-helper-text']  Password must have at least 8 characters
+Verify password error datatype message
+    Wait Until Element Contains    //*[@id=':R9sm:-helper-text']  Password must have at least 8 characters
 
 
-# #confirm password
-# Verify comfirm password error message
-#     Wait Until Element Contains    //*[@id='Ra4m:-helper-text']  Passwords must match
+#confirm password
+Verify comfirm password error message
+    Wait Until Element Contains    //*[@id=':Ra4m:-helper-text']  Passwords must match
 
 
-# Verify message after click submit form
-    # Wait Until Element Contains    //*[@id='cid_84']    ${test_data_sccess_submit_message} 
+Verify message after click submit form
+    Wait Until Element Contains    //*[@id='cid_84']    ${test_data_sccess_submit_message} 
