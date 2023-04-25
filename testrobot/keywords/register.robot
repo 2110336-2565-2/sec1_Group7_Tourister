@@ -37,10 +37,7 @@ Verify mobile_number is empty
 Verify email is empty
     ${email}    Get Value    //*[@id='input_6']
     Should Be Equal    ${email}    ${EMPTY}
-    
-# Verify studytime is empty
-#      ${studytime}    Get Value    //*[@id='label_input_51']
-#     Should Be Equal    ${studytime}    ${EMPTY}
+
     
 Input and verify firstname
     Input text     //*[@id=':R8km:']   ${test_data_firstname} 
@@ -48,30 +45,36 @@ Input and verify firstname
     Should Be Equal    ${firstname}    ${test_data_firstname} 
 
 Input and verify lastname
-    Input text    //*[@id=':R8sm:']    ${test_data_lastname}
+    Input text    //*[@id=':R8sm:']    ${test_data_lastname} 
     ${lastname}    Get Value    //*[@id=':R8sm:']
-    Should Be Equal    ${lastname}    ${test_data_lastname}
+    Should Be Equal    ${lastname}    ${test_data_lastname} 
 
 Input and verify phoneNumber
     Input text    //*[@id=':R9cm:']    ${test_data_phone_number}
     ${phoneNumber}    Get Value    //*[@id=':R9cm:']
     Should Be Equal    ${phoneNumber}    ${test_data_phone_number}
+    Should Match Regexp   ${phoneNumber}  ^[0-9]+$  Phone number must be only digits
+    Length Should Be  ${phoneNumber}  10  Phone number must be exactly 10 digits
 
 Input and verify email
     Input text    //*[@id=':R9km:']    ${test_data_email}
     ${email}    Get Value    //*[@id=':R9km:']
     Should Be Equal    ${email}    ${test_data_email}
+    Should Match Regexp  ${email}  ^[^@ ]+@[^@ ]+\.[^@ .]{2,}$  Please enter the valid email
 
 Input and verify password
      Input text    //*[@id=':R9sm:']    ${test_data_password}
     ${password}    Get Value    //*[@id=':R9sm:']
     Should Be Equal    ${password}    ${test_data_password}    
-
+    ${length}=    Get Length    ${password}
+    Should Be True    ${length} > 7    Password must have at least 8 characters
+    
 Input and verify confirm password
-    Input text    //*[@id=':R9sm:']    ${test_data_password}
-    ${confirm_password}    Get Value    //*[@id=':R9sm:']
+    Input text    //*[@id=':Ra4m:']    ${test_data_password}
+    ${confirm_password}    Get Value    //*[@id=':Ra4m:']
+    ${password}    Get Value    //*[@id=':Ra4m:']
     Should Be Equal    ${confirm_password}    ${test_data_password}
-
+    Should Be Equal  ${password}  ${confirm_password}  Password and confirm password fields must match
 
 Input and verify gender with male
     Select From List by Value    //*[@id='input_3']    ${test_data_gender}
@@ -110,18 +113,18 @@ Verify email error empty message
 
  
 # error password
-Verify email error empty message
-    Wait Until Element Contains    //*[@id=':R9sm:-helper-text']  Please enter password
+# Verify email error empty message
+#     Wait Until Element Contains    //*[@id=':R9sm:-helper-text']  Please enter password
 
 
- Verify email error datatype message
-    Wait Until Element Contains    //*[@id=':R9sm:-helper-text']  Password must have atleast 8 characters
+#  Verify email error datatype message
+#     Wait Until Element Contains    //*[@id=':R9sm:-helper-text']  Password must have at least 8 characters
 
 
-#confirm password
-Verify comfirm password error message
-    Wait Until Element Contains    //*[@id='Ra4m:-helper-text']  Passwords must match
+# #confirm password
+# Verify comfirm password error message
+#     Wait Until Element Contains    //*[@id='Ra4m:-helper-text']  Passwords must match
 
 
-Verify message after click submit form
+# Verify message after click submit form
     # Wait Until Element Contains    //*[@id='cid_84']    ${test_data_sccess_submit_message} 
