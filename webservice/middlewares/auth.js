@@ -44,7 +44,7 @@ const AuthMiddleware = {
      */
     async authGuide(req, res, next) {
         const token = req.cookies.jwt || req.headers.authorization?.split(' ')[1];
-        const user = verifyToken(token)
+        const user = await verifyToken(token);
         if(user && user.isGuide) return next()
         return res.json({
             code: 403,
