@@ -21,21 +21,9 @@ Verify lastname is empty
    ${lastname}    Get Value    //*[@id=':R8sm:']
     Should Be Equal    ${lastname}    ${EMPTY}
 
-Verify gender is empty
-    # Select From List by Value    //*[@id='input_3']   Please Select
-    ${gender}    Get Value    //*[@id='input_3']
-    Should Be Equal    ${gender}    ${EMPTY}
-
-Verify student_id is empty
-    ${student_id}    Get Value    //*[@id='input_14']
-    Should Be Equal    ${student_id}    ${EMPTY}
-
-Verify mobile_number is empty
-    ${mobile_number}    Get Value    //*[@id='input_27_full']
-    Should Be Equal    ${mobile_number}    ${EMPTY}
 
 Verify email is empty
-    ${email}    Get Value    //*[@id='input_6']
+    ${email}    Get Value    //*[@id=':R9km:']
     Should Be Equal    ${email}    ${EMPTY}
 
     
@@ -63,7 +51,7 @@ Input and verify email
     Should Match Regexp  ${email}  ^[^@ ]+@[^@ ]+\.[^@ .]{2,}$  Please enter the valid email
 
 Input and verify password
-     Input text    //*[@id=':R9sm:']    ${test_data_password}
+    Input text    //*[@id=':R9sm:']    ${test_data_password}
     ${password}    Get Value    //*[@id=':R9sm:']
     Should Be Equal    ${password}    ${test_data_password}    
     ${length}=    Get Length    ${password}
@@ -76,15 +64,8 @@ Input and verify confirm password
     Should Be Equal    ${confirm_password}    ${test_data_password}
     Should Be Equal  ${password}  ${confirm_password}  Password and confirm password fields must match
 
-Input and verify gender with male
-    Select From List by Value    //*[@id='input_3']    ${test_data_gender}
-    ${gender}    Get Value    //*[@id='input_3']
-    Should Be Equal    ${gender}    ${test_data_gender}
-
-
-
 Click submit application
-    Click Element  //*[@id='submitbtn']
+    SeleniumLibrary.Click Element  //*[@id='submitbtn']
 
 # error firstname
 Verify firstname display error empty message
