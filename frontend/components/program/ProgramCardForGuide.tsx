@@ -144,7 +144,7 @@ export const ProgramCardForGuide= ({
           <div style={{ display: "inline-block", float: "left" }}>
             {program.dayTrips && program.dayTrips[0]?(
             <img
-                src={`data:image/jpeg;base64,${program.dayTrips[0].attractions[0].file}`}
+                src={`${program.dayTrips[0].attractions[0].image}`}
                 alt="first-img-of-trip"
               style={{
                 width: "75px",

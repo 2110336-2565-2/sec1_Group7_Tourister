@@ -56,7 +56,7 @@ export const ProgramCardForTourist = ({program, bookingStatus}:IProgramInterface
       <label style={{ fontSize: "1rem", padding: "0 0.6rem" }}> {program.num_participant}/{program.max_participant} </label>
     </div>
     <CardMedia 
-      image= {program.dayTrips && program.dayTrips[0]?(`data:image/jpeg;base64,${program.dayTrips[0].attractions[0].file}`):("https://t3.ftcdn.net/jpg/01/32/94/50/240_F_132945016_nfxSTTLLFGlgxb35E7kTn09oQ3bvZqeD.jpg")}
+      image= {program.dayTrips && program.dayTrips[0]?(`${program.dayTrips[0].attractions[0].image}`):("https://t3.ftcdn.net/jpg/01/32/94/50/240_F_132945016_nfxSTTLLFGlgxb35E7kTn09oQ3bvZqeD.jpg")}
       style={{ height: "40vw", width: "100%", objectFit: "cover", borderRadius: "15px"}}
     />
     <h4 style={{ margin:"0.3rem 0", wordWrap:"break-word" }}>{program.name}</h4>
