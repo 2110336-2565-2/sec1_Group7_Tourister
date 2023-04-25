@@ -21,6 +21,9 @@ Verify lastname is empty
    ${lastname}    Get Value    //*[@id=':R8sm:']
     Should Be Equal    ${lastname}    ${EMPTY}
 
+Verify phoneNumber is empty
+    ${phoneNumber}    Get Value    //*[@id=':R9cm:']
+    Should Be Equal    ${phoneNumber}    ${EMPTY}
 
 Verify email is empty
     ${email}    Get Value    //*[@id=':R9km:']
@@ -43,6 +46,9 @@ Input and verify phoneNumber
     Should Be Equal    ${phoneNumber}    ${test_data_phone_number}
     Should Match Regexp   ${phoneNumber}  ^[0-9]+$  Phone number must be only digits
     Length Should Be  ${phoneNumber}  10  Phone number must be exactly 10 digits
+    ${length}=    Get Length    ${phoneNumber}
+    Should Be True    ${length} >= 9  Phone number must be between 9 and 10 digits
+    Should Be True    ${length} <= 10  Phone number must be between 9 and 10 digits
 
 Input and verify email
     Input text    //*[@id=':R9km:']    ${test_data_email}
@@ -56,7 +62,7 @@ Input and verify password
     Should Be Equal    ${password}    ${test_data_password}    
     ${length}=    Get Length    ${password}
     Should Be True    ${length} > 7    Password must have at least 8 characters
-
+    
 Input and verify confirm password
     Input text    //*[@id=':Ra4m:']    ${test_data_password}
     ${confirm_password}    Get Value    //*[@id=':Ra4m:']
@@ -79,10 +85,10 @@ Verify lastname display error empty message
 Verify phoneNumber error empty message
     Wait Until Element Contains    //*[@id=':R9cm:-helper-text']  Please enter the phone number
 
- Verify phoneNumber error datatype message
+Verify phoneNumber error datatype message
     Wait Until Element Contains    //*[@id=':R9cm:-helper-text']  Phone number must be only digits
 
- Verify phoneNumber error valid message
+Verify phoneNumber error valid message
     Wait Until Element Contains    //*[@id=':R9cm:-helper-text']  Please enter the valid phone number
  
 # error email
@@ -92,20 +98,16 @@ Verify email error empty message
 Verify email error valid message
     Wait Until Element Contains    //*[@id=':R9km:-helper-text']  Please enter the valid email
 
- 
 # error password
 Verify password error empty message
     Wait Until Element Contains    //*[@id=':R9sm:-helper-text']  Please enter password
 
-
 Verify password error datatype message
     Wait Until Element Contains    //*[@id=':R9sm:-helper-text']  Password must have at least 8 characters
-
 
 #confirm password
 Verify comfirm password error message
     Wait Until Element Contains    //*[@id=':Ra4m:-helper-text']  Passwords must match
-
 
 Verify message after click submit form
     Wait Until Element Contains    //*[@id='cid_84']    ${test_data_sccess_submit_message} 

@@ -5,6 +5,133 @@ Resource    ../keywords/register.robot
 Test Teardown    Close All Browsers
 
 *** Test Cases ***
+Verify registration form with all input
+    [Tags]    valid
+    Open browser registration form
+    Wait registration load complete
+    Input and verify firstname
+    Input and verify lastname
+    Input and verify phoneNumber
+    Input and verify email
+    Input and verify password    
+    Input and verify confirm password
+    Click submit application
+    Wait Until Location Contains    http://localhost:3000/login
+    Wait Until Element Contains    //*[@id='ProjectName']    TOURISTER
+
+*** Test Cases ***
+Verify registration form with existing email
+    [Tags]    invalid
+    Open browser registration form
+    Wait registration load complete
+    Input and verify firstname
+    Input and verify lastname
+    Input and verify phoneNumber
+    Input and verify email
+    Input and verify password    
+    Input and verify confirm password
+    Click submit application
+    Sleep    1s
+    Wait Until Location Contains    http://localhost:3000/register
+    Wait registration load complete
+
+*** Test Cases ***
+Verify registration form with single fault firstname
+    [Tags]    invalid
+    Open browser registration form
+    Wait registration load complete
+    Verify firstname is empty
+    Input and verify lastname
+    Input and verify phoneNumber
+    Input and verify email
+    Input and verify password    
+    Input and verify confirm password
+    Click submit application
+    Verify firstname display error empty message
+    Reload Page
+
+*** Test Cases ***
+Verify registration form with single fault lastname
+    [Tags]    invalid
+    Open browser registration form
+    Wait registration load complete
+    Input and verify firstname
+    Verify lastname is empty
+    Input and verify phoneNumber
+    Input and verify email
+    Input and verify password    
+    Input and verify confirm password
+    Click submit application
+    Verify lastname display error empty message
+    Reload Page
+
+*** Test Cases ***
+Verify registration form with single fault phone number (empty)
+    [Tags]    invalid
+    Open browser registration form
+    Wait registration load complete
+    Input and verify firstname
+    Input and verify lastname
+    Verify phoneNumber is empty
+    Input and verify email
+    Input and verify password    
+    Input and verify confirm password
+    Click submit application
+    Verify phoneNumber error empty message
+    Reload Page
+
+*** Test Cases ***
+Verify registration form with single fault phone number (not contains only digits)
+    [Tags]    invalid
+    Open browser registration form
+    Wait registration load complete
+    Input and verify firstname
+    Input and verify lastname
+    Input text    //*[@id=':R9cm:']    012A456789
+    ${phoneNumber}    Get Value    //*[@id=':R9cm:']
+    Should Be Equal    ${phoneNumber}    012A456789
+    Input and verify email
+    Input and verify password    
+    Input and verify confirm password
+    Click submit application
+    Verify phoneNumber error datatype message
+    Reload Page
+
+*** Test Cases ***
+Verify registration form with single fault phone number (not valid less than 9)
+    [Tags]    invalid
+    Open browser registration form
+    Wait registration load complete
+    Input and verify firstname
+    Input and verify lastname
+    Input text    //*[@id=':R9cm:']    0123456
+    ${phoneNumber}    Get Value    //*[@id=':R9cm:']
+    Should Be Equal    ${phoneNumber}   0123456
+    Input and verify email
+    Input and verify password    
+    Input and verify confirm password
+    Click submit application
+    Verify phoneNumber error valid message
+    Reload Page
+    
+*** Test Cases ***
+Verify registration form with single fault phone number (not valid more than 10)
+    [Tags]    invalid
+    Open browser registration form
+    Wait registration load complete
+    Input and verify firstname
+    Input and verify lastname
+    Input text    //*[@id=':R9cm:']    0123456789123456
+    ${phoneNumber}    Get Value    //*[@id=':R9cm:']
+    Should Be Equal    ${phoneNumber}    0123456789123456
+    Input and verify email
+    Input and verify password    
+    Input and verify confirm password
+    Click submit application
+    Verify phoneNumber error valid message
+    Reload Page
+
+*** Test Cases ***
 Verify registration form with empty email field
     [Tags]    All Input
     Open Browser    http://localhost:3000/register    chrome
