@@ -30,7 +30,7 @@ const ParticipantsDetail: FC<ParticipantsDetailProps> = ({ bookings }) => {
             {typeof user !== "string" && (
               <>
                 <ListItemAvatar>
-                  <Avatar src={`data:image/png;base64,${user?.image}`} />
+                  <Avatar src={user?.profilePic} />
                 </ListItemAvatar>
                 <ListItemText
                   primary={

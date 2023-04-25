@@ -30,7 +30,7 @@ const ImageSlider: FC<IImageSliderProbs> = ({ dayTrips }) => {
 
   dayTrips.forEach((dayTrip) => {
     dayTrip.attractions.forEach((attraction: any) => {
-      allImages.push(attraction.file);
+      allImages.push(attraction.image);
     });
   });
 
@@ -48,7 +48,7 @@ const ImageSlider: FC<IImageSliderProbs> = ({ dayTrips }) => {
         {allImages.map((image, index) => (
           <div style={{}} key={index} className="image">
             <img
-              src={`data:image/jpeg;base64,${image}`}
+              src= {image}
               alt={`Image ${index}`}
             />
           </div>

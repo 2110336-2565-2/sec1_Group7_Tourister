@@ -110,7 +110,7 @@ const ScheduleDetail: FC<IScheduleDetailProps> = ({ program, dayTrips }) => {
                       height: "4.75rem",
                       borderRadius: "0.5rem",
                     }}
-                    src={`data:image/jpeg;base64,${attraction.file}`}
+                    src={attraction.image}
                     alt={attraction.location}
                   />
                 </div>
