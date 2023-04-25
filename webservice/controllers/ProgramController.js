@@ -75,7 +75,7 @@ const ProgramController = {
       if(payload.endDate<payload.startDate) throw new ApiErrorResponse("end date cannot be before start date", 400)
       if(!payload.max_participant) throw new ApiErrorResponse("please specify max participant", 400)
       if(payload.max_participant<1) throw new ApiErrorResponse("max participant must be positive integer", 400)
-      if(! Number.isInteger(payload.max_participant)) throw new ApiErrorResponse("max participant must be positive integer", 400)
+      if(! Number.isInteger(Number(payload.max_participant))) throw new ApiErrorResponse("max participant must be positive integer", 400)
       if(!payload.province) throw new ApiErrorResponse("please specify province", 400)
       if(payload.language.length==0) throw new ApiErrorResponse("please select at least one language", 400)
       const program = new Program(payload);
