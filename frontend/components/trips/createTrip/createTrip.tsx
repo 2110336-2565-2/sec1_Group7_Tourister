@@ -50,6 +50,8 @@ const CreateTrip = () => {
     attractions : AttractionInterface[]
   }[]>();
   const [unmatchedStartAndEndDate,setUnmatchedStartAndEndDate] = useState(false)
+  const [negativePrice,setNegativePrice] = useState(false)
+  const [zeroParticipant,setZeroParticipant] = useState(false)
   const [overlap,setOverlap] = useState(false)
   const [loading,setLoading] = useState(false)
   const [languageCheck,setLanguageCheck] = useState([false,false,false,false,false,false,false,false])
@@ -85,6 +87,8 @@ const CreateTrip = () => {
   const HandleNext = async () => {
     setLoading(true)
     setUnmatchedStartAndEndDate(false)
+    setNegativePrice(false)
+    setZeroParticipant(false)
     setOverlap(false)
     setDays([])
     let date = new Date(getValues("startDate"))
@@ -93,7 +97,7 @@ const CreateTrip = () => {
     console.log(end.toString())
     let errExist = false;
     setStage(1)
-    console.log("test")
+    // console.log("test")
     if(date > end ||(getValues("name")===undefined || getValues("name")==="")
      || getValues("description")===undefined || getValues("description")==="" || getValues("price")===undefined || getValues("price").toString()===""
      || getValues("province")===undefined || getValues("province")==="" ||getValues("startDate")===undefined || getValues("startTime")===undefined
@@ -102,6 +106,14 @@ const CreateTrip = () => {
      || Number.isNaN(Number(getValues("price"))) || Number.isNaN(Number(getValues("max_participant")))){console.log("invalid input");errExist=true;}
     // if(languageCheck.every((e)=>!e)){errExist=true}
     console.log("test4")
+    if(!(getValues("max_participant")===undefined || getValues("max_participant").toString()==="" || Number.isNaN(Number(getValues("max_participant"))))){
+        // console.log(Number(getValues("price")),Number(getValues("max_participant")),Number(getValues("max_participant")) < 1)
+      if(Number(getValues("max_participant")) < 1){errExist=true;setZeroParticipant(true)}
+    }
+    if(!(getValues("price")===undefined || getValues("price").toString()==="" || Number.isNaN(Number(getValues("price"))))){
+        // console.log(Number(getValues("price")), Number(getValues("price")) > 0)
+      if(Number(getValues("price")) < 0){errExist=true;setNegativePrice(true)}
+    }
     if(date > end){console.log("case1");setUnmatchedStartAndEndDate(true)}
     if(getValues("startTime")!==undefined && getValues("endTime")!==undefined &&
       getValues("startTime")!=="" && getValues("endTime")!==""){
@@ -110,7 +122,7 @@ const CreateTrip = () => {
         const sTime = getValues("startTime").split(":")
         const eTime = getValues("endTime").split(":")
         if(Number(sTime[0]) > Number(eTime[0]) || (Number(sTime[0])===Number(eTime[0]) && Number(sTime[1])>Number(eTime[1]))){
-          console.log("error unmatch startdateenddate")
+          // console.log("error unmatch startdateenddate")
           setUnmatchedStartAndEndDate(true);errExist=true;}
       }
       console.log("test3")
@@ -180,6 +192,8 @@ const CreateTrip = () => {
     if(errExist){console.log("draft not ok");setLoading(false);return;}
     console.log("draft ok")
     setUnmatchedStartAndEndDate(false)
+    setNegativePrice(false)
+    setZeroParticipant(false)
     setOverlap(false)
     end.setDate(end.getDate() + 1)
     let k = 0
@@ -357,6 +371,9 @@ const CreateTrip = () => {
             </Field><Field> {/* Price */}
               <RequireFormLabel className="AsteriskRequired">Price(THB)</RequireFormLabel>
               <FormInputText name="price" control={control} label="Price in THB"/>
+              <div style={{margin:"0 1rem", fontSize:"12px", color:COLOR.error}}>
+                {negativePrice? <label>Please add a nonnegative number for price<br/></label> : <Fragment/>}
+              </div>
             </Field><Field> {/* Province */}
               <RequireFormLabel className="AsteriskRequired">Pick a province</RequireFormLabel>
               <FormInputText name="province" control={control} label="Pick a province for showing"/>
@@ -379,6 +396,9 @@ const CreateTrip = () => {
             </Field><Field>{/* Group Size */}
               <RequireFormLabel className="AsteriskRequired">Group size</RequireFormLabel>
               <FormInputText name="max_participant" control={control} label="Number of participant(s)"/>
+              <div style={{margin:"0 1rem", fontSize:"12px", color:COLOR.error}}>
+                {zeroParticipant? <label>Please add a positive number for Group size<br/></label> : <Fragment/>}
+              </div>
             </Field><Field> {/* language */}
               <RequireFormLabel className="AsteriskRequired">Language(s)</RequireFormLabel>
               {languageCheck.every((e)=>!e) && stage===1?(
