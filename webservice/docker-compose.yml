@@ -1,0 +1,8 @@
+services:
+  webservice:
+    build: .
+    ports:
+      - "2000:2000"
+    container_name: webservice
+    env_file:
+      - .env
