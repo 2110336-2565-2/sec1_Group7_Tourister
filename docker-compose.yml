@@ -1,6 +1,6 @@
 services:
   webservice:
-    build: .
+    build: webservice
     ports:
       - "2000:8080"
     image: webservice
