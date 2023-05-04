@@ -2,12 +2,12 @@ services:
   webservice:
     build: webservice
     ports:
-      - "2000:8080"
+      - "2000:2000"
     image: webservice
     container_name: webservice
   frontend:
     build: frontend
     ports:
-      - "3000:3001"
+      - "3000:3000"
     image: frontend
     container_name: frontend
