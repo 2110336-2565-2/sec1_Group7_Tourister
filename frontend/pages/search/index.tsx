@@ -47,7 +47,7 @@ export default function Page() {
     queryFn: ()=>getAllPrograms(programFilter)
   })
   const programs = programResponse?.data;
-
+  console.log(programs)
   return (
     <AuthProvider role="tourist">
       <NotificationProvider>

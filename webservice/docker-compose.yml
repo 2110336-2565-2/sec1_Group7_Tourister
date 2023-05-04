@@ -1,0 +1,7 @@
+services:
+  webservice:
+    build: .
+    ports:
+      - "2001:8080"
+    image: webservice
+    container_name: webservice
