@@ -1,0 +1,13 @@
+services:
+  webservice:
+    build: .
+    ports:
+      - "2000:8080"
+    image: webservice
+    container_name: webservice
+  frontend:
+    build: frontend
+    ports:
+      - "3000:3001"
+    image: frontend
+    container_name: frontend
